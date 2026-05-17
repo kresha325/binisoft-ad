@@ -6,8 +6,11 @@ class AppConstants {
   static const String publicApiBaseUrl =
       'https://us-central1-jon-sport.cloudfunctions.net/publicApi';
 
-  /// After Firebase Hosting deploy with `/api/public/**` rewrite.
-  static const String publicApiHostingBaseUrl = 'https://jon-sport.web.app';
+  /// Admin dashboard (GitHub Pages only).
+  static const String dashboardWebUrl =
+      'https://kresha325.github.io/binisoft-ad';
+
+  static const String dashboardWebOrigin = 'https://kresha325.github.io';
 }
 
 class FirestoreCollections {

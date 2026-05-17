@@ -33,19 +33,30 @@ firebase use jon-sport
 firebase deploy --only firestore:rules,firestore:indexes,storage
 ```
 
-### 4. Fix web HTTP 400 (if login/register fails in Chrome)
+### 4. Fix web login 403 / 400 (GitHub Pages only)
 
-In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport), open the **Browser API key** used by your Web app and under **Application restrictions → HTTP referrers** add:
+**Dashboard URL (use this):** https://kresha325.github.io/binisoft-ad/
+
+Do not use `jon-sport.web.app` for the admin UI unless you add that domain in Firebase (this project uses GitHub Pages only).
+
+In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport), open the **Browser API key** (web `apiKey` in `lib/firebase_options.dart`). Under **HTTP referrers** add:
 
 - `http://localhost:*`
 - `http://127.0.0.1:*`
-- `https://kresha325.github.io/*` (GitHub Pages)
+- `https://kresha325.github.io/*`
 
-In [Firebase Auth → Settings → Authorized domains](https://console.firebase.google.com/project/jon-sport/authentication/settings), ensure `localhost` and `kresha325.github.io` are listed.
+Under **API restrictions**, either **Don’t restrict key** or ensure **Identity Toolkit API** is allowed.
 
-Then hard refresh Chrome (`Cmd+Shift+R`).
+In [Firebase Auth → Authorized domains](https://console.firebase.google.com/project/jon-sport/authentication/settings):
 
-## Deploy web on GitHub Pages
+- `kresha325.github.io`
+- `localhost`
+
+Enable **Email/Password** in [Sign-in method](https://console.firebase.google.com/project/jon-sport/authentication/providers).
+
+Hard refresh: `Cmd+Shift+R` on the GitHub Pages login URL.
+
+## Deploy web (GitHub Pages)
 
 Public URL: **https://kresha325.github.io/binisoft-ad/**
 
