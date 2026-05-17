@@ -33,8 +33,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build web (GitHub Pages subpath, CanvasKit via CDN for mobile)
-        run: flutter build web --release --base-href "/binisoft-ad/" --web-resources-cdn
+      - name: Build web (GitHub Pages subpath; include local canvaskit for mobile)
+        run: flutter build web --release --base-href "/binisoft-ad/"
 
       - name: Mobile-friendly web bootstrap (no SW cache, CDN canvaskit)
         run: dart run tool/patch_web_bootstrap.dart

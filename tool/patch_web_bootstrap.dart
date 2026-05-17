@@ -38,11 +38,6 @@ ${tail}
 
   bootstrap.writeAsStringSync(js);
 
-  final canvaskit = Directory('build/web/canvaskit');
-  if (canvaskit.existsSync()) {
-    canvaskit.deleteSync(recursive: true);
-    stdout.writeln('Removed build/web/canvaskit (loads from Google CDN).');
-  }
-
-  stdout.writeln('Patched flutter_bootstrap.js for mobile.');
+  // Keep build/web/canvaskit — mobile Safari often fails when CDN-only (~26MB).
+  stdout.writeln('Patched flutter_bootstrap.js (canvaskit kept for mobile fallback).');
 }
