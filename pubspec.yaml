@@ -67,6 +67,7 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
+    - assets/fonts/
     - assets/branding/binisoft_logo.png
     - assets/branding/binisoft_logo_dark.png
     - assets/branding/app_icon.png
