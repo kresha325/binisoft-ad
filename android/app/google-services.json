@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "732129842851",
+    "firebase_url": "https://jon-sport-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "jon-sport",
+    "storage_bucket": "jon-sport.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732129842851:android:b8cb262af063e028645116",
+        "android_client_info": {
+          "package_name": "com.example.jon_sport"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFJm0DQyoJT-TK-aZGRHK9duw2izZbYOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732129842851:android:9629ed8f4c988190645116",
+        "android_client_info": {
+          "package_name": "com.jonsport.business_dashboard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFJm0DQyoJT-TK-aZGRHK9duw2izZbYOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,173 @@
+/**
+ * Sets orderPhone, creates order API key, writes jon-sport-shop/.env
+ * Uses Firebase CLI refresh token + Firestore REST API.
+ *
+ * Run: cd functions && node scripts/setup-demo-shop.mjs
+ */
+import { createHash, randomBytes } from 'node:crypto';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { homedir } from 'node:os';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const PROJECT_ID = 'jon-sport';
+const BUSINESS_SLUG = 'napoletana-nostra';
+const ORDER_PHONE = '+38344416502';
+const API_BASE =
+  'https://us-central1-jon-sport.cloudfunctions.net/publicApi';
+const OAUTH_CLIENT_ID =
+  '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com';
+const OAUTH_CLIENT_SECRET = 'j9pVycW6ZwxvMEPGi4s1wuI';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const SHOP_ENV = join(__dirname, '../../../jon-sport-shop/.env');
+
+function loadRefreshToken() {
+  const path = join(homedir(), '.config/configstore/firebase-tools.json');
+  const config = JSON.parse(readFileSync(path, 'utf8'));
+  const token = config.tokens?.refresh_token;
+  if (!token) throw new Error('Run: firebase login');
+  return token;
+}
+
+async function getAccessToken() {
+  const refresh_token = loadRefreshToken();
+  const res = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: OAUTH_CLIENT_ID,
+      client_secret: OAUTH_CLIENT_SECRET,
+      refresh_token,
+      grant_type: 'refresh_token',
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error_description || 'OAuth failed');
+  return data.access_token;
+}
+
+async function firestoreRunQuery(accessToken, structuredQuery) {
+  const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents:runQuery`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ structuredQuery }),
+  });
+  const rows = await res.json();
+  if (!res.ok) throw new Error(JSON.stringify(rows));
+  return rows;
+}
+
+async function firestorePatch(accessToken, docPath, fields) {
+  const mask = Object.keys(fields)
+    .map((k) => `updateMask.fieldPaths=${k}`)
+    .join('&');
+  const url =
+    `https://firestore.googleapis.com/v1/${docPath}?${mask}`;
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ fields }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(JSON.stringify(data));
+  return data;
+}
+
+async function firestoreCreate(accessToken, collectionPath, fields) {
+  const url = `https://firestore.googleapis.com/v1/${collectionPath}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ fields }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(JSON.stringify(data));
+  return data;
+}
+
+function str(v) {
+  return { stringValue: String(v) };
+}
+
+function bool(v) {
+  return { booleanValue: v };
+}
+
+function ts() {
+  return { timestampValue: new Date().toISOString() };
+}
+
+function hashKey(plain) {
+  return createHash('sha256').update(plain, 'utf8').digest('hex');
+}
+
+async function main() {
+  const accessToken = await getAccessToken();
+
+  const queryResult = await firestoreRunQuery(accessToken, {
+    from: [{ collectionId: 'businesses' }],
+    where: {
+      fieldFilter: {
+        field: { fieldPath: 'slug' },
+        op: 'EQUAL',
+        value: { stringValue: BUSINESS_SLUG },
+      },
+    },
+    limit: 1,
+  });
+
+  const doc = queryResult.find((r) => r.document)?.document;
+  if (!doc) throw new Error(`Business not found: ${BUSINESS_SLUG}`);
+
+  const businessId = doc.name.split('/').pop();
+  const businessPath = doc.name;
+
+  await firestorePatch(accessToken, businessPath, {
+    orderPhone: str(ORDER_PHONE),
+  });
+  console.log(`✓ orderPhone = ${ORDER_PHONE} on ${businessPath}`);
+
+  const plainKey = `jsk_${randomBytes(24).toString('hex')}`;
+  await firestoreCreate(
+    accessToken,
+    `projects/${PROJECT_ID}/databases/(default)/documents/businesses/${businessId}/apiKeys`,
+    {
+      name: str('jon-sport-shop demo'),
+      keyPrefix: str(`${plainKey.substring(0, 12)}…`),
+      secretHash: str(hashKey(plainKey)),
+      scopes: {
+        arrayValue: {
+          values: [{ stringValue: 'orders:create' }],
+        },
+      },
+      active: bool(true),
+      createdAt: ts(),
+    },
+  );
+  console.log('✓ API key created for orders');
+
+  const env = `# Auto-generated by setup-demo-shop.mjs
+VITE_API_BASE_URL=${API_BASE}
+VITE_BUSINESS_SLUG=${BUSINESS_SLUG}
+VITE_API_KEY=${plainKey}
+`;
+  writeFileSync(SHOP_ENV, env, 'utf8');
+  console.log(`✓ Wrote ${SHOP_ENV}`);
+  console.log('\n  cd ../../../jon-sport-shop && npm install && npm run dev\n');
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

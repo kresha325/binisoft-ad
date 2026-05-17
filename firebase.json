@@ -1,0 +1,55 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/api/public/**",
+        "function": "publicApi"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firebase/firestore.rules",
+    "indexes": "firebase/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "firebase/storage.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "jon-sport",
+          "appId": "1:732129842851:android:9629ed8f4c988190645116",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "jon-sport",
+          "appId": "1:732129842851:ios:188ba17e1684c6bb645116",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "jon-sport",
+          "configurations": {
+            "android": "1:732129842851:android:9629ed8f4c988190645116",
+            "ios": "1:732129842851:ios:188ba17e1684c6bb645116",
+            "web": "1:732129842851:web:7b0bc8e041b6e2ae645116"
+          }
+        }
+      }
+    }
+  }
+}

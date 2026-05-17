@@ -1,0 +1,92 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "businesses",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerId", "order": "ASCENDING" },
+        { "fieldPath": "name", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "products",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "categories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "parentId", "order": "ASCENDING" },
+        { "fieldPath": "order", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "productVariants",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "productId", "order": "ASCENDING" },
+        { "fieldPath": "sku", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "invoices",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "type", "order": "ASCENDING" },
+        { "fieldPath": "paidAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "apiKeys",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "secretHash", "order": "ASCENDING" },
+        { "fieldPath": "active", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "billing_reports",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "periodType", "order": "ASCENDING" },
+        { "fieldPath": "periodStart", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "orders",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "cancelledAt", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "invoices",
+      "fieldPath": "paidAt",
+      "indexes": [
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    }
+  ]
+}

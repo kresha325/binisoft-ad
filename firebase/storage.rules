@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid));
+    }
+
+    function userExists() {
+      return isSignedIn() && userDoc().exists;
+    }
+
+    function userBusinessId() {
+      return userExists() ? userDoc().data.businessId : '';
+    }
+
+    function businessDoc(businessId) {
+      return firestore.get(/databases/(default)/documents/businesses/$(businessId));
+    }
+
+    function businessExists(businessId) {
+      return businessDoc(businessId).exists;
+    }
+
+    function isBusinessOwner(businessId) {
+      return isSignedIn()
+        && businessExists(businessId)
+        && businessDoc(businessId).data.ownerId == request.auth.uid;
+    }
+
+    function isMember(businessId) {
+      return isBusinessOwner(businessId)
+        || (userExists() && userBusinessId() == businessId);
+    }
+
+    // Product images & logos — members only (no contentType check: resumable web uploads)
+    match /businesses/{businessId}/{allPaths=**} {
+      allow read: if isMember(businessId);
+      allow write: if isMember(businessId);
+    }
+
+    match /social_posts/{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

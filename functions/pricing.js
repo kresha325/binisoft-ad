@@ -1,0 +1,104 @@
+/**
+ * Resolves catalog and checkout prices when active offers apply.
+ */
+
+function roundMoney(n) {
+  return Math.round(Number(n) * 100) / 100;
+}
+
+function toMillis(ts) {
+  if (!ts) return 0;
+  if (typeof ts.toMillis === 'function') return ts.toMillis();
+  if (ts instanceof Date) return ts.getTime();
+  if (typeof ts === 'number') return ts;
+  return 0;
+}
+
+/**
+ * @param {object} offer - Firestore offer document data with `id` set
+ * @param {number} [nowMs]
+ */
+function isOfferActive(offer, nowMs = Date.now()) {
+  if (offer.active === false) return false;
+  const start = toMillis(offer.startsAt);
+  const end = toMillis(offer.endsAt);
+  if (!start || !end) return false;
+  return nowMs >= start && nowMs <= end;
+}
+
+/**
+ * @param {object} productData
+ * @param {string} productId
+ * @param {Array<object>} offers - active offers with `id`
+ */
+function resolveProductPricing(productData, productId, offers) {
+  const base = productData.basePrice != null ? Number(productData.basePrice) : 0;
+  let unitPrice = base;
+  let offerId = null;
+  let discountPercent = null;
+
+  for (const offer of offers) {
+    if (!isOfferActive(offer)) continue;
+    const productIds = offer.productIds || [];
+    if (!productIds.includes(productId)) continue;
+
+    const items = offer.items || [];
+    const item = items.find((i) => i.productId === productId);
+    let candidate = base;
+
+    if (item && item.salePriceEur != null && Number.isFinite(Number(item.salePriceEur))) {
+      candidate = roundMoney(Number(item.salePriceEur));
+    } else {
+      const pct =
+        item && item.discountPercent != null
+          ? Number(item.discountPercent)
+          : offer.discountPercent != null
+            ? Number(offer.discountPercent)
+            : null;
+      if (pct != null && Number.isFinite(pct) && pct > 0) {
+        candidate = roundMoney(base * (1 - Math.min(100, Math.max(0, pct)) / 100));
+        discountPercent = pct;
+      }
+    }
+
+    if (candidate < unitPrice) {
+      unitPrice = candidate;
+      offerId = offer.id;
+      if (base > 0 && unitPrice < base) {
+        discountPercent = discountPercent ?? roundMoney((1 - unitPrice / base) * 100);
+      }
+    }
+  }
+
+  const onOffer = unitPrice < base && offerId != null;
+  return {
+    unitPrice,
+    originalPrice: base,
+    offerId: onOffer ? offerId : null,
+    onOffer,
+    discountPercent: onOffer ? discountPercent : null,
+  };
+}
+
+/**
+ * @param {import('firebase-admin/firestore').Firestore} db
+ * @param {string} businessId
+ */
+async function loadActiveOffers(db, businessId) {
+  const snap = await db
+    .collection(`businesses/${businessId}/offers`)
+    .where('active', '==', true)
+    .get();
+  const now = Date.now();
+  return snap.docs
+    .map((doc) => ({ id: doc.id, ...doc.data() }))
+    .filter((offer) => isOfferActive(offer, now));
+}
+
+module.exports = {
+  roundMoney,
+  isOfferActive,
+  resolveProductPricing,
+  loadActiveOffers,
+  toMillis,
+};
