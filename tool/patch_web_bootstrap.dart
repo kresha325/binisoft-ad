@@ -9,11 +9,33 @@ void main() {
   }
 
   var js = bootstrap.readAsStringSync();
-  // Service worker often leaves mobile Safari on a stale/broken cache.
   js = js.replaceAll(
     RegExp(r'serviceWorkerSettings:\s*\{[^}]+\},?'),
     '',
   );
+
+  const tail = '_flutter.loader.load({';
+  final start = js.lastIndexOf(tail);
+  if (start != -1 && js.substring(start).contains('Failed to start') == false) {
+    js = js.replaceRange(
+      start,
+      js.length,
+      '''
+${tail}
+  onEntrypointLoaded: function (engineInitializer) {
+    engineInitializer.initializeEngine().then(function (appRunner) {
+      return appRunner.runApp();
+    }).catch(function (err) {
+      console.error('Flutter failed to start', err);
+      var hint = document.getElementById('binisoft-boot-hint');
+      if (hint) hint.textContent = 'Failed to start: ' + (err && err.message ? err.message : err);
+    });
+  }
+});
+''',
+    );
+  }
+
   bootstrap.writeAsStringSync(js);
 
   final canvaskit = Directory('build/web/canvaskit');

@@ -83,28 +83,45 @@
 
   <title>Binisoft Admin Dashboard</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://firestore.googleapis.com">
+  <link rel="preconnect" href="https://firebase.googleapis.com">
 </head>
 <body>
   <div id="binisoft-boot" aria-live="polite">
     <div class="spinner" aria-hidden="true"></div>
     <strong>Binisoft Admin</strong>
-    <small>First load on mobile can take 30–60s (large app). Use Wi‑Fi if possible.</small>
+    <small id="binisoft-boot-hint">Loading… first visit on phone may take up to 1 min on Wi‑Fi.</small>
   </div>
-  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    (function () {
+      try {
+        var c = document.createElement('canvas');
+        if (!(c.getContext('webgl2') || c.getContext('webgl'))) {
+          var hint = document.getElementById('binisoft-boot-hint');
+          if (hint) hint.textContent = 'WebGL required — use Safari/Chrome (not Instagram browser).';
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script src="flutter_bootstrap.js" defer></script>
   <script>
     window.addEventListener('flutter-first-frame', function () {
       var el = document.getElementById('binisoft-boot');
       if (el) el.remove();
     });
-    // Fallback if Flutter fails silently on slow mobile networks.
+    window.addEventListener('error', function (e) {
+      var hint = document.getElementById('binisoft-boot-hint');
+      if (hint && e.message) hint.textContent = 'Error: ' + e.message;
+    });
     setTimeout(function () {
-      var el = document.getElementById('binisoft-boot');
-      if (!el) return;
-      var hint = el.querySelector('small');
+      if (!document.getElementById('binisoft-boot')) return;
+      var hint = document.getElementById('binisoft-boot-hint');
       if (hint) {
-        hint.textContent = 'Still loading… Try Safari/Chrome, Wi‑Fi, or refresh. Clear site data if stuck.';
+        hint.textContent = 'Still loading… Use Wi‑Fi. URL: kresha325.github.io/binisoft-ad/';
       }
-    }, 45000);
+    }, 90000);
   </script>
 </body>
 </html>

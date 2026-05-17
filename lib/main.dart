@@ -7,8 +7,9 @@ import 'app.dart';
 import 'bootstrap.dart';
 
 void main() {
+  // Hash URLs (#/dashboard) work reliably on GitHub Pages + mobile Safari (no 404 on refresh).
   if (kIsWeb) {
-    usePathUrlStrategy();
+    setUrlStrategy(HashUrlStrategy());
   }
   bootstrap(() async {
     runApp(
