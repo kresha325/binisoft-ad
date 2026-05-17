@@ -77,9 +77,8 @@ class _OffersScreenState extends ConsumerState<OffersScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          Expanded(
-            child: offers.when(
-              loading: () => const LoadingOverlay(),
+          offers.when(
+              loading: () => const SizedBox(height: 280, child: LoadingOverlay()),
               error: (e, _) => Center(
                 child: Text(l10n.errorGeneric('$e'), style: TextStyle(color: colors.danger)),
               ),
@@ -158,7 +157,6 @@ class _OffersScreenState extends ConsumerState<OffersScreen> {
                 );
               },
             ),
-          ),
         ],
       ),
     );

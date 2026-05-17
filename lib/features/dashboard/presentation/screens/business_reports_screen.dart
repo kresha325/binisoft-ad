@@ -28,6 +28,7 @@ class BusinessReportsScreen extends ConsumerWidget {
 
     return AdminPageLayout(
       showHeader: false,
+      scrollable: false,
       child: orders.when(
         loading: () => const SizedBox(height: 200, child: LoadingOverlay()),
         error: (e, _) => Text(l10n.errorGeneric('$e'), style: TextStyle(color: colors.danger)),

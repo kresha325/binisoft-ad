@@ -11,7 +11,7 @@ class AdminPageLayout extends ConsumerWidget {
     this.subtitle,
     required this.child,
     this.action,
-    this.scrollable = true,
+    this.scrollable = false,
     this.paddingAfterHeader = 24,
     this.showHeader = true,
   });

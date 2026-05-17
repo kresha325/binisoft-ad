@@ -102,7 +102,7 @@ class ShellPageHeader extends ConsumerWidget {
         rawAction == null ? null : MobileHeaderAction(child: rawAction);
 
     return Padding(
-      padding: EdgeInsets.only(bottom: isMobile ? 16 : 24),
+      padding: EdgeInsets.only(bottom: isMobile ? 12 : 16),
       child: PageHeader(
         title: meta.title,
         subtitle: meta.subtitle,

@@ -144,9 +144,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           ],
         ),
         SizedBox(height: AppBreakpoints.isMobile(context) ? 12 : 16),
-        Expanded(
-          child: productsAsync.when(
-            loading: () => const LoadingOverlay(),
+        productsAsync.when(
+            loading: () => const SizedBox(height: 280, child: LoadingOverlay()),
             error: (e, _) => Center(child: Text(l10n.errorGeneric('$e'))),
             data: (items) {
               var filtered = items;
@@ -237,7 +236,6 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               );
             },
           ),
-        ),
       ],
       ),
     );

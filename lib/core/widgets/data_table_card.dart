@@ -91,14 +91,8 @@ class DataTableCard extends StatelessWidget {
                   return horizontalTable;
                 }
 
-                return SizedBox(
-                  height: constraints.maxHeight,
-                  child: Scrollbar(
-                    thumbVisibility: true,
-                    child: SingleChildScrollView(
-                      child: horizontalTable,
-                    ),
-                  ),
+                return SingleChildScrollView(
+                  child: horizontalTable,
                 );
               },
             ),

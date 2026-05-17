@@ -418,14 +418,20 @@ function serializeProduct(doc, attributeDefs, ctx, activeOffers = []) {
   };
 }
 
+function productVisibleInOffer(d, offerId) {
+  if (d.status === 'active') return true;
+  return d.hiddenByOfferId === offerId;
+}
+
 function serializeOffer(offer, productsById, ctx) {
   const items = (offer.items || [])
     .map((item) => {
       const entry = productsById.get(item.productId);
       if (!entry) return null;
-      const { doc, data: d } = entry;
-      if (d.status !== 'active') return null;
-      const priceInfo = pricing.resolveProductPricing(d, item.productId, [offer]);
+      const { data: d } = entry;
+      if (!productVisibleInOffer(d, offer.id)) return null;
+      const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer);
+      if (!priceInfo.hasDiscount) return null;
       return {
         productId: item.productId,
         productName: i18n.resolveLocalized({
@@ -435,13 +441,8 @@ function serializeOffer(offer, productsById, ctx) {
           defaultLocale: ctx.defaultLocale,
         }),
         originalPrice: priceInfo.originalPrice,
-        salePrice: priceInfo.unitPrice,
-        discountPercent:
-          item.discountPercent != null
-            ? Number(item.discountPercent)
-            : offer.discountPercent != null
-              ? Number(offer.discountPercent)
-              : priceInfo.discountPercent,
+        salePrice: priceInfo.salePrice,
+        discountPercent: priceInfo.discountPercent,
       };
     })
     .filter(Boolean);
@@ -580,27 +581,39 @@ async function handlePublicApi(req, res) {
     }
 
     if (resource === 'offers') {
-      const [offersSnap, productsSnap] = await Promise.all([
-        db.collection(`businesses/${businessId}/offers`).where('active', '==', true).get(),
-        db
-          .collection(`businesses/${businessId}/products`)
-          .where('status', '==', 'active')
-          .limit(500)
-          .get(),
-      ]);
-
-      const productsById = new Map(
-        productsSnap.docs.map((doc) => [doc.id, { doc, data: doc.data() }]),
-      );
+      const offersSnap = await db
+        .collection(`businesses/${businessId}/offers`)
+        .where('active', '==', true)
+        .get();
 
       const activeOffers = offersSnap.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
         .filter((offer) => pricing.isOfferActive(offer));
 
+      const productIdSet = new Set();
+      for (const offer of activeOffers) {
+        for (const id of offer.productIds || []) productIdSet.add(id);
+        for (const item of offer.items || []) {
+          if (item.productId) productIdSet.add(item.productId);
+        }
+      }
+
+      const productsById = new Map();
+      await Promise.all(
+        [...productIdSet].map(async (pid) => {
+          const doc = await db.doc(`businesses/${businessId}/products/${pid}`).get();
+          if (doc.exists) {
+            productsById.set(pid, { doc, data: doc.data() });
+          }
+        }),
+      );
+
       res.status(200).json({
         meta: i18n.apiMeta(localeCtx),
         business: businessPayload(business, slug, localeCtx),
-        offers: activeOffers.map((offer) => serializeOffer(offer, productsById, localeCtx)),
+        offers: activeOffers
+          .map((offer) => serializeOffer(offer, productsById, localeCtx))
+          .filter((o) => o.items.length > 0),
       });
       return;
     }
@@ -612,8 +625,15 @@ async function handlePublicApi(req, res) {
 
     const customFields = await loadAttributeDefs(businessId, localeCtx);
     const activeOffers = await pricing.loadActiveOffers(db, businessId);
+    const idsInLiveOffers = new Set();
+    for (const offer of activeOffers) {
+      for (const id of offer.productIds || []) idsInLiveOffers.add(id);
+    }
 
     if (productId) {
+      if (idsInLiveOffers.has(productId)) {
+        throw new HttpsError('not-found', 'Product not found');
+      }
       const doc = await db.doc(`businesses/${businessId}/products/${productId}`).get();
       if (!doc.exists || doc.data().status !== 'active') {
         throw new HttpsError('not-found', 'Product not found');
@@ -642,11 +662,13 @@ async function handlePublicApi(req, res) {
     );
     const categoryNames = Object.fromEntries(categories.map((c) => [c.id, c.name]));
 
-    const products = productsSnap.docs.map((doc) => {
-      const p = serializeProduct(doc, customFields, localeCtx, activeOffers);
-      p.categories = (p.categoryIds || []).map((id) => categoryNames[id] || id);
-      return p;
-    });
+    const products = productsSnap.docs
+      .filter((doc) => !idsInLiveOffers.has(doc.id))
+      .map((doc) => {
+        const p = serializeProduct(doc, customFields, localeCtx, []);
+        p.categories = (p.categoryIds || []).map((id) => categoryNames[id] || id);
+        return p;
+      });
 
     res.status(200).json({
       meta: i18n.apiMeta(localeCtx),
@@ -944,3 +966,31 @@ exports.purgeCancelledOrders = orderPurge.purgeCancelledOrders;
 
 const offerExpiry = require('./offerExpiry');
 exports.deactivateExpiredOffers = offerExpiry.deactivateExpiredOffers;
+
+const offerLifecycle = require('./offerLifecycle');
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
+
+exports.onOfferWrittenSyncProducts = onDocumentWritten(
+  { document: 'businesses/{businessId}/offers/{offerId}', ...firestoreTriggerOptions },
+  async (event) => {
+    const businessId = event.params.businessId;
+    const offerId = event.params.offerId;
+    const after = event.data?.after;
+
+    if (!after?.exists) {
+      await offerLifecycle.releaseAllProductsForOffer(
+        getFirestore(),
+        businessId,
+        offerId,
+      );
+      return;
+    }
+
+    await offerLifecycle.syncOfferProductHolds(
+      getFirestore(),
+      businessId,
+      offerId,
+      after.data(),
+    );
+  },
+);

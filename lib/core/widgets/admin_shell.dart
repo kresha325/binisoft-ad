@@ -18,11 +18,11 @@ import '../router/post_auth_navigation.dart';
 import '../theme/app_color_scheme.dart';
 import '../theme/app_design.dart';
 import 'admin_content.dart';
+import 'admin_page_scroll.dart';
 import 'app_icon_button.dart';
 import 'app_shell_header.dart';
 import 'brand_logo.dart';
 import 'dashboard_background_layer.dart';
-import 'shell_page_header.dart';
 
 class AdminShell extends ConsumerWidget {
   const AdminShell({super.key, required this.child});
@@ -100,15 +100,11 @@ class AdminShell extends ConsumerWidget {
             customImageUrl: customBg,
             overlayOpacity: overlayOpacity,
           ),
-          Padding(
-            padding: AppBreakpoints.screenPadding(context),
-            child: AdminContent(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ShellPageHeader(location: location, uri: routerUri),
-                  Expanded(child: child),
-                ],
+          Positioned.fill(
+            child: Padding(
+              padding: AppBreakpoints.screenPadding(context),
+              child: AdminContent(
+                child: AdminPageScroll(child: child),
               ),
             ),
           ),

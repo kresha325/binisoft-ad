@@ -222,9 +222,6 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: ListView(
-            children: [
               AppInfoBanner(
                 icon: Icons.cloud_upload_outlined,
                 message:
@@ -356,9 +353,6 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-            ],
-          ),
-        ),
       ],
     );
   }

@@ -1,5 +1,6 @@
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { getFirestore, Timestamp } = require('firebase-admin/firestore');
+const offerLifecycle = require('./offerLifecycle');
 
 const BATCH_SIZE = 400;
 
@@ -10,6 +11,7 @@ async function deactivateExpiredOffers() {
   const db = getFirestore();
   const now = Timestamp.now();
   let total = 0;
+  let productsRestored = 0;
   let hasMore = true;
 
   while (hasMore) {
@@ -25,6 +27,16 @@ async function deactivateExpiredOffers() {
       break;
     }
 
+    for (const doc of snap.docs) {
+      const businessId = doc.ref.parent.parent.id;
+      const released = await offerLifecycle.releaseAllProductsForOffer(
+        db,
+        businessId,
+        doc.id,
+      );
+      productsRestored += released;
+    }
+
     const batch = db.batch();
     for (const doc of snap.docs) {
       batch.update(doc.ref, {
@@ -37,8 +49,12 @@ async function deactivateExpiredOffers() {
     hasMore = snap.size >= BATCH_SIZE;
   }
 
-  if (total > 0) {
-    console.log(`deactivateExpiredOffers: deactivated ${total} offer(s)`);
+  const sync = await offerLifecycle.syncAllLiveOfferHolds(db);
+
+  if (total > 0 || productsRestored > 0) {
+    console.log(
+      `deactivateExpiredOffers: offers=${total} productsRestored=${productsRestored} syncHeld=${sync.totalHeld}`,
+    );
   }
 }
 

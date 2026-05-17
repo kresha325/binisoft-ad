@@ -13,14 +13,7 @@ class BusinessesScreen extends ConsumerWidget {
     return PageHeaderActionScope(
       route: '/businesses',
       action: const CreateBusinessHeaderButton(),
-      child: const SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            MyBusinessesSection(forceVisible: true),
-          ],
-        ),
-      ),
+      child: const MyBusinessesSection(forceVisible: true),
     );
   }
 }

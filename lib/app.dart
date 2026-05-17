@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/constants/branding.dart';
 import 'core/l10n/app_locale_provider.dart';
 import 'core/router/app_router.dart';
+import 'core/theme/app_scroll_behavior.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_mode_provider.dart';
 import 'core/widgets/splash_screen.dart';
@@ -52,6 +53,7 @@ class _BusinessDashboardAppState extends ConsumerState<BusinessDashboardApp> {
       return MaterialApp(
         title: AppBranding.appTitle,
         debugShowCheckedModeBanner: false,
+        scrollBehavior: AppScrollBehavior(),
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
         themeMode: themeMode,
@@ -66,6 +68,7 @@ class _BusinessDashboardAppState extends ConsumerState<BusinessDashboardApp> {
     return MaterialApp.router(
       title: AppBranding.appTitle,
       debugShowCheckedModeBanner: false,
+      scrollBehavior: AppScrollBehavior(),
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: themeMode,

@@ -323,11 +323,24 @@ Future<void> showOfferSheet(
           items.add(OfferItem(productId: draft.product.id, discountPercent: pct));
         } else {
           final price = draft.salePrice;
+          final base = draft.product.basePrice ?? 0;
           if (price == null || price < 0) {
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(l10n.offerInvalidPrice),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+            return false;
+          }
+          if (price >= base) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content:
+                      'Sale price must be lower than the regular price (€${base.toStringAsFixed(2)}).',
                   backgroundColor: Colors.red,
                 ),
               );

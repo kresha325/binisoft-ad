@@ -41,9 +41,8 @@ class CustomFieldsScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 12),
-        Expanded(
-          child: attrs.when(
-            loading: () => const LoadingOverlay(),
+        attrs.when(
+            loading: () => const SizedBox(height: 280, child: LoadingOverlay()),
             error: (e, _) => Center(child: Text(l10n.errorGeneric('$e'))),
             data: (items) => DataTableCard(
               columns: [
@@ -67,7 +66,6 @@ class CustomFieldsScreen extends ConsumerWidget {
               ],
             ),
           ),
-        ),
       ],
       ),
     );

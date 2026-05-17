@@ -25,12 +25,8 @@ class CategoriesScreen extends ConsumerWidget {
         label: l10n.addCategory,
         onPressed: () => showAddCategoryDialog(context, ref),
       ),
-      child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: categories.when(
-            loading: () => const LoadingOverlay(),
+      child: categories.when(
+            loading: () => const SizedBox(height: 280, child: LoadingOverlay()),
             error: (e, _) => Center(child: Text(l10n.errorGeneric('$e'))),
             data: (items) => DataTableCard(
               columns: [l10n.tableName, l10n.tableDescription, l10n.tableActions],
@@ -51,9 +47,6 @@ class CategoriesScreen extends ConsumerWidget {
               ],
             ),
           ),
-        ),
-      ],
-      ),
     );
   }
 }

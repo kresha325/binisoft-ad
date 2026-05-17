@@ -141,8 +141,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           WidgetsBinding.instance.addPostFrameCallback((_) => _initFromBusiness());
         }
 
-        return SingleChildScrollView(
-          child: Column(
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const AppearanceSection(),
@@ -222,7 +221,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
             ),
           ],
-        ),
         );
       },
     );

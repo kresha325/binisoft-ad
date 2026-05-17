@@ -16,9 +16,7 @@ class UserInvoicesScreen extends ConsumerWidget {
     return invoicesAsync.when(
       loading: () => LoadingOverlay(message: context.l10n.loadingInvoices),
       error: (e, _) => Center(child: Text(context.l10n.errorGeneric('$e'))),
-      data: (invoices) => SingleChildScrollView(
-        child: InvoicePeriodList(invoices: invoices),
-      ),
+      data: (invoices) => InvoicePeriodList(invoices: invoices),
     );
   }
 }

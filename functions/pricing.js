@@ -81,6 +81,46 @@ function resolveProductPricing(productData, productId, offers) {
 }
 
 /**
+ * Offer line item pricing for storefront / offers API (always vs catalog base price).
+ */
+function resolveOfferItemDisplay(productData, item, offer) {
+  const base = productData.basePrice != null ? Number(productData.basePrice) : 0;
+  let salePrice = base;
+  let discountPercent = null;
+
+  if (item && item.salePriceEur != null && Number.isFinite(Number(item.salePriceEur))) {
+    salePrice = roundMoney(Number(item.salePriceEur));
+  } else {
+    const pct =
+      item && item.discountPercent != null
+        ? Number(item.discountPercent)
+        : offer.discountPercent != null
+          ? Number(offer.discountPercent)
+          : null;
+    if (pct != null && Number.isFinite(pct) && pct > 0) {
+      discountPercent = Math.min(100, Math.max(0, pct));
+      salePrice = roundMoney(base * (1 - discountPercent / 100));
+    }
+  }
+
+  if (salePrice < base && base > 0) {
+    if (discountPercent == null) {
+      discountPercent = roundMoney((1 - salePrice / base) * 100);
+    }
+  } else {
+    discountPercent = null;
+  }
+
+  const hasDiscount = base > 0 && salePrice < base;
+  return {
+    originalPrice: base,
+    salePrice: hasDiscount ? salePrice : base,
+    discountPercent: hasDiscount ? discountPercent : null,
+    hasDiscount,
+  };
+}
+
+/**
  * @param {import('firebase-admin/firestore').Firestore} db
  * @param {string} businessId
  */
@@ -99,6 +139,7 @@ module.exports = {
   roundMoney,
   isOfferActive,
   resolveProductPricing,
+  resolveOfferItemDisplay,
   loadActiveOffers,
   toMillis,
 };

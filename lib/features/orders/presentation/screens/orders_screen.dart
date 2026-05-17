@@ -67,6 +67,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
     return AdminPageLayout(
       showHeader: false,
+      scrollable: false,
       child: ordersAsync.when(
         loading: () => const SizedBox(height: 200, child: LoadingOverlay()),
         error: (e, _) => Center(child: Text(l10n.errorGeneric('$e'), style: TextStyle(color: colors.danger))),

@@ -30,8 +30,7 @@ class DashboardScreen extends ConsumerWidget {
     final hasBusiness = ref.watch(hasActiveBusinessProvider);
     final l10n = context.l10n;
 
-    return SingleChildScrollView(
-      child: Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (!hasBusiness) const CreateBusinessPromptCard(),
@@ -130,7 +129,6 @@ class DashboardScreen extends ConsumerWidget {
           const ProductsByCategorySection(),
         ],
       ],
-      ),
     );
   }
 }
