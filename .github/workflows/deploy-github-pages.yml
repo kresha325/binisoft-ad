@@ -33,14 +33,17 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build web (GitHub Pages subpath)
-        run: flutter build web --release --base-href "/binisoft-ad/"
+      - name: Build web (GitHub Pages subpath, CanvasKit via CDN for mobile)
+        run: flutter build web --release --base-href "/binisoft-ad/" --web-resources-cdn
+
+      - name: Mobile-friendly web bootstrap (no SW cache, CDN canvaskit)
+        run: dart run tool/patch_web_bootstrap.dart
 
       - name: Sharp favicon (launcher_icons outputs 16px; tabs need 48px+)
         run: dart run tool/generate_app_icon_square.dart
 
-      - name: SPA fallback for client-side routes
-        run: cp build/web/index.html build/web/404.html
+      - name: SPA fallback for GitHub Pages deep links
+        run: cp web/404.html build/web/404.html
 
       - name: Disable Jekyll
         run: touch build/web/.nojekyll

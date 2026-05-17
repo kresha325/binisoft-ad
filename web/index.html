@@ -16,9 +16,59 @@
   -->
   <base href="$FLUTTER_BASE_HREF">
 
+  <!-- Restore deep links after GitHub Pages 404 redirect (?/dashboard → /dashboard). -->
+  <script>
+    (function (l) {
+      if (l.search.length > 1 && l.search.charAt(1) === '/') {
+        var decoded = l.search.slice(1).split('&').map(function (s) {
+          return s.replace(/~and~/g, '&');
+        }).join('?');
+        window.history.replaceState(
+          null,
+          null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location));
+  </script>
+
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Binisoft Admin Dashboard — multi-tenant commerce admin.">
+  <style>
+    #binisoft-boot {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: linear-gradient(135deg, #0f1a33, #1a2b56 55%, #1a3a5c);
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, sans-serif;
+      text-align: center;
+      padding: 24px;
+    }
+    #binisoft-boot .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #2dd4bf;
+      border-radius: 50%;
+      animation: binisoft-spin 0.9s linear infinite;
+    }
+    @keyframes binisoft-spin {
+      to { transform: rotate(360deg); }
+    }
+    #binisoft-boot small {
+      max-width: 280px;
+      opacity: 0.75;
+      line-height: 1.4;
+    }
+  </style>
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -35,6 +85,26 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <div id="binisoft-boot" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
+    <strong>Binisoft Admin</strong>
+    <small>First load on mobile can take 30–60s (large app). Use Wi‑Fi if possible.</small>
+  </div>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var el = document.getElementById('binisoft-boot');
+      if (el) el.remove();
+    });
+    // Fallback if Flutter fails silently on slow mobile networks.
+    setTimeout(function () {
+      var el = document.getElementById('binisoft-boot');
+      if (!el) return;
+      var hint = el.querySelector('small');
+      if (hint) {
+        hint.textContent = 'Still loading… Try Safari/Chrome, Wi‑Fi, or refresh. Clear site data if stuck.';
+      }
+    }, 45000);
+  </script>
 </body>
 </html>
