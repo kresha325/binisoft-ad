@@ -43,7 +43,9 @@ jobs:
         run: dart run tool/generate_app_icon_square.dart
 
       - name: SPA fallback for GitHub Pages deep links
-        run: cp web/404.html build/web/404.html
+        run: |
+          cp web/404.html build/web/404.html
+          dart run tool/generate_spa_path_indexes.dart
 
       - name: Disable Jekyll
         run: touch build/web/.nojekyll
