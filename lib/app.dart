@@ -24,8 +24,11 @@ class _BusinessDashboardAppState extends ConsumerState<BusinessDashboardApp> {
   @override
   void initState() {
     super.initState();
+    // Brief in-app splash on web so HTML boot can hide after real UI (not a white frame).
     if (kIsWeb) {
-      _splashDone = true;
+      Future<void>.delayed(const Duration(milliseconds: 400), () {
+        if (mounted) setState(() => _splashDone = true);
+      });
       return;
     }
     Future<void>.delayed(AppBranding.splashDuration, () {

@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../core/utils/web_boot_overlay.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/app_download_links.dart';
@@ -17,8 +20,19 @@ import '../widgets/landing_download_section.dart';
 import '../widgets/landing_feature_grid.dart';
 import '../widgets/landing_pricing_section.dart';
 
-class LandingScreen extends StatelessWidget {
+class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
+
+  @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) => dismissWebBootOverlay());
+  }
 
   @override
   Widget build(BuildContext context) {

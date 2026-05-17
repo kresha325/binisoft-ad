@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,8 +32,22 @@ final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ref.watch(routerRefreshNotifierProvider);
 
   final router = GoRouter(
-    initialLocation: kIsWeb ? '/' : '/login',
+    // Web admin demo: open login directly (lighter than marketing landing).
+    initialLocation: '/login',
     refreshListenable: refresh,
+    errorBuilder: (context, state) => Scaffold(
+      backgroundColor: const Color(0xFF0F1A33),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Text(
+            'Page not found: ${state.uri}\n\nOpen: …/binisoft-ad/#/login',
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white70, fontSize: 15),
+          ),
+        ),
+      ),
+    ),
     redirect: (context, state) {
       final authRepo = ref.read(authRepositoryProvider);
       final authState = ref.read(authStateProvider);

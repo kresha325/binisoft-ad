@@ -30,6 +30,12 @@
         );
       }
     }(window.location));
+    (function () {
+      var h = location.hash;
+      if (!h || h === '#' || h === '#/') {
+        location.replace(location.pathname + location.search + '#/login');
+      }
+    })();
   </script>
 
   <meta charset="UTF-8">
@@ -95,7 +101,7 @@
   <div id="binisoft-boot" aria-live="polite">
     <div class="spinner" aria-hidden="true"></div>
     <strong>Binisoft Admin</strong>
-    <small id="binisoft-boot-hint">Loading… use full URL: …/binisoft-ad/ — can take 1–2 min on phone (Wi‑Fi).</small>
+    <small id="binisoft-boot-hint">Loading login… first visit can take 1–2 min on phone (Wi‑Fi).</small>
   </div>
   <script>
     (function () {
@@ -116,19 +122,17 @@
       } catch (e) {}
     })();
   </script>
-  <script src="flutter_bootstrap.js?v=6" defer></script>
+  <script src="flutter_bootstrap.js?v=7" defer></script>
   <script>
-    window.addEventListener('flutter-first-frame', function () {
-      // Delay hide so we do not flash white if the engine stalls on mobile.
-      setTimeout(function () {
-        var el = document.getElementById('binisoft-boot');
-        if (el) {
-          el.style.transition = 'opacity 0.35s';
-          el.style.opacity = '0';
-          setTimeout(function () { if (el.parentNode) el.remove(); }, 400);
-        }
-      }, 800);
-    });
+    function hideBinisoftBoot() {
+      var el = document.getElementById('binisoft-boot');
+      if (!el) return;
+      el.style.transition = 'opacity 0.35s';
+      el.style.opacity = '0';
+      setTimeout(function () { if (el.parentNode) el.remove(); }, 400);
+    }
+    // Hide only after Flutter login/landing paints — not on first-frame (avoids white flash).
+    window.addEventListener('binisoft-ready', hideBinisoftBoot);
     window.addEventListener('error', function (e) {
       var hint = document.getElementById('binisoft-boot-hint');
       if (hint && e.message) hint.textContent = 'Error: ' + e.message;
