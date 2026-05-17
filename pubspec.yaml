@@ -48,6 +48,19 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/branding/app_icon_square.png
+  adaptive_icon_background: "#1A2B56"
+  adaptive_icon_foreground: assets/branding/app_icon_square.png
+  web:
+    generate: true
+    image_path: assets/branding/app_icon_square.png
+    background_color: "#1A2B56"
+    theme_color: "#1A2B56"
 
 flutter:
   generate: true
@@ -55,4 +68,6 @@ flutter:
   assets:
     - assets/branding/binisoft_logo.png
     - assets/branding/binisoft_logo_dark.png
+    - assets/branding/app_icon.png
+    - assets/branding/app_icon_square.png
     - assets/backgrounds/
