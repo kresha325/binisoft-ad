@@ -29,4 +29,15 @@ void main() {
 
   File(outPath).writeAsBytesSync(img.encodePng(canvas));
   stdout.writeln('Wrote $outPath (${nw}x$nh logo on ${size}x$size)');
+
+  for (final favSize in [48, 32]) {
+    final fav = img.copyResize(canvas, width: favSize, height: favSize);
+    final favPath = 'web/favicon_${favSize}.png';
+    File(favPath).writeAsBytesSync(img.encodePng(fav));
+    stdout.writeln('Wrote $favPath');
+  }
+  // Default favicon used by browsers (48px is sharper than 16px in tabs).
+  File('web/favicon.png').writeAsBytesSync(
+    img.encodePng(img.copyResize(canvas, width: 48, height: 48)),
+  );
 }

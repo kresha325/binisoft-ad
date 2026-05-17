@@ -36,6 +36,9 @@ jobs:
       - name: Build web (GitHub Pages subpath)
         run: flutter build web --release --base-href "/binisoft-ad/"
 
+      - name: Sharp favicon (launcher_icons outputs 16px; tabs need 48px+)
+        run: dart run tool/generate_app_icon_square.dart
+
       - name: SPA fallback for client-side routes
         run: cp build/web/index.html build/web/404.html
 
