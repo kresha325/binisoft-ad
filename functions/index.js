@@ -5,6 +5,8 @@ const { getAuth } = require('firebase-admin/auth');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 const { getStorage } = require('firebase-admin/storage');
 const { randomUUID } = require('crypto');
+const rateLimit = require('./rateLimit');
+const invoices = require('./invoices');
 
 initializeApp();
 
@@ -84,7 +86,9 @@ function sendError(res, err) {
           ? 400
           : code === 'not-found'
             ? 404
-            : 500;
+            : code === 'resource-exhausted'
+              ? 429
+              : 500;
   res.status(status).json({
     error: { message: err.message || 'Upload failed', code },
   });
@@ -418,18 +422,13 @@ function serializeProduct(doc, attributeDefs, ctx, activeOffers = []) {
   };
 }
 
-function productVisibleInOffer(d, offerId) {
-  if (d.status === 'active') return true;
-  return d.hiddenByOfferId === offerId;
-}
-
 function serializeOffer(offer, productsById, ctx) {
   const items = (offer.items || [])
     .map((item) => {
       const entry = productsById.get(item.productId);
       if (!entry) return null;
       const { data: d } = entry;
-      if (!productVisibleInOffer(d, offer.id)) return null;
+      if (d.status !== 'active') return null;
       const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer);
       if (!priceInfo.hasDiscount) return null;
       return {
@@ -503,6 +502,7 @@ const publicOrders = require('./publicOrders');
 const i18n = require('./i18n');
 
 async function handlePublicApi(req, res) {
+  const ip = rateLimit.clientIp(req);
   const path = requestPath(req);
   const orderDetailMatch = path.match(
     /\/api\/public\/([^/]+)\/orders\/([^/]+)(\/cancel)?\/?$/,
@@ -625,15 +625,8 @@ async function handlePublicApi(req, res) {
 
     const customFields = await loadAttributeDefs(businessId, localeCtx);
     const activeOffers = await pricing.loadActiveOffers(db, businessId);
-    const idsInLiveOffers = new Set();
-    for (const offer of activeOffers) {
-      for (const id of offer.productIds || []) idsInLiveOffers.add(id);
-    }
 
     if (productId) {
-      if (idsInLiveOffers.has(productId)) {
-        throw new HttpsError('not-found', 'Product not found');
-      }
       const doc = await db.doc(`businesses/${businessId}/products/${productId}`).get();
       if (!doc.exists || doc.data().status !== 'active') {
         throw new HttpsError('not-found', 'Product not found');
@@ -662,13 +655,11 @@ async function handlePublicApi(req, res) {
     );
     const categoryNames = Object.fromEntries(categories.map((c) => [c.id, c.name]));
 
-    const products = productsSnap.docs
-      .filter((doc) => !idsInLiveOffers.has(doc.id))
-      .map((doc) => {
-        const p = serializeProduct(doc, customFields, localeCtx, []);
-        p.categories = (p.categoryIds || []).map((id) => categoryNames[id] || id);
-        return p;
-      });
+    const products = productsSnap.docs.map((doc) => {
+      const p = serializeProduct(doc, customFields, localeCtx, activeOffers);
+      p.categories = (p.categoryIds || []).map((id) => categoryNames[id] || id);
+      return p;
+    });
 
     res.status(200).json({
       meta: i18n.apiMeta(localeCtx),
@@ -730,7 +721,8 @@ async function handlePlatformNotify(req, res) {
   ]);
 
   try {
-    await verifyAuth(req);
+    const decoded = await verifyAuth(req);
+    await assertSuperAdmin(decoded.uid);
     const { type, title, body, businessId, actionRoute } = req.body || {};
     if (!type || !title || !body || !allowedTypes.has(type)) {
       throw new HttpsError('invalid-argument', 'Invalid platform notification payload');
@@ -840,8 +832,12 @@ async function handleSendEmail(req, res) {
 
     let recipient;
     if (template === 'platform_new_user') {
-      recipient = toEmail || SUPERADMIN_EMAIL;
+      // Always platform inbox; ignore client toEmail (prevents abuse).
+      recipient = SUPERADMIN_EMAIL;
     } else {
+      if (toEmail != null && toEmail !== '' && toEmail !== decoded.email) {
+        throw new HttpsError('invalid-argument', 'Custom recipient not allowed');
+      }
       const prefKey = EMAIL_PREF_BY_TEMPLATE[template];
       const userSnap = await getFirestore().doc(`users/${decoded.uid}`).get();
       const userData = userSnap.exists ? userSnap.data() : {};
@@ -918,7 +914,12 @@ async function handleDevBootstrapShop(req, res) {
     res.status(405).json({ error: { message: 'Method not allowed' } });
     return;
   }
-  if (req.headers['x-demo-setup'] !== 'jon-sport-demo-2026') {
+  if (process.env.ENABLE_DEMO_BOOTSTRAP !== 'true') {
+    res.status(404).json({ error: { message: 'Not found' } });
+    return;
+  }
+  const setupSecret = process.env.DEMO_BOOTSTRAP_SECRET || '';
+  if (!setupSecret || req.headers['x-demo-setup'] !== setupSecret) {
     res.status(403).json({ error: { message: 'Forbidden' } });
     return;
   }
@@ -954,6 +955,50 @@ async function handleDevBootstrapShop(req, res) {
 
 exports.devBootstrapShopHttp = onRequest(fnOptions, handleDevBootstrapShop);
 
+async function handleCreateInvoice(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+
+  try {
+    const decoded = await verifyAuth(req);
+    const body = req.body || {};
+    const userId = body.userId || decoded.uid;
+
+    if (userId !== decoded.uid) {
+      await assertSuperAdmin(decoded.uid);
+    }
+
+    const db = getFirestore();
+    const invoice = await invoices.createUserInvoice(db, {
+      userId,
+      userEmail: body.userEmail || decoded.email || '',
+      type: body.type,
+      amountEur: body.amountEur,
+      currency: body.currency,
+      description: body.description,
+      planTitle: body.planTitle,
+      maxProducts: body.maxProducts,
+      paidAt: body.paidAt,
+      periodYear: body.periodYear,
+      periodMonth: body.periodMonth,
+      paymentMethod: body.paymentMethod,
+      lineItems: body.lineItems,
+    });
+
+    res.status(200).json({ ok: true, invoice });
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
+exports.createInvoiceHttp = onRequest(fnOptions, handleCreateInvoice);
+
 const billingReports = require('./billingReports');
 exports.billingReportDaily = billingReports.billingReportDaily;
 exports.billingReportWeekly = billingReports.billingReportWeekly;
@@ -970,27 +1015,28 @@ exports.deactivateExpiredOffers = offerExpiry.deactivateExpiredOffers;
 const offerLifecycle = require('./offerLifecycle');
 const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 
-exports.onOfferWrittenSyncProducts = onDocumentWritten(
+/** Restore any legacy draft holds when an offer is removed or no longer live. */
+exports.onOfferWrittenReleaseLegacyHolds = onDocumentWritten(
   { document: 'businesses/{businessId}/offers/{offerId}', ...firestoreTriggerOptions },
   async (event) => {
     const businessId = event.params.businessId;
     const offerId = event.params.offerId;
     const after = event.data?.after;
+    const before = event.data?.before;
 
-    if (!after?.exists) {
+    if (after?.exists) {
+      const data = after.data();
+      const stillLive =
+        data.active !== false && pricing.isOfferActive({ id: offerId, ...data });
+      if (stillLive) return;
+    }
+
+    if (before?.exists || !after?.exists) {
       await offerLifecycle.releaseAllProductsForOffer(
         getFirestore(),
         businessId,
         offerId,
       );
-      return;
     }
-
-    await offerLifecycle.syncOfferProductHolds(
-      getFirestore(),
-      businessId,
-      offerId,
-      after.data(),
-    );
   },
 );

@@ -2,6 +2,7 @@ const { HttpsError } = require('firebase-functions/v2/https');
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
 const { createHash, randomBytes } = require('crypto');
 const pricing = require('./pricing');
+const rateLimit = require('./rateLimit');
 
 const MAX_LINES = 50;
 const MAX_QTY = 999;
@@ -383,6 +384,9 @@ async function handlePublicCreateOrder(req, res, { findBusinessBySlug, sendError
   }
 
   try {
+    const ip = rateLimit.clientIp(req);
+    rateLimit.checkRateLimit(`public-orders:${ip}`, { max: 40, windowMs: 60_000 });
+
     const path = (req.path || req.url || '/').split('?')[0];
     const match = path.match(/\/api\/public\/([^/]+)\/orders\/?$/);
     const slug = match

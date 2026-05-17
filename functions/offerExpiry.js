@@ -49,11 +49,9 @@ async function deactivateExpiredOffers() {
     hasMore = snap.size >= BATCH_SIZE;
   }
 
-  const sync = await offerLifecycle.syncAllLiveOfferHolds(db);
-
   if (total > 0 || productsRestored > 0) {
     console.log(
-      `deactivateExpiredOffers: offers=${total} productsRestored=${productsRestored} syncHeld=${sync.totalHeld}`,
+      `deactivateExpiredOffers: offers=${total} productsRestored=${productsRestored}`,
     );
   }
 }

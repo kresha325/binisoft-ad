@@ -42,9 +42,7 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
           'name': user.displayName!,
       });
       if (!user.isSuperAdmin) {
-        await _notifyPlatform(
-          NotificationMessages.platformUserRegistered(email: user.email),
-        );
+        // Platform admins are notified by Cloud Function onUserCreatedNotifySuperadmins.
         await _sendEmail('platform_new_user', {'email': user.email});
       }
       state = const AsyncData(null);
@@ -92,12 +90,7 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
           businessId: business.id,
         ),
       );
-      await _notifyPlatform(
-        NotificationMessages.platformBusinessCreated(
-          businessName: business.name,
-          businessId: business.id,
-        ),
-      );
+      // Platform admins are notified by Cloud Function onBusinessCreatedNotifySuperadmins.
       await _sendEmail('business_created', {'businessName': business.name});
       state = const AsyncData(null);
       return business;
@@ -137,12 +130,6 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     } catch (_) {
       // Notifications are best-effort; do not fail the main action.
     }
-  }
-
-  Future<void> _notifyPlatform(CreateNotificationInput input) async {
-    try {
-      await _ref.read(notificationDispatcherProvider).notifyPlatformAdmins(input);
-    } catch (_) {}
   }
 
   Future<void> _sendEmail(

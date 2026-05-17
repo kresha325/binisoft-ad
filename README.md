@@ -101,8 +101,19 @@ businesses/{businessId}        → name, ownerId, slug
 
 Legacy `social_posts` is blocked by rules for new app users.
 
-## Next phases
+## Deploy (production)
 
-- Cloud Functions (API `/products`, custom claims)
-- Variant generator UI, media upload (WebP)
-- User management, API keys, analytics
+See **[DEPLOY.md](DEPLOY.md)** for rules, functions, GitHub Pages, and env vars.
+
+**CI:** every push/PR runs `flutter analyze`, `flutter test`, and `functions` tests.
+
+## Implemented
+
+- Public API (`/products`, `/categories`, `/offers`, `/orders`) via `publicApi`
+- Offers with sale pricing on catalog (`onOffer`, `originalPrice`) — products stay active
+- API keys, billing/invoices (demo payments), notifications, multi-locale ARB
+
+## Roadmap
+
+- Stripe (real payments) · role-based UI guards · product variant UI
+- Broader i18n (superadmin strings) · monitoring (Crashlytics/Sentry)

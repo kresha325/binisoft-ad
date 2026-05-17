@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../core/constants/business_plans.dart';
 import '../../../../core/constants/payment_config.dart';
+import '../../../../core/services/invoice_api_service.dart';
 import '../../domain/entities/invoice.dart';
 import '../../domain/invoice_type.dart';
 import '../models/invoice_model.dart';
@@ -31,50 +32,60 @@ class CreateInvoiceInput {
 }
 
 class InvoiceRepository {
-  InvoiceRepository({required FirebaseFirestore firestore}) : _firestore = firestore;
+  InvoiceRepository({
+    required FirebaseFirestore firestore,
+    InvoiceApiService? invoiceApi,
+  })  : _firestore = firestore,
+        _invoiceApi = invoiceApi ?? InvoiceApiService();
 
   final FirebaseFirestore _firestore;
+  final InvoiceApiService _invoiceApi;
 
   CollectionReference<Map<String, dynamic>> _userInvoices(String userId) =>
       _firestore.collection('users').doc(userId).collection('invoices');
 
-  Future<String> _nextInvoiceNumber(DateTime paidAt) async {
-    final key = '${paidAt.year}${paidAt.month.toString().padLeft(2, '0')}';
-    final counterRef = _firestore.collection('invoice_counters').doc(key);
-    final next = await _firestore.runTransaction<int>((tx) async {
-      final snap = await tx.get(counterRef);
-      final current = (snap.data()?['seq'] as num?)?.toInt() ?? 0;
-      final seq = current + 1;
-      tx.set(counterRef, {'seq': seq}, SetOptions(merge: true));
-      return seq;
-    });
-    return 'BIN-$key-${next.toString().padLeft(4, '0')}';
+  Invoice _invoiceFromApi(Map<String, dynamic> data) {
+    final paidAt = DateTime.tryParse(data['paidAt'] as String? ?? '') ?? DateTime.now();
+    return InvoiceModel(
+      id: data['id'] as String? ?? '',
+      userId: data['userId'] as String? ?? '',
+      userEmail: data['userEmail'] as String? ?? '',
+      type: data['type'] as String? ?? InvoiceType.subscription.value,
+      invoiceNumber: data['invoiceNumber'] as String? ?? '',
+      amountEur: (data['amountEur'] as num?)?.toDouble() ?? 0,
+      currency: data['currency'] as String? ?? PaymentConfig.currencyCode,
+      description: data['description'] as String? ?? '',
+      planTitle: data['planTitle'] as String? ?? '',
+      maxProducts: (data['maxProducts'] as num?)?.toInt() ?? 0,
+      paidAt: paidAt,
+      periodYear: (data['periodYear'] as num?)?.toInt() ?? paidAt.year,
+      periodMonth: (data['periodMonth'] as num?)?.toInt() ?? paidAt.month,
+      paymentMethod: data['paymentMethod'] as String?,
+      lineItems: (data['lineItems'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+    ).toEntity();
   }
 
   Future<Invoice> createInvoice(CreateInvoiceInput input) async {
     final paidAt = input.paidAt ?? DateTime.now();
-    final invoiceNumber = await _nextInvoiceNumber(paidAt);
-    final model = InvoiceModel(
-      id: '',
-      userId: input.userId,
-      userEmail: input.userEmail,
-      type: input.type.value,
-      invoiceNumber: invoiceNumber,
-      amountEur: input.amountEur,
-      currency: PaymentConfig.currencyCode,
-      description: input.description,
-      planTitle: input.plan.title,
-      maxProducts: input.plan.maxProducts,
-      paidAt: paidAt,
-      periodYear: paidAt.year,
-      periodMonth: paidAt.month,
-      paymentMethod: input.paymentMethod,
-      lineItems: input.lineItems,
-    );
-
-    final ref = await _userInvoices(input.userId).add(model.toMap());
-    final doc = await ref.get();
-    return InvoiceModel.fromFirestore(doc).toEntity();
+    final data = await _invoiceApi.createInvoice({
+      'userId': input.userId,
+      'userEmail': input.userEmail,
+      'type': input.type.value,
+      'amountEur': input.amountEur,
+      'currency': PaymentConfig.currencyCode,
+      'description': input.description,
+      'planTitle': input.plan.title,
+      'maxProducts': input.plan.maxProducts,
+      'paidAt': paidAt.toUtc().toIso8601String(),
+      'periodYear': paidAt.year,
+      'periodMonth': paidAt.month,
+      if (input.paymentMethod != null) 'paymentMethod': input.paymentMethod,
+      'lineItems': input.lineItems,
+    });
+    return _invoiceFromApi(data);
   }
 
   Stream<List<Invoice>> watchUserInvoices(String userId) {

@@ -339,8 +339,9 @@ Future<void> showOfferSheet(
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content:
-                      'Sale price must be lower than the regular price (€${base.toStringAsFixed(2)}).',
+                  content: Text(
+                    'Sale price must be lower than the regular price (€${base.toStringAsFixed(2)}).',
+                  ),
                   backgroundColor: Colors.red,
                 ),
               );

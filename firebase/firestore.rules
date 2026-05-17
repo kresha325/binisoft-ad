@@ -184,8 +184,9 @@ service cloud.firestore {
       }
     }
 
+    // Invoice sequence — Cloud Functions only (createInvoiceHttp).
     match /invoice_counters/{counterId} {
-      allow read, write: if isSignedIn();
+      allow read, write: if false;
     }
 
     match /billing_reports/{reportId} {

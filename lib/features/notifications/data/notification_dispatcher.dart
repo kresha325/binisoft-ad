@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/constants/superadmin_config.dart';
 import '../../../core/services/platform_notify_service.dart';
 import 'models/notification_model.dart';
 import 'repositories/notification_repository.dart';
@@ -12,11 +10,9 @@ class NotificationDispatcher {
     FirebaseFirestore? firestore,
     NotificationRepository? repository,
     PlatformNotifyService? platformNotify,
-  })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _repository = repository ?? NotificationRepository(firestore: firestore),
+  })  : _repository = repository ?? NotificationRepository(firestore: firestore),
         _platformNotify = platformNotify ?? PlatformNotifyService();
 
-  final FirebaseFirestore _firestore;
   final NotificationRepository _repository;
   final PlatformNotifyService _platformNotify;
 
@@ -27,42 +23,12 @@ class NotificationDispatcher {
     await _repository.create(userId: userId, input: input);
   }
 
-  /// Notifies superadmins via Cloud Function (works for any signed-in user).
+  /// Superadmin alerts are created by Firestore triggers; HTTP path is superadmin-only.
   Future<void> notifyPlatformAdmins(CreateNotificationInput input) async {
     try {
       await _platformNotify.notifySuperadmins(input);
     } catch (_) {
-      await _notifyPlatformAdminsDirect(input);
+      // Non-superadmin callers rely on server triggers (registration / new business).
     }
-  }
-
-  Future<void> _notifyPlatformAdminsDirect(CreateNotificationInput input) async {
-    if (!input.type.value.startsWith('platform.')) return;
-
-    var snap = await _firestore
-        .collection(FirestoreCollections.users)
-        .where('role', isEqualTo: 'superadmin')
-        .get();
-
-    if (snap.docs.isEmpty) {
-      for (final email in SuperAdminConfig.bootstrapEmails) {
-        final byEmail = await _firestore
-            .collection(FirestoreCollections.users)
-            .where('email', isEqualTo: email)
-            .limit(1)
-            .get();
-        if (byEmail.docs.isNotEmpty) {
-          snap = byEmail;
-          break;
-        }
-      }
-    }
-
-    if (snap.docs.isEmpty) return;
-
-    // Only a platform admin may write to another user's notifications subcollection.
-    await Future.wait(
-      snap.docs.map((doc) => _repository.create(userId: doc.id, input: input)),
-    );
   }
 }
