@@ -47,6 +47,10 @@ const scheduleOptions = {
   region: 'us-central1',
 };
 
-exports.purgeCancelledOrders = onSchedule(scheduleOptions, purgeCancelledOrders);
+const purgeCancelledOrdersScheduled = onSchedule(
+  scheduleOptions,
+  purgeCancelledOrders,
+);
 
-module.exports = { purgeCancelledOrders };
+exports.purgeCancelledOrders = purgeCancelledOrdersScheduled;
+module.exports = { purgeCancelledOrders: purgeCancelledOrdersScheduled };

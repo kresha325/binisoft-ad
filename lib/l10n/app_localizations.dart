@@ -1252,6 +1252,54 @@ abstract class AppLocalizations {
   /// **'Scheduled'**
   String get offerStatusScheduled;
 
+  /// No description provided for @offerStatusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get offerStatusExpired;
+
+  /// No description provided for @searchOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Search offers…'**
+  String get searchOffers;
+
+  /// No description provided for @offerSectionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Core details'**
+  String get offerSectionDetails;
+
+  /// No description provided for @offerSectionDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration & visibility'**
+  String get offerSectionDuration;
+
+  /// No description provided for @offerRenewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving will start a new period from today (this offer has ended).'**
+  String get offerRenewHint;
+
+  /// No description provided for @offerSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer saved'**
+  String get offerSaved;
+
+  /// No description provided for @offerUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer updated'**
+  String get offerUpdated;
+
+  /// No description provided for @offerDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer deleted'**
+  String get offerDeleted;
+
   /// No description provided for @offerDeleteTitle.
   ///
   /// In en, this message translates to:

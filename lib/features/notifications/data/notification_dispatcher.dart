@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/superadmin_config.dart';
 import '../../../core/services/platform_notify_service.dart';
 import 'models/notification_model.dart';
 import 'repositories/notification_repository.dart';
@@ -36,13 +37,30 @@ class NotificationDispatcher {
   }
 
   Future<void> _notifyPlatformAdminsDirect(CreateNotificationInput input) async {
-    final snap = await _firestore
+    if (!input.type.value.startsWith('platform.')) return;
+
+    var snap = await _firestore
         .collection(FirestoreCollections.users)
         .where('role', isEqualTo: 'superadmin')
         .get();
 
+    if (snap.docs.isEmpty) {
+      for (final email in SuperAdminConfig.bootstrapEmails) {
+        final byEmail = await _firestore
+            .collection(FirestoreCollections.users)
+            .where('email', isEqualTo: email)
+            .limit(1)
+            .get();
+        if (byEmail.docs.isNotEmpty) {
+          snap = byEmail;
+          break;
+        }
+      }
+    }
+
     if (snap.docs.isEmpty) return;
 
+    // Only a platform admin may write to another user's notifications subcollection.
     await Future.wait(
       snap.docs.map((doc) => _repository.create(userId: doc.id, input: input)),
     );

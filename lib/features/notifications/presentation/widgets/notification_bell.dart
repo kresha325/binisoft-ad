@@ -54,17 +54,17 @@ class _NotificationSheet extends ConsumerWidget {
     final async = ref.watch(notificationsProvider);
     final uid = ref.watch(authStateProvider).valueOrNull?.id;
 
+    final sheetHeight = MediaQuery.sizeOf(context).height * 0.85;
+
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.sizeOf(context).height * 0.7,
-      ),
+      height: sheetHeight,
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         border: Border.all(color: colors.cardBorder),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 8),
           Container(
@@ -101,21 +101,21 @@ class _NotificationSheet extends ConsumerWidget {
             ),
           ),
           const Divider(height: 1),
-          Flexible(
+          Expanded(
             child: async.when(
-              loading: () => const Padding(
-                padding: EdgeInsets.all(32),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (e, _) => Padding(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, _) => SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
-                child: Text('Could not load notifications: $e'),
+                child: Text(
+                  'Could not load notifications: $e',
+                  style: GoogleFonts.inter(color: colors.textMuted),
+                ),
               ),
               data: (items) {
                 if (items.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.all(40),
+                  return Center(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.notifications_none,
                             size: 48, color: colors.textMuted),
@@ -128,15 +128,17 @@ class _NotificationSheet extends ConsumerWidget {
                     ),
                   );
                 }
+                if (uid == null) {
+                  return const SizedBox.shrink();
+                }
                 return ListView.separated(
-                  shrinkWrap: true,
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
                   itemCount: items.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     return _NotificationTile(
                       notification: items[index],
-                      userId: uid!,
+                      userId: uid,
                     );
                   },
                 );

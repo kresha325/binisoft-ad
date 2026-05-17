@@ -6,8 +6,8 @@ import '../../../../core/constants/user_roles.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/utils/auth_error_message.dart';
 import '../../../../core/firestore/tenant_paths.dart';
+import '../../../../core/services/subscription_plan_service.dart';
 import '../../../business/data/repositories/business_repository.dart';
-import '../../../products/data/repositories/product_repository.dart';
 import '../../../business/domain/entities/business.dart';
 import '../../domain/entities/app_user.dart';
 import '../models/app_user_model.dart';
@@ -28,13 +28,17 @@ class AuthRepository {
   AuthRepository({
     FirebaseAuth? auth,
     FirebaseFirestore? firestore,
+    SubscriptionPlanService? subscriptionPlanService,
   })  : _auth = auth ?? FirebaseAuth.instance,
         _firestore = firestore ?? FirebaseFirestore.instance,
-        _paths = TenantPaths(firestore ?? FirebaseFirestore.instance);
+        _paths = TenantPaths(firestore ?? FirebaseFirestore.instance),
+        _subscriptionPlanService =
+            subscriptionPlanService ?? SubscriptionPlanService();
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   final TenantPaths _paths;
+  final SubscriptionPlanService _subscriptionPlanService;
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
@@ -299,26 +303,10 @@ class AuthRepository {
   }
 
   Future<void> updateSubscriptionPlan(BusinessPlan plan) async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) throw const AuthException('Not signed in');
-
-    final userDoc = await _paths.user(uid).get();
-    final businessId = userDoc.data()?['businessId'] as String? ?? '';
-    if (businessId.isNotEmpty) {
-      final productCount =
-          await ProductRepository(firestore: _firestore).count(businessId: businessId);
-      if (productCount > plan.maxProducts) {
-        throw AuthException(
-          'This business has $productCount products. Remove '
-          '${productCount - plan.maxProducts} or choose a higher plan (up to ${plan.maxProducts}).',
-        );
-      }
+    if (_auth.currentUser?.uid == null) {
+      throw const AuthException('Not signed in');
     }
-
-    await _paths.user(uid).update({
-      'maxProducts': plan.maxProducts,
-      'maxBusinesses': plan.maxBusinesses,
-    });
+    await _subscriptionPlanService.updatePlan(plan);
   }
 
   Future<void> switchActiveBusiness(String businessId) async {

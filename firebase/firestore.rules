@@ -37,6 +37,31 @@ service cloud.firestore {
       return isBootstrapSuperadminEmail() || isSuperAdmin();
     }
 
+    function defaultPlanMaxProducts() {
+      return 100;
+    }
+
+    function defaultPlanMaxBusinesses() {
+      return 3;
+    }
+
+    function userImmutableFieldsUnchanged() {
+      return request.resource.data.email == resource.data.email
+        && request.resource.data.maxBusinesses == resource.data.maxBusinesses
+        && request.resource.data.maxProducts == resource.data.maxProducts;
+    }
+
+    function userOwnProfileUpdate(userId) {
+      return isSignedIn()
+        && request.auth.uid == userId
+        && request.resource.data.role == resource.data.role
+        && userImmutableFieldsUnchanged()
+        && (
+          request.resource.data.businessId == resource.data.businessId
+          || ownsBusiness(request.resource.data.businessId)
+        );
+    }
+
     function canBootstrapPromoteToSuperadmin(userId) {
       return isSignedIn()
         && request.auth.uid == userId
@@ -48,6 +73,11 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data)
             .affectedKeys()
             .hasOnly(['role', 'maxBusinesses', 'businessId']);
+    }
+
+    function validNewUserPlanLimits() {
+      return request.resource.data.maxProducts == defaultPlanMaxProducts()
+        && request.resource.data.maxBusinesses == defaultPlanMaxBusinesses();
     }
 
     function businessDoc(businessId) {
@@ -101,25 +131,37 @@ service cloud.firestore {
       return canManageUsers(businessId);
     }
 
+    function isPlatformNotificationCreate() {
+      return request.resource.data.keys().hasAll(['type', 'title', 'body', 'read', 'createdAt'])
+        && request.resource.data.read == false
+        && request.resource.data.type in [
+          'platform.user.registered',
+          'platform.business.created'
+        ]
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 120
+        && request.resource.data.body is string
+        && request.resource.data.body.size() > 0
+        && request.resource.data.body.size() <= 500;
+    }
+
     match /users/{userId} {
       allow read: if isPlatformAdmin() || (isSignedIn() && request.auth.uid == userId);
       allow create: if isSignedIn()
         && request.auth.uid == userId
         && request.resource.data.keys().hasAll(['businessId', 'role', 'email'])
         && (
-          request.resource.data.role in ['owner', 'admin']
+          (
+            request.resource.data.role in ['owner', 'admin']
+            && validNewUserPlanLimits()
+          )
           || (request.resource.data.role == 'superadmin'
               && request.resource.data.email == 'kreshnik.sh.gashi@hotmail.com')
         );
       allow update: if isPlatformAdmin()
         || canBootstrapPromoteToSuperadmin(userId)
-        || (isSignedIn()
-            && request.auth.uid == userId
-            && request.resource.data.role == resource.data.role
-            && (
-              request.resource.data.businessId == resource.data.businessId
-              || ownsBusiness(request.resource.data.businessId)
-            ));
+        || userOwnProfileUpdate(userId);
       allow delete: if isPlatformAdmin();
 
       match /notifications/{notificationId} {
@@ -128,6 +170,7 @@ service cloud.firestore {
           request.auth.uid == userId
           || (isPlatformAdmin()
               && request.resource.data.type.matches('platform\\..*'))
+          || isPlatformNotificationCreate()
         );
       }
 

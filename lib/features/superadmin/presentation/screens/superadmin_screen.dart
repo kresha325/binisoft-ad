@@ -248,6 +248,7 @@ class _UsersTabState extends ConsumerState<_UsersTab> {
           ),
           child: DataTableCard(
             columns: const ['User', 'Role', 'Business', 'Actions'],
+            dataRowMaxHeight: 92,
             rows: filtered.map((u) {
               final isSelf = u.id == currentUid;
               return DataRow(cells: [

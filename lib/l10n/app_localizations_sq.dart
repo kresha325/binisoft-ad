@@ -613,6 +613,31 @@ class AppLocalizationsSq extends AppLocalizations {
   String get offerStatusScheduled => 'E planifikuar';
 
   @override
+  String get offerStatusExpired => 'Skaduar';
+
+  @override
+  String get searchOffers => 'Kërko oferta…';
+
+  @override
+  String get offerSectionDetails => 'Detajet kryesore';
+
+  @override
+  String get offerSectionDuration => 'Kohëzgjatja & dukshmëria';
+
+  @override
+  String get offerRenewHint =>
+      'Ruajtja fillon periudhë të re nga sot (oferta ka skaduar).';
+
+  @override
+  String get offerSaved => 'Oferta u ruajt';
+
+  @override
+  String get offerUpdated => 'Oferta u përditësua';
+
+  @override
+  String get offerDeleted => 'Oferta u fshi';
+
+  @override
   String get offerDeleteTitle => 'Fshi ofertën?';
 
   @override

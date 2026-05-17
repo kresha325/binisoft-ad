@@ -212,6 +212,70 @@ async function assertSuperAdmin(uid) {
   }
 }
 
+/** Mirrors lib/core/constants/business_plans.dart — only these limits may be set via API. */
+const SUBSCRIPTION_PLANS_BY_MAX_PRODUCTS = {
+  100: { maxProducts: 100, maxBusinesses: 3 },
+  200: { maxProducts: 200, maxBusinesses: 3 },
+  300: { maxProducts: 300, maxBusinesses: 10 },
+  400: { maxProducts: 400, maxBusinesses: 10 },
+  500: { maxProducts: 500, maxBusinesses: 10 },
+  600: { maxProducts: 600, maxBusinesses: 25 },
+  700: { maxProducts: 700, maxBusinesses: 25 },
+  800: { maxProducts: 800, maxBusinesses: 25 },
+  900: { maxProducts: 900, maxBusinesses: 25 },
+  1000: { maxProducts: 1000, maxBusinesses: 25 },
+};
+
+async function handleUpdateSubscriptionPlan(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+
+  try {
+    const decoded = await verifyAuth(req);
+    const maxProducts = Number(req.body?.maxProducts);
+    const plan = SUBSCRIPTION_PLANS_BY_MAX_PRODUCTS[maxProducts];
+    if (!plan) {
+      throw new HttpsError('invalid-argument', 'Invalid subscription plan');
+    }
+
+    const db = getFirestore();
+    const uid = decoded.uid;
+    const userRef = db.doc(`users/${uid}`);
+    const userSnap = await userRef.get();
+    if (!userSnap.exists) {
+      throw new HttpsError('not-found', 'User profile not found');
+    }
+
+    const businessId = userSnap.data().businessId || '';
+    if (businessId) {
+      const productsCol = db.collection(`businesses/${businessId}/products`);
+      const countSnap = await productsCol.count().get();
+      const productCount = countSnap.data().count || 0;
+      if (productCount > plan.maxProducts) {
+        throw new HttpsError(
+          'failed-precondition',
+          `This business has ${productCount} products. Remove ${productCount - plan.maxProducts} or choose a higher plan.`,
+        );
+      }
+    }
+
+    await userRef.update({
+      maxProducts: plan.maxProducts,
+      maxBusinesses: plan.maxBusinesses,
+    });
+
+    res.status(200).json({ ok: true, ...plan });
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
 async function handleSuperadminDeleteUser(req, res) {
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -820,6 +884,7 @@ exports.uploadBusinessLogoHttp = onRequest(fnOptions, handleUploadBusinessLogo);
 exports.uploadBusinessBackgroundHttp = onRequest(fnOptions, handleUploadBusinessBackground);
 exports.publicApi = onRequest(fnOptions, handlePublicApi);
 exports.superadminDeleteUserHttp = onRequest(fnOptions, handleSuperadminDeleteUser);
+exports.updateSubscriptionPlanHttp = onRequest(fnOptions, handleUpdateSubscriptionPlan);
 
 /** Dev/demo: create API key + set orderPhone. Header: x-demo-setup: jon-sport-demo-2026 */
 async function handleDevBootstrapShop(req, res) {
@@ -876,3 +941,6 @@ exports.onInvoiceCreatedRefreshReports = billingReports.onInvoiceCreatedRefreshR
 
 const orderPurge = require('./orderPurge');
 exports.purgeCancelledOrders = orderPurge.purgeCancelledOrders;
+
+const offerExpiry = require('./offerExpiry');
+exports.deactivateExpiredOffers = offerExpiry.deactivateExpiredOffers;

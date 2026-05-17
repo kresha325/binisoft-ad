@@ -3,6 +3,14 @@ import 'package:equatable/equatable.dart';
 /// How a product price is reduced within an offer.
 enum OfferDiscountMode { percent, salePrice }
 
+/// Display lifecycle (like product status, but time-bound).
+enum OfferLifecycleStatus {
+  live,
+  scheduled,
+  expired,
+  inactive,
+}
+
 class OfferItem extends Equatable {
   const OfferItem({
     required this.productId,
@@ -52,11 +60,17 @@ class Offer extends Equatable {
   final double? discountPercent;
   final bool active;
 
-  bool get isCurrentlyActive {
-    if (!active) return false;
+  bool get isCurrentlyActive => lifecycleStatus == OfferLifecycleStatus.live;
+
+  OfferLifecycleStatus get lifecycleStatus {
+    if (!active) return OfferLifecycleStatus.inactive;
     final now = DateTime.now();
-    return !now.isBefore(startsAt) && !now.isAfter(endsAt);
+    if (now.isAfter(endsAt)) return OfferLifecycleStatus.expired;
+    if (now.isBefore(startsAt)) return OfferLifecycleStatus.scheduled;
+    return OfferLifecycleStatus.live;
   }
+
+  bool get isExpired => lifecycleStatus == OfferLifecycleStatus.expired;
 
   @override
   List<Object?> get props => [

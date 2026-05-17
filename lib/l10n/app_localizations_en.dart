@@ -613,6 +613,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offerStatusScheduled => 'Scheduled';
 
   @override
+  String get offerStatusExpired => 'Expired';
+
+  @override
+  String get searchOffers => 'Search offers…';
+
+  @override
+  String get offerSectionDetails => 'Core details';
+
+  @override
+  String get offerSectionDuration => 'Duration & visibility';
+
+  @override
+  String get offerRenewHint =>
+      'Saving will start a new period from today (this offer has ended).';
+
+  @override
+  String get offerSaved => 'Offer saved';
+
+  @override
+  String get offerUpdated => 'Offer updated';
+
+  @override
+  String get offerDeleted => 'Offer deleted';
+
+  @override
   String get offerDeleteTitle => 'Delete offer?';
 
   @override

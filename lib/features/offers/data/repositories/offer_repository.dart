@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/firestore/tenant_paths.dart';
 import '../../domain/entities/offer.dart';
 import '../models/offer_model.dart';
+import '../offer_schedule.dart';
 
 class OfferRepository {
   OfferRepository({FirebaseFirestore? firestore})
@@ -38,9 +39,12 @@ class OfferRepository {
     bool active = true,
   }) async {
     final ref = _paths.offers(businessId).doc();
-    final now = DateTime.now();
-    final ends = now.add(Duration(days: durationDays.clamp(1, 30)));
+    final window = OfferSchedule.windowForSave(
+      durationDays: durationDays,
+      active: active,
+    );
     final productIds = items.map((i) => i.productId).toList();
+    final days = OfferSchedule.clampDays(durationDays);
 
     final model = OfferModel(
       id: ref.id,
@@ -51,9 +55,9 @@ class OfferRepository {
       descriptionI18n: descriptionI18n,
       items: items,
       productIds: productIds,
-      durationDays: durationDays.clamp(1, 30),
-      startsAt: now,
-      endsAt: ends,
+      durationDays: days,
+      startsAt: window.startsAt,
+      endsAt: window.endsAt,
       discountPercent: discountPercent,
       active: active,
     );
@@ -68,7 +72,15 @@ class OfferRepository {
   Future<void> update({
     required String businessId,
     required Offer offer,
+    Offer? previous,
   }) async {
+    final window = OfferSchedule.windowForSave(
+      durationDays: offer.durationDays,
+      active: offer.active,
+      existing: previous ?? offer,
+    );
+    final days = OfferSchedule.clampDays(offer.durationDays);
+
     final model = OfferModel(
       id: offer.id,
       businessId: businessId,
@@ -78,9 +90,9 @@ class OfferRepository {
       descriptionI18n: offer.descriptionI18n,
       items: offer.items,
       productIds: offer.productIds,
-      durationDays: offer.durationDays,
-      startsAt: offer.startsAt,
-      endsAt: offer.endsAt,
+      durationDays: days,
+      startsAt: window.startsAt,
+      endsAt: window.endsAt,
       discountPercent: offer.discountPercent,
       active: offer.active,
     );

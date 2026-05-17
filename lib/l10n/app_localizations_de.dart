@@ -614,6 +614,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get offerStatusScheduled => 'Geplant';
 
   @override
+  String get offerStatusExpired => 'Abgelaufen';
+
+  @override
+  String get searchOffers => 'Angebote suchen…';
+
+  @override
+  String get offerSectionDetails => 'Grunddaten';
+
+  @override
+  String get offerSectionDuration => 'Laufzeit & Sichtbarkeit';
+
+  @override
+  String get offerRenewHint =>
+      'Beim Speichern beginnt eine neue Laufzeit ab heute (Angebot ist abgelaufen).';
+
+  @override
+  String get offerSaved => 'Angebot gespeichert';
+
+  @override
+  String get offerUpdated => 'Angebot aktualisiert';
+
+  @override
+  String get offerDeleted => 'Angebot gelöscht';
+
+  @override
   String get offerDeleteTitle => 'Angebot löschen?';
 
   @override

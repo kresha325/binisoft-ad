@@ -14,12 +14,16 @@ class DataTableCard extends StatelessWidget {
     required this.rows,
     this.emptyMessage = 'No data found.',
     this.minHeight = 220,
+    this.dataRowMinHeight = 54,
+    this.dataRowMaxHeight = 76,
   });
 
   final List<String> columns;
   final List<DataRow> rows;
   final String emptyMessage;
   final double minHeight;
+  final double dataRowMinHeight;
+  final double dataRowMaxHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +91,13 @@ class DataTableCard extends StatelessWidget {
                   return horizontalTable;
                 }
 
-                return Scrollbar(
-                  thumbVisibility: true,
-                  child: SingleChildScrollView(
-                    child: horizontalTable,
+                return SizedBox(
+                  height: constraints.maxHeight,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                      child: horizontalTable,
+                    ),
                   ),
                 );
               },
