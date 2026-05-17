@@ -39,10 +39,27 @@ In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/
 
 - `http://localhost:*`
 - `http://127.0.0.1:*`
+- `https://kresha325.github.io/*` (GitHub Pages)
 
-In [Firebase Auth → Settings → Authorized domains](https://console.firebase.google.com/project/jon-sport/authentication/settings), ensure `localhost` is listed.
+In [Firebase Auth → Settings → Authorized domains](https://console.firebase.google.com/project/jon-sport/authentication/settings), ensure `localhost` and `kresha325.github.io` are listed.
 
 Then hard refresh Chrome (`Cmd+Shift+R`).
+
+## Deploy web on GitHub Pages
+
+Public URL: **https://kresha325.github.io/binisoft-ad/**
+
+1. In the repo on GitHub: **Settings → Pages → Build and deployment → Source** → **GitHub Actions**.
+2. Push to `main` (workflow `.github/workflows/deploy-github-pages.yml` builds Flutter web with `--base-href "/binisoft-ad/"` and deploys).
+3. First deploy: **Actions** tab → wait for **Deploy Web to GitHub Pages** to finish (green).
+4. Add Firebase / API referrers above so Auth works on the live URL.
+
+Manual build (same as CI):
+
+```bash
+flutter build web --release --base-href "/binisoft-ad/"
+cp build/web/index.html build/web/404.html
+```
 
 ### 5. Run app
 
