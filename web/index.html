@@ -19,9 +19,13 @@
   <!-- Restore deep links after GitHub Pages 404 redirect (?/dashboard → /dashboard). -->
   <script>
     (function () {
-      if ('serviceWorker' in navigator) {
+      var CACHE_KEY = 'binisoft_web_cache_v';
+      var CACHE_VERSION = '15';
+      if ('serviceWorker' in navigator && localStorage.getItem(CACHE_KEY) !== CACHE_VERSION) {
         navigator.serviceWorker.getRegistrations().then(function (regs) {
-          regs.forEach(function (r) { r.unregister(); });
+          return Promise.all(regs.map(function (r) { return r.unregister(); }));
+        }).finally(function () {
+          localStorage.setItem(CACHE_KEY, CACHE_VERSION);
         });
       }
     })();
@@ -40,7 +44,12 @@
     (function () {
       var h = location.hash;
       if (!h || h === '#') {
-        location.replace(location.pathname + location.search + '#/');
+        var target = location.pathname + location.search + '#/';
+        if (history.replaceState) {
+          history.replaceState(null, '', target);
+        } else {
+          location.replace(target);
+        }
       }
     })();
   </script>
@@ -84,6 +93,20 @@
       opacity: 0.75;
       line-height: 1.4;
     }
+    #binisoft-boot-progress-wrap {
+      width: min(240px, 80vw);
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    #binisoft-boot-progress {
+      height: 100%;
+      width: 0;
+      background: #2dd4bf;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
     html, body {
       margin: 0;
       height: 100%;
@@ -107,6 +130,10 @@
 
   <title>Binisoft Admin Dashboard</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="preload" href="flutter_bootstrap.js?v=15" as="script">
+  <link rel="preload" href="main.dart.js" as="script">
+  <link rel="preload" href="canvaskit/canvaskit.wasm" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="canvaskit/canvaskit.js" as="script">
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://firestore.googleapis.com">
   <link rel="preconnect" href="https://firebase.googleapis.com">
@@ -115,19 +142,45 @@
   <div id="binisoft-boot" aria-live="polite">
     <div class="spinner" aria-hidden="true"></div>
     <strong>Binisoft Admin</strong>
+    <div id="binisoft-boot-progress-wrap" aria-hidden="true">
+      <div id="binisoft-boot-progress"></div>
+    </div>
     <small id="binisoft-boot-hint">Loading… use Safari or Chrome (not in-app browser).</small>
   </div>
   <script>
+    function binisoftBootHint(text, pct) {
+      var hint = document.getElementById('binisoft-boot-hint');
+      var bar = document.getElementById('binisoft-boot-progress');
+      if (hint && text) hint.textContent = text;
+      if (bar && typeof pct === 'number') bar.style.width = Math.min(100, pct) + '%';
+    }
     (function () {
       var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
       if (isIOS) {
-        var iosHint = document.getElementById('binisoft-boot-hint');
-        if (iosHint) {
-          iosHint.textContent =
-            'iPhone: first load can take 3–5 min on Wi‑Fi (~13 MB). Keep Safari open.';
-        }
+        binisoftBootHint('iPhone: first visit ~13 MB on Wi‑Fi — can take 5 min. Do not close Safari.', 5);
       }
+    })();
+    (function () {
+      if (typeof PerformanceObserver === 'undefined') return;
+      var approxTotal = 13 * 1024 * 1024;
+      var loadedBytes = 0;
+      var seen = {};
+      try {
+        var po = new PerformanceObserver(function (list) {
+          list.getEntries().forEach(function (entry) {
+            var name = entry.name || '';
+            if (seen[name]) return;
+            if (/main\.dart\.js|canvaskit\.wasm|canvaskit\.js|flutter_bootstrap/.test(name)) {
+              seen[name] = true;
+              loadedBytes += entry.transferSize || entry.encodedBodySize || 0;
+              var pct = Math.round((loadedBytes / approxTotal) * 100);
+              binisoftBootHint('Downloading… ' + Math.round(loadedBytes / 1024 / 1024) + ' MB', pct);
+            }
+          });
+        });
+        po.observe({ type: 'resource', buffered: true });
+      } catch (e) {}
     })();
     (function () {
       if (location.pathname.indexOf('binisoft-ad') === -1) {
@@ -147,7 +200,7 @@
       } catch (e) {}
     })();
   </script>
-  <script src="flutter_bootstrap.js?v=14" defer></script>
+  <script src="flutter_bootstrap.js?v=15" defer></script>
   <script>
     var bootShownAt = Date.now();
     var MIN_BOOT_MS = 1500;

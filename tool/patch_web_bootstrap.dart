@@ -9,35 +9,55 @@ void main() {
   }
 
   var js = bootstrap.readAsStringSync();
+
+  // Capture service worker version before stripping (offline-first caching for repeat visits).
+  final swMatch = RegExp(r'serviceWorkerVersion:\s*"([^"]+)"').firstMatch(js);
+  final swVersion = swMatch?.group(1);
+
   js = js.replaceAll(
     RegExp(r'serviceWorkerSettings:\s*\{[^}]+\},?'),
     '',
   );
 
-  // Remove empty secondary build entry (can confuse loader on some browsers).
   js = js.replaceAll(',{}]', ']');
 
-  const loadCall = r'''
+  final swBlock = swVersion != null
+      ? '''
+  serviceWorkerSettings: {
+    serviceWorkerVersion: "$swVersion",
+  },
+'''
+      : '';
+
+  final loadCall = '''
 function binisoftIsAppleMobile() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
 }
-_flutter.loader.load({
+window.binisoftBootHint = window.binisoftBootHint || function (text, pct) {
+  var hint = document.getElementById('binisoft-boot-hint');
+  var bar = document.getElementById('binisoft-boot-progress');
+  if (hint && text) hint.textContent = text;
+  if (bar && typeof pct === 'number') bar.style.width = Math.min(100, pct) + '%';
+};
+_flutter.loader.load({$swBlock
   config: { renderer: 'canvaskit' },
   onEntrypointLoaded: function (engineInitializer) {
+    binisoftBootHint('Starting app…', 92);
     var engineConfig = {
       renderer: 'canvaskit',
       canvasKitMaximumSurfaces: binisoftIsAppleMobile() ? 1 : 2,
     };
+    if (binisoftIsAppleMobile()) {
+      engineConfig.canvasKitForceCpuOnly = true;
+    }
     engineInitializer.initializeEngine(engineConfig).then(function (appRunner) {
+      binisoftBootHint('Almost ready…', 98);
       return appRunner.runApp();
     }).catch(function (err) {
       console.error('Flutter failed to start', err);
-      var hint = document.getElementById('binisoft-boot-hint');
-      if (hint) {
-        var msg = err && err.message ? err.message : String(err);
-        hint.textContent = 'Failed to start: ' + msg;
-      }
+      var msg = err && err.message ? err.message : String(err);
+      binisoftBootHint('Failed to start: ' + msg, 0);
     });
   }
 });
@@ -51,5 +71,7 @@ _flutter.loader.load({
   js = js.replaceRange(loadParen, js.length, loadCall);
 
   bootstrap.writeAsStringSync(js);
-  stdout.writeln('Patched flutter_bootstrap.js (iOS CanvasKit limits, load errors).');
+  stdout.writeln(
+    'Patched flutter_bootstrap.js (SW=${swVersion != null}, iOS CanvasKit, progress).',
+  );
 }
