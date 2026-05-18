@@ -1,39 +1,22 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'core/bootstrap/firebase_web_config.dart';
 import 'firebase_options.dart';
-
-/// Strips Realtime Database URL — we use Firestore only. RTDB calls often cause HTTP 400 on web.
-FirebaseOptions _optionsWithoutRtdb(FirebaseOptions source) {
-  return FirebaseOptions(
-    apiKey: source.apiKey,
-    appId: source.appId,
-    messagingSenderId: source.messagingSenderId,
-    projectId: source.projectId,
-    authDomain: source.authDomain,
-    storageBucket: source.storageBucket,
-    iosBundleId: source.iosBundleId,
-    androidClientId: source.androidClientId,
-    iosClientId: source.iosClientId,
-    measurementId: source.measurementId,
-  );
-}
-
-Future<void> _configureFirestoreForWeb() async {
-  if (!kIsWeb) return;
-  FirebaseFirestore.instance.settings = const Settings(
-    persistenceEnabled: false,
-  );
-}
 
 Future<void> bootstrap(Future<void> Function() runApp) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final options = _optionsWithoutRtdb(DefaultFirebaseOptions.currentPlatform);
+  if (kIsWeb) {
+    // Firebase is initialized in [WebFirebaseBootstrap] after the first Flutter frame.
+    await runApp();
+    return;
+  }
+
+  final options = firebaseOptionsWithoutRtdb(DefaultFirebaseOptions.currentPlatform);
 
   try {
     await Firebase.initializeApp(options: options).timeout(
@@ -46,7 +29,7 @@ Future<void> bootstrap(Future<void> Function() runApp) async {
     }
     rethrow;
   }
-  await _configureFirestoreForWeb();
+  await configureFirestoreForWeb();
 
   if (kDebugMode) {
     debugPrint('Firebase initialized: ${options.projectId} (web=$kIsWeb)');

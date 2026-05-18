@@ -1,6 +1,6 @@
 import 'dart:io';
 
-/// Post-build tweaks for GitHub Pages + mobile Safari.
+/// Post-build tweaks for GitHub Pages + mobile Safari (especially iPhone).
 void main() {
   final bootstrap = File('build/web/flutter_bootstrap.js');
   if (!bootstrap.existsSync()) {
@@ -14,17 +14,29 @@ void main() {
     '',
   );
 
-  const loadCall = '''
+  // Remove empty secondary build entry (can confuse loader on some browsers).
+  js = js.replaceAll(',{}]', ']');
+
+  const loadCall = r'''
+function binisoftIsAppleMobile() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
+}
 _flutter.loader.load({
   config: { renderer: 'canvaskit' },
   onEntrypointLoaded: function (engineInitializer) {
-    engineInitializer.initializeEngine().then(function (appRunner) {
+    var engineConfig = {
+      renderer: 'canvaskit',
+      canvasKitMaximumSurfaces: binisoftIsAppleMobile() ? 1 : 2,
+    };
+    engineInitializer.initializeEngine(engineConfig).then(function (appRunner) {
       return appRunner.runApp();
     }).catch(function (err) {
       console.error('Flutter failed to start', err);
       var hint = document.getElementById('binisoft-boot-hint');
       if (hint) {
-        hint.textContent = 'Failed to start: ' + (err && err.message ? err.message : err);
+        var msg = err && err.message ? err.message : String(err);
+        hint.textContent = 'Failed to start: ' + msg;
       }
     });
   }
@@ -39,5 +51,5 @@ _flutter.loader.load({
   js = js.replaceRange(loadParen, js.length, loadCall);
 
   bootstrap.writeAsStringSync(js);
-  stdout.writeln('Patched flutter_bootstrap.js (local CanvasKit, canvaskit renderer, load errors).');
+  stdout.writeln('Patched flutter_bootstrap.js (iOS CanvasKit limits, load errors).');
 }

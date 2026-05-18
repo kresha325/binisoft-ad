@@ -115,9 +115,20 @@
   <div id="binisoft-boot" aria-live="polite">
     <div class="spinner" aria-hidden="true"></div>
     <strong>Binisoft Admin</strong>
-    <small id="binisoft-boot-hint">Loading… first visit on phone can take 1–2 min on Wi‑Fi. Use Chrome or Safari.</small>
+    <small id="binisoft-boot-hint">Loading… use Safari or Chrome (not in-app browser).</small>
   </div>
   <script>
+    (function () {
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
+      if (isIOS) {
+        var iosHint = document.getElementById('binisoft-boot-hint');
+        if (iosHint) {
+          iosHint.textContent =
+            'iPhone: first load can take 3–5 min on Wi‑Fi (~13 MB). Keep Safari open.';
+        }
+      }
+    })();
     (function () {
       if (location.pathname.indexOf('binisoft-ad') === -1) {
         var wrong = document.getElementById('binisoft-boot-hint');
@@ -136,10 +147,11 @@
       } catch (e) {}
     })();
   </script>
-  <script src="flutter_bootstrap.js?v=12" defer></script>
+  <script src="flutter_bootstrap.js?v=14" defer></script>
   <script>
     var bootShownAt = Date.now();
     var MIN_BOOT_MS = 1500;
+    var flutterPainted = false;
     function hideBinisoftBoot() {
       var el = document.getElementById('binisoft-boot');
       if (!el) return;
@@ -163,15 +175,35 @@
     });
     setTimeout(function () {
       var hint = document.getElementById('binisoft-boot-hint');
-      if (hint) hint.textContent = 'Still loading… check Wi‑Fi. Large download (~25MB) on first visit.';
-    }, 45000);
+      if (hint && !flutterPainted) {
+        hint.textContent = 'Downloading app (~13 MB)… keep Safari open on Wi‑Fi.';
+      }
+    }, 20000);
     setTimeout(function () {
-      if (!document.getElementById('binisoft-boot')) return;
+      var hint = document.getElementById('binisoft-boot-hint');
+      if (hint && !flutterPainted) {
+        hint.textContent = 'Still loading on slow networks… wait or reload when on Wi‑Fi.';
+      }
+    }, 60000);
+    setTimeout(function () {
+      if (!document.getElementById('binisoft-boot') || flutterPainted) return;
       var hint = document.getElementById('binisoft-boot-hint');
       if (hint) {
-        hint.textContent = 'Still loading? Use Chrome/Safari (not in-app browser). Firebase: allow kresha325.github.io';
+        hint.textContent = 'App did not start. Reload the page. If it repeats, open on Wi‑Fi (not mobile data).';
       }
     }, 120000);
+    (function watchFlutter() {
+      var check = function () {
+        var el = document.querySelector('flutter-view');
+        if (el && el.offsetWidth > 0 && el.offsetHeight > 0) {
+          flutterPainted = true;
+          window.dispatchEvent(new Event('binisoft-ready'));
+          return;
+        }
+        setTimeout(check, 400);
+      };
+      setTimeout(check, 800);
+    })();
   </script>
 </body>
 </html>
