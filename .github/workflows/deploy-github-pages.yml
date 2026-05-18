@@ -39,9 +39,9 @@ jobs:
         run: flutter pub get
 
       - name: Build web (GitHub Pages subpath; no PWA cache; local canvaskit for mobile)
-        run: flutter build web --release --pwa-strategy=none --base-href "/binisoft-ad/"
+        run: flutter build web --release --pwa-strategy=none --no-web-resources-cdn --base-href "/binisoft-ad/"
 
-      - name: Mobile-friendly web bootstrap (no SW cache, CDN canvaskit)
+      - name: Mobile-friendly web bootstrap (canvaskit renderer, load error surfacing)
         run: dart run tool/patch_web_bootstrap.dart
 
       - name: Sharp favicon (launcher_icons outputs 16px; tabs need 48px+)

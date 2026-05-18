@@ -18,6 +18,13 @@
 
   <!-- Restore deep links after GitHub Pages 404 redirect (?/dashboard → /dashboard). -->
   <script>
+    (function () {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) { r.unregister(); });
+        });
+      }
+    })();
     (function (l) {
       if (l.search.length > 1 && l.search.charAt(1) === '/') {
         var decoded = l.search.slice(1).split('&').map(function (s) {
@@ -122,7 +129,7 @@
       } catch (e) {}
     })();
   </script>
-  <script src="flutter_bootstrap.js?v=10" defer></script>
+  <script src="flutter_bootstrap.js?v=11" defer></script>
   <script>
     function hideBinisoftBoot() {
       var el = document.getElementById('binisoft-boot');
@@ -136,6 +143,11 @@
     window.addEventListener('error', function (e) {
       var hint = document.getElementById('binisoft-boot-hint');
       if (hint && e.message) hint.textContent = 'Error: ' + e.message;
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+      var hint = document.getElementById('binisoft-boot-hint');
+      var msg = e.reason && (e.reason.message || e.reason);
+      if (hint && msg) hint.textContent = 'Error: ' + msg;
     });
     setTimeout(function () {
       var hint = document.getElementById('binisoft-boot-hint');

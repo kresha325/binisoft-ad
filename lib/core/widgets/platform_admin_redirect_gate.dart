@@ -51,7 +51,10 @@ class _PlatformAdminRedirectGateState extends ConsumerState<PlatformAdminRedirec
 
     if (blocked && !onSuperAdmin) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        backgroundColor: Color(0xFF0F1A33),
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFF2EC4C6)),
+        ),
       );
     }
     return widget.child;

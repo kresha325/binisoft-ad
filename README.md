@@ -68,7 +68,7 @@ Public URL: **https://kresha325.github.io/binisoft-ad/**
 Manual build (same as CI):
 
 ```bash
-flutter build web --release --pwa-strategy=none --base-href "/binisoft-ad/"
+flutter build web --release --pwa-strategy=none --no-web-resources-cdn --base-href "/binisoft-ad/"
 dart run tool/patch_web_bootstrap.dart
 cp build/web/index.html build/web/404.html
 ```
