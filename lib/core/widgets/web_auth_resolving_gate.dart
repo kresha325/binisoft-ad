@@ -18,7 +18,7 @@ class WebAuthResolvingGate extends ConsumerStatefulWidget {
 }
 
 class _WebAuthResolvingGateState extends ConsumerState<WebAuthResolvingGate> {
-  static const _maxWait = Duration(seconds: 12);
+  static const _maxWait = Duration(seconds: 6);
   Timer? _timer;
   var _timedOut = false;
 
@@ -60,7 +60,17 @@ class _WebAuthResolvingGateState extends ConsumerState<WebAuthResolvingGate> {
     return const ColoredBox(
       color: Color(0xFF0F1A33),
       child: Center(
-        child: CircularProgressIndicator(color: Color(0xFF2EC4C6)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(color: Color(0xFF2EC4C6)),
+            SizedBox(height: 16),
+            Text(
+              'Loading account…',
+              style: TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
   }
