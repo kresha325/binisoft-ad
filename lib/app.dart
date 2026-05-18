@@ -10,7 +10,9 @@ import 'core/router/app_router.dart';
 import 'core/theme/app_scroll_behavior.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_mode_provider.dart';
+import 'core/utils/web_boot_overlay.dart';
 import 'core/widgets/splash_screen.dart';
+import 'core/widgets/web_auth_resolving_gate.dart';
 
 class BusinessDashboardApp extends ConsumerStatefulWidget {
   const BusinessDashboardApp({super.key});
@@ -28,6 +30,11 @@ class _BusinessDashboardAppState extends ConsumerState<BusinessDashboardApp> {
     // Web: skip second splash — HTML boot already shown; show landing/login faster on mobile.
     if (kIsWeb) {
       _splashDone = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) dismissWebBootOverlay();
+        });
+      });
       return;
     }
     Future<void>.delayed(AppBranding.splashDuration, () {
@@ -74,6 +81,11 @@ class _BusinessDashboardAppState extends ConsumerState<BusinessDashboardApp> {
       localizationsDelegates: localizations,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
+      builder: kIsWeb
+          ? (context, child) => WebAuthResolvingGate(
+                child: child ?? const SizedBox.shrink(),
+              )
+          : null,
     );
   }
 }

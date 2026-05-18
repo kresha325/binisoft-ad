@@ -84,6 +84,14 @@
       opacity: 0.75;
       line-height: 1.4;
     }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #0f1a33;
+    }
+    flutter-view, flt-scene-host, flt-glass-pane {
+      background: #0f1a33;
+    }
   </style>
 
   <!-- iOS meta tags & icons -->
@@ -100,7 +108,6 @@
   <title>Binisoft Admin Dashboard</title>
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://firestore.googleapis.com">
   <link rel="preconnect" href="https://firebase.googleapis.com">
 </head>
@@ -129,8 +136,10 @@
       } catch (e) {}
     })();
   </script>
-  <script src="flutter_bootstrap.js?v=11" defer></script>
+  <script src="flutter_bootstrap.js?v=12" defer></script>
   <script>
+    var bootShownAt = Date.now();
+    var MIN_BOOT_MS = 1500;
     function hideBinisoftBoot() {
       var el = document.getElementById('binisoft-boot');
       if (!el) return;
@@ -138,8 +147,11 @@
       el.style.opacity = '0';
       setTimeout(function () { if (el.parentNode) el.remove(); }, 400);
     }
-    // Hide only after Flutter login/landing paints — not on first-frame (avoids white flash).
-    window.addEventListener('binisoft-ready', hideBinisoftBoot);
+    // Hide after Flutter paints; keep overlay at least MIN_BOOT_MS (avoids white flash on mobile).
+    window.addEventListener('binisoft-ready', function () {
+      var wait = Math.max(0, MIN_BOOT_MS - (Date.now() - bootShownAt));
+      setTimeout(hideBinisoftBoot, wait);
+    });
     window.addEventListener('error', function (e) {
       var hint = document.getElementById('binisoft-boot-hint');
       if (hint && e.message) hint.textContent = 'Error: ' + e.message;

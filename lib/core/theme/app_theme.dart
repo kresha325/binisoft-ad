@@ -111,9 +111,9 @@ class AppTheme {
 
   static ThemeData _build(Brightness brightness, AppColorScheme scheme) {
     final isDark = brightness == Brightness.dark;
-    final base = GoogleFonts.interTextTheme(
-      ThemeData(brightness: brightness).textTheme,
-    );
+    final base = ThemeData(brightness: brightness).textTheme.apply(
+          fontFamily: 'Inter',
+        );
 
     final colorScheme = ColorScheme(
       brightness: brightness,

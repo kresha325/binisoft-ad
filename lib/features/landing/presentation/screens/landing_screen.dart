@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/utils/web_boot_overlay.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/app_download_links.dart';
@@ -28,12 +26,6 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  @override
-  void initState() {
-    super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) => dismissWebBootOverlay());
-  }
-
   @override
   Widget build(BuildContext context) {
     // Public landing is always dark (independent of user theme preference).

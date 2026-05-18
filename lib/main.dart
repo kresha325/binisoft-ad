@@ -10,8 +10,8 @@ import 'bootstrap.dart';
 void main() {
   // Hash URLs (#/dashboard) work reliably on GitHub Pages + mobile Safari (no 404 on refresh).
   if (kIsWeb) {
-    // Inter is bundled under assets/fonts/ (Inter-*.ttf). Allow CDN fallback if a weight is missing.
-    GoogleFonts.config.allowRuntimeFetching = true;
+    // Inter is bundled in pubspec fonts — avoid fonts.gstatic.com on mobile Safari.
+    GoogleFonts.config.allowRuntimeFetching = false;
     if (kReleaseMode) {
       ErrorWidget.builder = (details) => Material(
             color: const Color(0xFF0F1A33),

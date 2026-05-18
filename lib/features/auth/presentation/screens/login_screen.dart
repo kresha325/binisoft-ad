@@ -1,11 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/post_auth_navigation.dart';
-import '../../../../core/utils/web_boot_overlay.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/l10n/l10n_extension.dart';
@@ -26,12 +24,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) => dismissWebBootOverlay());
-  }
 
   @override
   void dispose() {

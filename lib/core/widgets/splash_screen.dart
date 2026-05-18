@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/branding.dart';
-import '../utils/web_boot_overlay.dart';
 import '../theme/app_theme.dart';
 
 /// Launch splash shown for [AppBranding.splashDuration].
@@ -46,7 +45,6 @@ class _SplashScreenState extends State<SplashScreen>
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
     _controller.forward();
-    SchedulerBinding.instance.addPostFrameCallback((_) => dismissWebBootOverlay());
   }
 
   @override
