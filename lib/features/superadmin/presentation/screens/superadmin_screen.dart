@@ -8,6 +8,8 @@ import '../../../../core/layout/app_breakpoints.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/catalog_card_grid.dart';
+import '../../../../core/widgets/catalog_entity_card.dart';
 import '../../../../core/widgets/data_table_card.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/search_toolbar.dart';
@@ -384,16 +386,18 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
             searchHint: 'Search product or business…',
             onSearchChanged: (v) => setState(() => _query = v),
           ),
-          child: DataTableCard(
-            columns: const ['Product', 'Business', 'Status', 'Actions'],
-            minHeight: 420,
-            rows: filtered.map((p) {
-              return DataRow(cells: [
-                DataCell(Text(p.name, style: const TextStyle(fontWeight: FontWeight.w600))),
-                DataCell(Text(p.businessName)),
-                DataCell(StatusChip(label: p.status, tone: StatusChipTone.neutral)),
-                DataCell(
-                  _DangerTextButton(
+          child: CatalogCardGrid(
+            scrollable: true,
+            emptyMessage: 'No products match your search.',
+            children: [
+              for (final p in filtered)
+                CatalogEntityCard(
+                  title: p.name,
+                  subtitle: p.businessName,
+                  meta: p.status,
+                  leading: Icon(Icons.inventory_2_outlined, color: context.appColors.accent, size: 28),
+                  chips: [StatusChip(label: p.status, tone: StatusChipTone.neutral)],
+                  trailing: _DangerTextButton(
                     label: 'Delete',
                     onPressed: () async {
                       final ok = await showConfirmDeleteDialog(
@@ -411,8 +415,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
                     },
                   ),
                 ),
-              ]);
-            }).toList(),
+            ],
           ),
         );
       },
@@ -456,16 +459,17 @@ class _CategoriesTabState extends ConsumerState<_CategoriesTab> {
             searchHint: 'Search category or business…',
             onSearchChanged: (v) => setState(() => _query = v),
           ),
-          child: DataTableCard(
-            columns: const ['Category', 'Slug', 'Business', 'Actions'],
-            minHeight: 420,
-            rows: filtered.map((c) {
-              return DataRow(cells: [
-                DataCell(Text(c.name, style: const TextStyle(fontWeight: FontWeight.w600))),
-                DataCell(Text(c.slug)),
-                DataCell(Text(c.businessName)),
-                DataCell(
-                  _DangerTextButton(
+          child: CatalogCardGrid(
+            scrollable: true,
+            emptyMessage: 'No categories match your search.',
+            children: [
+              for (final c in filtered)
+                CatalogEntityCard(
+                  title: c.name,
+                  subtitle: c.businessName,
+                  meta: '/${c.slug}',
+                  leading: Icon(Icons.sell_outlined, color: context.appColors.accent, size: 28),
+                  trailing: _DangerTextButton(
                     label: 'Delete',
                     onPressed: () async {
                       final ok = await showConfirmDeleteDialog(
@@ -483,8 +487,7 @@ class _CategoriesTabState extends ConsumerState<_CategoriesTab> {
                     },
                   ),
                 ),
-              ]);
-            }).toList(),
+            ],
           ),
         );
       },
@@ -527,21 +530,23 @@ class _OffersTabState extends ConsumerState<_OffersTab> {
             searchHint: 'Search offer or business…',
             onSearchChanged: (v) => setState(() => _query = v),
           ),
-          child: DataTableCard(
-            columns: const ['Offer', 'Business', 'Items', 'Status', 'Actions'],
-            rows: filtered.map((o) {
-              return DataRow(cells: [
-                DataCell(Text(o.title, style: const TextStyle(fontWeight: FontWeight.w600))),
-                DataCell(Text(o.businessName)),
-                DataCell(Text('${o.itemCount}')),
-                DataCell(
-                  StatusChip(
-                    label: o.active ? 'Active' : 'Inactive',
-                    tone: o.active ? StatusChipTone.success : StatusChipTone.neutral,
-                  ),
-                ),
-                DataCell(
-                  _DangerTextButton(
+          child: CatalogCardGrid(
+            scrollable: true,
+            emptyMessage: 'No offers match your search.',
+            children: [
+              for (final o in filtered)
+                CatalogEntityCard(
+                  title: o.title,
+                  subtitle: o.businessName,
+                  meta: '${o.itemCount} products',
+                  leading: Icon(Icons.local_offer_outlined, color: context.appColors.accent, size: 28),
+                  chips: [
+                    StatusChip(
+                      label: o.active ? 'Active' : 'Inactive',
+                      tone: o.active ? StatusChipTone.success : StatusChipTone.neutral,
+                    ),
+                  ],
+                  trailing: _DangerTextButton(
                     label: 'Delete',
                     onPressed: () async {
                       final ok = await showConfirmDeleteDialog(
@@ -559,8 +564,7 @@ class _OffersTabState extends ConsumerState<_OffersTab> {
                     },
                   ),
                 ),
-              ]);
-            }).toList(),
+            ],
           ),
         );
       },

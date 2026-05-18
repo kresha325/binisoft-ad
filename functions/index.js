@@ -742,11 +742,28 @@ async function handlePublicApi(req, res) {
     return;
   }
 
-  if (/\/api\/shop\/businesses\/?$/.test(path)) {
+  if (/\/api\/(?:public|shop)\/businesses\/?$/.test(path)) {
     try {
       rateLimit.checkRateLimit(`shop-businesses:${ip}`, { max: 120, windowMs: 60_000 });
       const payload = await shopCatalog.listShopBusinesses();
-      res.status(200).json(payload);
+      res.status(200).json({
+        meta: i18n.apiMeta(i18n.pickRequestLocale(req, null)),
+        ...payload,
+      });
+    } catch (err) {
+      sendError(res, err);
+    }
+    return;
+  }
+
+  if (/\/api\/(?:public|shop)\/marketplace\/?$/.test(path)) {
+    try {
+      rateLimit.checkRateLimit(`shop-marketplace:${ip}`, { max: 60, windowMs: 60_000 });
+      const payload = await shopCatalog.getMarketplaceSnapshot(req);
+      res.status(200).json({
+        meta: i18n.apiMeta(i18n.pickRequestLocale(req, null)),
+        ...payload,
+      });
     } catch (err) {
       sendError(res, err);
     }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../core/l10n/l10n_extension.dart';
-import '../../../../core/widgets/data_table_card.dart';
+import '../../../../core/theme/app_color_scheme.dart';
+import '../../../../core/widgets/catalog_card_grid.dart';
+import '../../../../core/widgets/catalog_entity_card.dart';
 import '../../../../core/widgets/table_row_actions.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/page_header_action_scope.dart';
@@ -28,22 +28,20 @@ class CategoriesScreen extends ConsumerWidget {
       child: categories.when(
             loading: () => const SizedBox(height: 280, child: LoadingOverlay()),
             error: (e, _) => Center(child: Text(l10n.errorGeneric('$e'))),
-            data: (items) => DataTableCard(
-              columns: [l10n.tableName, l10n.tableDescription, l10n.tableActions],
+            data: (items) => CatalogCardGrid(
               emptyMessage: l10n.categoriesEmpty,
-              minHeight: 280,
-              rows: [
+              children: [
                 for (final c in items)
-                  DataRow(cells: [
-                    DataCell(Text(c.name, style: GoogleFonts.inter(fontWeight: FontWeight.w500))),
-                    DataCell(Text(c.description ?? '—')),
-                    DataCell(
-                      TableRowActions(
-                        onEdit: () => showCategoryDialog(context, ref, category: c),
-                        onDelete: () => deleteCategory(context, ref, c),
-                      ),
+                  CatalogEntityCard(
+                    title: c.name,
+                    subtitle: c.description,
+                    meta: '/${c.slug}',
+                    leading: Icon(Icons.sell_outlined, color: context.appColors.accent, size: 28),
+                    trailing: TableRowActions(
+                      onEdit: () => showCategoryDialog(context, ref, category: c),
+                      onDelete: () => deleteCategory(context, ref, c),
                     ),
-                  ]),
+                  ),
               ],
             ),
           ),

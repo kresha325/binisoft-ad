@@ -56,7 +56,9 @@ function resolveBusinessLocales(business) {
 }
 
 function pickRequestLocale(req, business) {
-  const { defaultLocale, locales } = resolveBusinessLocales(business);
+  const { defaultLocale, locales } = business
+    ? resolveBusinessLocales(business)
+    : { defaultLocale: DEFAULT_LOCALE, locales: [...SUPPORTED_LOCALES] };
   const requested = normalizeLocale(req.query.lang || req.query.locale);
   const locale =
     requested && locales.includes(requested) ? requested : defaultLocale;

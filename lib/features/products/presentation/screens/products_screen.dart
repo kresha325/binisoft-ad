@@ -5,8 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/layout/app_breakpoints.dart';
 import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../core/widgets/data_table_card.dart';
+import '../../../../core/widgets/status_chip.dart';
+import '../../../../core/widgets/catalog_card_grid.dart';
+import '../../../../core/widgets/catalog_entity_card.dart';
 import '../../../../core/widgets/storage_network_image.dart';
 import '../../../../core/widgets/table_row_actions.dart';
 import '../../../../core/widgets/loading_overlay.dart';
@@ -174,68 +177,50 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 for (final c in categoriesAsync.valueOrNull ?? []) c.id: c.name,
               };
 
-              return DataTableCard(
-                columns: [
-                  l10n.tableImage,
-                  l10n.tableName,
-                  l10n.tableCategory,
-                  l10n.tablePrice,
-                  l10n.tableStatus,
-                  l10n.tableActions,
-                ],
+              final colors = context.appColors;
+
+              return CatalogCardGrid(
                 emptyMessage: l10n.productsEmpty,
-                minHeight: 280,
-                rows: [
+                children: [
                   for (final p in filtered)
-                    DataRow(cells: [
-                      DataCell(
-                        p.imageUrls.isNotEmpty
+                    CatalogEntityCard(
+                      title: p.name,
+                      subtitle: p.categoryIds.isEmpty
+                          ? null
+                          : p.categoryIds.map((id) => categoryMap[id] ?? '—').join(', '),
+                      meta: p.basePrice != null
+                          ? '€${p.basePrice!.toStringAsFixed(2)} · /${p.slug}'
+                          : '/${p.slug}',
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: p.imageUrls.isNotEmpty
                             ? StorageNetworkImage(
                                 url: p.imageUrls.first,
-                                width: 40,
-                                height: 40,
-                                borderRadius: BorderRadius.circular(6),
+                                width: 56,
+                                height: 56,
                               )
                             : Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF3F4F6),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Icon(
+                                width: 56,
+                                height: 56,
+                                color: colors.surfaceElevated,
+                                child: Icon(
                                   Icons.image_outlined,
-                                  size: 20,
-                                  color: AppColors.textMuted,
+                                  size: 24,
+                                  color: colors.textMuted,
                                 ),
                               ),
                       ),
-                      DataCell(
-                        Text(p.name, style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
-                      ),
-                      DataCell(Text(
-                        p.categoryIds.isEmpty
-                            ? '—'
-                            : p.categoryIds.map((id) => categoryMap[id] ?? '—').join(', '),
-                      )),
-                      DataCell(Text(
-                        p.basePrice != null
-                            ? '\$${p.basePrice!.toStringAsFixed(2)}'
-                            : '—',
-                      )),
-                      DataCell(_StatusChip(status: p.status)),
-                      DataCell(
-                        TableRowActions(
-                          onEdit: () => showProductSheet(
-                            context,
-                            ref,
-                            categories: categoriesAsync.valueOrNull ?? [],
-                            product: p,
-                          ),
-                          onDelete: () => deleteProduct(context, ref, p),
+                      chips: [_productStatusChip(p.status)],
+                      trailing: TableRowActions(
+                        onEdit: () => showProductSheet(
+                          context,
+                          ref,
+                          categories: categoriesAsync.valueOrNull ?? [],
+                          product: p,
                         ),
+                        onDelete: () => deleteProduct(context, ref, p),
                       ),
-                    ]),
+                    ),
                 ],
               );
             },
@@ -255,24 +240,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   }
 }
 
-class _StatusChip extends StatelessWidget {
-  const _StatusChip({required this.status});
-  final ProductStatus status;
-
-  @override
-  Widget build(BuildContext context) {
-    final (label, bg, fg) = switch (status) {
-      ProductStatus.active => ('Active', const Color(0xFFDCFCE7), const Color(0xFF16A34A)),
-      ProductStatus.draft => ('Draft', const Color(0xFFF3F4F6), AppColors.textMuted),
-      ProductStatus.archived => ('Archived', const Color(0xFFFFEDD5), const Color(0xFFEA580C)),
-    };
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(20)),
-      child: Text(
-        label,
-        style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, color: fg),
-      ),
-    );
-  }
+Widget _productStatusChip(ProductStatus status) {
+  final (label, tone) = switch (status) {
+    ProductStatus.active => ('Active', StatusChipTone.success),
+    ProductStatus.draft => ('Draft', StatusChipTone.neutral),
+    ProductStatus.archived => ('Archived', StatusChipTone.warning),
+  };
+  return StatusChip(label: label, tone: tone);
 }

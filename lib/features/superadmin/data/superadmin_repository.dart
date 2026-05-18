@@ -97,17 +97,24 @@ class SuperAdminRepository {
         .limit(limit)
         .get();
 
-    final rows = snap.docs.map((doc) {
-      final c = CategoryModel.fromFirestore(doc);
-      final businessId = doc.reference.parent.parent?.id ?? c.businessId;
-      return SuperAdminCategoryRow(
-        id: doc.id,
-        businessId: businessId,
-        businessName: businessNames[businessId] ?? businessId,
-        name: c.name,
-        slug: c.slug,
-      );
-    }).toList();
+    final rows = <SuperAdminCategoryRow>[];
+    for (final doc in snap.docs) {
+      try {
+        final c = CategoryModel.fromFirestore(doc);
+        final businessId = doc.reference.parent.parent?.id ?? c.businessId;
+        rows.add(
+          SuperAdminCategoryRow(
+            id: doc.id,
+            businessId: businessId,
+            businessName: businessNames[businessId] ?? businessId,
+            name: c.name,
+            slug: c.slug,
+          ),
+        );
+      } catch (_) {
+        // Skip malformed legacy category docs.
+      }
+    }
     rows.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     return rows;
   }
@@ -119,19 +126,26 @@ class SuperAdminRepository {
         .limit(limit)
         .get();
 
-    final rows = snap.docs.map((doc) {
-      final o = OfferModel.fromFirestore(doc);
-      final businessId = doc.reference.parent.parent?.id ?? o.businessId;
-      return SuperAdminOfferRow(
-        id: doc.id,
-        businessId: businessId,
-        businessName: businessNames[businessId] ?? businessId,
-        title: o.title,
-        active: o.active,
-        itemCount: o.items.length,
-        endsAt: o.endsAt,
-      );
-    }).toList();
+    final rows = <SuperAdminOfferRow>[];
+    for (final doc in snap.docs) {
+      try {
+        final o = OfferModel.fromFirestore(doc);
+        final businessId = doc.reference.parent.parent?.id ?? o.businessId;
+        rows.add(
+          SuperAdminOfferRow(
+            id: doc.id,
+            businessId: businessId,
+            businessName: businessNames[businessId] ?? businessId,
+            title: o.title,
+            active: o.active,
+            itemCount: o.items.length,
+            endsAt: o.endsAt,
+          ),
+        );
+      } catch (_) {
+        // Skip malformed legacy offer docs.
+      }
+    }
     rows.sort((a, b) => b.endsAt.compareTo(a.endsAt));
     return rows;
   }

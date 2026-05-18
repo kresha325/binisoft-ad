@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
-import '../../../../core/widgets/data_table_card.dart';
+import '../../../../core/widgets/catalog_card_grid.dart';
+import '../../../../core/widgets/catalog_entity_card.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/page_header_action_scope.dart';
 import '../../../../core/widgets/search_toolbar.dart';
@@ -99,60 +99,37 @@ class _OffersScreenState extends ConsumerState<OffersScreen> {
                       .toList();
                 }
 
-                return DataTableCard(
-                  columns: [
-                    l10n.tableName,
-                    l10n.offerColumnProducts,
-                    l10n.offerColumnDiscount,
-                    l10n.offerColumnPeriod,
-                    l10n.tableStatus,
-                    l10n.tableActions,
-                  ],
+                return CatalogCardGrid(
                   emptyMessage: l10n.offersEmpty,
-                  minHeight: 280,
-                  dataRowMaxHeight: 88,
-                  rows: [
+                  children: [
                     for (final o in filtered)
-                      DataRow(cells: [
-                        DataCell(
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                o.title,
-                                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                              ),
-                              if (o.description != null && o.description!.isNotEmpty)
-                                Text(
-                                  o.description!,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    color: colors.textMuted,
-                                  ),
-                                ),
-                            ],
-                          ),
+                      CatalogEntityCard(
+                        title: o.title,
+                        subtitle: o.description,
+                        meta:
+                            '${DateFormat('d MMM').format(o.startsAt)} – ${DateFormat('d MMM yyyy').format(o.endsAt)}',
+                        leading: Icon(
+                          Icons.local_offer_outlined,
+                          color: colors.accent,
+                          size: 28,
                         ),
-                        DataCell(Text('${o.productIds.length}')),
-                        DataCell(Text(_discountSummary(context, o))),
-                        DataCell(
-                          Text(
-                            '${DateFormat('d MMM').format(o.startsAt)} – '
-                            '${DateFormat('d MMM yyyy').format(o.endsAt)}',
-                            style: GoogleFonts.inter(fontSize: 12),
+                        chips: [
+                          _OfferStatusChip(status: o.lifecycleStatus),
+                          StatusChip(
+                            label: '${o.productIds.length} ${l10n.offerColumnProducts}',
+                            tone: StatusChipTone.neutral,
                           ),
+                          if (_discountSummary(context, o) != '—')
+                            StatusChip(
+                              label: _discountSummary(context, o),
+                              tone: StatusChipTone.accent,
+                            ),
+                        ],
+                        trailing: TableRowActions(
+                          onEdit: () => showOfferSheet(context, ref, offer: o),
+                          onDelete: () => deleteOffer(context, ref, o),
                         ),
-                        DataCell(_OfferStatusChip(status: o.lifecycleStatus)),
-                        DataCell(
-                          TableRowActions(
-                            onEdit: () => showOfferSheet(context, ref, offer: o),
-                            onDelete: () => deleteOffer(context, ref, o),
-                          ),
-                        ),
-                      ]),
+                      ),
                   ],
                 );
               },

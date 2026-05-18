@@ -72,7 +72,9 @@ class CategoryModel {
         locale: displayLocale,
         defaultLocale: displayLocale,
       ),
-      slug: data['slug'] as String,
+      slug: ((data['slug'] as String?)?.trim().isNotEmpty == true)
+          ? data['slug'] as String
+          : doc.id,
       order: data['order'] as int? ?? 0,
       parentId: data['parentId'] as String?,
       description: _optionalLocalized(data, 'description', 'descriptionI18n', displayLocale),
