@@ -29,6 +29,7 @@ void main() {
       final existing = Offer(
         id: 'o1',
         businessId: 'b1',
+        slug: 'test-offer',
         title: 'Test',
         active: true,
         durationDays: 5,
