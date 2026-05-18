@@ -21,13 +21,7 @@ void main() {
 
   js = js.replaceAll(',{}]', ']');
 
-  final swBlock = swVersion != null
-      ? '''
-  serviceWorkerSettings: {
-    serviceWorkerVersion: "$swVersion",
-  },
-'''
-      : '';
+  final swVersionLiteral = swVersion != null ? '"$swVersion"' : 'null';
 
   final loadCall = '''
 function binisoftIsAppleMobile() {
@@ -40,27 +34,35 @@ window.binisoftBootHint = window.binisoftBootHint || function (text, pct) {
   if (hint && text) hint.textContent = text;
   if (bar && typeof pct === 'number') bar.style.width = Math.min(100, pct) + '%';
 };
-_flutter.loader.load({$swBlock
-  config: { renderer: 'canvaskit' },
-  onEntrypointLoaded: function (engineInitializer) {
-    binisoftBootHint('Starting app…', 92);
-    var engineConfig = {
-      renderer: 'canvaskit',
-      canvasKitMaximumSurfaces: binisoftIsAppleMobile() ? 1 : 2,
-    };
-    if (binisoftIsAppleMobile()) {
-      engineConfig.canvasKitForceCpuOnly = true;
+(function () {
+  var swVersion = $swVersionLiteral;
+  var loadOpts = {
+    config: { renderer: 'canvaskit' },
+    onEntrypointLoaded: function (engineInitializer) {
+      binisoftBootHint('Starting app…', 92);
+      var engineConfig = {
+        renderer: 'canvaskit',
+        canvasKitMaximumSurfaces: binisoftIsAppleMobile() ? 1 : 2,
+      };
+      if (binisoftIsAppleMobile()) {
+        engineConfig.canvasKitForceCpuOnly = true;
+      }
+      engineInitializer.initializeEngine(engineConfig).then(function (appRunner) {
+        binisoftBootHint('Almost ready…', 98);
+        return appRunner.runApp();
+      }).catch(function (err) {
+        console.error('Flutter failed to start', err);
+        var msg = err && err.message ? err.message : String(err);
+        binisoftBootHint('Failed to start: ' + msg, 0);
+      });
     }
-    engineInitializer.initializeEngine(engineConfig).then(function (appRunner) {
-      binisoftBootHint('Almost ready…', 98);
-      return appRunner.runApp();
-    }).catch(function (err) {
-      console.error('Flutter failed to start', err);
-      var msg = err && err.message ? err.message : String(err);
-      binisoftBootHint('Failed to start: ' + msg, 0);
-    });
+  };
+  // iOS Safari: offline-first SW can serve stale JS and delay Firebase dynamic import().
+  if (!binisoftIsAppleMobile() && swVersion) {
+    loadOpts.serviceWorkerSettings = { serviceWorkerVersion: swVersion };
   }
-});
+  _flutter.loader.load(loadOpts);
+})();
 ''';
 
   final loadParen = js.lastIndexOf('_flutter.loader.load(');

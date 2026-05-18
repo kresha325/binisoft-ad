@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'client_platform_stub.dart'
     if (dart.library.html) 'client_platform_web.dart' as platform_impl;
 
+/// True when the visitor uses iPhone/iPad Safari or Chrome (WebKit).
+bool get isAppleMobileBrowser => platform_impl.isAppleMobileBrowser;
+
 /// Device / OS used for smart download routing.
 enum ClientPlatform {
   ios,

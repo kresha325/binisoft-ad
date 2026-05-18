@@ -20,7 +20,7 @@
   <script>
     (function () {
       var CACHE_KEY = 'binisoft_web_cache_v';
-      var CACHE_VERSION = '17';
+      var CACHE_VERSION = '18';
       if ('serviceWorker' in navigator && localStorage.getItem(CACHE_KEY) !== CACHE_VERSION) {
         navigator.serviceWorker.getRegistrations().then(function (regs) {
           return Promise.all(regs.map(function (r) { return r.unregister(); }));
@@ -130,7 +130,9 @@
 
   <title>Binisoft Admin Dashboard</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="preload" href="flutter_bootstrap.js?v=17" as="script">
+  <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js" crossorigin>
+  <link rel="preload" href="firebase_early.js?v=18" as="script">
+  <link rel="preload" href="flutter_bootstrap.js?v=18" as="script">
   <link rel="preload" href="main.dart.js" as="script">
   <link rel="preload" href="canvaskit/canvaskit.wasm" as="fetch" type="application/wasm" crossorigin>
   <link rel="preload" href="canvaskit/canvaskit.js" as="script">
@@ -200,7 +202,8 @@
       } catch (e) {}
     })();
   </script>
-  <script src="flutter_bootstrap.js?v=17" defer></script>
+  <script src="firebase_early.js?v=18"></script>
+  <script src="flutter_bootstrap.js?v=18" defer></script>
   <script>
     var bootShownAt = Date.now();
     var MIN_BOOT_MS = 1500;

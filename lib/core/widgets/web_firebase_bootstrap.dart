@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 import '../../firebase_options.dart';
 import '../bootstrap/firebase_web_config.dart';
+import '../bootstrap/firebase_web_preload_wait.dart';
 import '../constants/app_constants.dart';
+import '../utils/client_platform.dart';
 import '../utils/open_dashboard_url.dart';
 import '../utils/page_reload.dart';
 import '../utils/web_boot_overlay.dart';
@@ -23,7 +25,8 @@ class WebFirebaseBootstrap extends StatefulWidget {
 }
 
 class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
-  static const _initTimeout = Duration(seconds: 10);
+  Duration get _initTimeout =>
+      isAppleMobileBrowser ? const Duration(seconds: 45) : const Duration(seconds: 15);
 
   Object? _error;
   var _ready = false;
@@ -80,6 +83,7 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
     final options = firebaseOptionsWithoutRtdb(DefaultFirebaseOptions.currentPlatform);
 
     try {
+      await awaitFirebaseWebPreload(timeout: _initTimeout);
       await Future.any<void>([
         _initializeFirebase(options),
         Future<void>.delayed(
@@ -97,10 +101,16 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
     }
   }
 
-  /// Only core + Firestore settings — do not call setPersistence (hangs on iOS Safari).
+  /// Core init first; Firestore settings in a short follow-up (Safari can hang on settings).
   Future<void> _initializeFirebase(FirebaseOptions options) async {
     await Firebase.initializeApp(options: options);
-    await configureFirestoreForWeb();
+    try {
+      await configureFirestoreForWeb().timeout(const Duration(seconds: 8));
+    } on TimeoutException {
+      if (kDebugMode) {
+        debugPrint('Firestore web settings timed out; continuing without long-poll apply.');
+      }
+    }
   }
 
   Future<void> _retry() async {
@@ -155,7 +165,8 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
     _tick = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
       setState(() => _seconds++);
-      if (_seconds >= 10 && !_gaveUp && widget.onGiveUp != null) {
+      final stallSeconds = isAppleMobileBrowser ? 50 : 18;
+      if (_seconds >= stallSeconds && !_gaveUp && widget.onGiveUp != null) {
         _gaveUp = true;
         widget.onGiveUp!();
       }
