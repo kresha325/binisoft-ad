@@ -10,10 +10,18 @@ class AppConstants {
   static const String shopApiBaseUrl =
       'https://us-central1-jon-sport.cloudfunctions.net/shopApi';
 
+  /// Global marketplace home (GitHub Pages).
+  static const String marketplaceHomeUrl =
+      'https://kresha325.github.io/Binisoft-marketplace/';
+
   /// Multi-tenant public storefront (path per business slug).
-  static const String publicShopBaseUrl = 'https://jon-sport-shop.web.app';
+  static const String publicShopBaseUrl =
+      'https://kresha325.github.io/Binisoft-marketplace';
 
   static String publicShopUrl(String slug) => '$publicShopBaseUrl/$slug';
+
+  /// Legacy Firebase Hosting shop (optional fallback).
+  static const String firebaseShopBaseUrl = 'https://jon-sport-shop.web.app';
 
   /// Admin dashboard (GitHub Pages only).
   static const String dashboardWebUrl =

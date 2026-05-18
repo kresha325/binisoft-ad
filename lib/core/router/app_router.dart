@@ -37,8 +37,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ref.watch(routerRefreshNotifierProvider);
 
   final router = GoRouter(
-    // Web admin demo: open login directly (lighter than marketing landing).
-    initialLocation: '/login',
+    // Web: marketing landing at / ; native apps open login.
+    initialLocation: kIsWeb ? '/' : '/login',
     refreshListenable: refresh,
     errorBuilder: (context, state) {
       final l10n = context.l10n;

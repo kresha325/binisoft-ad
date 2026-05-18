@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/utils/open_external_url.dart';
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/services/site_deploy_service.dart';
@@ -259,7 +260,7 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
                 runSpacing: 8,
                 children: [
                   FilledButton.tonalIcon(
-                    onPressed: () => launchUrl(Uri.parse(liveUrl)),
+                    onPressed: () => openExternalUrl(liveUrl),
                     icon: const Icon(Icons.open_in_new_rounded, size: 18),
                     label: Text(l10n.websiteOpenSite),
                   ),

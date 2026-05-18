@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/utils/open_external_url.dart';
 import '../../../../core/i18n/app_locales.dart';
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
@@ -247,6 +248,13 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
                         ),
                       ),
                       const SizedBox(width: 8),
+                      FilledButton.tonalIcon(
+                        onPressed: () => openExternalUrl(
+                          AppConstants.publicShopUrl(slug),
+                        ),
+                        icon: const Icon(Icons.open_in_new_rounded, size: 18),
+                        label: Text(l10n.websiteOpenSite),
+                      ),
                       FilledButton.tonalIcon(
                         onPressed: () {
                           Clipboard.setData(

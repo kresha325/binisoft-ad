@@ -23,7 +23,7 @@ function applyCors(req, res) {
   res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.set(
     'Access-Control-Allow-Headers',
-    'Authorization, Content-Type, Accept, X-Demo-Setup, x-demo-setup',
+    'Authorization, Content-Type, Accept, X-Demo-Setup, x-demo-setup, X-Requested-With',
   );
   res.set('Access-Control-Max-Age', '3600');
 }

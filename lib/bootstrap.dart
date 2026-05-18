@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -33,7 +35,17 @@ Future<void> bootstrap(Future<void> Function() runApp) async {
 
   final options = _optionsWithoutRtdb(DefaultFirebaseOptions.currentPlatform);
 
-  await Firebase.initializeApp(options: options);
+  try {
+    await Firebase.initializeApp(options: options).timeout(
+      const Duration(seconds: 60),
+      onTimeout: () => throw TimeoutException('Firebase initialization timed out'),
+    );
+  } catch (e, st) {
+    if (kDebugMode) {
+      debugPrint('Firebase init failed: $e\n$st');
+    }
+    rethrow;
+  }
   await _configureFirestoreForWeb();
 
   if (kDebugMode) {

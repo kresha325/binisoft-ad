@@ -2,22 +2,22 @@ const { HttpsError } = require('firebase-functions/v2/https');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 
 const TEMPLATE_ID = 'market-v1';
-const DEFAULT_SHOP_HOST = process.env.PUBLIC_SHOP_HOST || 'jon-sport-shop.web.app';
+const DEFAULT_SHOP_BASE =
+  process.env.PUBLIC_SHOP_BASE || 'https://kresha325.github.io/Binisoft-marketplace';
 
 function defaultSiteUrl(slug) {
-  return `https://${DEFAULT_SHOP_HOST}/${slug}`;
+  return `${DEFAULT_SHOP_BASE.replace(/\/$/, '')}/${slug}`;
 }
 
 function dnsInstructionsForDomain(customDomain, deployUrl) {
   if (!customDomain) return null;
-  const host = DEFAULT_SHOP_HOST;
   return {
     domain: customDomain,
     records: [
       {
         type: 'CNAME',
         name: customDomain.startsWith('www.') ? 'www' : '@',
-        value: host,
+        value: 'kresha325.github.io',
         note:
           'Te GoDaddy (DNS Management): shto këtë CNAME. Propagimi 5 min – 48 orë. Pastaj aktivizo SSL te Netlify/Firebase.',
       },

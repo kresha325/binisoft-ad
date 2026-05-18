@@ -32,8 +32,8 @@
     }(window.location));
     (function () {
       var h = location.hash;
-      if (!h || h === '#' || h === '#/') {
-        location.replace(location.pathname + location.search + '#/login');
+      if (!h || h === '#') {
+        location.replace(location.pathname + location.search + '#/');
       }
     })();
   </script>
@@ -101,7 +101,7 @@
   <div id="binisoft-boot" aria-live="polite">
     <div class="spinner" aria-hidden="true"></div>
     <strong>Binisoft Admin</strong>
-    <small id="binisoft-boot-hint">Loading login… first visit can take 1–2 min on phone (Wi‑Fi).</small>
+    <small id="binisoft-boot-hint">Loading… first visit on phone can take 1–2 min on Wi‑Fi. Use Chrome or Safari.</small>
   </div>
   <script>
     (function () {
@@ -138,12 +138,16 @@
       if (hint && e.message) hint.textContent = 'Error: ' + e.message;
     });
     setTimeout(function () {
+      var hint = document.getElementById('binisoft-boot-hint');
+      if (hint) hint.textContent = 'Still loading… check Wi‑Fi. Large download (~25MB) on first visit.';
+    }, 45000);
+    setTimeout(function () {
       if (!document.getElementById('binisoft-boot')) return;
       var hint = document.getElementById('binisoft-boot-hint');
       if (hint) {
-        hint.textContent = 'Still loading… Use Wi‑Fi. URL: kresha325.github.io/binisoft-ad/';
+        hint.textContent = 'Still loading? Use Chrome/Safari (not in-app browser). Firebase: allow kresha325.github.io';
       }
-    }, 90000);
+    }, 120000);
   </script>
 </body>
 </html>

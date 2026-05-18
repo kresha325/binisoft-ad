@@ -15,7 +15,9 @@ initializeApp();
 
 const fnOptions = {
   region: 'us-central1',
-  cors: true,
+  // Custom CORS in httpCors.js (GitHub Pages + localhost). Platform cors:true can
+  // conflict and omit Access-Control-Allow-Origin on preflight.
+  cors: false,
   invoker: 'public',
   maxInstances: 10,
 };
