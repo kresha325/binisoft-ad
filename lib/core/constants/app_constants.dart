@@ -23,9 +23,13 @@ class AppConstants {
   /// Legacy Firebase Hosting shop (optional fallback).
   static const String firebaseShopBaseUrl = 'https://jon-sport-shop.web.app';
 
-  /// Admin dashboard (GitHub Pages only).
-  static const String dashboardWebUrl =
+  /// Marketing site (static HTML, fast on mobile).
+  static const String marketingWebUrl =
       'https://kresha325.github.io/binisoft-ad';
+
+  /// Flutter admin app (GitHub Pages /app/ — heavy; use after login CTA).
+  static const String dashboardWebUrl =
+      'https://kresha325.github.io/binisoft-ad/app';
 
   static const String dashboardWebOrigin = 'https://kresha325.github.io';
 }

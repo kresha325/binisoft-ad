@@ -35,7 +35,9 @@ firebase deploy --only firestore:rules,firestore:indexes,storage
 
 ### 4. Fix web login 403 / 400 (GitHub Pages only)
 
-**Dashboard URL (use this):** https://kresha325.github.io/binisoft-ad/
+**Marketing (fast):** https://kresha325.github.io/binisoft-ad/
+
+**Admin app (login):** https://kresha325.github.io/binisoft-ad/app/#/login
 
 Do not use `jon-sport.web.app` for the admin UI unless you add that domain in Firebase (this project uses GitHub Pages only).
 
@@ -58,7 +60,7 @@ Hard refresh: `Cmd+Shift+R` on the GitHub Pages login URL.
 
 ## Deploy web (GitHub Pages)
 
-Public URL: **https://kresha325.github.io/binisoft-ad/**
+Public URLs: **https://kresha325.github.io/binisoft-ad/** (landing) · **…/app/#/login** (admin)
 
 1. In the repo on GitHub: **Settings → Pages → Build and deployment → Source** → **GitHub Actions**.
 2. Push to `main` (workflow `.github/workflows/deploy-github-pages.yml` builds Flutter web with `--base-href "/binisoft-ad/"` and deploys).
@@ -68,9 +70,12 @@ Public URL: **https://kresha325.github.io/binisoft-ad/**
 Manual build (same as CI):
 
 ```bash
-flutter build web --release --pwa-strategy=offline-first --no-web-resources-cdn --base-href "/binisoft-ad/"
-dart run tool/patch_web_bootstrap.dart
-cp build/web/index.html build/web/404.html
+flutter build web --release --pwa-strategy=offline-first --no-web-resources-cdn --base-href "/binisoft-ad/app/" --output build/web/app
+dart run tool/patch_web_bootstrap.dart build/web/app/flutter_bootstrap.js
+cp web/marketing/index.html build/web/index.html
+cp -r build/web/app/icons build/web/icons
+cp web/404.html build/web/404.html
+dart run tool/generate_spa_path_indexes.dart
 ```
 
 ### 5. Run app

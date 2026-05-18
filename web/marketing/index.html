@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Binisoft Admin — menaxhoni katalogun, porositë dhe API-n për biznesin tuaj.">
+  <meta name="theme-color" content="#0F1A33">
+  <title>Binisoft Admin — Zgjidhje për biznesin tuaj</title>
+  <link rel="icon" type="image/png" href="icons/Icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      var h = location.hash;
+      if (h && h.length > 1 && h !== '#/') {
+        location.replace('app/' + h + location.search);
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #060a14;
+      --bg2: #0f172a;
+      --accent: #2ec4c6;
+      --accent-dim: rgba(46, 196, 198, 0.15);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --card: rgba(15, 23, 42, 0.85);
+      --border: rgba(46, 196, 198, 0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--bg), var(--bg2) 55%, #132238);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(6, 10, 20, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--text); }
+    .logo span { color: var(--accent); }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none !important;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent); color: #0f172a; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .hero { padding: 48px 0 56px; }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .lead { font-size: 1.05rem; color: var(--muted); max-width: 36rem; margin-bottom: 12px; }
+    .price-hint { font-size: 0.9rem; font-weight: 600; color: var(--accent); margin-bottom: 28px; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    section { padding: 48px 0; }
+    h2 { font-size: 1.65rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .section-sub { color: var(--muted); margin-bottom: 28px; max-width: 32rem; }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .card h3 { font-size: 1rem; margin-bottom: 8px; }
+    .card p { font-size: 0.9rem; color: var(--muted); }
+    .pricing .card { text-align: center; }
+    .pricing .card strong { display: block; font-size: 1.5rem; color: var(--accent); margin: 8px 0; }
+    .download-box {
+      background: var(--accent-dim);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+    }
+    .download-box p { color: var(--muted); margin: 12px 0 20px; font-size: 0.9rem; }
+    .store-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    footer {
+      padding: 40px 0 48px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    .note-ios {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(46, 196, 198, 0.08);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      max-width: 28rem;
+    }
+    @media (min-width: 768px) {
+      .hero { padding-top: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="./">Binisoft <span>Admin</span></a>
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="app/#/login">Hyr</a>
+      <a class="btn btn-primary" href="app/#/register">Fillo falas</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <header class="hero">
+      <span class="badge">ADMIN PËR BIZNES — REAL-TIME</span>
+      <h1>Menaxhoni katalogun.<br>Shpërndani API-n. Rrituni.</h1>
+      <p class="lead">
+        Binisoft Admin Dashboard — produkte, kategori, fusha të personalizuara dhe API publike REST për çdo biznes që menaxhoni.
+      </p>
+      <p class="price-hint">Nga €30 regjistrim · 100–500+ produkte · Enterprise me kontakt</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" id="smart-download" href="app/#/register">Fillo tani</a>
+        <a class="btn btn-ghost" href="app/#/login">Hap panelin web</a>
+      </div>
+      <p class="note-ios" id="platform-note" hidden></p>
+    </header>
+
+    <section>
+      <h2>Çfarë merrni</h2>
+      <p class="section-sub">Gjithçka për ekipin tuaj të tregtisë — telefon, tablet ose desktop.</p>
+      <div class="grid">
+        <article class="card"><h3>Katalog produktesh</h3><p>Produkte, foto, çmime dhe status nga një vend.</p></article>
+        <article class="card"><h3>API publike REST</h3><p>Endpoint-e për slug-un e biznesit — lexim katalogu pa auth.</p></article>
+        <article class="card"><h3>Multi-biznes</h3><p>Ndryshoni biznesin, kataloge të ndara, slug API të pavarur.</p></article>
+        <article class="card"><h3>Fusha të personalizuara</h3><p>Atribute, ngjyra dhe shabllone që shkojnë në API.</p></article>
+        <article class="card"><h3>Porosi & raporte</h3><p>Porositë dhe paneli i biznesit në kohë reale.</p></article>
+        <article class="card"><h3>Njoftime live</h3><p>Plan, biznese të reja dhe përditësime në aplikacion.</p></article>
+      </div>
+    </section>
+
+    <section class="pricing">
+      <h2>Planet</h2>
+      <p class="section-sub">€30 regjistrim (përfshin muajin e parë) + €6/muaj për çdo 100 produkte.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Starter</h3>
+          <strong>100</strong>
+          <p>produkte · ideal për dyqane të vogla</p>
+          <a class="btn btn-primary" style="margin-top:16px;width:100%" href="app/#/register">Zgjidh Starter</a>
+        </article>
+        <article class="card">
+          <h3>Basic</h3>
+          <strong>200</strong>
+          <p>produkte · katalog në rritje</p>
+          <a class="btn btn-ghost" style="margin-top:16px;width:100%" href="app/#/register">Zgjidh Basic</a>
+        </article>
+        <article class="card">
+          <h3>Pro</h3>
+          <strong>500</strong>
+          <p>produkte · për katalog të madh</p>
+          <a class="btn btn-ghost" style="margin-top:16px;width:100%" href="app/#/register">Zgjidh Pro</a>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="download-box">
+        <h2>Shkarkoni aplikacionin</h2>
+        <p id="download-hint">Zgjedhim automatikisht dyqanin e duhur për pajisjen tuaj.</p>
+        <div class="store-row">
+          <a class="btn btn-primary" id="btn-android" href="https://play.google.com/store/apps/details?id=com.jonsport.business_dashboard">Google Play</a>
+          <a class="btn btn-ghost" id="btn-ios" href="app/#/login">iPhone / iPad</a>
+          <a class="btn btn-ghost" href="app/#/login">Panel web</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>© Binisoft · <a href="https://kresha325.github.io/Binisoft-marketplace/">Marketplace</a></p>
+    <p style="margin-top:8px"><a href="app/#/login">Paneli i administratorit</a> · <a href="app/#/register">Regjistrohu</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      var ua = navigator.userAgent || '';
+      var isIOS = /iPad|iPhone|iPod/.test(ua) ||
+        (ua.includes('Macintosh') && navigator.maxTouchPoints > 1);
+      var isAndroid = /Android/i.test(ua);
+      var smart = document.getElementById('smart-download');
+      var note = document.getElementById('platform-note');
+      var hint = document.getElementById('download-hint');
+      var btnIos = document.getElementById('btn-ios');
+
+      if (isAndroid) {
+        smart.href = 'https://play.google.com/store/apps/details?id=com.jonsport.business_dashboard';
+        smart.textContent = 'Shkarko nga Google Play';
+        hint.textContent = 'Android: instaloni nga Play Store për shpejtësinë maksimale.';
+      } else if (isIOS) {
+        smart.href = 'app/#/login';
+        smart.textContent = 'Hap panelin (web)';
+        btnIos.textContent = 'Hap në Safari';
+        note.hidden = false;
+        note.textContent = 'iPhone: faqja e panelit ngarkon ~13 MB herën e parë. Përdorni Wi‑Fi dhe mos e mbyllni Safari. App Store së shpejti.';
+        hint.textContent = 'iPhone: për përdorim të përditshëm rekomandohet aplikacioni (së shpejti në App Store).';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -38,17 +38,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build web (GitHub Pages subpath; cache assets; local canvaskit for mobile)
-        run: flutter build web --release --pwa-strategy=offline-first --no-web-resources-cdn --base-href "/binisoft-ad/"
+      - name: Build Flutter admin app (under /app/ — marketing stays static at root)
+        run: flutter build web --release --pwa-strategy=offline-first --no-web-resources-cdn --base-href "/binisoft-ad/app/" --output build/web/app
 
       - name: Mobile-friendly web bootstrap (canvaskit renderer, load error surfacing)
-        run: dart run tool/patch_web_bootstrap.dart
+        run: dart run tool/patch_web_bootstrap.dart build/web/app/flutter_bootstrap.js
 
       - name: Sharp favicon (launcher_icons outputs 16px; tabs need 48px+)
         run: dart run tool/generate_app_icon_square.dart
 
-      - name: SPA fallback for GitHub Pages deep links
+      - name: Assemble deploy (fast static landing + Flutter app + SPA paths)
         run: |
+          cp web/marketing/index.html build/web/index.html
+          cp -r build/web/app/icons build/web/icons
+          cp build/web/app/favicon.png build/web/favicon.png 2>/dev/null || true
           cp web/404.html build/web/404.html
           dart run tool/generate_spa_path_indexes.dart
 

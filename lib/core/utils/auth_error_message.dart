@@ -46,7 +46,7 @@ String authErrorMessage(Object error) {
       (text.contains('identitytoolkit') &&
           (text.contains('400') || text.contains('403')))) {
     return 'Login u bllokua nga API key (403). Hap dashboard vetëm nga '
-        'https://kresha325.github.io/binisoft-ad/ — në Google Cloud shto referrer '
+        'https://kresha325.github.io/binisoft-ad/app/ — në Google Cloud shto referrer '
         'https://kresha325.github.io/* dhe në Firebase Auth domain kresha325.github.io.';
   }
   if (text.contains('invalid-credential') ||

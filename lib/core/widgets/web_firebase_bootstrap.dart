@@ -38,7 +38,7 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
     super.initState();
     if (!_isCorrectDeployPath()) {
       _error = StateError(
-        'Wrong URL. Open:\n${AppConstants.dashboardWebUrl}/',
+        'Wrong URL. Open:\n${AppConstants.dashboardWebUrl}/#/login',
       );
       return;
     }
@@ -181,7 +181,7 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
 
   @override
   Widget build(BuildContext context) {
-    const fullUrl = '${AppConstants.dashboardWebUrl}/';
+    const fullUrl = '${AppConstants.dashboardWebUrl}/#/login';
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

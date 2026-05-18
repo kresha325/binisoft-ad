@@ -1030,7 +1030,7 @@ const EMAIL_TEMPLATES = {
     subject: 'Welcome to Binisoft Admin',
     html: `<p>Hi${v.name ? ` ${escapeHtml(v.name)}` : ''},</p>
 <p>Your Binisoft Admin account is ready. Create your first business to start managing your catalog.</p>
-<p><a href="https://kresha325.github.io/binisoft-ad/">Open dashboard</a></p>`,
+<p><a href="https://kresha325.github.io/binisoft-ad/app/#/login">Open dashboard</a></p>`,
   }),
   plan_updated: (v) => ({
     subject: 'Plan updated — Binisoft Admin',

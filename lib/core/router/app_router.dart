@@ -37,8 +37,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ref.watch(routerRefreshNotifierProvider);
 
   final router = GoRouter(
-    // Web: marketing landing at / ; native apps open login.
-    initialLocation: kIsWeb ? '/' : '/login',
+    // Web: static marketing at site root; Flutter app opens at /login.
+    initialLocation: '/login',
     refreshListenable: refresh,
     errorBuilder: (context, state) {
       final l10n = context.l10n;
@@ -141,7 +141,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(path: '/', builder: (_, __) => const LandingScreen()),
+      GoRoute(
+        path: '/',
+        redirect: (_, __) => kIsWeb ? '/login' : null,
+        builder: (_, __) => const LandingScreen(),
+      ),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
       GoRoute(path: '/join', builder: (_, __) => const JoinTeamScreen()),

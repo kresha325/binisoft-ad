@@ -1,8 +1,9 @@
 import 'dart:io';
 
 /// Post-build tweaks for GitHub Pages + mobile Safari (especially iPhone).
-void main() {
-  final bootstrap = File('build/web/flutter_bootstrap.js');
+void main(List<String> args) {
+  final bootstrapPath = args.isNotEmpty ? args.first : 'build/web/app/flutter_bootstrap.js';
+  final bootstrap = File(bootstrapPath);
   if (!bootstrap.existsSync()) {
     stderr.writeln('Missing build/web/flutter_bootstrap.js — run flutter build web first.');
     exit(1);

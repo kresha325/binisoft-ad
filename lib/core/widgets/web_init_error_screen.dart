@@ -64,7 +64,7 @@ class _WebInitErrorScreenState extends State<WebInitErrorScreen> {
                 ),
                 const SizedBox(height: 8),
                 SelectableText(
-                  '${AppConstants.dashboardWebUrl}/',
+                  '${AppConstants.dashboardWebUrl}/#/login',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Color(0xFF2EC4C6), fontSize: 14),
                 ),
