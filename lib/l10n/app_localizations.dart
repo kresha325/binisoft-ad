@@ -1189,7 +1189,7 @@ abstract class AppLocalizations {
   /// No description provided for @websiteSimpleFeature3.
   ///
   /// In en, this message translates to:
-  /// **'Live at jon-sport-shop.web.app/your-slug'**
+  /// **'Live at kresha325.github.io/Binisoft-marketplace/your-slug'**
   String get websiteSimpleFeature3;
 
   /// No description provided for @websiteProTitle.

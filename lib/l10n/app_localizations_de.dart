@@ -581,7 +581,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get websiteSimpleFeature3 =>
-      'Live unter jon-sport-shop.web.app/ihr-slug';
+      'Live unter kresha325.github.io/Binisoft-marketplace/ihr-slug';
 
   @override
   String get websiteProTitle => 'Professionelle Website';
