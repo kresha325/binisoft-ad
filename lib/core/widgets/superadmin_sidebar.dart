@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../theme/app_color_scheme.dart';
 import '../theme/app_design.dart';
-import 'brand_logo.dart';
-
 class SuperAdminNav {
   const SuperAdminNav({
     required this.path,
@@ -83,22 +81,13 @@ class SuperAdminSidebar extends StatelessWidget {
     return Material(
       color: sidebarBg,
       child: SafeArea(
+        top: false,
         right: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
-              child: Row(
-                children: [
-                  Icon(Icons.shield_outlined, color: colors.accent, size: 22),
-                  const SizedBox(width: 10),
-                  const Expanded(child: BrandLogo(compact: true)),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 16, 12),
+              padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Text(
                 'Platform admin',
                 style: GoogleFonts.inter(

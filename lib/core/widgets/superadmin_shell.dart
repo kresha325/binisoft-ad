@@ -68,18 +68,29 @@ class SuperAdminShell extends ConsumerWidget {
         ),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(toolbarHeight + MediaQuery.paddingOf(context).top),
-          child: AppShellHeader(
-            leading: Builder(
-              builder: (ctx) => AppIconButton(
-                icon: Icons.menu_rounded,
-                tooltip: 'Menu',
-                onPressed: () => Scaffold.of(ctx).openDrawer(),
+          child: AppShellHeader.wrapBar(
+            context,
+            child: SizedBox(
+              height: toolbarHeight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  children: [
+                    const BrandLogo(compact: true),
+                    const Spacer(),
+                    const NotificationBell(),
+                    const SizedBox(width: 4),
+                    Builder(
+                      builder: (ctx) => AppIconButton(
+                        icon: Icons.menu_rounded,
+                        tooltip: 'Menu',
+                        onPressed: () => Scaffold.of(ctx).openDrawer(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            actions: const [
-              NotificationBell(),
-            ],
-            trailing: const BrandLogo(compact: true),
           ),
         ),
         body: Consumer(
@@ -96,25 +107,24 @@ class SuperAdminShell extends ConsumerWidget {
       body: Consumer(
         builder: (context, ref, _) {
           ref.watch(billingReportsSyncProvider);
-          return Row(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(width: SuperAdminSidebar.width, child: sidebar),
+              SizedBox(
+                height: toolbarHeight + MediaQuery.paddingOf(context).top,
+                child: const AppShellHeader(
+                  leading: BrandLogo(compact: true),
+                  actions: [
+                    NotificationBell(),
+                    SizedBox(width: 8),
+                  ],
+                ),
+              ),
               Expanded(
-                child: Column(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      height: toolbarHeight + MediaQuery.paddingOf(context).top,
-                      child: AppShellHeader(
-                        leading: const SizedBox.shrink(),
-                        actions: const [
-                          NotificationBell(),
-                          SizedBox(width: 8),
-                        ],
-                        trailing: const BrandLogo(compact: true),
-                      ),
-                    ),
+                    SizedBox(width: SuperAdminSidebar.width, child: sidebar),
                     Expanded(child: mainContent),
                   ],
                 ),

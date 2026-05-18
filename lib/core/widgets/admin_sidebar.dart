@@ -10,7 +10,6 @@ import '../l10n/l10n_extension.dart';
 import '../theme/app_color_scheme.dart';
 import '../theme/app_design.dart';
 import 'app_language_menu_row.dart';
-import 'brand_logo.dart';
 
 /// Permanent left navigation (desktop) or drawer content (mobile).
 class AdminSidebar extends ConsumerWidget {
@@ -52,23 +51,14 @@ class AdminSidebar extends ConsumerWidget {
     return Material(
       color: sidebarBg,
       child: SafeArea(
+        top: false,
         right: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
-              child: Row(
-                children: [
-                  Icon(Icons.shopping_cart_outlined, color: colors.accent, size: 22),
-                  const SizedBox(width: 10),
-                  const Expanded(child: BrandLogo(compact: true)),
-                ],
-              ),
-            ),
-            if (business != null)
+            if (business != null && onCloseDrawer == null)
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 16, 12),
+                padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
                 child: Text(
                   business.name,
                   maxLines: 1,
@@ -82,7 +72,12 @@ class AdminSidebar extends ConsumerWidget {
               ),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.fromLTRB(
+                  12,
+                  business != null && onCloseDrawer == null ? 0 : 16,
+                  12,
+                  0,
+                ),
                 children: [
                   for (final item in navRoutes)
                     _NavTile(

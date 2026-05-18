@@ -13,7 +13,10 @@ import 'create_business_dialog.dart';
 
 /// Switch active store or create one from the app bar.
 class BusinessSwitcher extends ConsumerWidget {
-  const BusinessSwitcher({super.key});
+  const BusinessSwitcher({super.key, this.compact = false, this.expand = false});
+
+  final bool compact;
+  final bool expand;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +31,7 @@ class BusinessSwitcher extends ConsumerWidget {
     final canCreateMore = quotaAsync.valueOrNull?.canCreateMore ?? true;
 
     return businessesAsync.when(
-      loading: () => const _SwitcherButton(label: '…'),
+      loading: () => _SwitcherButton(label: '…', compact: compact, expand: expand),
       error: (_, __) => const SizedBox.shrink(),
       data: (businesses) {
         if (businesses.isEmpty) {
@@ -54,7 +57,13 @@ class BusinessSwitcher extends ConsumerWidget {
           return _SwitcherButton(
             label: activeName,
             showMenuIcon: false,
-            leading: Icon(Icons.storefront_outlined, size: 16, color: context.appColors.accent),
+            compact: compact,
+            expand: expand,
+            leading: Icon(
+              Icons.storefront_outlined,
+              size: compact ? 14 : 16,
+              color: context.appColors.accent,
+            ),
           );
         }
 
@@ -158,7 +167,13 @@ class BusinessSwitcher extends ConsumerWidget {
           },
           child: _SwitcherButton(
             label: activeName,
-            leading: Icon(Icons.storefront_outlined, size: 16, color: context.appColors.accent),
+            compact: compact,
+            expand: expand,
+            leading: Icon(
+              Icons.storefront_outlined,
+              size: compact ? 14 : 16,
+              color: context.appColors.accent,
+            ),
           ),
         );
       },
@@ -171,28 +186,39 @@ class _SwitcherButton extends StatelessWidget {
     required this.label,
     this.showMenuIcon = true,
     this.leading,
+    this.compact = false,
+    this.expand = false,
   });
 
   final String label;
   final bool showMenuIcon;
   final Widget? leading;
+  final bool compact;
+  final bool expand;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        border: Border.all(color: colors.cardBorder),
-        borderRadius: BorderRadius.circular(10),
-        color: colors.surface,
+      width: expand ? double.infinity : null,
+      padding: EdgeInsets.symmetric(
+        horizontal: compact ? 8 : 10,
+        vertical: compact ? 4 : 6,
       ),
+      decoration: compact
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: colors.cardBorder),
+              borderRadius: BorderRadius.circular(10),
+              color: colors.surface,
+            ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: expand ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
         children: [
           if (leading != null) ...[
             leading!,
-            const SizedBox(width: 6),
+            SizedBox(width: compact ? 4 : 6),
           ],
           Flexible(
             child: Text(
@@ -200,15 +226,19 @@ class _SwitcherButton extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.inter(
-                fontSize: 13,
+                fontSize: compact ? 12 : 13,
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,
               ),
             ),
           ),
           if (showMenuIcon) ...[
-            const SizedBox(width: 4),
-            Icon(Icons.arrow_drop_down, size: 20, color: colors.textMuted),
+            SizedBox(width: compact ? 2 : 4),
+            Icon(
+              Icons.arrow_drop_down,
+              size: compact ? 18 : 20,
+              color: colors.textMuted,
+            ),
           ],
         ],
       ),

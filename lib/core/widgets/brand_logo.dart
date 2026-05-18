@@ -53,7 +53,7 @@ class BrandLogo extends StatelessWidget {
     if (logoOnly || isMobile || compact) {
       final isHeader = compact || logoOnly || isMobile;
       final offsetX = isHeader && !isMobile ? AppBranding.headerLogoVisualOffsetX : 0.0;
-      return Transform.translate(
+      final logo = Transform.translate(
         offset: Offset(offsetX, 0),
         child: Align(
           alignment: Alignment.centerLeft,
@@ -63,6 +63,12 @@ class BrandLogo extends StatelessWidget {
             compactHeader: isHeader && isMobile,
           ),
         ),
+      );
+      if (!isMobile) return logo;
+      return FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: logo,
       );
     }
 

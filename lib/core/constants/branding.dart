@@ -14,8 +14,8 @@ abstract final class AppBranding {
   /// Header wordmark width multiplier (natural aspect × this).
   static const double headerLogoWidthScale = 1.55;
 
-  static const double headerLogoHeightMobile = 26;
-  static const double headerLogoHeightDesktop = 30;
+  static const double headerLogoHeightMobile = 18;
+  static const double headerLogoHeightDesktop = 26;
 
   /// Pulls the wordmark left to align with shell edge (asset has side padding).
   static const double headerLogoVisualOffsetX = -28;
