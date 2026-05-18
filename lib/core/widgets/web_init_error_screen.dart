@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/app_constants.dart';
+import '../utils/open_dashboard_url.dart';
 import '../utils/page_reload.dart';
 import '../utils/web_boot_overlay.dart';
 
@@ -56,27 +58,48 @@ class _WebInitErrorScreenState extends State<WebInitErrorScreen> {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'iPhone checklist:\n'
-                  '• Wi‑Fi (not mobile data only)\n'
-                  '• Turn off Private Browsing\n'
-                  '• Safari or Chrome — full browser, not in-app link\n'
-                  '• Google Cloud: allow https://kresha325.github.io/* on API key\n'
-                  '• Firebase Auth: add kresha325.github.io to authorized domains',
+                  'Open in browser (no * in address bar):',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.45),
+                  style: TextStyle(color: Colors.white70, fontSize: 13),
+                ),
+                const SizedBox(height: 8),
+                SelectableText(
+                  '${AppConstants.dashboardWebUrl}/',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xFF2EC4C6), fontSize: 14),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Firebase setup (Google Cloud, not Chrome):\n'
+                  '• API key referrers: https://kresha325.github.io/*\n'
+                  '• Auth domain: kresha325.github.io\n'
+                  '• Wi‑Fi, no Private Browsing',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white54, fontSize: 12, height: 1.45),
                 ),
                 const Spacer(),
-                if (widget.onRetry != null)
-                  FilledButton(
+                FilledButton(
+                  onPressed: openDashboardUrl,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFF2EC4C6),
+                    foregroundColor: const Color(0xFF0F1A33),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: const Text('Open correct address'),
+                ),
+                if (widget.onRetry != null) ...[
+                  const SizedBox(height: 10),
+                  OutlinedButton(
                     onPressed: widget.onRetry,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF2EC4C6),
-                      foregroundColor: const Color(0xFF0F1A33),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFF2EC4C6),
+                      side: const BorderSide(color: Color(0xFF2EC4C6)),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     child: const Text('Try again'),
                   ),
-                if (widget.onRetry != null) const SizedBox(height: 10),
+                ],
+                const SizedBox(height: 10),
                 OutlinedButton(
                   onPressed: reloadPage,
                   style: OutlinedButton.styleFrom(

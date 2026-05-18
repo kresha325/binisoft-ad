@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../firebase_options.dart';
 import '../bootstrap/firebase_web_config.dart';
 import '../constants/app_constants.dart';
+import '../utils/open_dashboard_url.dart';
 import '../utils/page_reload.dart';
 import '../utils/web_boot_overlay.dart';
 import 'web_init_error_screen.dart';
@@ -169,7 +170,7 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
 
   @override
   Widget build(BuildContext context) {
-    final path = Uri.base.path;
+    const fullUrl = '${AppConstants.dashboardWebUrl}/';
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -186,21 +187,43 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
                   'Connecting… ($_seconds s)',
                   style: const TextStyle(color: Colors.white70, fontSize: 15),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  path,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white38, fontSize: 11),
+                const SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A2B56),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Color(0xFF2EC4C6), width: 0.5),
+                  ),
+                  child: SelectableText(
+                    fullUrl,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Color(0xFF2EC4C6),
+                      fontSize: 13,
+                      height: 1.35,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  'Use full URL:\n${AppConstants.dashboardWebUrl}/\n'
-                  'Wi‑Fi · not Private Browsing',
+                const Text(
+                  'Wi‑Fi · not Private Browsing\n'
+                  '(Do not type * in the address bar)',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white54, fontSize: 13),
+                  style: TextStyle(color: Colors.white54, fontSize: 12),
+                ),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: openDashboardUrl,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFF2EC4C6),
+                    foregroundColor: const Color(0xFF0F1A33),
+                  ),
+                  child: const Text('Open correct address'),
                 ),
                 if (_seconds >= 6 && widget.onRetry != null) ...[
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                   TextButton(
                     onPressed: widget.onRetry,
                     child: const Text(
@@ -209,7 +232,6 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 8),
                 TextButton(
                   onPressed: reloadPage,
                   child: const Text(
