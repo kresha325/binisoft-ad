@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 
+import 'product_image.dart';
+
 enum ProductStatus { draft, active, archived }
+
+const int kMaxProductImages = 10;
 
 class Product extends Equatable {
   const Product({
@@ -12,13 +16,18 @@ class Product extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     this.description,
+    this.seoTitle,
+    this.seoDescription,
     this.categoryIds = const [],
-    this.imageUrls = const [],
+    this.images = const [],
     this.basePrice,
     this.baseQuantity = 0,
     this.attributeData = const {},
     this.nameI18n = const {},
     this.descriptionI18n = const {},
+    this.seoTitleI18n = const {},
+    this.seoDescriptionI18n = const {},
+    this.localizedSlugs = const {},
   });
 
   final String id;
@@ -29,10 +38,19 @@ class Product extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? description;
+  final String? seoTitle;
+  final String? seoDescription;
   final Map<String, String> nameI18n;
   final Map<String, String> descriptionI18n;
+  final Map<String, String> seoTitleI18n;
+  final Map<String, String> seoDescriptionI18n;
+  final Map<String, String> localizedSlugs;
   final List<String> categoryIds;
-  final List<String> imageUrls;
+  final List<ProductImage> images;
+
+  /// Active images only (public API & shop).
+  List<String> get imageUrls =>
+      images.where((i) => i.active).map((i) => i.url).toList();
   final double? basePrice;
   final int baseQuantity;
   final Map<String, dynamic> attributeData;
@@ -47,12 +65,17 @@ class Product extends Equatable {
         createdAt,
         updatedAt,
         description,
+        seoTitle,
+        seoDescription,
         categoryIds,
-        imageUrls,
+        images,
         basePrice,
         baseQuantity,
         attributeData,
         nameI18n,
         descriptionI18n,
+        seoTitleI18n,
+        seoDescriptionI18n,
+        localizedSlugs,
       ];
 }

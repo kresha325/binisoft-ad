@@ -28,17 +28,21 @@ class SuperAdminSegmentTabs extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppDesign.radiusMd),
             border: Border.all(color: colors.cardBorder),
           ),
-          child: Row(
-            children: [
-              for (var i = 0; i < labels.length; i++)
-                Expanded(
-                  child: _Segment(
-                    label: labels[i],
-                    selected: controller.index == i,
-                    onTap: () => controller.animateTo(i),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (var i = 0; i < labels.length; i++)
+                  Padding(
+                    padding: EdgeInsets.only(right: i < labels.length - 1 ? 4 : 0),
+                    child: _Segment(
+                      label: labels[i],
+                      selected: controller.index == i,
+                      onTap: () => controller.animateTo(i),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -70,7 +74,7 @@ class _Segment extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDesign.radiusSm),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           child: Text(
             label,
             textAlign: TextAlign.center,

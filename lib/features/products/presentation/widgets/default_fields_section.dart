@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/utils/auth_error_message.dart';
@@ -56,10 +57,10 @@ class _DefaultFieldsSectionState extends ConsumerState<DefaultFieldsSection> {
     final attributesAsync = ref.watch(attributesListProvider);
     final colors = context.appColors;
 
+    final l10n = context.l10n;
     return AppSectionCard(
-      title: 'Default fields',
-      subtitle:
-          'Select fields to use on products. Selected fields are required when adding or editing a product.',
+      title: l10n.defaultFieldsTitle,
+      subtitle: l10n.defaultFieldsSubtitle,
       icon: Icons.checklist_rounded,
       padding: const EdgeInsets.fromLTRB(20, 22, 20, 18),
       child: attributesAsync.when(
@@ -129,7 +130,7 @@ class _DefaultFieldChip extends StatelessWidget {
           if (selected) ...[
             const SizedBox(width: 4),
             Text(
-              '• required',
+              context.l10n.defaultFieldRequired,
               style: GoogleFonts.inter(fontSize: 11, color: colors.success),
             ),
           ],

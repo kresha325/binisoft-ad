@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/business_plans.dart';
 import '../../../../core/constants/payment_config.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/utils/auth_error_message.dart';
 import '../../../../core/utils/slug.dart';
@@ -20,12 +21,13 @@ import '../../../products/presentation/providers/products_providers.dart';
 import '../providers/business_providers.dart';
 
 Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async {
+  final l10n = context.l10n;
   final quota = await ref.read(businessQuotaProvider.future);
   if (!quota.canCreateMore) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Business limit reached (${quota.max} on your plan).'),
+          content: Text(l10n.createStoreQuotaSnack(quota.max)),
           backgroundColor: Colors.orange,
         ),
       );
@@ -34,21 +36,25 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
   }
   if (!context.mounted) return;
 
+  final user = ref.read(authStateProvider).valueOrNull;
+  final plan = user != null
+      ? BusinessPlan.fromMaxProducts(user.maxProducts)
+      : BusinessPlan.defaultPlan;
+
   final nameController = TextEditingController();
   final slugController = TextEditingController();
   var slugManual = false;
 
   final formOk = await showAppFormDialog<bool>(
     context: context,
-    title: 'Create new business (${quota.owned + 1}/${quota.max})',
-    saveLabel: 'Continue to payment',
+    title: l10n.createStoreDialogTitle(quota.owned + 1, quota.max),
+    saveLabel: l10n.createStoreContinuePayment,
     child: StatefulBuilder(
       builder: (context, setState) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Each business requires activation payment (${BusinessPlan.defaultPlan.registrationPriceLabel}, '
-            '1st month included). An invoice will be saved to your account.',
+            l10n.createStoreDialogIntro(plan.registrationPriceLabel),
             style: GoogleFonts.inter(
               fontSize: 12,
               color: context.appColors.textMuted,
@@ -57,7 +63,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
           ),
           const SizedBox(height: 16),
           AppTextField(
-            label: 'Business Name *',
+            label: l10n.businessNameLabel,
             controller: nameController,
             onChanged: (v) {
               if (!slugManual) slugController.text = slugify(v);
@@ -65,9 +71,9 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
           ),
           const SizedBox(height: 16),
           AppTextField(
-            label: 'URL Slug *',
+            label: l10n.businessSlugLabel,
             controller: slugController,
-            helperText: 'Used for public API: /api/public/{slug}/products',
+            helperText: l10n.businessSlugHelper,
             onChanged: (_) => slugManual = true,
           ),
         ],
@@ -91,10 +97,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
   nameController.dispose();
   slugController.dispose();
 
-  final user = ref.read(authStateProvider).valueOrNull;
   if (user == null) return;
-
-  final plan = BusinessPlan.fromMaxProducts(user.maxProducts);
 
   final paid = await showNewBusinessPaymentModal(
     context,
@@ -121,11 +124,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
     } catch (_) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Business created, but invoice could not be saved. Check Billing & invoices.',
-            ),
-          ),
+          SnackBar(content: Text(l10n.businessCreatedInvoiceFailed)),
         );
       }
     }
@@ -141,7 +140,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
 
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Business created · invoice saved')),
+      SnackBar(content: Text(l10n.createStoreSuccess)),
     );
     context.go('/dashboard');
   } catch (e) {

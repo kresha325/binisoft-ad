@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/i18n/localized_text.dart';
+import '../../../../core/i18n/catalog_localized_content.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/utils/auth_error_message.dart';
-import '../../../../core/utils/slug.dart';
+import '../../../../core/utils/internal_slug.dart';
 import '../../../../core/widgets/app_form_dialog.dart';
+import '../../../../core/widgets/internal_slug_field.dart';
+import '../../../../core/widgets/localized_catalog_content_editor.dart';
+import '../../../../core/widgets/localized_slugs_editor.dart';
 import '../../../../core/widgets/localized_fields_editor.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/presentation/providers/business_locales_provider.dart';
@@ -21,18 +25,29 @@ Future<void> showCategoryDialog(
 }) async {
   final isEdit = category != null;
   final locales = ref.read(businessLocalesProvider);
-  var nameValues = LocalizedText.initialValues(
+  var content = CatalogLocalizedContent.initial(
     defaultLocale: locales.defaultLocale,
     enabledLocales: locales.enabledLocales,
-    i18n: category?.nameI18n,
-    primary: category?.name,
+    nameI18n: category?.nameI18n,
+    descriptionI18n: category?.descriptionI18n,
+    seoTitleI18n: category?.seoTitleI18n,
+    seoDescriptionI18n: category?.seoDescriptionI18n,
+    primaryName: category?.name,
+    primaryDescription: category?.description,
+    primarySeoTitle: category?.seoTitle,
+    primarySeoDescription: category?.seoDescription,
   );
-  var descValues = LocalizedText.initialValues(
-    defaultLocale: locales.defaultLocale,
-    enabledLocales: locales.enabledLocales,
-    i18n: category?.descriptionI18n,
-    primary: category?.description,
-  );
+
+  final slugController = TextEditingController(text: category?.slug ?? '');
+  var slugManual = isEdit;
+  var localizedSlugs = Map<String, String>.from(category?.localizedSlugs ?? {});
+
+  void maybeSuggestSlug(void Function(void Function()) setState) {
+    if (isEdit || slugManual) return;
+    final name = content.name[locales.defaultLocale]?.trim() ?? '';
+    if (name.isEmpty) return;
+    setState(() => slugController.text = normalizeInternalSlug(name));
+  }
 
   final ok = await showAppFormDialog<bool>(
     context: context,
@@ -41,22 +56,42 @@ Future<void> showCategoryDialog(
     child: Consumer(
       builder: (context, ref, _) {
         final localeConfig = ref.watch(businessLocalesProvider);
+        final businessId = ref.watch(currentBusinessIdProvider);
+        if (businessId == null) {
+          return const SizedBox.shrink();
+        }
+
         return StatefulBuilder(
           builder: (context, setState) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              LocalizedFieldsEditor(
-                label: 'Name',
-                enabledLocales: localeConfig.enabledLocales,
-                values: nameValues,
-                onChanged: (v) => setState(() => nameValues = v),
+              InternalSlugField(
+                controller: slugController,
+                readOnly: isEdit,
+                onManualEdit: () => slugManual = true,
               ),
-              LocalizedFieldsEditor(
-                label: 'Description',
+              const SizedBox(height: 8),
+              LocalizedSlugsEditor(
+                internalSlug: normalizeInternalSlug(slugController.text),
+                defaultLocale: localeConfig.defaultLocale,
                 enabledLocales: localeConfig.enabledLocales,
-                values: descValues,
-                multiline: true,
-                onChanged: (v) => setState(() => descValues = v),
+                values: localizedSlugs,
+                onChanged: (v) => setState(() => localizedSlugs = v),
+              ),
+              const SizedBox(height: 16),
+              LocalizedCatalogContentEditor(
+                businessId: businessId,
+                defaultLocale: localeConfig.defaultLocale,
+                enabledLocales: localeConfig.enabledLocales,
+                content: content,
+                nameLabel: 'Name',
+                descriptionLabel: 'Description',
+                onChanged: (next) {
+                  setState(() {
+                    content = next;
+                    maybeSuggestSlug(setState);
+                  });
+                },
               ),
             ],
           ),
@@ -65,8 +100,10 @@ Future<void> showCategoryDialog(
     ),
     onSave: () async {
       final localeConfig = ref.read(businessLocalesProvider);
+      final l10n = context.l10n;
+
       final nameError = validateLocalizedRequired(
-        values: nameValues,
+        values: content.name,
         defaultLocale: localeConfig.defaultLocale,
         fieldLabel: 'Name',
       );
@@ -79,51 +116,87 @@ Future<void> showCategoryDialog(
         return false;
       }
 
+      final slugError = validateInternalSlugField(slugController.text.trim());
+      if (slugError != null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(slugError), backgroundColor: Colors.red),
+          );
+        }
+        return false;
+      }
+
       final businessId = ref.read(currentBusinessIdProvider);
       if (businessId == null) return false;
 
-      final packedName = LocalizedText.packForSave(
+      final internalSlug = normalizeInternalSlug(slugController.text.trim());
+      final repo = ref.read(categoryRepositoryProvider);
+
+      final taken = await repo.isSlugTaken(
+        businessId: businessId,
+        slug: internalSlug,
+        excludeCategoryId: category?.id,
+      );
+      if (taken) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.internalSlugTaken), backgroundColor: Colors.red),
+          );
+        }
+        return false;
+      }
+
+      final packed = content.packForSave(
         defaultLocale: localeConfig.defaultLocale,
         enabledLocales: localeConfig.enabledLocales,
-        values: nameValues,
       );
-      final packedDesc = LocalizedText.packForSave(
-        defaultLocale: localeConfig.defaultLocale,
-        enabledLocales: localeConfig.enabledLocales,
-        values: descValues,
-      );
-      final name = packedName.primary;
+      final name = packed.name.primary;
       final description =
-          packedDesc.primary.isEmpty ? null : packedDesc.primary;
+          packed.description.primary.isEmpty ? null : packed.description.primary;
+      final seoTitle =
+          packed.seoTitle.primary.isEmpty ? null : packed.seoTitle.primary;
+      final seoDescription = packed.seoDescription.primary.isEmpty
+          ? null
+          : packed.seoDescription.primary;
 
       try {
         final editing = category;
         if (isEdit && editing != null) {
-          await ref.read(categoryRepositoryProvider).update(
-                businessId: businessId,
-                category: Category(
-                  id: editing.id,
-                  businessId: businessId,
-                  name: name,
-                  slug: slugify(name),
-                  order: editing.order,
-                  parentId: editing.parentId,
-                  description: description,
-                  nameI18n: packedName.i18n,
-                  descriptionI18n: packedDesc.i18n,
-                ),
-              );
+          await repo.update(
+            businessId: businessId,
+            category: Category(
+              id: editing.id,
+              businessId: businessId,
+              name: name,
+              slug: editing.slug,
+              order: editing.order,
+              parentId: editing.parentId,
+              description: description,
+              seoTitle: seoTitle,
+              seoDescription: seoDescription,
+              nameI18n: packed.name.i18n,
+              descriptionI18n: packed.description.i18n,
+              seoTitleI18n: packed.seoTitle.i18n,
+              seoDescriptionI18n: packed.seoDescription.i18n,
+              localizedSlugs: localizedSlugs,
+            ),
+          );
         } else {
-          final existing =
-              await ref.read(categoryRepositoryProvider).list(businessId: businessId);
-          await ref.read(categoryRepositoryProvider).create(
-                businessId: businessId,
-                name: name,
-                description: description,
-                order: existing.length,
-                nameI18n: packedName.i18n,
-                descriptionI18n: packedDesc.i18n,
-              );
+          final existing = await repo.list(businessId: businessId);
+          await repo.create(
+            businessId: businessId,
+            name: name,
+            slug: internalSlug,
+            description: description,
+            seoTitle: seoTitle,
+            seoDescription: seoDescription,
+            order: existing.length,
+            nameI18n: packed.name.i18n,
+            descriptionI18n: packed.description.i18n,
+            seoTitleI18n: packed.seoTitle.i18n,
+            seoDescriptionI18n: packed.seoDescription.i18n,
+            localizedSlugs: localizedSlugs,
+          );
         }
         return true;
       } catch (e) {
@@ -136,6 +209,8 @@ Future<void> showCategoryDialog(
       }
     },
   );
+
+  slugController.dispose();
 
   if (ok == true && context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(

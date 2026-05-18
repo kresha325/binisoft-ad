@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/i18n/app_locales.dart';
+import 'site_config.dart';
+import 'website_plan.dart';
 
 class Business extends Equatable {
   const Business({
@@ -11,10 +13,21 @@ class Business extends Equatable {
     this.slug,
     this.description,
     this.logoUrl,
+    this.coverImageUrl,
+    this.location,
+    this.website,
     this.backgroundPresetId,
     this.backgroundImageUrl,
     this.backgroundOverlayOpacity,
     this.orderPhone,
+    this.siteTemplateId,
+    this.siteDeployUrl,
+    this.siteCustomDomain,
+    this.siteDeployStatus,
+    this.siteLastDeployAt,
+    this.siteConfig,
+    this.websitePlan,
+    this.professionalWebsiteRequestedAt,
     this.active = true,
     this.defaultLocale = AppLocales.defaultLocale,
     this.locales = AppLocales.all,
@@ -30,10 +43,21 @@ class Business extends Equatable {
   final String? slug;
   final String? description;
   final String? logoUrl;
+  final String? coverImageUrl;
+  final String? location;
+  final String? website;
   final String? backgroundPresetId;
   final String? backgroundImageUrl;
   final double? backgroundOverlayOpacity;
   final String? orderPhone;
+  final String? siteTemplateId;
+  final String? siteDeployUrl;
+  final String? siteCustomDomain;
+  final String? siteDeployStatus;
+  final DateTime? siteLastDeployAt;
+  final SiteConfig? siteConfig;
+  final WebsitePlan? websitePlan;
+  final DateTime? professionalWebsiteRequestedAt;
   final String defaultLocale;
   final List<String> locales;
   final Map<String, String> nameI18n;
@@ -48,10 +72,21 @@ class Business extends Equatable {
         slug,
         description,
         logoUrl,
+        coverImageUrl,
+        location,
+        website,
         backgroundPresetId,
         backgroundImageUrl,
         backgroundOverlayOpacity,
         orderPhone,
+        siteTemplateId,
+        siteDeployUrl,
+        siteCustomDomain,
+        siteDeployStatus,
+        siteLastDeployAt,
+        siteConfig,
+        websitePlan,
+        professionalWebsiteRequestedAt,
         active,
         defaultLocale,
         locales,

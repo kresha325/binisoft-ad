@@ -131,6 +131,18 @@ class MediaUploadService {
           },
         );
       }
+      if (storagePath.contains('/cover/')) {
+        final businessId = storagePath.split('/')[1];
+        return _uploadViaHttp(
+          endpoint: 'uploadBusinessCoverHttp',
+          payload: {
+            'businessId': businessId,
+            'fileName': compressed.fileName,
+            'contentType': compressed.contentType,
+            'base64': base64Encode(compressed.bytes),
+          },
+        );
+      }
     }
 
     final ref = _storage.ref(storagePath);
@@ -204,6 +216,52 @@ class MediaUploadService {
 
     final path =
         '${StoragePaths.businessRoot(businessId)}/logo/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
+    return uploadPlatformFile(storagePath: path, file: file);
+  }
+
+  Future<String> uploadSiteAsset({
+    required String businessId,
+    required PlatformFile file,
+  }) async {
+    if (kIsWeb) {
+      final bytes = await readPlatformFileBytes(file);
+      final compressed = await compressForUpload(bytes, file.name);
+      return _uploadViaHttp(
+        endpoint: 'uploadSiteAssetHttp',
+        payload: {
+          'businessId': businessId,
+          'fileName': compressed.fileName,
+          'contentType': compressed.contentType,
+          'base64': base64Encode(compressed.bytes),
+        },
+      );
+    }
+
+    final path =
+        '${StoragePaths.businessRoot(businessId)}/site/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
+    return uploadPlatformFile(storagePath: path, file: file);
+  }
+
+  Future<String> uploadBusinessCover({
+    required String businessId,
+    required PlatformFile file,
+  }) async {
+    if (kIsWeb) {
+      final bytes = await readPlatformFileBytes(file);
+      final compressed = await compressForUpload(bytes, file.name);
+      return _uploadViaHttp(
+        endpoint: 'uploadBusinessCoverHttp',
+        payload: {
+          'businessId': businessId,
+          'fileName': compressed.fileName,
+          'contentType': compressed.contentType,
+          'base64': base64Encode(compressed.bytes),
+        },
+      );
+    }
+
+    final path =
+        '${StoragePaths.businessRoot(businessId)}/cover/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
     return uploadPlatformFile(storagePath: path, file: file);
   }
 

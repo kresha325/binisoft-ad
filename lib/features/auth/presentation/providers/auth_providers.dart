@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/business_plans.dart';
-import '../../../../core/providers/email_providers.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../business/domain/entities/business.dart';
 import '../../../notifications/data/models/notification_model.dart';
 import '../../../notifications/data/notification_messages.dart';
 import '../../../notifications/presentation/providers/notification_providers.dart';
+import '../../../team/data/staff_api_service.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../domain/entities/app_user.dart';
 
@@ -37,14 +37,6 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     try {
       final user = await _repo.registerAdmin(input);
       await _createNotification(NotificationMessages.welcome());
-      await _sendEmail('welcome', {
-        if (user.displayName != null && user.displayName!.isNotEmpty)
-          'name': user.displayName!,
-      });
-      if (!user.isSuperAdmin) {
-        // Platform admins are notified by Cloud Function onUserCreatedNotifySuperadmins.
-        await _sendEmail('platform_new_user', {'email': user.email});
-      }
       state = const AsyncData(null);
       return user;
     } catch (e, st) {
@@ -90,8 +82,6 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
           businessId: business.id,
         ),
       );
-      // Platform admins are notified by Cloud Function onBusinessCreatedNotifySuperadmins.
-      await _sendEmail('business_created', {'businessName': business.name});
       state = const AsyncData(null);
       return business;
     } catch (e, st) {
@@ -107,8 +97,29 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
       await _createNotification(
         NotificationMessages.planUpdated(planLabel: plan.title),
       );
-      await _sendEmail('plan_updated', {'planLabel': plan.title});
       state = const AsyncData(null);
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      rethrow;
+    }
+  }
+
+  Future<({AppUser user, String businessName})> registerStaffAndAcceptInvite({
+    required RegisterStaffInput input,
+    required String inviteCode,
+    required StaffApiService staffApi,
+  }) async {
+    state = const AsyncLoading();
+    try {
+      final user = await _repo.registerStaff(input);
+      final accept = await staffApi.acceptInvite(code: inviteCode, email: user.email);
+      await _createNotification(NotificationMessages.welcome());
+      state = const AsyncData(null);
+      final refreshed = await _repo.getCurrentAppUser() ?? user;
+      return (
+        user: refreshed,
+        businessName: accept['businessName'] as String? ?? '',
+      );
     } catch (e, st) {
       state = AsyncError(e, st);
       rethrow;
@@ -132,17 +143,6 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  Future<void> _sendEmail(
-    String template,
-    Map<String, String> variables,
-  ) async {
-    try {
-      await _ref.read(emailDispatchServiceProvider).send(
-            template: template,
-            variables: variables,
-          );
-    } catch (_) {}
-  }
 }
 
 final authControllerProvider =

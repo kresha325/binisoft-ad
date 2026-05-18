@@ -50,6 +50,25 @@ describe('resolveOfferItemDisplay', () => {
   });
 });
 
+describe('resolveVariantPricing', () => {
+  it('applies offer percent to variant base price', () => {
+    const now = Date.now();
+    const offers = [
+      {
+        id: 'o1',
+        active: true,
+        productIds: ['p1'],
+        startsAt: { toMillis: () => now - 1000 },
+        endsAt: { toMillis: () => now + 1000 },
+        discountPercent: 50,
+      },
+    ];
+    const result = pricing.resolveVariantPricing(20, 'p1', offers);
+    assert.equal(result.unitPrice, 10);
+    assert.equal(result.onOffer, true);
+  });
+});
+
 describe('resolveProductPricing', () => {
   it('keeps product active in catalog with onOffer pricing', () => {
     const now = Date.now();

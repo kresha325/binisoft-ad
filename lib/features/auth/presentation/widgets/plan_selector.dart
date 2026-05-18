@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/business_plans.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_design.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -25,15 +26,15 @@ class PlanSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Choose your plan', style: AppTextStyles.fieldLabel(context)),
+        Text(l10n.planChooseTitle, style: AppTextStyles.fieldLabel(context)),
         const SizedBox(height: 4),
         Text(
-          '€30 + €6/month per 100 products (1st month included in registration). '
-          'Max ${BusinessPricing.maxProductsPerBusiness} products per business.',
+          l10n.planChooseSubtitle(BusinessPricing.maxProductsPerBusiness),
           style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
         ),
         const SizedBox(height: 14),
@@ -66,9 +67,7 @@ class PlanSelector extends StatelessWidget {
         if (showFooterNote) ...[
           const SizedBox(height: 12),
           Text(
-            compact
-                ? 'Billing integration coming soon. Limits apply immediately after update.'
-                : 'You can register now and use your plan limits. Billing will be enabled later.',
+            compact ? l10n.planBillingSoon : l10n.planBillingLater,
             style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.4),
           ),
         ],
@@ -92,6 +91,7 @@ class _CompactPlanCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.appColors;
     final accent = colors.accent;
+    final l10n = context.l10n;
 
     return Material(
       color: Colors.transparent,
@@ -121,7 +121,7 @@ class _CompactPlanCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${plan.title} · ${plan.maxProducts} products',
+                      l10n.planProductsCount(plan.title, plan.maxProducts),
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -149,7 +149,7 @@ class _CompactPlanCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'then ${plan.priceLabel}',
+                    l10n.planPerMonth(plan.priceLabel),
                     style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
                   ),
                 ],
@@ -228,6 +228,7 @@ class _PlanOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.appColors;
     final accent = colors.accent;
+    final l10n = context.l10n;
 
     return Material(
       color: Colors.transparent,
@@ -308,7 +309,7 @@ class _PlanOptionCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'then ${plan.priceLabel}',
+                        l10n.planPerMonth(plan.priceLabel),
                         style: GoogleFonts.inter(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,

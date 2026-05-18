@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
@@ -10,7 +11,7 @@ import '../../../products/presentation/providers/products_providers.dart';
 import '../providers/business_providers.dart';
 import 'create_business_dialog.dart';
 
-/// Switch active business or create one (no plan badge in the app bar).
+/// Switch active store or create one from the app bar.
 class BusinessSwitcher extends ConsumerWidget {
   const BusinessSwitcher({super.key});
 
@@ -20,6 +21,7 @@ class BusinessSwitcher extends ConsumerWidget {
     final businessesAsync = ref.watch(ownedBusinessesProvider);
     final quotaAsync = ref.watch(businessQuotaProvider);
     final activeId = ref.watch(currentBusinessIdProvider);
+    final l10n = context.l10n;
 
     if (user == null) return const SizedBox.shrink();
 
@@ -34,7 +36,7 @@ class BusinessSwitcher extends ConsumerWidget {
           return OutlinedButton.icon(
             onPressed: () => showCreateBusinessDialog(context, ref),
             icon: const Icon(Icons.add_business_outlined, size: 18),
-            label: const Text('Create new business'),
+            label: Text(l10n.switcherCreateStore),
             style: OutlinedButton.styleFrom(
               foregroundColor: colors.accent,
               side: BorderSide(color: colors.cardBorder),
@@ -49,11 +51,15 @@ class BusinessSwitcher extends ConsumerWidget {
         final showMenu = businesses.isNotEmpty && (businesses.length > 1 || canCreateMore);
 
         if (!showMenu && businesses.length == 1) {
-          return _SwitcherButton(label: activeName, showMenuIcon: false);
+          return _SwitcherButton(
+            label: activeName,
+            showMenuIcon: false,
+            leading: Icon(Icons.storefront_outlined, size: 16, color: context.appColors.accent),
+          );
         }
 
         return PopupMenuButton<String>(
-          tooltip: 'Switch business',
+          tooltip: l10n.switcherTooltip,
           offset: const Offset(0, 36),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onSelected: (value) async {
@@ -85,7 +91,7 @@ class BusinessSwitcher extends ConsumerWidget {
                 PopupMenuItem(
                   enabled: false,
                   child: Text(
-                    quota.label,
+                    l10n.businessesQuotaUsage(quota.owned, quota.max),
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -105,12 +111,26 @@ class BusinessSwitcher extends ConsumerWidget {
                         const SizedBox(width: 18),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: Text(
-                          b.name,
-                          style: GoogleFonts.inter(
-                            fontWeight:
-                                b.id == activeId ? FontWeight.w600 : FontWeight.w500,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              b.name,
+                              style: GoogleFonts.inter(
+                                fontWeight:
+                                    b.id == activeId ? FontWeight.w600 : FontWeight.w500,
+                              ),
+                            ),
+                            if (b.slug != null && b.slug!.isNotEmpty)
+                              Text(
+                                b.slug!,
+                                style: GoogleFonts.jetBrainsMono(
+                                  fontSize: 10,
+                                  color: colors.textMuted,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     ],
@@ -126,7 +146,7 @@ class BusinessSwitcher extends ConsumerWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Create new business (${businesses.length}/${user.maxBusinesses})',
+                          l10n.switcherMenuCreateStore(businesses.length, user.maxBusinesses),
                           style: GoogleFonts.inter(fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -136,7 +156,10 @@ class BusinessSwitcher extends ConsumerWidget {
               ],
             ];
           },
-          child: _SwitcherButton(label: activeName),
+          child: _SwitcherButton(
+            label: activeName,
+            leading: Icon(Icons.storefront_outlined, size: 16, color: context.appColors.accent),
+          ),
         );
       },
     );
@@ -144,10 +167,15 @@ class BusinessSwitcher extends ConsumerWidget {
 }
 
 class _SwitcherButton extends StatelessWidget {
-  const _SwitcherButton({required this.label, this.showMenuIcon = true});
+  const _SwitcherButton({
+    required this.label,
+    this.showMenuIcon = true,
+    this.leading,
+  });
 
   final String label;
   final bool showMenuIcon;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +190,10 @@ class _SwitcherButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (leading != null) ...[
+            leading!,
+            const SizedBox(width: 6),
+          ],
           Flexible(
             child: Text(
               label,

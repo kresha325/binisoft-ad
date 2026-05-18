@@ -57,11 +57,12 @@ List<ProductDisplayField> buildProductDisplayFields({
     fields.add(ProductDisplayField(label: 'Category', value: names));
   }
 
-  if (product.imageUrls.length > 1) {
+  if (product.images.length > 1) {
+    final active = product.imageUrls.length;
     fields.add(
       ProductDisplayField(
         label: 'Images',
-        value: '${product.imageUrls.length} image URLs',
+        value: '$active / ${product.images.length} active on shop',
       ),
     );
   }

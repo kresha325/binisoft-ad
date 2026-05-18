@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/i18n/localized_text.dart';
+import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/i18n/catalog_localized_content.dart';
 import '../../../../core/providers/firebase_providers.dart';
+import '../../../../core/widgets/localized_catalog_content_editor.dart';
+import '../../../../core/widgets/localized_slugs_editor.dart';
 import '../../../../core/widgets/localized_fields_editor.dart';
 import '../../../business/presentation/providers/business_locales_provider.dart';
 import '../../../../core/theme/app_color_scheme.dart';
@@ -12,20 +15,24 @@ import '../../../../core/theme/app_input_styles.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/services/storage_url_resolver.dart';
 import '../../../../core/utils/auth_error_message.dart';
-import '../../../../core/utils/slug.dart';
+import '../../../../core/utils/internal_slug.dart';
 import '../../../../core/widgets/app_side_sheet.dart';
+import '../../../../core/widgets/internal_slug_field.dart';
 import '../../../../core/widgets/app_switch_row.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
-import '../../../../core/widgets/image_url_upload_row.dart';
+import '../../domain/entities/product_image.dart';
+import 'product_images_editor.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../categories/domain/entities/category.dart';
 import '../../domain/entities/attribute_definition.dart';
 import '../../domain/entities/product.dart';
+import '../../domain/entities/product_variant.dart';
 import '../../domain/product_attribute_helpers.dart';
 import '../providers/attributes_providers.dart';
 import '../providers/products_providers.dart';
 import 'attribute_field_builder.dart';
+import 'product_variants_editor.dart';
 
 Future<void> showAddProductSheet(
   BuildContext context,
@@ -33,13 +40,12 @@ Future<void> showAddProductSheet(
   required List<Category> categories,
 }) async {
   final quota = ref.read(productQuotaProvider);
+  final l10n = context.l10n;
   if (!quota.canCreateMore) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Product limit reached (${quota.label}). Upgrade your plan in Settings.',
-          ),
+          content: Text(l10n.productLimitReached(quota.label)),
           backgroundColor: Colors.red,
         ),
       );
@@ -56,39 +62,52 @@ Future<void> showProductSheet(
   Product? product,
 }) async {
   final isEdit = product != null;
+  final l10n = context.l10n;
   final localesConfig = ref.read(businessLocalesProvider);
-  var nameValues = LocalizedText.initialValues(
+  List<ProductVariant> initialVariants = [];
+  final businessIdForLoad = ref.read(currentBusinessIdProvider);
+  if (isEdit && businessIdForLoad != null) {
+    initialVariants = await ref.read(variantRepositoryProvider).listByProduct(
+          businessId: businessIdForLoad,
+          productId: product.id,
+        );
+  }
+  List<VariantDraft> variantDrafts =
+      initialVariants.map(VariantDraft.fromEntity).toList();
+  var content = CatalogLocalizedContent.initial(
     defaultLocale: localesConfig.defaultLocale,
     enabledLocales: localesConfig.enabledLocales,
-    i18n: product?.nameI18n,
-    primary: product?.name,
+    nameI18n: product?.nameI18n,
+    descriptionI18n: product?.descriptionI18n,
+    seoTitleI18n: product?.seoTitleI18n,
+    seoDescriptionI18n: product?.seoDescriptionI18n,
+    primaryName: product?.name,
+    primaryDescription: product?.description,
+    primarySeoTitle: product?.seoTitle,
+    primarySeoDescription: product?.seoDescription,
   );
-  var descValues = LocalizedText.initialValues(
-    defaultLocale: localesConfig.defaultLocale,
-    enabledLocales: localesConfig.enabledLocales,
-    i18n: product?.descriptionI18n,
-    primary: product?.description,
-  );
+  final slugController = TextEditingController(text: product?.slug ?? '');
+  var slugManual = isEdit;
+  var localizedSlugs = Map<String, String>.from(product?.localizedSlugs ?? {});
   final priceController = TextEditingController(
     text: product?.basePrice?.toString() ?? '0',
   );
-  final imageUrlController = TextEditingController(
-    text: product?.imageUrls.isNotEmpty == true ? product!.imageUrls.first : '',
-  );
+  var productImages = List<ProductImage>.from(product?.images ?? []);
+  var pendingImageFiles = <PlatformFile>[];
   String? categoryId =
       product?.categoryIds.isNotEmpty == true ? product!.categoryIds.first : null;
   var active = product?.status == ProductStatus.active || product == null;
-  PlatformFile? pickedFile;
   final attributeValues = Map<String, dynamic>.from(product?.attributeData ?? {});
 
   final ok = await showAppSideSheet<bool>(
     context: context,
-    title: isEdit ? 'Edit Product' : 'Add Product',
-    saveLabel: isEdit ? 'Save Changes' : 'Save Product',
+    title: isEdit ? l10n.editProduct : l10n.addProduct,
+    saveLabel: isEdit ? l10n.saveChanges : l10n.saveProduct,
     child: Consumer(
       builder: (context, ref, _) {
         final attributesAsync = ref.watch(attributesListProvider);
         final locales = ref.watch(businessLocalesProvider);
+        final businessId = ref.watch(currentBusinessIdProvider);
 
         return attributesAsync.when(
           loading: () => const Padding(
@@ -98,19 +117,35 @@ Future<void> showProductSheet(
           error: (e, _) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 24),
             child: Text(
-              'Could not load custom fields: $e',
+              context.l10n.couldNotLoadCustomFields('$e'),
               style: GoogleFonts.inter(color: Colors.red, fontSize: 14),
             ),
           ),
           data: (allAttributes) {
             final attributes = allAttributes.where((a) => a.active).toList();
+            final selectAttributes = attributes
+                .where((a) => a.type == AttributeType.select && a.options.length >= 2)
+                .toList();
+            final productSlug = normalizeInternalSlug(slugController.text.trim());
+            final basePrice = double.tryParse(priceController.text.trim()) ?? 0;
+
+            void maybeSuggestSlug() {
+              if (isEdit || slugManual) return;
+              final name = content.name[locales.defaultLocale]?.trim() ?? '';
+              if (name.isEmpty) return;
+              slugController.text = normalizeInternalSlug(name);
+            }
+
+            if (businessId == null) {
+              return const SizedBox.shrink();
+            }
 
             return StatefulBuilder(
               builder: (context, setState) => Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Core Details',
+                    context.l10n.coreDetails,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -118,27 +153,40 @@ Future<void> showProductSheet(
                     ),
                   ),
                   const SizedBox(height: 16),
-                  LocalizedFieldsEditor(
-                    label: 'Name *',
-                    enabledLocales: locales.enabledLocales,
-                    values: nameValues,
-                    onChanged: (v) => setState(() => nameValues = v),
+                  InternalSlugField(
+                    controller: slugController,
+                    readOnly: isEdit,
+                    onManualEdit: () => slugManual = true,
+                    onChanged: (_) => setState(() {}),
                   ),
-                  LocalizedFieldsEditor(
-                    label: 'Description',
+                  const SizedBox(height: 8),
+                  LocalizedSlugsEditor(
+                    internalSlug: productSlug,
+                    defaultLocale: locales.defaultLocale,
                     enabledLocales: locales.enabledLocales,
-                    values: descValues,
-                    multiline: true,
-                    onChanged: (v) => setState(() => descValues = v),
+                    values: localizedSlugs,
+                    onChanged: (v) => setState(() => localizedSlugs = v),
+                  ),
+                  const SizedBox(height: 16),
+                  LocalizedCatalogContentEditor(
+                    businessId: businessId,
+                    defaultLocale: locales.defaultLocale,
+                    enabledLocales: locales.enabledLocales,
+                    content: content,
+                    onChanged: (next) => setState(() {
+                      content = next;
+                      maybeSuggestSlug();
+                    }),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
-                    label: 'Price',
+                    label: context.l10n.productPriceLabel,
                     controller: priceController,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: 16),
-                  Text('Category', style: AppTextStyles.fieldLabel(context)),
+                  Text(context.l10n.productCategoryLabel, style: AppTextStyles.fieldLabel(context)),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String?>(
                     initialValue: categoryId,
@@ -146,12 +194,12 @@ Future<void> showProductSheet(
                     style: AppInputStyles.fieldText(context),
                     decoration: AppInputStyles.dropdownDecoration(
                       context,
-                      hintText: 'Select',
+                      hintText: context.l10n.selectOption,
                     ),
                     items: [
                       DropdownMenuItem(
                         value: null,
-                        child: Text('Select', style: AppInputStyles.fieldText(context)),
+                        child: Text(context.l10n.selectOption, style: AppInputStyles.fieldText(context)),
                       ),
                       for (final c in categories)
                         DropdownMenuItem(
@@ -162,21 +210,32 @@ Future<void> showProductSheet(
                     onChanged: (v) => setState(() => categoryId = v),
                   ),
                   const SizedBox(height: 20),
-                  ImageUrlUploadRow(
-                    urlController: imageUrlController,
-                    onFilePicked: (f) => setState(() => pickedFile = f),
-                    fileName: pickedFile?.name,
+                  ProductImagesEditor(
+                    initialImages: productImages,
+                    onChanged: (list) => productImages = list,
+                    onPendingFilesChanged: (files) => pendingImageFiles = files,
                   ),
                   const SizedBox(height: 16),
                   AppSwitchRow(
-                    label: 'Active',
+                    label: context.l10n.productActiveLabel,
                     value: active,
                     onChanged: (v) => setState(() => active = v),
                   ),
+                  if (selectAttributes.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    ProductVariantsEditor(
+                      key: ValueKey('variants-$productSlug-${variantDrafts.length}'),
+                      selectAttributes: selectAttributes,
+                      productSlug: productSlug.isNotEmpty ? productSlug : 'product',
+                      basePrice: basePrice,
+                      initialVariants: initialVariants,
+                      onChanged: (drafts) => variantDrafts = drafts,
+                    ),
+                  ],
                   if (attributes.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     Text(
-                      'Custom Fields',
+                      context.l10n.customFieldsSection,
                       style: GoogleFonts.inter(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -216,7 +275,7 @@ Future<void> showProductSheet(
     onSave: () async {
       final locales = ref.read(businessLocalesProvider);
       final nameError = validateLocalizedRequired(
-        values: nameValues,
+        values: content.name,
         defaultLocale: locales.defaultLocale,
         fieldLabel: 'Name',
       );
@@ -231,6 +290,35 @@ Future<void> showProductSheet(
 
       final businessId = ref.read(currentBusinessIdProvider);
       if (businessId == null) return false;
+
+      final slugError = validateInternalSlugField(slugController.text.trim());
+      if (slugError != null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(slugError), backgroundColor: Colors.red),
+          );
+        }
+        return false;
+      }
+
+      final internalSlug = normalizeInternalSlug(slugController.text.trim());
+      final productRepo = ref.read(productRepositoryProvider);
+      final slugTaken = await productRepo.isSlugTaken(
+        businessId: businessId,
+        slug: internalSlug,
+        excludeProductId: product?.id,
+      );
+      if (slugTaken) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(context.l10n.internalSlugTaken),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return false;
+      }
 
       final attributes = (ref.read(attributesListProvider).valueOrNull ?? [])
           .where((a) => a.active)
@@ -251,30 +339,31 @@ Future<void> showProductSheet(
         final price = double.tryParse(priceController.text.trim()) ?? 0;
         final status = active ? ProductStatus.active : ProductStatus.draft;
         final categoryIds = categoryId != null ? [categoryId!] : <String>[];
-        final packedName = LocalizedText.packForSave(
+        final packed = content.packForSave(
           defaultLocale: locales.defaultLocale,
           enabledLocales: locales.enabledLocales,
-          values: nameValues,
         );
-        final packedDesc = LocalizedText.packForSave(
-          defaultLocale: locales.defaultLocale,
-          enabledLocales: locales.enabledLocales,
-          values: descValues,
-        );
-        final name = packedName.primary;
+        final name = packed.name.primary;
         final description =
-            packedDesc.primary.isEmpty ? null : packedDesc.primary;
+            packed.description.primary.isEmpty ? null : packed.description.primary;
+        final seoTitle =
+            packed.seoTitle.primary.isEmpty ? null : packed.seoTitle.primary;
+        final seoDescription = packed.seoDescription.primary.isEmpty
+            ? null
+            : packed.seoDescription.primary;
         final attributeData = serializeAttributeData(attributes, attributeValues);
+        final totalVariantQty =
+            variantDrafts.fold<int>(0, (sum, d) => sum + d.quantity);
 
         final editing = product;
         if (isEdit && editing != null) {
-          final imageUrls = await _resolveImageUrls(
+          final images = await _resolveProductImages(
             ref: ref,
             businessId: businessId,
             productId: editing.id,
-            existing: List<String>.from(editing.imageUrls),
-            urlField: imageUrlController.text.trim(),
-            pickedFile: pickedFile,
+            images: productImages,
+            pendingFiles: pendingImageFiles,
+            invalidUrlMessage: context.l10n.productImageInvalidUrl,
           );
 
           await ref.read(productRepositoryProvider).update(
@@ -283,42 +372,67 @@ Future<void> showProductSheet(
                   id: editing.id,
                   businessId: businessId,
                   name: name,
-                  slug: slugify(name),
+                  slug: editing.slug,
                   status: status,
                   createdAt: editing.createdAt,
                   updatedAt: DateTime.now(),
                   description: description,
+                  seoTitle: seoTitle,
+                  seoDescription: seoDescription,
                   categoryIds: categoryIds,
-                  imageUrls: imageUrls,
+                  images: images,
                   basePrice: price,
-                  baseQuantity: editing.baseQuantity,
+                  baseQuantity:
+                      variantDrafts.isEmpty ? editing.baseQuantity : totalVariantQty,
                   attributeData: attributeData,
-                  nameI18n: packedName.i18n,
-                  descriptionI18n: packedDesc.i18n,
+                  nameI18n: packed.name.i18n,
+                  descriptionI18n: packed.description.i18n,
+                  seoTitleI18n: packed.seoTitle.i18n,
+                  seoDescriptionI18n: packed.seoDescription.i18n,
+                  localizedSlugs: localizedSlugs,
                 ),
+              );
+
+          await ref.read(variantRepositoryProvider).replaceAllForProduct(
+                businessId: businessId,
+                productId: editing.id,
+                variants: variantDrafts
+                    .map(
+                      (d) => d.toEntity(
+                        productId: editing.id,
+                        businessId: businessId,
+                      ),
+                    )
+                    .toList(),
               );
         } else {
           final user = ref.read(authStateProvider).valueOrNull;
-          final created = await ref.read(productRepositoryProvider).create(
+          final created = await productRepo.create(
                 businessId: businessId,
                 maxProducts: user?.maxProducts,
                 name: name,
+                slug: internalSlug,
                 description: description,
+                seoTitle: seoTitle,
+                seoDescription: seoDescription,
                 status: status,
                 categoryIds: categoryIds,
                 basePrice: price,
                 attributeData: attributeData,
-                nameI18n: packedName.i18n,
-                descriptionI18n: packedDesc.i18n,
+                nameI18n: packed.name.i18n,
+                descriptionI18n: packed.description.i18n,
+                seoTitleI18n: packed.seoTitle.i18n,
+                seoDescriptionI18n: packed.seoDescription.i18n,
+                localizedSlugs: localizedSlugs,
               );
 
-          final imageUrls = await _resolveImageUrls(
+          final images = await _resolveProductImages(
             ref: ref,
             businessId: businessId,
             productId: created.id,
-            existing: const [],
-            urlField: imageUrlController.text.trim(),
-            pickedFile: pickedFile,
+            images: productImages,
+            pendingFiles: pendingImageFiles,
+            invalidUrlMessage: context.l10n.productImageInvalidUrl,
           );
 
           await ref.read(productRepositoryProvider).update(
@@ -327,19 +441,38 @@ Future<void> showProductSheet(
                   id: created.id,
                   businessId: businessId,
                   name: name,
-                  slug: slugify(name),
+                  slug: internalSlug,
                   status: status,
                   createdAt: created.createdAt,
                   updatedAt: DateTime.now(),
                   description: description,
+                  seoTitle: seoTitle,
+                  seoDescription: seoDescription,
                   categoryIds: categoryIds,
-                  imageUrls: imageUrls,
+                  images: images,
                   basePrice: price,
-                  baseQuantity: created.baseQuantity,
+                  baseQuantity:
+                      variantDrafts.isEmpty ? created.baseQuantity : totalVariantQty,
                   attributeData: attributeData,
-                  nameI18n: packedName.i18n,
-                  descriptionI18n: packedDesc.i18n,
+                  nameI18n: packed.name.i18n,
+                  descriptionI18n: packed.description.i18n,
+                  seoTitleI18n: packed.seoTitle.i18n,
+                  seoDescriptionI18n: packed.seoDescription.i18n,
+                  localizedSlugs: localizedSlugs,
                 ),
+              );
+
+          await ref.read(variantRepositoryProvider).replaceAllForProduct(
+                businessId: businessId,
+                productId: created.id,
+                variants: variantDrafts
+                    .map(
+                      (d) => d.toEntity(
+                        productId: created.id,
+                        businessId: businessId,
+                      ),
+                    )
+                    .toList(),
               );
         }
 
@@ -355,41 +488,52 @@ Future<void> showProductSheet(
     },
   );
 
+  slugController.dispose();
   priceController.dispose();
-  imageUrlController.dispose();
 
   if (ok == true && context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(isEdit ? 'Product updated' : 'Product saved')),
+      SnackBar(content: Text(isEdit ? l10n.productUpdated : l10n.productSaved)),
     );
   }
 }
 
-Future<List<String>> _resolveImageUrls({
+Future<List<ProductImage>> _resolveProductImages({
   required WidgetRef ref,
   required String businessId,
   required String productId,
-  required List<String> existing,
-  required String urlField,
-  required PlatformFile? pickedFile,
+  required List<ProductImage> images,
+  required List<PlatformFile> pendingFiles,
+  required String invalidUrlMessage,
 }) async {
-  if (pickedFile != null) {
-    final downloadUrl = await ref.read(mediaUploadServiceProvider).uploadProductImage(
-          businessId: businessId,
-          productId: productId,
-          file: pickedFile,
-        );
-    return [downloadUrl];
-  }
-  if (urlField.isNotEmpty) {
-    final resolved = await ref.read(mediaUploadServiceProvider).resolveImageUrl(urlField);
-    if (StorageUrlResolver.isFirebaseStorageUrl(resolved) &&
-        !StorageUrlResolver.hasDownloadToken(resolved)) {
-      throw StateError('Invalid image URL. Upload the file again or use a public https URL.');
+  final upload = ref.read(mediaUploadServiceProvider);
+  final resolved = <ProductImage>[];
+
+  for (final img in images) {
+    var url = img.url.trim();
+    if (url.isEmpty) continue;
+    if (!url.startsWith('http')) {
+      url = await upload.resolveImageUrl(url);
     }
-    return [resolved];
+    if (StorageUrlResolver.isFirebaseStorageUrl(url) &&
+        !StorageUrlResolver.hasDownloadToken(url)) {
+      throw StateError(invalidUrlMessage);
+    }
+    resolved.add(img.copyWith(url: url));
+    if (resolved.length >= kMaxProductImages) break;
   }
-  return existing;
+
+  for (final file in pendingFiles) {
+    if (resolved.length >= kMaxProductImages) break;
+    final downloadUrl = await upload.uploadProductImage(
+      businessId: businessId,
+      productId: productId,
+      file: file,
+    );
+    resolved.add(ProductImage(url: downloadUrl, active: true));
+  }
+
+  return resolved;
 }
 
 Future<void> deleteProduct(
@@ -397,10 +541,11 @@ Future<void> deleteProduct(
   WidgetRef ref,
   Product product,
 ) async {
+  final l10n = context.l10n;
   final confirmed = await showConfirmDeleteDialog(
     context,
-    title: 'Delete product',
-    message: 'Delete "${product.name}"? This cannot be undone.',
+    title: l10n.deleteProductTitle,
+    message: l10n.deleteProductMessage(product.name),
   );
   if (!confirmed || !context.mounted) return;
 
@@ -408,13 +553,17 @@ Future<void> deleteProduct(
   if (businessId == null) return;
 
   try {
+    await ref.read(variantRepositoryProvider).deleteAllForProduct(
+          businessId: businessId,
+          productId: product.id,
+        );
     await ref.read(productRepositoryProvider).delete(
           businessId: businessId,
           productId: product.id,
         );
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product deleted')),
+        SnackBar(content: Text(l10n.productDeleted)),
       );
     }
   } catch (e) {

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/superadmin_config.dart';
+import '../constants/user_roles.dart';
 import '../../features/auth/domain/entities/app_user.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 
@@ -18,8 +19,11 @@ void navigateAfterAuth(
     return;
   }
 
+  final isStaff =
+      user.role == UserRole.manager || user.role == UserRole.employee;
+
   if (user.businessId.isEmpty) {
-    router.go('/businesses');
+    router.go(isStaff ? '/login' : '/businesses');
   } else {
     router.go('/dashboard');
   }

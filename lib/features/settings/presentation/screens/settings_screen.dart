@@ -13,13 +13,17 @@ import '../../../../core/widgets/image_url_upload_row.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/constants/business_plans.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../business/domain/entities/website_plan.dart';
 import '../../../business/presentation/providers/business_providers.dart';
 import '../../../products/presentation/providers/products_providers.dart';
+import '../../../auth/presentation/providers/permissions_providers.dart';
 import '../../../business/presentation/widgets/change_plan_dialog.dart';
-import '../../../notifications/presentation/widgets/email_notifications_section.dart';
+import '../../../team/presentation/widgets/team_section.dart';
 import '../widgets/api_languages_section.dart';
 import '../widgets/appearance_section.dart';
 import '../widgets/background_picker_section.dart';
+import '../widgets/business_website_section.dart';
+import '../widgets/business_site_editor_section.dart';
 import '../../../../core/constants/dashboard_backgrounds.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -33,10 +37,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _name = TextEditingController();
   final _description = TextEditingController();
   final _logoUrl = TextEditingController();
+  final _coverUrl = TextEditingController();
+  final _location = TextEditingController();
+  final _website = TextEditingController();
   final _orderPhone = TextEditingController();
   bool _initialized = false;
   bool _saving = false;
   PlatformFile? _logoFile;
+  PlatformFile? _coverFile;
   String? _backgroundPresetId;
   String? _backgroundImageUrl;
   double _backgroundOverlayOpacity = DashboardBackgrounds.defaultOverlayOpacity;
@@ -46,6 +54,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _name.dispose();
     _description.dispose();
     _logoUrl.dispose();
+    _coverUrl.dispose();
+    _location.dispose();
+    _website.dispose();
     _orderPhone.dispose();
     super.dispose();
   }
@@ -56,6 +67,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _name.text = business.name;
     _description.text = business.description ?? '';
     _logoUrl.text = business.logoUrl ?? '';
+    _coverUrl.text = business.coverImageUrl ?? '';
+    _location.text = business.location ?? '';
+    _website.text = business.website ?? '';
     _orderPhone.text = business.orderPhone ?? '';
     _backgroundPresetId = business.backgroundPresetId;
     _backgroundImageUrl = business.backgroundImageUrl;
@@ -85,6 +99,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         logoUrl = await ref.read(mediaUploadServiceProvider).resolveImageUrl(logoUrl);
       }
 
+      var coverImageUrl = _coverUrl.text.trim();
+      if (_coverFile != null) {
+        coverImageUrl = await ref.read(mediaUploadServiceProvider).uploadBusinessCover(
+              businessId: businessId,
+              file: _coverFile!,
+            );
+      } else if (coverImageUrl.isNotEmpty && coverImageUrl.contains('firebasestorage')) {
+        coverImageUrl =
+            await ref.read(mediaUploadServiceProvider).resolveImageUrl(coverImageUrl);
+      }
+
       final customBg = _backgroundImageUrl?.trim() ?? '';
       final hasCustomBg = customBg.isNotEmpty;
       final presetId = !hasCustomBg &&
@@ -98,6 +123,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             name: _name.text.trim(),
             description: _description.text.trim(),
             logoUrl: logoUrl,
+            coverImageUrl: coverImageUrl,
+            location: _location.text.trim(),
+            website: _website.text.trim(),
             backgroundPresetId: presetId,
             backgroundImageUrl: hasCustomBg ? customBg : null,
             backgroundOverlayOpacity: DashboardBackgrounds.hasActiveBackground(
@@ -148,10 +176,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: 16),
             const ApiLanguagesSection(),
             const SizedBox(height: 16),
-            const EmailNotificationsSection(),
+            const BusinessWebsiteSection(),
+            if (business?.websitePlan == WebsitePlan.simple ||
+                business?.siteConfig != null) ...[
+              const SizedBox(height: 16),
+              const BusinessSiteEditorSection(),
+            ],
             const SizedBox(height: 16),
-            _PlanCard(),
-            const SizedBox(height: 16),
+            if (ref.watch(businessPermissionsProvider).canManageTeam) ...[
+              const TeamSection(),
+              const SizedBox(height: 16),
+            ],
+            if (ref.watch(businessPermissionsProvider).canAccessBilling) ...[
+              _PlanCard(),
+              const SizedBox(height: 16),
+            ],
             BackgroundPickerSection(
               initialPresetId: _backgroundPresetId,
               initialCustomUrl: _backgroundImageUrl,
@@ -187,6 +226,34 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     urlController: _logoUrl,
                     onFilePicked: (f) => setState(() => _logoFile = f),
                     fileName: _logoFile?.name,
+                  ),
+                  const SizedBox(height: 20),
+                  ImageUrlUploadRow(
+                    label: l10n.settingsCoverUrl,
+                    urlController: _coverUrl,
+                    onFilePicked: (f) => setState(() => _coverFile = f),
+                    fileName: _coverFile?.name,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.settingsCoverNote,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: context.appColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsLocation,
+                    controller: _location,
+                    hint: l10n.settingsLocationHint,
+                  ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsWebsite,
+                    controller: _website,
+                    hint: 'https://example.com',
+                    keyboardType: TextInputType.url,
                   ),
                   const SizedBox(height: 20),
                   AppTextField(

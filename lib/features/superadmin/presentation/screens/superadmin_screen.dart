@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/user_roles.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/layout/app_breakpoints.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -10,7 +11,6 @@ import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/data_table_card.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/search_toolbar.dart';
-import '../../../../core/widgets/stat_card.dart';
 import '../../../../core/widgets/status_chip.dart';
 import '../../../../core/widgets/user_role_badge.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
@@ -31,7 +31,7 @@ class _SuperAdminScreenState extends ConsumerState<SuperAdminScreen>
   @override
   void initState() {
     super.initState();
-    _tabs = TabController(length: 3, vsync: this);
+    _tabs = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -44,6 +44,8 @@ class _SuperAdminScreenState extends ConsumerState<SuperAdminScreen>
     ref.invalidate(superAdminUsersProvider);
     ref.invalidate(superAdminBusinessesProvider);
     ref.invalidate(superAdminProductsProvider);
+    ref.invalidate(superAdminCategoriesProvider);
+    ref.invalidate(superAdminOffersProvider);
   }
 
   Future<void> _runAction(Future<void> Function() action) async {
@@ -52,7 +54,7 @@ class _SuperAdminScreenState extends ConsumerState<SuperAdminScreen>
       _refreshAll();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Changes saved')),
+          SnackBar(content: Text(context.l10n.changesSaved)),
         );
       }
     } catch (e) {
@@ -70,29 +72,23 @@ class _SuperAdminScreenState extends ConsumerState<SuperAdminScreen>
   @override
   Widget build(BuildContext context) {
     final isMobile = AppBreakpoints.isMobile(context);
-    final users = ref.watch(superAdminUsersProvider);
-    final businesses = ref.watch(superAdminBusinessesProvider);
-    final products = ref.watch(superAdminProductsProvider);
-
-    final userCount = users.valueOrNull?.length;
-    final businessCount = businesses.valueOrNull?.length;
-    final productCount = products.valueOrNull?.length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _PlatformHero(
-          userCount: userCount,
-          businessCount: businessCount,
-          productCount: productCount,
-          onRefresh: _refreshAll,
-        ),
-        SizedBox(height: isMobile ? 12 : 20),
+        _ConsoleHeader(onRefresh: _refreshAll),
+        SizedBox(height: isMobile ? 12 : 16),
         SuperAdminSegmentTabs(
           controller: _tabs,
-          labels: const ['Users', 'Businesses', 'Products'],
+          labels: const [
+            'Users',
+            'Businesses',
+            'Products',
+            'Categories',
+            'Offers',
+          ],
         ),
-        SizedBox(height: isMobile ? 12 : 20),
+        SizedBox(height: isMobile ? 12 : 16),
         Expanded(
           child: TabBarView(
             controller: _tabs,
@@ -100,6 +96,8 @@ class _SuperAdminScreenState extends ConsumerState<SuperAdminScreen>
               _UsersTab(onRefresh: _refreshAll, runAction: _runAction),
               _BusinessesTab(onRefresh: _refreshAll, runAction: _runAction),
               _ProductsTab(onRefresh: _refreshAll, runAction: _runAction),
+              _CategoriesTab(onRefresh: _refreshAll, runAction: _runAction),
+              _OffersTab(onRefresh: _refreshAll, runAction: _runAction),
             ],
           ),
         ),
@@ -108,17 +106,9 @@ class _SuperAdminScreenState extends ConsumerState<SuperAdminScreen>
   }
 }
 
-class _PlatformHero extends StatelessWidget {
-  const _PlatformHero({
-    required this.userCount,
-    required this.businessCount,
-    required this.productCount,
-    required this.onRefresh,
-  });
+class _ConsoleHeader extends StatelessWidget {
+  const _ConsoleHeader({required this.onRefresh});
 
-  final int? userCount;
-  final int? businessCount;
-  final int? productCount;
   final VoidCallback onRefresh;
 
   @override
@@ -126,84 +116,40 @@ class _PlatformHero extends StatelessWidget {
     final colors = context.appColors;
     final isMobile = AppBreakpoints.isMobile(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Platform Console',
-                    style: AppTextStyles.pageTitle(context).copyWith(
-                      fontSize: isMobile ? 24 : 28,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Container(
-                    width: 40,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      color: colors.accent,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Manage users, businesses, and catalog data across the platform.',
-                    style: AppTextStyles.pageSubtitle(context).copyWith(
-                      fontSize: isMobile ? 13 : 15,
-                    ),
-                  ),
-                ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Platform console',
+                style: AppTextStyles.pageTitle(context).copyWith(
+                  fontSize: isMobile ? 22 : 26,
+                ),
               ),
-            ),
-            IconButton.filledTonal(
-              onPressed: onRefresh,
-              tooltip: 'Refresh all',
-              icon: const Icon(Icons.refresh_rounded, size: 20),
-            ),
-          ],
+              const SizedBox(height: 6),
+              Container(
+                width: 40,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: colors.accent,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Users, businesses, products, categories, and offers.',
+                style: AppTextStyles.pageSubtitle(context),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 20),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final cols = constraints.maxWidth > AppBreakpoints.tablet
-                ? 3
-                : isMobile
-                    ? 3
-                    : constraints.maxWidth > 480
-                        ? 2
-                        : 1;
-            return GridView.count(
-              crossAxisCount: cols,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: isMobile ? 2.6 : 2.2,
-              children: [
-                StatCard(
-                  label: 'Users',
-                  value: userCount?.toString() ?? '—',
-                  icon: Icons.people_outline_rounded,
-                ),
-                StatCard(
-                  label: 'Businesses',
-                  value: businessCount?.toString() ?? '—',
-                  icon: Icons.storefront_outlined,
-                ),
-                StatCard(
-                  label: 'Products',
-                  value: productCount?.toString() ?? '—',
-                  icon: Icons.inventory_2_outlined,
-                ),
-              ],
-            );
-          },
+        IconButton.filledTonal(
+          onPressed: onRefresh,
+          tooltip: 'Refresh all',
+          icon: const Icon(Icons.refresh_rounded, size: 20),
         ),
       ],
     );
@@ -248,7 +194,9 @@ class _UsersTabState extends ConsumerState<_UsersTab> {
           ),
           child: DataTableCard(
             columns: const ['User', 'Role', 'Business', 'Actions'],
-            dataRowMaxHeight: 92,
+            dataRowMinHeight: 56,
+            dataRowMaxHeight: 72,
+            minHeight: 420,
             rows: filtered.map((u) {
               final isSelf = u.id == currentUid;
               return DataRow(cells: [
@@ -336,6 +284,7 @@ class _BusinessesTabState extends ConsumerState<_BusinessesTab> {
           ),
           child: DataTableCard(
             columns: const ['Name', 'Slug', 'Owner', 'Status', 'Actions'],
+            minHeight: 420,
             rows: filtered.map((b) {
               return DataRow(cells: [
                 DataCell(Text(b.name, style: const TextStyle(fontWeight: FontWeight.w600))),
@@ -377,9 +326,9 @@ class _BusinessesTabState extends ConsumerState<_BusinessesTab> {
                         onPressed: () async {
                           final ok = await showConfirmDeleteDialog(
                             context,
-                            title: 'Delete business?',
+                            title: 'Delete business permanently?',
                             message:
-                                'Delete ${b.name} and its slug. Subcollections may remain in Firestore.',
+                                'Delete "${b.name}" with all products, categories, offers, orders, and API keys. This cannot be undone.',
                           );
                           if (!ok) return;
                           await widget.runAction(
@@ -429,7 +378,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
 
         return _DataPanel(
           title: '${filtered.length} products',
-          subtitle: 'Latest 500 across all businesses',
+          subtitle: 'All products across businesses (including drafts)',
           onRefresh: widget.onRefresh,
           toolbar: SearchToolbar(
             searchHint: 'Search product or business…',
@@ -437,6 +386,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
           ),
           child: DataTableCard(
             columns: const ['Product', 'Business', 'Status', 'Actions'],
+            minHeight: 420,
             rows: filtered.map((p) {
               return DataRow(cells: [
                 DataCell(Text(p.name, style: const TextStyle(fontWeight: FontWeight.w600))),
@@ -456,6 +406,154 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
                         () => ref.read(superAdminRepositoryProvider).deleteProduct(
                               businessId: p.businessId,
                               productId: p.id,
+                            ),
+                      );
+                    },
+                  ),
+                ),
+              ]);
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _CategoriesTab extends ConsumerStatefulWidget {
+  const _CategoriesTab({required this.onRefresh, required this.runAction});
+
+  final VoidCallback onRefresh;
+  final Future<void> Function(Future<void> Function()) runAction;
+
+  @override
+  ConsumerState<_CategoriesTab> createState() => _CategoriesTabState();
+}
+
+class _CategoriesTabState extends ConsumerState<_CategoriesTab> {
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final categoriesAsync = ref.watch(superAdminCategoriesProvider);
+
+    return categoriesAsync.when(
+      loading: () => const LoadingOverlay(message: 'Loading categories…'),
+      error: (e, _) => _ErrorState(message: '$e', onRetry: widget.onRefresh),
+      data: (categories) {
+        final filtered = categories.where((c) {
+          final q = _query.toLowerCase();
+          if (q.isEmpty) return true;
+          return c.name.toLowerCase().contains(q) ||
+              c.businessName.toLowerCase().contains(q) ||
+              c.slug.toLowerCase().contains(q);
+        }).toList();
+
+        return _DataPanel(
+          title: '${filtered.length} categories',
+          onRefresh: widget.onRefresh,
+          toolbar: SearchToolbar(
+            searchHint: 'Search category or business…',
+            onSearchChanged: (v) => setState(() => _query = v),
+          ),
+          child: DataTableCard(
+            columns: const ['Category', 'Slug', 'Business', 'Actions'],
+            minHeight: 420,
+            rows: filtered.map((c) {
+              return DataRow(cells: [
+                DataCell(Text(c.name, style: const TextStyle(fontWeight: FontWeight.w600))),
+                DataCell(Text(c.slug)),
+                DataCell(Text(c.businessName)),
+                DataCell(
+                  _DangerTextButton(
+                    label: 'Delete',
+                    onPressed: () async {
+                      final ok = await showConfirmDeleteDialog(
+                        context,
+                        title: 'Delete category?',
+                        message: 'Delete "${c.name}" from ${c.businessName}?',
+                      );
+                      if (!ok) return;
+                      await widget.runAction(
+                        () => ref.read(superAdminRepositoryProvider).deleteCategory(
+                              businessId: c.businessId,
+                              categoryId: c.id,
+                            ),
+                      );
+                    },
+                  ),
+                ),
+              ]);
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _OffersTab extends ConsumerStatefulWidget {
+  const _OffersTab({required this.onRefresh, required this.runAction});
+
+  final VoidCallback onRefresh;
+  final Future<void> Function(Future<void> Function()) runAction;
+
+  @override
+  ConsumerState<_OffersTab> createState() => _OffersTabState();
+}
+
+class _OffersTabState extends ConsumerState<_OffersTab> {
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final offersAsync = ref.watch(superAdminOffersProvider);
+
+    return offersAsync.when(
+      loading: () => const LoadingOverlay(message: 'Loading offers…'),
+      error: (e, _) => _ErrorState(message: '$e', onRetry: widget.onRefresh),
+      data: (offers) {
+        final filtered = offers.where((o) {
+          final q = _query.toLowerCase();
+          if (q.isEmpty) return true;
+          return o.title.toLowerCase().contains(q) ||
+              o.businessName.toLowerCase().contains(q);
+        }).toList();
+
+        return _DataPanel(
+          title: '${filtered.length} offers',
+          onRefresh: widget.onRefresh,
+          toolbar: SearchToolbar(
+            searchHint: 'Search offer or business…',
+            onSearchChanged: (v) => setState(() => _query = v),
+          ),
+          child: DataTableCard(
+            columns: const ['Offer', 'Business', 'Items', 'Status', 'Actions'],
+            rows: filtered.map((o) {
+              return DataRow(cells: [
+                DataCell(Text(o.title, style: const TextStyle(fontWeight: FontWeight.w600))),
+                DataCell(Text(o.businessName)),
+                DataCell(Text('${o.itemCount}')),
+                DataCell(
+                  StatusChip(
+                    label: o.active ? 'Active' : 'Inactive',
+                    tone: o.active ? StatusChipTone.success : StatusChipTone.neutral,
+                  ),
+                ),
+                DataCell(
+                  _DangerTextButton(
+                    label: 'Delete',
+                    onPressed: () async {
+                      final ok = await showConfirmDeleteDialog(
+                        context,
+                        title: 'Delete offer?',
+                        message: 'Delete "${o.title}" from ${o.businessName}?',
+                      );
+                      if (!ok) return;
+                      await widget.runAction(
+                        () => ref.read(superAdminRepositoryProvider).deleteOffer(
+                              businessId: o.businessId,
+                              offerId: o.id,
                             ),
                       );
                     },
@@ -552,7 +650,7 @@ class _ErrorState extends StatelessWidget {
           OutlinedButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh_rounded, size: 18),
-            label: const Text('Try again'),
+            label: Text(context.l10n.tryAgain),
           ),
         ],
       ),

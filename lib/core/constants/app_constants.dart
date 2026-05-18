@@ -6,6 +6,15 @@ class AppConstants {
   static const String publicApiBaseUrl =
       'https://us-central1-jon-sport.cloudfunctions.net/publicApi';
 
+  /// Shop app catalog (`shopApi` / `/api/shop/*`) — same handler as [publicApiBaseUrl].
+  static const String shopApiBaseUrl =
+      'https://us-central1-jon-sport.cloudfunctions.net/shopApi';
+
+  /// Multi-tenant public storefront (path per business slug).
+  static const String publicShopBaseUrl = 'https://jon-sport-shop.web.app';
+
+  static String publicShopUrl(String slug) => '$publicShopBaseUrl/$slug';
+
   /// Admin dashboard (GitHub Pages only).
   static const String dashboardWebUrl =
       'https://kresha325.github.io/binisoft-ad';
@@ -26,6 +35,18 @@ class FirestoreCollections {
   static const String apiKeys = 'apiKeys';
   static const String orders = 'orders';
   static const String settings = 'settings';
+  static const String members = 'members';
+  static const String invites = 'invites';
+}
+
+class CloudFunctionUrls {
+  CloudFunctionUrls._();
+
+  static const String _base = 'https://us-central1-jon-sport.cloudfunctions.net';
+
+  static String inviteStaff = '$_base/inviteStaffHttp';
+  static String removeStaff = '$_base/removeStaffHttp';
+  static String acceptInvite = '$_base/acceptInviteHttp';
 }
 
 class StoragePaths {

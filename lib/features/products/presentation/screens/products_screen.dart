@@ -13,6 +13,7 @@ import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/page_header_action_scope.dart';
 import '../../../../core/widgets/shell_add_button.dart';
 import '../../../../core/widgets/search_toolbar.dart';
+import '../../../auth/presentation/providers/permissions_providers.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
 import '../../domain/entities/product.dart';
 import '../providers/products_providers.dart';
@@ -67,10 +68,12 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
     final productsAsync = ref.watch(productsListProvider);
     final categoriesAsync = ref.watch(categoriesListProvider);
     final productQuota = ref.watch(productQuotaProvider);
+    final canWrite = ref.watch(businessPermissionsProvider).canWriteCatalog;
 
     return PageHeaderActionScope(
       route: '/products',
-      action: ShellAddButton(
+      action: canWrite
+          ? ShellAddButton(
         label: l10n.addProduct,
         onPressed: productQuota.canCreateMore
             ? () {
@@ -87,7 +90,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                   ),
                 );
               },
-      ),
+      )
+          : const SizedBox.shrink(),
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

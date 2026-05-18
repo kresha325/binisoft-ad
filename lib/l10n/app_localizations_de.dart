@@ -48,7 +48,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get menuSignedInAs => 'Angemeldet als';
 
   @override
-  String get menuCreateBusiness => 'Neues Unternehmen';
+  String get menuCreateBusiness => 'Shop hinzufügen';
 
   @override
   String get menuLogOut => 'Abmelden';
@@ -67,7 +67,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pageBusinessesSubtitle =>
-      'Alle Unternehmen — wechseln oder neu anlegen.';
+      'Ein Login, mehrere getrennte Shops. Aktiven Shop wechseln oder neuen anlegen (Aktivierung kostenpflichtig).';
 
   @override
   String get pageProductsTitle => 'Produkte';
@@ -534,6 +534,285 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsLogoUrl => 'Logo-URL';
 
   @override
+  String get settingsCoverUrl => 'Shop-Titelbild';
+
+  @override
+  String get settingsCoverNote =>
+      'Wird oben im öffentlichen Shop-Profil angezeigt.';
+
+  @override
+  String get settingsLocation => 'Standort';
+
+  @override
+  String get settingsLocationHint => 'Stadt, Adresse oder Gebiet';
+
+  @override
+  String get settingsWebsite => 'Webseite';
+
+  @override
+  String get websiteSectionTitle => 'Website';
+
+  @override
+  String get websiteSectionSubtitle =>
+      'Öffentliche Seite für Ihren Shop — Selbstbedienung oder individuell mit unserem Team.';
+
+  @override
+  String get websiteChoosePlan => 'Art der Website wählen';
+
+  @override
+  String get websiteChoosePlanHint => 'Wählen Sie oben eine Option.';
+
+  @override
+  String get websiteSimpleTitle => 'Einfache Site';
+
+  @override
+  String get websiteSimpleBadge => 'Inklusive';
+
+  @override
+  String get websiteSimpleDescription =>
+      'Fertiger Shop mit Produkten, Angeboten und WhatsApp-Bestellungen.';
+
+  @override
+  String get websiteSimpleFeature1 =>
+      'MARKET-Vorlage: Hero, Produkte, Angebote, Galerie';
+
+  @override
+  String get websiteSimpleFeature2 => 'Farben, Bereiche und Social Links';
+
+  @override
+  String get websiteSimpleFeature3 =>
+      'Live unter jon-sport-shop.web.app/ihr-slug';
+
+  @override
+  String get websiteProTitle => 'Professionelle Website';
+
+  @override
+  String get websiteProBadge => 'Individuell';
+
+  @override
+  String get websiteProDescription =>
+      'Eigenes Design, Domain und erweiterte Seiten — von Binisoft.';
+
+  @override
+  String get websiteProFeature1 => 'Individuelles Layout und Branding';
+
+  @override
+  String get websiteProFeature2 => 'Domain, SSL und SEO-Beratung';
+
+  @override
+  String get websiteProFeature3 => 'Persönlicher Support';
+
+  @override
+  String get websiteSimpleSetupTitle => 'Einfache Site erstellen';
+
+  @override
+  String get websiteSimpleSetupNote =>
+      'Einmal veröffentlichen, Design unten anpassen.';
+
+  @override
+  String get websiteSimpleTemplateName =>
+      'MARKET v1 — Hero, Angebote, Produkte, Galerie, Kontakt';
+
+  @override
+  String get websiteGenerateSimple => 'Site erstellen / veröffentlichen';
+
+  @override
+  String get websiteProContactTitle => 'Professionelle Website anfragen';
+
+  @override
+  String get websiteProContactBody =>
+      'Beschreiben Sie Ihr Unternehmen und Ihre Ziele. Wir melden uns mit Angebot und Zeitplan.';
+
+  @override
+  String get websiteProContactButton => 'E-Mail an Binisoft';
+
+  @override
+  String get websiteProContactEmail => 'Oder schreiben Sie an';
+
+  @override
+  String get websiteProRequested => 'Anfrage gesendet';
+
+  @override
+  String get websiteTemplateLabel => 'Vorlage';
+
+  @override
+  String get websiteLiveUrlLabel => 'Live-URL';
+
+  @override
+  String get websiteOpenSite => 'Seite öffnen';
+
+  @override
+  String get websiteCopyLink => 'Link kopieren';
+
+  @override
+  String get websiteCustomDomainLabel => 'Eigene Domain (GoDaddy usw.)';
+
+  @override
+  String get websiteCustomDomainNote =>
+      'Nach dem Deploy DNS (CNAME) beim Registrar setzen.';
+
+  @override
+  String get websiteDeployButton => 'Website veröffentlichen';
+
+  @override
+  String get websiteDeploySuccess => 'Website veröffentlicht';
+
+  @override
+  String get websiteSlugRequired => 'Zuerst Shop-Slug festlegen (Geschäfte).';
+
+  @override
+  String get websiteLastDeploy => 'Letzte Veröffentlichung';
+
+  @override
+  String get websiteDnsTitle => 'DNS-Einträge';
+
+  @override
+  String get websiteLinkCopied => 'Link kopiert';
+
+  @override
+  String get siteEditorTitle => 'Shop-Design';
+
+  @override
+  String get siteEditorSubtitle =>
+      'Farben, Bereiche, Galerie und Social Links für den öffentlichen Shop.';
+
+  @override
+  String get siteEditorColorsTitle => 'Farben';
+
+  @override
+  String get siteEditorColorPrimary => 'Primär (Navy)';
+
+  @override
+  String get siteEditorColorAccent => 'Akzent (Gelb)';
+
+  @override
+  String get siteEditorColorBackground => 'Hintergrund';
+
+  @override
+  String get siteEditorColorText => 'Text';
+
+  @override
+  String get siteEditorLayoutLabel => 'Layout';
+
+  @override
+  String get siteEditorLayoutDefault => 'Standard';
+
+  @override
+  String get siteEditorLayoutWide => 'Breit';
+
+  @override
+  String get siteEditorSectionsTitle => 'Bereiche';
+
+  @override
+  String get siteEditorSocialsTitle => 'Soziale Netzwerke';
+
+  @override
+  String get siteEditorFooterTitle => 'Fußzeile';
+
+  @override
+  String get siteEditorFooterLocation => 'Standort anzeigen';
+
+  @override
+  String get siteEditorFooterPhone => 'Telefon anzeigen';
+
+  @override
+  String get siteEditorFooterWhatsApp => 'WhatsApp-Button';
+
+  @override
+  String get siteEditorSaveButton => 'Design speichern';
+
+  @override
+  String get siteEditorSaved => 'Design gespeichert';
+
+  @override
+  String get siteSectionEnabled => 'Auf der Seite sichtbar';
+
+  @override
+  String get siteSectionDisabled => 'Ausgeblendet';
+
+  @override
+  String get siteSectionShowOnSite => 'Bereich anzeigen';
+
+  @override
+  String get siteSectionNavLabel => 'Menülabel (optional)';
+
+  @override
+  String get siteSectionTitle => 'Bereichstitel';
+
+  @override
+  String get siteSectionDescription => 'Beschreibung (optional)';
+
+  @override
+  String get siteSectionHero => 'Hero';
+
+  @override
+  String get siteSectionOffers => 'Angebote';
+
+  @override
+  String get siteSectionProducts => 'Produkte';
+
+  @override
+  String get siteSectionAbout => 'Über uns';
+
+  @override
+  String get siteSectionGallery => 'Galerie';
+
+  @override
+  String get siteSectionContact => 'Kontakt';
+
+  @override
+  String get siteSectionHeroH1 => 'Hero-Überschrift (H1)';
+
+  @override
+  String get siteSectionHeroP => 'Hero-Text';
+
+  @override
+  String get siteHeroUseProfileCover =>
+      'Titelbild aus den Einstellungen verwenden';
+
+  @override
+  String get siteHeroImage => 'Hero-Hintergrundbild';
+
+  @override
+  String get siteGalleryHint => 'Bis zu 5 — Bild und/oder YouTube pro Platz.';
+
+  @override
+  String get siteGalleryAdd => 'Galerieeintrag hinzufügen';
+
+  @override
+  String get siteGalleryItem => 'Eintrag';
+
+  @override
+  String get siteGalleryImage => 'Bild';
+
+  @override
+  String get siteGalleryYoutube => 'YouTube-URL (optional)';
+
+  @override
+  String get siteGalleryCaption => 'Beschriftung (optional)';
+
+  @override
+  String get siteSocialFacebook => 'Facebook';
+
+  @override
+  String get siteSocialInstagram => 'Instagram';
+
+  @override
+  String get siteSocialTiktok => 'TikTok';
+
+  @override
+  String get siteSocialYoutube => 'YouTube';
+
+  @override
+  String get siteSocialLinkedin => 'LinkedIn';
+
+  @override
+  String get siteSocialX => 'X (Twitter)';
+
+  @override
+  String get siteSocialWhatsapp => 'WhatsApp';
+
+  @override
   String get settingsOrderPhone => 'Bestelltelefon (WhatsApp)';
 
   @override
@@ -660,6 +939,19 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get apiPublicShopTitle => 'Online-Shop';
+
+  @override
+  String get apiPublicShopSubtitle =>
+      'Jedes Geschäft hat eine öffentliche Speisekarte unter diesem Link. API-Schlüssel erzeugen, dann den Shop einmal mit ?key=… öffnen.';
+
+  @override
+  String get apiPublicShopCopy => 'Shop-Link kopieren';
+
+  @override
+  String get apiLinkCopied => 'Link kopiert';
+
+  @override
   String get apiLivePreview => 'Live-Vorschau';
 
   @override
@@ -689,4 +981,533 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get apiIntegrationReadFull => 'Vollständige Anleitung';
+
+  @override
+  String get businessesSectionTitle => 'Ihre Shops';
+
+  @override
+  String businessesSectionSubtitle(
+    int maxBusinesses,
+    String planTitle,
+    int maxProducts,
+  ) {
+    return 'Ein Konto · bis zu $maxBusinesses Shops im Plan $planTitle. Jeder Shop hat eigenen Katalog, Bestellungen, Angebote und öffentliche API (bis $maxProducts Produkte pro Shop).';
+  }
+
+  @override
+  String businessesQuotaUsage(int owned, int max) {
+    return '$owned von $max Shops';
+  }
+
+  @override
+  String businessesAddStore(int next, int max) {
+    return 'Shop hinzufügen ($next/$max)';
+  }
+
+  @override
+  String businessesAddStoreFull(int owned, int max) {
+    return 'Weiteren Shop hinzufügen ($owned/$max)';
+  }
+
+  @override
+  String businessesLimitReached(int max, String planCode) {
+    return 'Limit von $max Shops im Plan $planCode erreicht. Upgrade unter Einstellungen.';
+  }
+
+  @override
+  String get businessesEmpty =>
+      'Noch kein Shop. Erstellen Sie unten Ihren ersten E-Commerce-Shop.';
+
+  @override
+  String get businessTileActive => 'Aktiv';
+
+  @override
+  String get businessTileSwitch => 'Öffnen';
+
+  @override
+  String businessTileApiSlug(String slug) {
+    return 'Shop-URL: $slug';
+  }
+
+  @override
+  String get businessTileHint => 'Eigener Katalog, Bestellungen & API';
+
+  @override
+  String get createFirstStoreTitle => 'Ersten Shop anlegen';
+
+  @override
+  String get createFirstStoreBody =>
+      'Ein Shop ist ein vollständiger E-Commerce-Bereich: eigene Produkte, Kategorien, Angebote und öffentliche API für Website/App. Ein Login — weitere Shops jederzeit (jeder zusätzliche Shop wird separat berechnet).';
+
+  @override
+  String get createFirstStoreButton => 'Ersten Shop anlegen';
+
+  @override
+  String createStoreDialogTitle(int next, int max) {
+    return 'Neuer Shop ($next von $max)';
+  }
+
+  @override
+  String createStoreDialogIntro(String price) {
+    return 'Jeder neue Shop benötigt eine einmalige Aktivierung ($price, erster Monat inkl.). Rechnung wird diesem Konto gutgeschrieben.';
+  }
+
+  @override
+  String get createStoreContinuePayment => 'Weiter zur Zahlung';
+
+  @override
+  String createStoreQuotaSnack(int max) {
+    return 'Shop-Limit erreicht ($max im aktuellen Plan).';
+  }
+
+  @override
+  String get createStoreSuccess => 'Shop erstellt · Rechnung gespeichert';
+
+  @override
+  String get switcherCreateStore => 'Shop anlegen';
+
+  @override
+  String switcherMenuCreateStore(int owned, int max) {
+    return 'Shop hinzufügen ($owned/$max)';
+  }
+
+  @override
+  String get switcherTooltip => 'Aktiver Shop — wechseln oder hinzufügen';
+
+  @override
+  String activeStoreBanner(String name) {
+    return 'Verwaltung: $name';
+  }
+
+  @override
+  String get activeStoreBannerHint =>
+      'Dashboard, Produkte und Bestellungen gelten nur für diesen Shop.';
+
+  @override
+  String get activeStoreBannerManage => 'Alle Shops';
+
+  @override
+  String get editProduct => 'Produkt bearbeiten';
+
+  @override
+  String get saveProduct => 'Produkt speichern';
+
+  @override
+  String get coreDetails => 'Grunddaten';
+
+  @override
+  String get productNameLabel => 'Name *';
+
+  @override
+  String get productDescriptionLabel => 'Beschreibung';
+
+  @override
+  String get productPriceLabel => 'Preis';
+
+  @override
+  String get productCategoryLabel => 'Kategorie';
+
+  @override
+  String get selectOption => 'Auswählen';
+
+  @override
+  String get productActiveLabel => 'Aktiv';
+
+  @override
+  String get customFieldsSection => 'Benutzerdefinierte Felder';
+
+  @override
+  String couldNotLoadCustomFields(String message) {
+    return 'Felder konnten nicht geladen werden: $message';
+  }
+
+  @override
+  String get productSaved => 'Produkt gespeichert';
+
+  @override
+  String get productUpdated => 'Produkt aktualisiert';
+
+  @override
+  String get productDeleted => 'Produkt gelöscht';
+
+  @override
+  String get deleteProductTitle => 'Produkt löschen';
+
+  @override
+  String deleteProductMessage(String name) {
+    return '\"$name\" löschen? Dies kann nicht rückgängig gemacht werden.';
+  }
+
+  @override
+  String productLimitReached(String usage) {
+    return 'Produktlimit erreicht ($usage). Upgrade unter Einstellungen.';
+  }
+
+  @override
+  String get productImageInvalidUrl =>
+      'Ungültige Bild-URL. Erneut hochladen oder öffentliche https-URL verwenden.';
+
+  @override
+  String get productImagesTitle => 'Produktfotos';
+
+  @override
+  String productImagesSubtitle(int max) {
+    return 'Bis zu $max Bilder. Nur aktive Fotos erscheinen im Online-Shop.';
+  }
+
+  @override
+  String productImagesMax(int max) {
+    return 'Maximal $max Fotos pro Produkt.';
+  }
+
+  @override
+  String get productImagesActive => 'Aktiv';
+
+  @override
+  String get productImagesAddUrl => 'URL hinzufügen';
+
+  @override
+  String get variantsSectionTitle => 'Varianten';
+
+  @override
+  String get variantsSectionSubtitle =>
+      'Select-Felder als Achsen (z. B. Größe, Farbe), dann SKU-Zeilen mit Preis und Bestand generieren.';
+
+  @override
+  String get variantsSelectAxes => 'Varianten-Achsen';
+
+  @override
+  String get variantsGenerate => 'Kombinationen erzeugen';
+
+  @override
+  String get variantsSku => 'SKU';
+
+  @override
+  String get variantsPrice => 'Preis';
+
+  @override
+  String get variantsQuantity => 'Menge';
+
+  @override
+  String get variantsNoAxes =>
+      'Select-Felder mit Optionen unter Benutzerdefinierte Felder anlegen (z. B. Größe, Farbe).';
+
+  @override
+  String get variantsApplyBasePrice => 'Basispreis auf alle anwenden';
+
+  @override
+  String get variantsClear => 'Varianten löschen';
+
+  @override
+  String variantsRowLabel(String labels) {
+    return '$labels';
+  }
+
+  @override
+  String get saveField => 'Feld speichern';
+
+  @override
+  String get fieldLabel => 'Bezeichnung';
+
+  @override
+  String get fieldKey => 'Schlüssel (Key)';
+
+  @override
+  String get fieldType => 'Typ';
+
+  @override
+  String get fieldRequired => 'Pflichtfeld bei Produkten';
+
+  @override
+  String get fieldActive => 'Aktiv';
+
+  @override
+  String get fieldOptionsHint => 'Optionen (eine pro Zeile)';
+
+  @override
+  String get attrTypeText => 'Text (kurz)';
+
+  @override
+  String get attrTypeTextarea => 'Text (lang)';
+
+  @override
+  String get attrTypeNumber => 'Zahl';
+
+  @override
+  String get attrTypeSelect => 'Auswahl';
+
+  @override
+  String get attrTypeMultiSelect => 'Mehrfachauswahl';
+
+  @override
+  String get attrTypeColor => 'Farbe';
+
+  @override
+  String get attrTypeBoolean => 'Ja/Nein';
+
+  @override
+  String get defaultFieldsTitle => 'Standardfelder';
+
+  @override
+  String get defaultFieldsSubtitle =>
+      'Aktivierte Felder sind beim Produkt anlegen Pflicht.';
+
+  @override
+  String get businessNameLabel => 'Geschäftsname *';
+
+  @override
+  String get businessSlugLabel => 'URL-Slug *';
+
+  @override
+  String get businessSlugHelper =>
+      'Öffentliche API: /api/public/ihr-slug/products';
+
+  @override
+  String get internalSlugLabel => 'Interner Slug *';
+
+  @override
+  String get internalSlugHint => 'elektronik';
+
+  @override
+  String get internalSlugHelper =>
+      'Wird nicht übersetzt. Für API, Beziehungen und Datenbank (z. B. elektronik, pizza-getraenke).';
+
+  @override
+  String get internalSlugImmutableHelper =>
+      'Interner Slug kann nach der Erstellung nicht geändert werden.';
+
+  @override
+  String get internalSlugImmutableNote =>
+      'Slug bleibt für stabile API-Links unverändert.';
+
+  @override
+  String get internalSlugTaken => 'Dieser interne Slug wird bereits verwendet.';
+
+  @override
+  String get localizedContentSection => 'Übersetzungen';
+
+  @override
+  String get localizedContentHelper =>
+      'Nur die Standard-Sprache ist Pflicht. Auto translate füllt andere Sprachen.';
+
+  @override
+  String get autoTranslateButton => 'Auto translate';
+
+  @override
+  String get autoTranslateNeedSource =>
+      'Zuerst Name oder Beschreibung in der Standardsprache ausfüllen.';
+
+  @override
+  String get autoTranslateDone =>
+      'Übersetzungen erstellt. Vor dem Speichern prüfen.';
+
+  @override
+  String get seoTitleLabel => 'SEO-Titel';
+
+  @override
+  String get seoDescriptionLabel => 'SEO-Beschreibung';
+
+  @override
+  String get localizedSlugsSection => 'Lokalisierte Shop-URL-Slugs';
+
+  @override
+  String localizedSlugsHelper(String slug) {
+    return 'Optional pro Sprache. Standard ist \"$slug\".';
+  }
+
+  @override
+  String get businessCreatedInvoiceFailed =>
+      'Shop erstellt, Rechnung konnte nicht gespeichert werden. Siehe Abrechnung.';
+
+  @override
+  String get paymentTitle => 'Zahlung abschließen';
+
+  @override
+  String paymentSubtitleRegistration(String plan) {
+    return 'Binisoft Admin · Plan $plan';
+  }
+
+  @override
+  String paymentSubtitleNewBusiness(String name) {
+    return 'Neuer Shop · $name';
+  }
+
+  @override
+  String paymentPayRegistration(String amount) {
+    return '$amount zahlen und Konto erstellen';
+  }
+
+  @override
+  String paymentPayNewBusiness(String amount) {
+    return '$amount zahlen und Shop erstellen';
+  }
+
+  @override
+  String get paymentDemoBannerRegistration =>
+      'Demo-Modus: keine echte Belastung. Bestätigen zum Konto erstellen.';
+
+  @override
+  String get paymentDemoBannerNewBusiness =>
+      'Demo-Modus: keine echte Belastung. Bestätigen zum Shop aktivieren.';
+
+  @override
+  String get paymentActivationRegistration => 'Registrierung (1. Monat inkl.)';
+
+  @override
+  String get paymentActivationNewBusiness =>
+      'Shop-Aktivierung (1. Monat inkl.)';
+
+  @override
+  String get paymentMethod => 'Zahlungsmethode';
+
+  @override
+  String get paymentCard => 'Karte';
+
+  @override
+  String get paymentPaypal => 'PayPal';
+
+  @override
+  String get paymentAcceptTerms =>
+      'Ich akzeptiere die Abo-Bedingungen und die monatliche Gebühr nach dem ersten Monat.';
+
+  @override
+  String get paymentAcceptTermsRequired => 'Bitte die Bedingungen akzeptieren.';
+
+  @override
+  String get paymentInvalidCard => 'Gültige Kartennummer eingeben.';
+
+  @override
+  String get paymentCancel => 'Abbrechen';
+
+  @override
+  String get planChooseTitle => 'Plan wählen';
+
+  @override
+  String planChooseSubtitle(int max) {
+    return '€30 + €6/Monat pro 100 Produkte (1. Monat in der Registrierung). Max. $max Produkte pro Shop.';
+  }
+
+  @override
+  String get planBillingSoon =>
+      'Abrechnung folgt. Limits gelten sofort nach Aktualisierung.';
+
+  @override
+  String get planBillingLater =>
+      'Jetzt registrieren mit Plan-Limits. Abrechnung wird später aktiviert.';
+
+  @override
+  String planPerMonth(String price) {
+    return '$price/Monat nach dem 1. Monat';
+  }
+
+  @override
+  String planRegistration(String price) {
+    return 'Registrierung $price (1. Monat inkl.)';
+  }
+
+  @override
+  String get paymentThenMonthly => 'Danach monatlich';
+
+  @override
+  String get paymentTotalDueToday => 'Heute fällig';
+
+  @override
+  String planProductsCount(String title, int count) {
+    return '$title · $count Produkte';
+  }
+
+  @override
+  String get defaultFieldRequired => '· Pflicht';
+
+  @override
+  String get teamSectionTitle => 'Team & Rollen';
+
+  @override
+  String get teamSectionSubtitle =>
+      'Manager oder Mitarbeiter per E-Mail einladen — Einladungscode teilen, Registrierung unter Team beitreten.';
+
+  @override
+  String get teamInviteEmail => 'E-Mail';
+
+  @override
+  String get teamInviteRole => 'Rolle';
+
+  @override
+  String get teamInviteButton => 'Einladen';
+
+  @override
+  String get teamEmpty => 'Noch keine Teammitglieder.';
+
+  @override
+  String get teamRemoveTitle => 'Teammitglied entfernen?';
+
+  @override
+  String get teamRemoveMessage => 'Zugang zu diesem Shop wird entzogen.';
+
+  @override
+  String get teamRemoveConfirm => 'Entfernen';
+
+  @override
+  String get teamRemoved => 'Teammitglied entfernt';
+
+  @override
+  String get teamInviteAssigned =>
+      'Teammitglied hinzugefügt — kann sich mit bestehendem Konto anmelden.';
+
+  @override
+  String teamInviteCreated(String code) {
+    return 'Einladungscode: $code — teilen; Registrierung unter Team beitreten.';
+  }
+
+  @override
+  String teamInviteCreatedCopied(String code) {
+    return 'Code kopiert: $code — teilen; Registrierung unter Team beitreten.';
+  }
+
+  @override
+  String get tryAgain => 'Erneut versuchen';
+
+  @override
+  String routerPageNotFound(String path) {
+    return 'Seite nicht gefunden: $path\n\nÖffnen: …/binisoft-ad/#/login';
+  }
+
+  @override
+  String get roleSuperadmin => 'Superadmin';
+
+  @override
+  String get roleOwner => 'Inhaber';
+
+  @override
+  String get roleAdmin => 'Administrator';
+
+  @override
+  String get roleManager => 'Manager';
+
+  @override
+  String get roleEmployee => 'Mitarbeiter';
+
+  @override
+  String get joinTeamTitle => 'Team beitreten';
+
+  @override
+  String get joinTeamSubtitle =>
+      'Einladungscode vom Shop-Inhaber. Kein Abo nötig.';
+
+  @override
+  String get inviteCodeLabel => 'Einladungscode';
+
+  @override
+  String get joinTeamButton => 'Konto erstellen & beitreten';
+
+  @override
+  String joinTeamSuccess(String store) {
+    return 'Willkommen! Beigetreten: $store.';
+  }
+
+  @override
+  String get haveAccountLogin => 'Bereits ein Konto? Anmelden';
+
+  @override
+  String get loginJoinTeam => 'Mit Einladungscode beitreten';
 }

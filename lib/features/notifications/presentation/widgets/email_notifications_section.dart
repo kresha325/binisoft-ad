@@ -59,7 +59,7 @@ class _EmailNotificationsSectionState
       title: 'Email notifications',
       subtitle:
           'Account emails for welcome, plan changes, and new businesses. '
-          'Requires SendGrid API key or Firebase Trigger Email extension.',
+          'Sent via Firebase Trigger Email (Firestore mail queue).',
       icon: Icons.mail_outline_rounded,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

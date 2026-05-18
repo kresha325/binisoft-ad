@@ -5,6 +5,7 @@ import '../../../../core/errors/app_exception.dart';
 import '../../../../core/firestore/tenant_paths.dart';
 import '../../../../core/utils/slug.dart';
 import '../../domain/entities/product.dart';
+import '../../domain/entities/product_image.dart';
 import '../models/product_model.dart';
 
 class ProductPage {
@@ -83,16 +84,41 @@ class ProductRepository {
     return ProductModel.fromFirestore(doc, displayLocale: displayLocale).toEntity();
   }
 
+  Future<bool> isSlugTaken({
+    required String businessId,
+    required String slug,
+    String? excludeProductId,
+  }) async {
+    final normalized = slugify(slug);
+    if (normalized.isEmpty) return false;
+    final snap = await _paths
+        .products(businessId)
+        .where('slug', isEqualTo: normalized)
+        .limit(5)
+        .get();
+    for (final doc in snap.docs) {
+      if (excludeProductId != null && doc.id == excludeProductId) continue;
+      return true;
+    }
+    return false;
+  }
+
   Future<Product> create({
     required String businessId,
     required String name,
+    required String slug,
     int? maxProducts,
     String? description,
+    String? seoTitle,
+    String? seoDescription,
     Map<String, String> nameI18n = const {},
     Map<String, String> descriptionI18n = const {},
+    Map<String, String> seoTitleI18n = const {},
+    Map<String, String> seoDescriptionI18n = const {},
+    Map<String, String> localizedSlugs = const {},
     ProductStatus status = ProductStatus.draft,
     List<String> categoryIds = const [],
-    List<String> imageUrls = const [],
+    List<ProductImage> images = const [],
     double? basePrice,
     int baseQuantity = 0,
     Map<String, dynamic> attributeData = const {},
@@ -106,24 +132,37 @@ class ProductRepository {
       }
     }
 
+    final internalSlug = slugify(slug);
+    if (internalSlug.isEmpty) {
+      throw Exception('Internal slug is required.');
+    }
+    if (await isSlugTaken(businessId: businessId, slug: internalSlug)) {
+      throw Exception('This internal slug is already used by another product.');
+    }
+
     final now = DateTime.now();
     final ref = _paths.products(businessId).doc();
     final model = ProductModel(
       id: ref.id,
       businessId: businessId,
       name: name,
-      slug: slugify(name),
+      slug: internalSlug,
       status: status.name,
       createdAt: now,
       updatedAt: now,
       description: description,
+      seoTitle: seoTitle,
+      seoDescription: seoDescription,
       categoryIds: categoryIds,
-      imageUrls: imageUrls,
+      images: images,
       basePrice: basePrice,
       baseQuantity: baseQuantity,
       attributeData: attributeData,
       nameI18n: nameI18n,
       descriptionI18n: descriptionI18n,
+      seoTitleI18n: seoTitleI18n,
+      seoDescriptionI18n: seoDescriptionI18n,
+      localizedSlugs: localizedSlugs,
     );
     await ref.set(model.toMap());
     return model.toEntity();
@@ -142,13 +181,18 @@ class ProductRepository {
       createdAt: product.createdAt,
       updatedAt: DateTime.now(),
       description: product.description,
+      seoTitle: product.seoTitle,
+      seoDescription: product.seoDescription,
       categoryIds: product.categoryIds,
-      imageUrls: product.imageUrls,
+      images: product.images,
       basePrice: product.basePrice,
       baseQuantity: product.baseQuantity,
       attributeData: product.attributeData,
       nameI18n: product.nameI18n,
       descriptionI18n: product.descriptionI18n,
+      seoTitleI18n: product.seoTitleI18n,
+      seoDescriptionI18n: product.seoDescriptionI18n,
+      localizedSlugs: product.localizedSlugs,
     );
     await _paths.products(businessId).doc(product.id).update(model.toMap());
   }

@@ -24,6 +24,18 @@ class RegisterAdminInput {
   final String? displayName;
 }
 
+class RegisterStaffInput {
+  const RegisterStaffInput({
+    required this.email,
+    required this.password,
+    this.displayName,
+  });
+
+  final String email;
+  final String password;
+  final String? displayName;
+}
+
 class AuthRepository {
   AuthRepository({
     FirebaseAuth? auth,
@@ -89,6 +101,47 @@ class AuthRepository {
       maxProducts: isSuperAdmin
           ? PlatformLimits.superadminMaxProducts
           : BusinessPlan.defaultPlan.maxProducts,
+      displayName: input.displayName,
+    );
+
+    try {
+      await _paths.user(uid).set(user.toMap());
+    } on FirebaseException catch (e) {
+      await credential.user?.delete();
+      if (e.code == 'permission-denied') {
+        throw const FirestoreException(
+          'Could not save profile. Deploy Firestore rules: '
+          'firebase deploy --only firestore:rules',
+        );
+      }
+      throw FirestoreException(e.message ?? 'Could not create account');
+    }
+
+    return user.toEntity();
+  }
+
+  /// Team member account (no own stores) — complete with invite code via [acceptInviteHttp].
+  Future<AppUser> registerStaff(RegisterStaffInput input) async {
+    UserCredential credential;
+    try {
+      credential = await _auth.createUserWithEmailAndPassword(
+        email: input.email.trim(),
+        password: input.password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(firebaseAuthErrorMessage(e));
+    }
+
+    final uid = credential.user!.uid;
+    final email = input.email.trim().toLowerCase();
+
+    final user = AppUserModel(
+      id: uid,
+      email: email,
+      businessId: '',
+      role: UserRole.employee.value,
+      maxBusinesses: 0,
+      maxProducts: BusinessPlan.defaultPlan.maxProducts,
       displayName: input.displayName,
     );
 

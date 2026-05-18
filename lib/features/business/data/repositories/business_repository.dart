@@ -5,6 +5,9 @@ import '../../../../core/firestore/tenant_paths.dart';
 import '../../../../core/utils/slug.dart';
 import '../models/business_model.dart';
 import '../../domain/entities/business.dart';
+import '../../domain/entities/site_config.dart';
+import '../../domain/entities/website_plan.dart';
+import '../models/site_config_model.dart';
 
 class BusinessRepository {
   BusinessRepository({FirebaseFirestore? firestore})
@@ -18,6 +21,16 @@ class BusinessRepository {
     final doc = await _paths.business(businessId).get();
     if (!doc.exists) return null;
     return BusinessModel.fromFirestore(doc).toEntity();
+  }
+
+  Future<Business?> getBySlug(String slug) async {
+    final businessSlug = slugify(slug);
+    if (businessSlug.isEmpty) return null;
+    final slugDoc = await _firestore.collection('slugs').doc(businessSlug).get();
+    if (!slugDoc.exists) return null;
+    final businessId = slugDoc.data()?['businessId'] as String?;
+    if (businessId == null || businessId.isEmpty) return null;
+    return getById(businessId);
   }
 
   Future<List<Business>> listOwnedBy(String ownerId) async {
@@ -83,6 +96,9 @@ class BusinessRepository {
     required String name,
     String? description,
     String? logoUrl,
+    String? coverImageUrl,
+    String? location,
+    String? website,
     String? backgroundPresetId,
     String? backgroundImageUrl,
     double? backgroundOverlayOpacity,
@@ -96,6 +112,9 @@ class BusinessRepository {
       'name': name,
       'description': description ?? '',
       'logoUrl': logoUrl ?? '',
+      'coverImageUrl': coverImageUrl ?? '',
+      'location': location ?? '',
+      'website': website ?? '',
       'backgroundPresetId': backgroundPresetId ?? '',
       'backgroundImageUrl': backgroundImageUrl ?? '',
       if (backgroundOverlayOpacity != null)
@@ -105,6 +124,27 @@ class BusinessRepository {
       if (locales != null) 'locales': locales,
       if (nameI18n != null) 'nameI18n': nameI18n,
       if (descriptionI18n != null) 'descriptionI18n': descriptionI18n,
+    });
+  }
+
+  Future<void> updateWebsitePlan({
+    required String businessId,
+    required WebsitePlan plan,
+    bool markProfessionalRequested = false,
+  }) async {
+    final data = <String, dynamic>{'websitePlan': plan.firestoreValue};
+    if (markProfessionalRequested && plan == WebsitePlan.professional) {
+      data['professionalWebsiteRequestedAt'] = FieldValue.serverTimestamp();
+    }
+    await _paths.business(businessId).update(data);
+  }
+
+  Future<void> updateSiteConfig({
+    required String businessId,
+    required SiteConfig siteConfig,
+  }) async {
+    await _paths.business(businessId).update({
+      'siteConfig': SiteConfigModel.toMap(siteConfig),
     });
   }
 

@@ -1,5 +1,13 @@
 {
   "projects": {
     "default": "jon-sport"
+  },
+  "targets": {
+    "jon-sport": {
+      "hosting": {
+        "admin": ["jon-sport"],
+        "shop": ["jon-sport-shop"]
+      }
+    }
   }
 }

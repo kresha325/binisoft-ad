@@ -9,8 +9,13 @@ class Category extends Equatable {
     required this.order,
     this.parentId,
     this.description,
+    this.seoTitle,
+    this.seoDescription,
     this.nameI18n = const {},
     this.descriptionI18n = const {},
+    this.seoTitleI18n = const {},
+    this.seoDescriptionI18n = const {},
+    this.localizedSlugs = const {},
   });
 
   final String id;
@@ -20,8 +25,13 @@ class Category extends Equatable {
   final int order;
   final String? parentId;
   final String? description;
+  final String? seoTitle;
+  final String? seoDescription;
   final Map<String, String> nameI18n;
   final Map<String, String> descriptionI18n;
+  final Map<String, String> seoTitleI18n;
+  final Map<String, String> seoDescriptionI18n;
+  final Map<String, String> localizedSlugs;
 
   @override
   List<Object?> get props => [
@@ -32,7 +42,12 @@ class Category extends Equatable {
         order,
         parentId,
         description,
+        seoTitle,
+        seoDescription,
         nameI18n,
         descriptionI18n,
+        seoTitleI18n,
+        seoDescriptionI18n,
+        localizedSlugs,
       ];
 }

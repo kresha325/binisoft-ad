@@ -3,9 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../i18n/app_locales.dart';
 import '../theme/app_color_scheme.dart';
+import '../theme/app_design.dart';
 import 'app_text_field.dart';
 
-/// Admin form fields for sq / en / de (or subset from [enabledLocales]).
+/// Admin form fields per locale — one tab per language (SQ / EN / DE).
 class LocalizedFieldsEditor extends StatefulWidget {
   const LocalizedFieldsEditor({
     super.key,
@@ -28,9 +29,11 @@ class LocalizedFieldsEditor extends StatefulWidget {
   State<LocalizedFieldsEditor> createState() => _LocalizedFieldsEditorState();
 }
 
-class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor> {
+class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor>
+    with SingleTickerProviderStateMixin {
   late final Map<String, TextEditingController> _controllers;
   late List<String> _locales;
+  TabController? _tabController;
 
   @override
   void initState() {
@@ -40,6 +43,12 @@ class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor> {
       for (final code in AppLocales.all)
         code: TextEditingController(text: widget.values[code] ?? ''),
     };
+    _initTabs();
+  }
+
+  void _initTabs() {
+    _tabController?.dispose();
+    _tabController = TabController(length: _locales.length, vsync: this);
   }
 
   @override
@@ -48,11 +57,13 @@ class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor> {
     final nextLocales = _sortedLocales(widget.enabledLocales);
     if (nextLocales.join() != _locales.join()) {
       _locales = nextLocales;
+      _initTabs();
     }
   }
 
   @override
   void dispose() {
+    _tabController?.dispose();
     for (final c in _controllers.values) {
       c.dispose();
     }
@@ -73,6 +84,10 @@ class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor> {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final tabController = _tabController;
+    if (tabController == null || _locales.isEmpty) return const SizedBox.shrink();
+
+    final fieldHeight = widget.multiline ? 132.0 : 76.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -87,20 +102,47 @@ class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor> {
         ),
         const SizedBox(height: 4),
         Text(
-          'Fill only the languages you need. Default language is required.',
+          'Only the default language is required. Other tabs are optional.',
           style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted, height: 1.3),
         ),
         const SizedBox(height: 10),
-        for (final code in _locales) ...[
-          AppTextField(
-            label: AppLocales.label(code),
-            controller: _controllers[code]!,
-            hint: widget.label,
-            maxLines: widget.multiline ? 3 : 1,
-            onChanged: (_) => _emit(),
+        Material(
+          color: colors.surfaceElevated.withValues(alpha: 0.35),
+          borderRadius: BorderRadius.circular(AppDesign.radiusMd),
+          child: Column(
+            children: [
+              TabBar(
+                controller: tabController,
+                isScrollable: _locales.length > 3,
+                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+                tabs: [
+                  for (final code in _locales)
+                    Tab(text: AppLocales.label(code).toUpperCase()),
+                ],
+              ),
+              SizedBox(
+                height: fieldHeight,
+                child: TabBarView(
+                  controller: tabController,
+                  children: [
+                    for (final code in _locales)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                        child: AppTextField(
+                          label: widget.label,
+                          controller: _controllers[code]!,
+                          hint: widget.label,
+                          maxLines: widget.multiline ? 4 : 1,
+                          onChanged: (_) => _emit(),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-        ],
+        ),
+        const SizedBox(height: 16),
       ],
     );
   }

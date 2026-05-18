@@ -48,7 +48,7 @@ class AppLocalizationsSq extends AppLocalizations {
   String get menuSignedInAs => 'I kyçur si';
 
   @override
-  String get menuCreateBusiness => 'Krijo biznes të ri';
+  String get menuCreateBusiness => 'Shto dyqan';
 
   @override
   String get menuLogOut => 'Dil';
@@ -67,7 +67,7 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get pageBusinessesSubtitle =>
-      'Të gjitha bizneset — ndërro ose krijo të ri.';
+      'Një llogari, disa dyqane të ndara. Ndërro dyqanin aktiv ose shto të ri (me pagesë aktivizimi).';
 
   @override
   String get pageProductsTitle => 'Produktet';
@@ -532,6 +532,288 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsLogoUrl => 'URL e logos';
 
   @override
+  String get settingsCoverUrl => 'Cover i dyqanit';
+
+  @override
+  String get settingsCoverNote =>
+      'Shfaqet në krye të profilit të dyqanit publik.';
+
+  @override
+  String get settingsLocation => 'Lokacioni';
+
+  @override
+  String get settingsLocationHint => 'Qyteti, adresa ose zona';
+
+  @override
+  String get settingsWebsite => 'Faqja web';
+
+  @override
+  String get websiteSectionTitle => 'Faqja web';
+
+  @override
+  String get websiteSectionSubtitle =>
+      'Shto një faqe publike për dyqanin — vetë shërbim ose profesionale me ekipin tonë.';
+
+  @override
+  String get websiteChoosePlan => 'Zgjidhni llojin e faqes';
+
+  @override
+  String get websiteChoosePlanHint =>
+      'Zgjidhni një opsion më sipër për të vazhduar.';
+
+  @override
+  String get websiteSimpleTitle => 'Site i thjeshtë';
+
+  @override
+  String get websiteSimpleBadge => 'Përfshirë';
+
+  @override
+  String get websiteSimpleDescription =>
+      'Faqe dyqani e gatshme me produktet, ofertat dhe porositë në WhatsApp.';
+
+  @override
+  String get websiteSimpleFeature1 =>
+      'Model MARKET: hero, produkte, oferta, galeri';
+
+  @override
+  String get websiteSimpleFeature2 => 'Ngjyra, seksione dhe rrjete sociale';
+
+  @override
+  String get websiteSimpleFeature3 =>
+      'Live në jon-sport-shop.web.app/slug-u-juaj';
+
+  @override
+  String get websiteProTitle => 'Website profesional';
+
+  @override
+  String get websiteProBadge => 'Me porosi';
+
+  @override
+  String get websiteProDescription =>
+      'Dizajn unik, domain dhe faqe të avancuara — nga Binisoft.';
+
+  @override
+  String get websiteProFeature1 => 'Layout dhe brand i personalizuar';
+
+  @override
+  String get websiteProFeature2 => 'Domain, SSL dhe udhëzime SEO';
+
+  @override
+  String get websiteProFeature3 => 'Mbështetje nga ekipi ynë';
+
+  @override
+  String get websiteSimpleSetupTitle => 'Gjenero site-in e thjeshtë';
+
+  @override
+  String get websiteSimpleSetupNote =>
+      'Publiko një herë, pastaj rregullo dizajnin te seksioni më poshtë.';
+
+  @override
+  String get websiteSimpleTemplateName =>
+      'MARKET v1 — Hero, Oferta, Produkte, Galeri, Kontakt';
+
+  @override
+  String get websiteGenerateSimple => 'Gjenero / publiko faqen';
+
+  @override
+  String get websiteProContactTitle => 'Na kontaktoni për website profesional';
+
+  @override
+  String get websiteProContactBody =>
+      'Na tregoni për biznesin dhe qëllimet. Përgjigjemi me ofertë dhe afat.';
+
+  @override
+  String get websiteProContactButton => 'Dërgo email te Binisoft';
+
+  @override
+  String get websiteProContactEmail => 'Ose shkruani te';
+
+  @override
+  String get websiteProRequested => 'Kërkesa u dërgua';
+
+  @override
+  String get websiteTemplateLabel => 'Modeli';
+
+  @override
+  String get websiteLiveUrlLabel => 'URL aktive';
+
+  @override
+  String get websiteOpenSite => 'Hap faqen';
+
+  @override
+  String get websiteCopyLink => 'Kopjo linkun';
+
+  @override
+  String get websiteCustomDomainLabel => 'Domain i vet (GoDaddy, etj.)';
+
+  @override
+  String get websiteCustomDomainNote =>
+      'Pas publikimit, vendos CNAME te registrar-i. SSL aktivizohet në Netlify/Firebase.';
+
+  @override
+  String get websiteDeployButton => 'Publiko / rifresko faqen';
+
+  @override
+  String get websiteDeploySuccess => 'Faqja u publikua';
+
+  @override
+  String get websiteSlugRequired =>
+      'Vendos slug-un e dyqanit fillimisht (Bizneset).';
+
+  @override
+  String get websiteLastDeploy => 'Publikimi i fundit';
+
+  @override
+  String get websiteDnsTitle => 'Regjistrat DNS (shto te GoDaddy)';
+
+  @override
+  String get websiteLinkCopied => 'Linku u kopjua';
+
+  @override
+  String get siteEditorTitle => 'Dizajni i dyqanit';
+
+  @override
+  String get siteEditorSubtitle =>
+      'Ngjyrat, seksionet, galeria dhe rrjetet sociale për faqen publike.';
+
+  @override
+  String get siteEditorColorsTitle => 'Ngjyrat';
+
+  @override
+  String get siteEditorColorPrimary => 'Kryesore (navy)';
+
+  @override
+  String get siteEditorColorAccent => 'Theks (e verdhë)';
+
+  @override
+  String get siteEditorColorBackground => 'Sfondi';
+
+  @override
+  String get siteEditorColorText => 'Teksti';
+
+  @override
+  String get siteEditorLayoutLabel => 'Layout';
+
+  @override
+  String get siteEditorLayoutDefault => 'Standard';
+
+  @override
+  String get siteEditorLayoutWide => 'I gjerë';
+
+  @override
+  String get siteEditorSectionsTitle => 'Seksionet';
+
+  @override
+  String get siteEditorSocialsTitle => 'Rrjetet sociale';
+
+  @override
+  String get siteEditorFooterTitle => 'Footer';
+
+  @override
+  String get siteEditorFooterLocation => 'Shfaq lokacionin';
+
+  @override
+  String get siteEditorFooterPhone => 'Shfaq numrin e telefonit';
+
+  @override
+  String get siteEditorFooterWhatsApp => 'Butoni WhatsApp';
+
+  @override
+  String get siteEditorSaveButton => 'Ruaj dizajnin';
+
+  @override
+  String get siteEditorSaved => 'Dizajni u ruajt';
+
+  @override
+  String get siteSectionEnabled => 'E dukshme në faqe';
+
+  @override
+  String get siteSectionDisabled => 'E fshehur';
+
+  @override
+  String get siteSectionShowOnSite => 'Shfaq këtë seksion';
+
+  @override
+  String get siteSectionNavLabel => 'Emri në menu (opsional)';
+
+  @override
+  String get siteSectionTitle => 'Titulli i seksionit';
+
+  @override
+  String get siteSectionDescription => 'Përshkrimi (opsional)';
+
+  @override
+  String get siteSectionHero => 'Hero';
+
+  @override
+  String get siteSectionOffers => 'Ofertat';
+
+  @override
+  String get siteSectionProducts => 'Produktet';
+
+  @override
+  String get siteSectionAbout => 'Rreth nesh';
+
+  @override
+  String get siteSectionGallery => 'Galeria';
+
+  @override
+  String get siteSectionContact => 'Kontakt';
+
+  @override
+  String get siteSectionHeroH1 => 'Titulli hero (H1)';
+
+  @override
+  String get siteSectionHeroP => 'Teksti hero (paragraf)';
+
+  @override
+  String get siteHeroUseProfileCover =>
+      'Përdor cover-in nga profili i biznesit';
+
+  @override
+  String get siteHeroImage => 'Imazhi i sfondit hero';
+
+  @override
+  String get siteGalleryHint =>
+      'Deri në 5 — imazh dhe/ose YouTube për çdo vend.';
+
+  @override
+  String get siteGalleryAdd => 'Shto në galeri';
+
+  @override
+  String get siteGalleryItem => 'Elementi';
+
+  @override
+  String get siteGalleryImage => 'Imazhi';
+
+  @override
+  String get siteGalleryYoutube => 'YouTube URL (opsional)';
+
+  @override
+  String get siteGalleryCaption => 'Titulli (opsional)';
+
+  @override
+  String get siteSocialFacebook => 'Facebook';
+
+  @override
+  String get siteSocialInstagram => 'Instagram';
+
+  @override
+  String get siteSocialTiktok => 'TikTok';
+
+  @override
+  String get siteSocialYoutube => 'YouTube';
+
+  @override
+  String get siteSocialLinkedin => 'LinkedIn';
+
+  @override
+  String get siteSocialX => 'X (Twitter)';
+
+  @override
+  String get siteSocialWhatsapp => 'WhatsApp';
+
+  @override
   String get settingsOrderPhone => 'Telefoni i porosive (WhatsApp)';
 
   @override
@@ -659,6 +941,19 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
+  String get apiPublicShopTitle => 'Dyqani online';
+
+  @override
+  String get apiPublicShopSubtitle =>
+      'Çdo biznes ka menu publike në këtë link. Gjenero API key më poshtë, pastaj hap dyqanin një herë me ?key=… që klientët të porosisin.';
+
+  @override
+  String get apiPublicShopCopy => 'Kopjo linkun e dyqanit';
+
+  @override
+  String get apiLinkCopied => 'Linku u kopjua';
+
+  @override
   String get apiLivePreview => 'Parapamje live';
 
   @override
@@ -688,4 +983,535 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get apiIntegrationReadFull => 'Lexo udhëzuesin e plotë';
+
+  @override
+  String get businessesSectionTitle => 'Dyqanet e tua';
+
+  @override
+  String businessesSectionSubtitle(
+    int maxBusinesses,
+    String planTitle,
+    int maxProducts,
+  ) {
+    return 'Një llogari · deri në $maxBusinesses dyqane në planin $planTitle. Çdo dyqan ka katalog, porosi, oferta dhe API publike (deri $maxProducts produkte për dyqan).';
+  }
+
+  @override
+  String businessesQuotaUsage(int owned, int max) {
+    return '$owned nga $max dyqane';
+  }
+
+  @override
+  String businessesAddStore(int next, int max) {
+    return 'Shto dyqan ($next/$max)';
+  }
+
+  @override
+  String businessesAddStoreFull(int owned, int max) {
+    return 'Shto dyqan tjetër ($owned/$max)';
+  }
+
+  @override
+  String businessesLimitReached(int max, String planCode) {
+    return 'Ke arritur limitin $max dyqane në planin $planCode. Ngritu planin te Cilësimet.';
+  }
+
+  @override
+  String get businessesEmpty =>
+      'Ende pa dyqan. Krijo dyqanin të parë e-commerce më poshtë.';
+
+  @override
+  String get businessTileActive => 'Aktiv tani';
+
+  @override
+  String get businessTileSwitch => 'Hap';
+
+  @override
+  String businessTileApiSlug(String slug) {
+    return 'URL dyqani: $slug';
+  }
+
+  @override
+  String get businessTileHint => 'Produkte, porosi & API të veçanta';
+
+  @override
+  String get createFirstStoreTitle => 'Krijo dyqanin të parë';
+
+  @override
+  String get createFirstStoreBody =>
+      'Çdo dyqan është një hapësirë e plotë e-commerce: produkte, kategori, oferta dhe API publike për web/app. Mbetesh me të njëjtën llogari — shton dyqane të tjera kur të duash (çdo dyqan i ri faturohet veçmas).';
+
+  @override
+  String get createFirstStoreButton => 'Krijo dyqanin e parë';
+
+  @override
+  String createStoreDialogTitle(int next, int max) {
+    return 'Dyqan i ri ($next nga $max)';
+  }
+
+  @override
+  String createStoreDialogIntro(String price) {
+    return 'Çdo dyqan i ri kërkon aktivizim një herë ($price, përfshin muajin e parë). Fatura ruhet në këtë llogari.';
+  }
+
+  @override
+  String get createStoreContinuePayment => 'Vazhdo te pagesa';
+
+  @override
+  String createStoreQuotaSnack(int max) {
+    return 'Limiti i dyqaneve ($max në planin tënd).';
+  }
+
+  @override
+  String get createStoreSuccess => 'Dyqani u krijua · fatura u ruajt';
+
+  @override
+  String get switcherCreateStore => 'Krijo dyqan';
+
+  @override
+  String switcherMenuCreateStore(int owned, int max) {
+    return 'Shto dyqan ($owned/$max)';
+  }
+
+  @override
+  String get switcherTooltip => 'Dyqani aktiv — ndërro ose shto';
+
+  @override
+  String activeStoreBanner(String name) {
+    return 'Po menaxhon: $name';
+  }
+
+  @override
+  String get activeStoreBannerHint =>
+      'Paneli, produktet dhe porositë janë vetëm për këtë dyqan.';
+
+  @override
+  String get activeStoreBannerManage => 'Të gjitha dyqanet';
+
+  @override
+  String get editProduct => 'Ndrysho produktin';
+
+  @override
+  String get saveProduct => 'Ruaj produktin';
+
+  @override
+  String get coreDetails => 'Detajet kryesore';
+
+  @override
+  String get productNameLabel => 'Emri *';
+
+  @override
+  String get productDescriptionLabel => 'Përshkrimi';
+
+  @override
+  String get productPriceLabel => 'Çmimi';
+
+  @override
+  String get productCategoryLabel => 'Kategoria';
+
+  @override
+  String get selectOption => 'Zgjidh';
+
+  @override
+  String get productActiveLabel => 'Aktiv';
+
+  @override
+  String get customFieldsSection => 'Fushat e personalizuara';
+
+  @override
+  String couldNotLoadCustomFields(String message) {
+    return 'Nuk u ngarkuan fushat: $message';
+  }
+
+  @override
+  String get productSaved => 'Produkti u ruajt';
+
+  @override
+  String get productUpdated => 'Produkti u përditësua';
+
+  @override
+  String get productDeleted => 'Produkti u fshi';
+
+  @override
+  String get deleteProductTitle => 'Fshi produktin';
+
+  @override
+  String deleteProductMessage(String name) {
+    return 'Fshi \"$name\"? Ky veprim nuk kthehet mbrapsht.';
+  }
+
+  @override
+  String productLimitReached(String usage) {
+    return 'Limiti i produkteve ($usage). Ngritu planin te Cilësimet.';
+  }
+
+  @override
+  String get productImageInvalidUrl =>
+      'URL e pavlefshme. Ngarko përsëri ose përdor https publik.';
+
+  @override
+  String get productImagesTitle => 'Fotot e produktit';
+
+  @override
+  String productImagesSubtitle(int max) {
+    return 'Deri në $max foto. Vetëm ato aktive shfaqen në dyqanin online.';
+  }
+
+  @override
+  String productImagesMax(int max) {
+    return 'Maksimumi $max foto për produkt.';
+  }
+
+  @override
+  String get productImagesActive => 'Aktive';
+
+  @override
+  String get productImagesAddUrl => 'Shto URL';
+
+  @override
+  String get variantsSectionTitle => 'Variantet';
+
+  @override
+  String get variantsSectionSubtitle =>
+      'Përdor fusha Select si akse (p.sh. Madhësia, Ngjyra), pastaj gjenero rreshta SKU me çmim dhe stok.';
+
+  @override
+  String get variantsSelectAxes => 'Akset e variantit';
+
+  @override
+  String get variantsGenerate => 'Gjenero kombinimet';
+
+  @override
+  String get variantsSku => 'SKU';
+
+  @override
+  String get variantsPrice => 'Çmimi';
+
+  @override
+  String get variantsQuantity => 'Sasia';
+
+  @override
+  String get variantsNoAxes =>
+      'Shto fusha Select me opsione te Fushat e personalizuara (p.sh. Madhësia, Ngjyra).';
+
+  @override
+  String get variantsApplyBasePrice => 'Apliko çmimin bazë te të gjitha';
+
+  @override
+  String get variantsClear => 'Pastro variantet';
+
+  @override
+  String variantsRowLabel(String labels) {
+    return '$labels';
+  }
+
+  @override
+  String get saveField => 'Ruaj fushën';
+
+  @override
+  String get fieldLabel => 'Etiketa';
+
+  @override
+  String get fieldKey => 'Çelësi (Key)';
+
+  @override
+  String get fieldType => 'Lloji';
+
+  @override
+  String get fieldRequired => 'E detyrueshme në produkte';
+
+  @override
+  String get fieldActive => 'Aktive';
+
+  @override
+  String get fieldOptionsHint => 'Opsionet (një për rresht)';
+
+  @override
+  String get attrTypeText => 'Tekst (i shkurtër)';
+
+  @override
+  String get attrTypeTextarea => 'Tekst (i gjatë)';
+
+  @override
+  String get attrTypeNumber => 'Numër';
+
+  @override
+  String get attrTypeSelect => 'Zgjedhje';
+
+  @override
+  String get attrTypeMultiSelect => 'Zgjedhje shumëfishe';
+
+  @override
+  String get attrTypeColor => 'Ngjyrë';
+
+  @override
+  String get attrTypeBoolean => 'Po/Jo';
+
+  @override
+  String get defaultFieldsTitle => 'Fushat e paracaktuara';
+
+  @override
+  String get defaultFieldsSubtitle =>
+      'Fushat e aktivizuara janë të detyrueshme kur shton produkt.';
+
+  @override
+  String get businessNameLabel => 'Emri i biznesit *';
+
+  @override
+  String get businessSlugLabel => 'URL Slug *';
+
+  @override
+  String get businessSlugHelper =>
+      'API publike: /api/public/slug-i-yt/products';
+
+  @override
+  String get internalSlugLabel => 'Slug i brendshëm *';
+
+  @override
+  String get internalSlugHint => 'elektronike';
+
+  @override
+  String get internalSlugHelper =>
+      'Nuk përkthehet. Përdoret në API, lidhje dhe databazë (p.sh. elektronike, pica-pije).';
+
+  @override
+  String get internalSlugImmutableHelper =>
+      'Slug-u i brendshëm nuk ndryshohet pas krijimit.';
+
+  @override
+  String get internalSlugImmutableNote =>
+      'Slug-u mbetet i njëjtë për lidhje të qëndrueshme në API.';
+
+  @override
+  String get internalSlugTaken =>
+      'Ky slug i brendshëm është tashmë në përdorim.';
+
+  @override
+  String get localizedContentSection => 'Përkthimet';
+
+  @override
+  String get localizedContentHelper =>
+      'Kërkohet vetëm tab-i i gjuhës default. Përdor Auto translate për gjuhët e tjera.';
+
+  @override
+  String get autoTranslateButton => 'Auto translate';
+
+  @override
+  String get autoTranslateNeedSource =>
+      'Plotëso emrin ose përshkrimin në gjuhën default fillimisht.';
+
+  @override
+  String get autoTranslateDone =>
+      'Përkthimet u gjeneruan. Kontrollo para ruajtjes.';
+
+  @override
+  String get seoTitleLabel => 'Titulli SEO';
+
+  @override
+  String get seoDescriptionLabel => 'Përshkrimi SEO';
+
+  @override
+  String get localizedSlugsSection => 'Slug URL për dyqanin (opsionale)';
+
+  @override
+  String localizedSlugsHelper(String slug) {
+    return 'Opsionale për gjuhë. Default përdor slug-un \"$slug\".';
+  }
+
+  @override
+  String get businessCreatedInvoiceFailed =>
+      'Dyqani u krijua, por fatura nuk u ruajt. Shiko Faturimin.';
+
+  @override
+  String get paymentTitle => 'Përfundo pagesën';
+
+  @override
+  String paymentSubtitleRegistration(String plan) {
+    return 'Binisoft Admin · plani $plan';
+  }
+
+  @override
+  String paymentSubtitleNewBusiness(String name) {
+    return 'Dyqan i ri · $name';
+  }
+
+  @override
+  String paymentPayRegistration(String amount) {
+    return 'Paguaj $amount dhe krijo llogarinë';
+  }
+
+  @override
+  String paymentPayNewBusiness(String amount) {
+    return 'Paguaj $amount dhe krijo dyqanin';
+  }
+
+  @override
+  String get paymentDemoBannerRegistration =>
+      'Modalitet demo: pa pagesë reale. Konfirmo për të krijuar llogarinë.';
+
+  @override
+  String get paymentDemoBannerNewBusiness =>
+      'Modalitet demo: pa pagesë reale. Konfirmo për të aktivizuar dyqanin.';
+
+  @override
+  String get paymentActivationRegistration =>
+      'Regjistrimi (përfshin muajin e 1-rë)';
+
+  @override
+  String get paymentActivationNewBusiness =>
+      'Aktivizimi i dyqanit (përfshin muajin e 1-rë)';
+
+  @override
+  String get paymentMethod => 'Metoda e pagesës';
+
+  @override
+  String get paymentCard => 'Kartë';
+
+  @override
+  String get paymentPaypal => 'PayPal';
+
+  @override
+  String get paymentAcceptTerms =>
+      'Pranoj kushtet e abonimit dhe tarifën mujore pas muajit të parë.';
+
+  @override
+  String get paymentAcceptTermsRequired => 'Prano kushtet për të vazhduar.';
+
+  @override
+  String get paymentInvalidCard => 'Vendos një numër karte të vlefshëm.';
+
+  @override
+  String get paymentCancel => 'Anulo';
+
+  @override
+  String get planChooseTitle => 'Zgjidh planin';
+
+  @override
+  String planChooseSubtitle(int max) {
+    return '€30 + €6/muaj për 100 produkte (muaji 1 në regjistrim). Max $max produkte për dyqan.';
+  }
+
+  @override
+  String get planBillingSoon =>
+      'Faturimi së shpejti. Limitet vlejnë menjëherë pas përditësimit.';
+
+  @override
+  String get planBillingLater =>
+      'Regjistrohu tani me limitet e planit. Faturimi aktivizohet më vonë.';
+
+  @override
+  String planPerMonth(String price) {
+    return '$price/muaj pas muajit të 1-rë';
+  }
+
+  @override
+  String planRegistration(String price) {
+    return 'Regjistrimi $price (përfshin muajin e 1-rë)';
+  }
+
+  @override
+  String get paymentThenMonthly => 'Pastaj mujore';
+
+  @override
+  String get paymentTotalDueToday => 'Totali sot';
+
+  @override
+  String planProductsCount(String title, int count) {
+    return '$title · $count produkte';
+  }
+
+  @override
+  String get defaultFieldRequired => '· e detyrueshme';
+
+  @override
+  String get teamSectionTitle => 'Ekipi & rolet';
+
+  @override
+  String get teamSectionSubtitle =>
+      'Fto menaxher ose punonjës me email — ndaj kodin e ftesës që të regjistrohen te Bashkohu me ekipin.';
+
+  @override
+  String get teamInviteEmail => 'Email';
+
+  @override
+  String get teamInviteRole => 'Roli';
+
+  @override
+  String get teamInviteButton => 'Fto anëtar';
+
+  @override
+  String get teamEmpty => 'Ende pa ekip.';
+
+  @override
+  String get teamRemoveTitle => 'Hiq anëtarin?';
+
+  @override
+  String get teamRemoveMessage => 'Humbin aksesin në këtë dyqan.';
+
+  @override
+  String get teamRemoveConfirm => 'Hiq';
+
+  @override
+  String get teamRemoved => 'Anëtari u hoq';
+
+  @override
+  String get teamInviteAssigned =>
+      'Anëtari u shtua — mund të hyjë me llogarinë ekzistuese.';
+
+  @override
+  String teamInviteCreated(String code) {
+    return 'Kodi i ftesës: $code — ndaje dhe regjistrohu te Bashkohu me ekipin.';
+  }
+
+  @override
+  String teamInviteCreatedCopied(String code) {
+    return 'Kodi u kopjua: $code — ndaje; regjistrohu te Bashkohu me ekipin.';
+  }
+
+  @override
+  String get tryAgain => 'Provo përsëri';
+
+  @override
+  String routerPageNotFound(String path) {
+    return 'Faqja nuk u gjet: $path\n\nHap: …/binisoft-ad/#/login';
+  }
+
+  @override
+  String get roleSuperadmin => 'Superadmin';
+
+  @override
+  String get roleOwner => 'Pronar';
+
+  @override
+  String get roleAdmin => 'Administrator';
+
+  @override
+  String get roleManager => 'Menaxher';
+
+  @override
+  String get roleEmployee => 'Punonjës';
+
+  @override
+  String get joinTeamTitle => 'Bashkohu me ekipin';
+
+  @override
+  String get joinTeamSubtitle =>
+      'Përdor kodin nga pronari i dyqanit. Pa pagesë abonimi.';
+
+  @override
+  String get inviteCodeLabel => 'Kodi i ftesës';
+
+  @override
+  String get joinTeamButton => 'Krijo llogari & bashkohu';
+
+  @override
+  String joinTeamSuccess(String store) {
+    return 'Mirë se erdhe! U lidhe me $store.';
+  }
+
+  @override
+  String get haveAccountLogin => 'Ke llogari? Kyçu';
+
+  @override
+  String get loginJoinTeam => 'Bashkohu me kod ftese';
 }

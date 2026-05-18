@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/l10n/attribute_type_l10n.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/i18n/localized_text.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/utils/auth_error_message.dart';
@@ -13,10 +15,10 @@ import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/localized_fields_editor.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/presentation/providers/business_locales_provider.dart';
-import '../../domain/attribute_type_labels.dart';
 import '../../domain/entities/attribute_definition.dart';
 
 Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
+  final l10n = context.l10n;
   final locales = ref.read(businessLocalesProvider);
   var labelValues = LocalizedText.initialValues(
     defaultLocale: locales.defaultLocale,
@@ -30,8 +32,8 @@ Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
 
   final ok = await showAppFormDialog<bool>(
     context: context,
-    title: 'Add Field',
-    saveLabel: 'Save Field',
+    title: l10n.addField,
+    saveLabel: l10n.saveField,
     child: Consumer(
       builder: (context, ref, _) {
         final localeConfig = ref.watch(businessLocalesProvider);
@@ -56,37 +58,38 @@ Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
               ),
               const SizedBox(height: 16),
               AppTextField(
-                label: 'Key (Name)',
+                label: l10n.fieldKey,
                 controller: keyController,
                 hint: 'color',
                 onChanged: (_) => keyManual = true,
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                initialValue: type.label,
+              DropdownButtonFormField<AttributeType>(
+                value: type,
                 dropdownColor: context.appColors.surface,
                 style: AppInputStyles.fieldText(context),
-                decoration: AppInputStyles.dropdownDecoration(context, labelText: 'Type'),
+                decoration: AppInputStyles.dropdownDecoration(context, labelText: l10n.fieldType),
                 items: AttributeType.values
                     .map(
                       (t) => DropdownMenuItem(
-                        value: t.label,
-                        child: Text(t.label, style: AppInputStyles.fieldText(context)),
+                        value: t,
+                        child: Text(
+                          t.localizedLabel(context.l10n),
+                          style: AppInputStyles.fieldText(context),
+                        ),
                       ),
                     )
                     .toList(),
-                onChanged: (v) => setState(
-                  () => type = AttributeTypeLabels.fromLabel(v ?? type.label),
-                ),
+                onChanged: (v) => setState(() => type = v ?? type),
               ),
               const SizedBox(height: 8),
               AppSwitchRow(
-                label: 'Required',
+                label: l10n.fieldRequired,
                 value: required,
                 onChanged: (v) => setState(() => required = v),
               ),
               AppSwitchRow(
-                label: 'Active',
+                label: l10n.fieldActive,
                 value: active,
                 onChanged: (v) => setState(() => active = v),
               ),
@@ -144,7 +147,7 @@ Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
 
   if (ok == true && context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Field created')),
+      SnackBar(content: Text(context.l10n.changesSaved)),
     );
   }
 }

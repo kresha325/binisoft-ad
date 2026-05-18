@@ -3,6 +3,7 @@ const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestor
 const { createHash, randomBytes } = require('crypto');
 const pricing = require('./pricing');
 const rateLimit = require('./rateLimit');
+const { logPublicApiError } = require('./apiMonitor');
 
 const MAX_LINES = 50;
 const MAX_QTY = 999;
@@ -20,6 +21,11 @@ function generateOrderNumber(seq, date = new Date()) {
 
 function roundMoney(n) {
   return Math.round(n * 100) / 100;
+}
+
+function variantLabel(attributes) {
+  const parts = Object.values(attributes || {}).filter(Boolean);
+  return parts.join(' / ');
 }
 
 function formatWhatsAppMessage({ businessName, orderNumber, lines, subtotalEur, customer, notes }) {
@@ -100,6 +106,33 @@ async function loadProductsForOrder(businessId, lineInputs) {
   return byId;
 }
 
+async function loadVariantsForOrder(businessId, productIds) {
+  const db = getFirestore();
+  const byProductId = new Map();
+  const byVariantId = new Map();
+  if (productIds.length === 0) return { byProductId, byVariantId };
+
+  const chunks = [];
+  for (let i = 0; i < productIds.length; i += 30) {
+    chunks.push(productIds.slice(i, i + 30));
+  }
+
+  for (const chunk of chunks) {
+    const snap = await db
+      .collection(`businesses/${businessId}/productVariants`)
+      .where('productId', 'in', chunk)
+      .get();
+    for (const doc of snap.docs) {
+      byVariantId.set(doc.id, doc);
+      const pid = doc.data().productId;
+      if (!byProductId.has(pid)) byProductId.set(pid, []);
+      byProductId.get(pid).push(doc);
+    }
+  }
+
+  return { byProductId, byVariantId };
+}
+
 /**
  * Create order from external e-commerce / menu site.
  * @param {{ business: object, businessId: string, body: object }} ctx
@@ -127,6 +160,7 @@ async function createPublicOrder({ business, businessId, body }) {
 
   const lineInputs = rawLines.map((l, i) => {
     const productId = String(l.productId || '').trim();
+    const variantId = l.variantId != null ? String(l.variantId).trim() : '';
     const qty = Number(l.quantity);
     if (!productId) {
       throw new HttpsError('invalid-argument', `lines[${i}].productId is required`);
@@ -134,12 +168,19 @@ async function createPublicOrder({ business, businessId, body }) {
     if (!Number.isFinite(qty) || qty < 1 || qty > MAX_QTY) {
       throw new HttpsError('invalid-argument', `lines[${i}].quantity must be 1–${MAX_QTY}`);
     }
-    return { productId, quantity: Math.floor(qty) };
+    return { productId, variantId: variantId || null, quantity: Math.floor(qty) };
   });
 
   const db = getFirestore();
-  const productsById = await loadProductsForOrder(businessId, lineInputs);
-  const activeOffers = await pricing.loadActiveOffers(db, businessId);
+  const [productsById, activeOffers, variantMaps] = await Promise.all([
+    loadProductsForOrder(businessId, lineInputs),
+    pricing.loadActiveOffers(db, businessId),
+    loadVariantsForOrder(
+      businessId,
+      [...new Set(lineInputs.map((l) => l.productId))],
+    ),
+  ]);
+
   const lines = [];
   let subtotalEur = 0;
 
@@ -149,17 +190,62 @@ async function createPublicOrder({ business, businessId, body }) {
       throw new HttpsError('not-found', `Product not found: ${input.productId}`);
     }
     const d = doc.data();
-    const resolved = pricing.resolveProductPricing(d, input.productId, activeOffers);
-    const unitPrice = resolved.unitPrice;
+    const productVariants = variantMaps.byProductId.get(input.productId) || [];
+
+    if (productVariants.length > 0 && !input.variantId) {
+      throw new HttpsError(
+        'invalid-argument',
+        `lines[].variantId is required for product ${input.productId} (has variants)`,
+      );
+    }
+
+    let unitPrice;
+    let resolved;
+    let variantId = null;
+    let variantSku = null;
+    let variantAttributes = null;
+    let productName = d.name || 'Product';
+
+    if (input.variantId) {
+      const vDoc = variantMaps.byVariantId.get(input.variantId);
+      if (!vDoc || vDoc.data().productId !== input.productId) {
+        throw new HttpsError('not-found', `Variant not found: ${input.variantId}`);
+      }
+      const vd = vDoc.data();
+      const available = vd.quantity != null ? Number(vd.quantity) : 0;
+      if (available < input.quantity) {
+        throw new HttpsError(
+          'failed-precondition',
+          `Insufficient stock for variant ${input.variantId}`,
+        );
+      }
+      const baseVariantPrice = vd.price != null ? Number(vd.price) : 0;
+      resolved = pricing.resolveVariantPricing(baseVariantPrice, input.productId, activeOffers);
+      unitPrice = resolved.unitPrice;
+      variantId = vDoc.id;
+      variantSku = vd.sku || '';
+      variantAttributes = vd.attributes || {};
+      const label = variantLabel(variantAttributes) || variantSku;
+      if (label) productName = `${productName} (${label})`;
+    } else {
+      resolved = pricing.resolveProductPricing(d, input.productId, activeOffers);
+      unitPrice = resolved.unitPrice;
+    }
+
     const lineTotal = roundMoney(unitPrice * input.quantity);
     subtotalEur = roundMoney(subtotalEur + lineTotal);
     const line = {
       productId: doc.id,
-      productName: d.name || 'Product',
+      productName,
       quantity: input.quantity,
       unitPriceEur: unitPrice,
       lineTotalEur: lineTotal,
     };
+    if (variantId) {
+      line.variantId = variantId;
+      line.variantSku = variantSku;
+      line.variantAttributes = variantAttributes;
+    }
     if (resolved.onOffer) {
       line.originalUnitPriceEur = resolved.originalPrice;
       line.offerId = resolved.offerId;
@@ -260,6 +346,7 @@ function serializePublicOrder(doc) {
       productName: l.productName,
       quantity: l.quantity,
       lineTotalEur: l.lineTotalEur,
+      variantId: l.variantId || null,
     })),
   };
 }
@@ -278,9 +365,19 @@ async function loadOrderForCustomer(businessId, orderId, phone) {
   return { ref, snap, data };
 }
 
-/**
- * GET /api/public/{slug}/orders/{orderId}?phone=...
- */
+function extractApiKey(req) {
+  const header = req.headers.authorization || req.headers['x-api-key'] || '';
+  if (typeof header === 'string' && header.startsWith('Bearer ')) {
+    return header.slice('Bearer '.length).trim();
+  }
+  if (typeof header === 'string' && header.length > 0) {
+    return header.trim();
+  }
+  const bodyKey = req.body?.apiKey;
+  if (typeof bodyKey === 'string') return bodyKey.trim();
+  return null;
+}
+
 async function handlePublicGetOrder(req, res, { slug, orderId, findBusinessBySlug, sendError }) {
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -292,28 +389,35 @@ async function handlePublicGetOrder(req, res, { slug, orderId, findBusinessBySlu
   }
 
   try {
+    const ip = rateLimit.clientIp(req);
     const apiKey = extractApiKey(req);
-    if (!apiKey) {
-      throw new HttpsError('unauthenticated', 'Missing API key');
-    }
     const phone = String(req.query.phone || '').trim();
     if (!phone || normalizePhone(phone).length < 8) {
       throw new HttpsError('invalid-argument', 'phone query parameter is required');
     }
 
     const business = await findBusinessBySlug(slug);
-    await verifyOrderApiKey(business.id, apiKey);
+    if (apiKey) {
+      await verifyOrderApiKey(business.id, apiKey);
+    } else {
+      rateLimit.checkRateLimit(`public-order-status:${ip}`, { max: 60, windowMs: 60_000 });
+    }
 
     const { snap } = await loadOrderForCustomer(business.id, orderId, phone);
     res.status(200).json(serializePublicOrder(snap));
   } catch (err) {
+    logPublicApiError({
+      slug,
+      resource: 'orders',
+      method: req.method,
+      statusCode: err instanceof HttpsError ? 400 : 500,
+      code: err.code || 'internal',
+      message: err.message,
+    });
     sendError(res, err);
   }
 }
 
-/**
- * POST /api/public/{slug}/orders/{orderId}/cancel
- */
 async function handlePublicCancelOrder(req, res, { slug, orderId, findBusinessBySlug, sendError }) {
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -325,17 +429,19 @@ async function handlePublicCancelOrder(req, res, { slug, orderId, findBusinessBy
   }
 
   try {
+    const ip = rateLimit.clientIp(req);
     const apiKey = extractApiKey(req);
-    if (!apiKey) {
-      throw new HttpsError('unauthenticated', 'Missing API key');
-    }
     const phone = String(req.body?.phone || req.query?.phone || '').trim();
     if (!phone || normalizePhone(phone).length < 8) {
       throw new HttpsError('invalid-argument', 'phone is required');
     }
 
     const business = await findBusinessBySlug(slug);
-    await verifyOrderApiKey(business.id, apiKey);
+    if (apiKey) {
+      await verifyOrderApiKey(business.id, apiKey);
+    } else {
+      rateLimit.checkRateLimit(`public-order-cancel:${ip}`, { max: 15, windowMs: 60_000 });
+    }
 
     const { ref, data } = await loadOrderForCustomer(business.id, orderId, phone);
 
@@ -353,26 +459,18 @@ async function handlePublicCancelOrder(req, res, { slug, orderId, findBusinessBy
     const updated = await ref.get();
     res.status(200).json(serializePublicOrder(updated));
   } catch (err) {
+    logPublicApiError({
+      slug,
+      resource: 'orders/cancel',
+      method: req.method,
+      statusCode: 500,
+      code: err.code || 'internal',
+      message: err.message,
+    });
     sendError(res, err);
   }
 }
 
-function extractApiKey(req) {
-  const header = req.headers.authorization || req.headers['x-api-key'] || '';
-  if (typeof header === 'string' && header.startsWith('Bearer ')) {
-    return header.slice('Bearer '.length).trim();
-  }
-  if (typeof header === 'string' && header.length > 0) {
-    return header.trim();
-  }
-  const bodyKey = req.body?.apiKey;
-  if (typeof bodyKey === 'string') return bodyKey.trim();
-  return null;
-}
-
-/**
- * POST /api/public/{slug}/orders
- */
 async function handlePublicCreateOrder(req, res, { findBusinessBySlug, sendError }) {
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -383,13 +481,14 @@ async function handlePublicCreateOrder(req, res, { findBusinessBySlug, sendError
     return;
   }
 
+  let slug = '';
   try {
     const ip = rateLimit.clientIp(req);
     rateLimit.checkRateLimit(`public-orders:${ip}`, { max: 40, windowMs: 60_000 });
 
     const path = (req.path || req.url || '/').split('?')[0];
     const match = path.match(/\/api\/public\/([^/]+)\/orders\/?$/);
-    const slug = match
+    slug = match
       ? decodeURIComponent(match[1])
       : req.query.slug || req.body?.slug;
 
@@ -419,6 +518,14 @@ async function handlePublicCreateOrder(req, res, { findBusinessBySlug, sendError
 
     res.status(201).json(result);
   } catch (err) {
+    logPublicApiError({
+      slug,
+      resource: 'orders/create',
+      method: req.method,
+      statusCode: err instanceof HttpsError ? 400 : 500,
+      code: err.code || 'internal',
+      message: err.message,
+    });
     sendError(res, err);
   }
 }
@@ -427,11 +534,95 @@ function generateApiKeyPlain() {
   return `jsk_${randomBytes(24).toString('hex')}`;
 }
 
+async function handlePublicCheckoutBatch(req, res, { findBusinessBySlug, sendError }) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+
+  try {
+    const ip = rateLimit.clientIp(req);
+    rateLimit.checkRateLimit(`public-checkout:${ip}`, { max: 20, windowMs: 60_000 });
+
+    const body = req.body || {};
+    const customer = body.customer || {};
+    const name = String(customer.name || '').trim();
+    const phone = String(customer.phone || '').trim();
+    const notes = customer.notes != null ? String(customer.notes) : '';
+    const channel = body.channel === 'sms' ? 'sms' : 'whatsapp';
+
+    if (!name || name.length < 2) {
+      throw new HttpsError('invalid-argument', 'customer.name is required');
+    }
+    if (normalizePhone(phone).length < 8) {
+      throw new HttpsError('invalid-argument', 'customer.phone is required');
+    }
+
+    const groups = Array.isArray(body.groups) ? body.groups : [];
+    if (groups.length === 0) {
+      throw new HttpsError('invalid-argument', 'groups array is required');
+    }
+    if (groups.length > 10) {
+      throw new HttpsError('invalid-argument', 'Too many businesses in one checkout');
+    }
+
+    const orders = [];
+    for (const group of groups) {
+      const slug = String(group.slug || '').trim();
+      if (!slug) {
+        throw new HttpsError('invalid-argument', 'Each group needs a slug');
+      }
+      const lines = Array.isArray(group.lines) ? group.lines : [];
+      if (lines.length === 0) continue;
+
+      const business = await findBusinessBySlug(slug);
+      const result = await createPublicOrder({
+        business,
+        businessId: business.id,
+        body: { customer: { name, phone, notes }, lines, channel },
+      });
+      orders.push({
+        slug,
+        businessName: business.name || slug,
+        orderId: result.orderId,
+        orderNumber: result.orderNumber,
+        subtotalEur: result.subtotalEur,
+        status: result.status,
+        messageText: result.messageText,
+        notify: result.notify,
+      });
+    }
+
+    if (orders.length === 0) {
+      throw new HttpsError('invalid-argument', 'No order lines');
+    }
+
+    res.status(201).json({ orders });
+  } catch (err) {
+    logPublicApiError({
+      slug: 'checkout',
+      resource: 'checkout',
+      method: req.method,
+      statusCode: err instanceof HttpsError ? 400 : 500,
+      code: err.code || 'internal',
+      message: err.message,
+    });
+    sendError(res, err);
+  }
+}
+
 module.exports = {
   hashApiKey,
   generateApiKeyPlain,
-  handlePublicCreateOrder,
+  createPublicOrder,
   handlePublicGetOrder,
   handlePublicCancelOrder,
+  handlePublicCreateOrder,
+  handlePublicCheckoutBatch,
   formatWhatsAppMessage,
+  variantLabel,
 };

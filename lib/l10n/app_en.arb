@@ -13,13 +13,13 @@
   "navSettings": "Settings",
   "navBilling": "Billing & invoices",
   "menuSignedInAs": "Signed in as",
-  "menuCreateBusiness": "Create new business",
+  "menuCreateBusiness": "Add store",
   "menuLogOut": "Log out",
   "menuLanguage": "App language",
   "pageDashboardTitle": "Dashboard",
   "pageDashboardSubtitle": "Overview of your product catalog",
   "pageBusinessesTitle": "Businesses",
-  "pageBusinessesSubtitle": "All businesses on your account — switch active or create new.",
+  "pageBusinessesSubtitle": "One login manages separate stores. Switch the active store or add another (paid per activation).",
   "pageProductsTitle": "Products",
   "pageProductsSubtitle": "Manage your catalog entries.",
   "pageOffersTitle": "Offers",
@@ -184,6 +184,95 @@
   "settingsDescription": "Description",
   "settingsDescriptionHint": "A brief description of your business",
   "settingsLogoUrl": "Logo URL",
+  "settingsCoverUrl": "Shop cover image",
+  "settingsCoverNote": "Displayed at the top of your public shop profile.",
+  "settingsLocation": "Location",
+  "settingsLocationHint": "City, address, or area",
+  "settingsWebsite": "Website",
+  "websiteSectionTitle": "Website",
+  "websiteSectionSubtitle": "Add a public site for your store — self-service or custom with our team.",
+  "websiteChoosePlan": "Choose how you want your website",
+  "websiteChoosePlanHint": "Select an option above to continue.",
+  "websiteSimpleTitle": "Simple site",
+  "websiteSimpleBadge": "Included",
+  "websiteSimpleDescription": "Ready-made shop page linked to your products, offers and WhatsApp orders.",
+  "websiteSimpleFeature1": "MARKET template with hero, products, offers, gallery",
+  "websiteSimpleFeature2": "Customize colors, sections and social links",
+  "websiteSimpleFeature3": "Live at jon-sport-shop.web.app/your-slug",
+  "websiteProTitle": "Professional website",
+  "websiteProBadge": "Custom",
+  "websiteProDescription": "Unique design, custom domain and advanced pages — built by Binisoft.",
+  "websiteProFeature1": "Custom layout and branding",
+  "websiteProFeature2": "Domain setup and SEO guidance",
+  "websiteProFeature3": "Dedicated support from our team",
+  "websiteSimpleSetupTitle": "Generate your simple site",
+  "websiteSimpleSetupNote": "Publish once, then fine-tune design in the section below.",
+  "websiteSimpleTemplateName": "MARKET v1 — Hero, Offers, Products, About, Gallery, Contact",
+  "websiteGenerateSimple": "Generate / publish site",
+  "websiteProContactTitle": "Contact us for a professional site",
+  "websiteProContactBody": "Tell us about your business and goals. We will reply with a quote and timeline.",
+  "websiteProContactButton": "Email Binisoft",
+  "websiteProContactEmail": "Or write to",
+  "websiteProRequested": "Request sent",
+  "websiteTemplateLabel": "Template",
+  "websiteLiveUrlLabel": "Live URL",
+  "websiteOpenSite": "Open site",
+  "websiteCopyLink": "Copy link",
+  "websiteCustomDomainLabel": "Custom domain (GoDaddy, etc.)",
+  "websiteCustomDomainNote": "After deploy, point DNS (CNAME) to the platform host. SSL is enabled on Netlify/Firebase.",
+  "websiteDeployButton": "Publish / refresh website",
+  "websiteDeploySuccess": "Website published",
+  "websiteSlugRequired": "Set a store URL slug first (Businesses).",
+  "websiteLastDeploy": "Last publish",
+  "websiteDnsTitle": "DNS records (add at your registrar)",
+  "websiteLinkCopied": "Link copied",
+  "siteEditorTitle": "Shop design",
+  "siteEditorSubtitle": "Colors, sections, gallery and social links for your public storefront.",
+  "siteEditorColorsTitle": "Colors",
+  "siteEditorColorPrimary": "Primary (navy)",
+  "siteEditorColorAccent": "Accent (yellow)",
+  "siteEditorColorBackground": "Background",
+  "siteEditorColorText": "Text",
+  "siteEditorLayoutLabel": "Layout",
+  "siteEditorLayoutDefault": "Default",
+  "siteEditorLayoutWide": "Wide",
+  "siteEditorSectionsTitle": "Sections",
+  "siteEditorSocialsTitle": "Social networks",
+  "siteEditorFooterTitle": "Footer",
+  "siteEditorFooterLocation": "Show location",
+  "siteEditorFooterPhone": "Show phone number",
+  "siteEditorFooterWhatsApp": "Show WhatsApp button",
+  "siteEditorSaveButton": "Save shop design",
+  "siteEditorSaved": "Shop design saved",
+  "siteSectionEnabled": "Visible on site",
+  "siteSectionDisabled": "Hidden",
+  "siteSectionShowOnSite": "Show this section",
+  "siteSectionNavLabel": "Menu label (optional)",
+  "siteSectionTitle": "Section title",
+  "siteSectionDescription": "Description (optional)",
+  "siteSectionHero": "Hero",
+  "siteSectionOffers": "Offers",
+  "siteSectionProducts": "Products",
+  "siteSectionAbout": "About us",
+  "siteSectionGallery": "Gallery",
+  "siteSectionContact": "Contact",
+  "siteSectionHeroH1": "Hero headline (H1)",
+  "siteSectionHeroP": "Hero text (paragraph)",
+  "siteHeroUseProfileCover": "Use profile cover image from settings",
+  "siteHeroImage": "Hero background image",
+  "siteGalleryHint": "Up to 5 items — image and/or YouTube embed per slot.",
+  "siteGalleryAdd": "Add gallery item",
+  "siteGalleryItem": "Item",
+  "siteGalleryImage": "Image",
+  "siteGalleryYoutube": "YouTube URL (optional)",
+  "siteGalleryCaption": "Caption (optional)",
+  "siteSocialFacebook": "Facebook",
+  "siteSocialInstagram": "Instagram",
+  "siteSocialTiktok": "TikTok",
+  "siteSocialYoutube": "YouTube",
+  "siteSocialLinkedin": "LinkedIn",
+  "siteSocialX": "X (Twitter)",
+  "siteSocialWhatsapp": "WhatsApp",
   "settingsOrderPhone": "Order phone (WhatsApp)",
   "subscriptionPlanTitle": "Subscription plan",
   "changePlan": "Change plan",
@@ -234,6 +323,10 @@
   "@offerSummarySalePrice": {
     "placeholders": { "price": { "type": "double" } }
   },
+  "apiPublicShopTitle": "Online shop (your store)",
+  "apiPublicShopSubtitle": "Each business gets a public menu at this link. Generate an API key below, then open the shop once with ?key=… so customers can place orders.",
+  "apiPublicShopCopy": "Copy shop link",
+  "apiLinkCopied": "Link copied",
   "apiLivePreview": "Live preview",
   "apiLivePreviewTap": "Tap Preview on the products endpoint",
   "apiLivePreviewLoading": "Loading catalog preview…",
@@ -243,5 +336,252 @@
   "apiIntegrationInfoTitle": "Web shop integration",
   "apiIntegrationGuideTitle": "Web integration guide",
   "apiIntegrationGuideSubtitle": "How to connect your menu or e-commerce site to this API.",
-  "apiIntegrationReadFull": "Read full guide"
+  "apiIntegrationReadFull": "Read full guide",
+  "businessesSectionTitle": "Your stores",
+  "businessesSectionSubtitle": "One account · up to {maxBusinesses} stores on {planTitle}. Each store has its own catalog, orders, offers, and public API (up to {maxProducts} products per store).",
+  "@businessesSectionSubtitle": {
+    "placeholders": {
+      "maxBusinesses": { "type": "int" },
+      "planTitle": { "type": "String" },
+      "maxProducts": { "type": "int" }
+    }
+  },
+  "businessesQuotaUsage": "{owned} of {max} stores used",
+  "@businessesQuotaUsage": {
+    "placeholders": { "owned": { "type": "int" }, "max": { "type": "int" } }
+  },
+  "businessesAddStore": "Add store ({next}/{max})",
+  "@businessesAddStore": {
+    "placeholders": { "next": { "type": "int" }, "max": { "type": "int" } }
+  },
+  "businessesAddStoreFull": "Add another store ({owned}/{max})",
+  "@businessesAddStoreFull": {
+    "placeholders": { "owned": { "type": "int" }, "max": { "type": "int" } }
+  },
+  "businessesLimitReached": "You reached the limit of {max} stores on your {planCode} plan. Upgrade in Settings to add more.",
+  "@businessesLimitReached": {
+    "placeholders": { "max": { "type": "int" }, "planCode": { "type": "String" } }
+  },
+  "businessesEmpty": "No stores yet. Create your first e-commerce store below.",
+  "businessTileActive": "Active now",
+  "businessTileSwitch": "Open",
+  "businessTileApiSlug": "Shop URL: {slug}",
+  "@businessTileApiSlug": {
+    "placeholders": { "slug": { "type": "String" } }
+  },
+  "businessTileHint": "Separate products, orders & API",
+  "createFirstStoreTitle": "Create your first store",
+  "createFirstStoreBody": "A store is a full e-commerce space: its own products, categories, offers, and public API for your website or app. You stay on one login — add more stores anytime (each extra store is billed separately).",
+  "createFirstStoreButton": "Create first store",
+  "createStoreDialogTitle": "New store ({next} of {max})",
+  "@createStoreDialogTitle": {
+    "placeholders": { "next": { "type": "int" }, "max": { "type": "int" } }
+  },
+  "createStoreDialogIntro": "Each new store needs a one-time activation ({price}, first month included). You will get an invoice on this account.",
+  "@createStoreDialogIntro": {
+    "placeholders": { "price": { "type": "String" } }
+  },
+  "createStoreContinuePayment": "Continue to payment",
+  "createStoreQuotaSnack": "Store limit reached ({max} on your plan).",
+  "@createStoreQuotaSnack": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+  "createStoreSuccess": "Store created · invoice saved",
+  "switcherCreateStore": "Create store",
+  "switcherMenuCreateStore": "Add store ({owned}/{max})",
+  "@switcherMenuCreateStore": {
+    "placeholders": { "owned": { "type": "int" }, "max": { "type": "int" } }
+  },
+  "switcherTooltip": "Active store — switch or add another",
+  "activeStoreBanner": "Managing: {name}",
+  "@activeStoreBanner": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "activeStoreBannerHint": "Dashboard, products and orders apply to this store only.",
+  "activeStoreBannerManage": "All stores",
+  "editProduct": "Edit Product",
+  "saveProduct": "Save Product",
+  "coreDetails": "Core Details",
+  "productNameLabel": "Name *",
+  "productDescriptionLabel": "Description",
+  "productPriceLabel": "Price",
+  "productCategoryLabel": "Category",
+  "selectOption": "Select",
+  "productActiveLabel": "Active",
+  "customFieldsSection": "Custom Fields",
+  "couldNotLoadCustomFields": "Could not load custom fields: {message}",
+  "@couldNotLoadCustomFields": {
+    "placeholders": { "message": { "type": "String" } }
+  },
+  "productSaved": "Product saved",
+  "productUpdated": "Product updated",
+  "productDeleted": "Product deleted",
+  "deleteProductTitle": "Delete product",
+  "deleteProductMessage": "Delete \"{name}\"? This cannot be undone.",
+  "@deleteProductMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "productLimitReached": "Product limit reached ({usage}). Upgrade your plan in Settings.",
+  "@productLimitReached": {
+    "placeholders": { "usage": { "type": "String" } }
+  },
+  "productImageInvalidUrl": "Invalid image URL. Upload the file again or use a public https URL.",
+  "productImagesTitle": "Product photos",
+  "productImagesSubtitle": "Up to {max} images. Only active photos appear on your online shop.",
+  "@productImagesSubtitle": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+  "productImagesMax": "Maximum {max} photos per product.",
+  "@productImagesMax": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+  "productImagesActive": "Active",
+  "productImagesAddUrl": "Add URL",
+  "variantsSectionTitle": "Variants",
+  "variantsSectionSubtitle": "Use select-type custom fields as axes (e.g. Size, Color), then generate SKU rows with price and stock.",
+  "variantsSelectAxes": "Variant axes",
+  "variantsGenerate": "Generate combinations",
+  "variantsSku": "SKU",
+  "variantsPrice": "Price",
+  "variantsQuantity": "Qty",
+  "variantsNoAxes": "Add select fields with options under Custom Fields (e.g. Size, Color) to enable variants.",
+  "variantsApplyBasePrice": "Apply base price to all",
+  "variantsClear": "Clear variants",
+  "variantsRowLabel": "{labels}",
+  "@variantsRowLabel": {
+    "placeholders": { "labels": { "type": "String" } }
+  },
+  "saveField": "Save Field",
+  "fieldLabel": "Label",
+  "fieldKey": "Key (Name)",
+  "fieldType": "Type",
+  "fieldRequired": "Required on products",
+  "fieldActive": "Active",
+  "fieldOptionsHint": "Options (one per line)",
+  "attrTypeText": "Text (Short)",
+  "attrTypeTextarea": "Text (Long)",
+  "attrTypeNumber": "Number",
+  "attrTypeSelect": "Select",
+  "attrTypeMultiSelect": "Multi Select",
+  "attrTypeColor": "Color",
+  "attrTypeBoolean": "Boolean",
+  "defaultFieldsTitle": "Default fields",
+  "defaultFieldsSubtitle": "Enabled fields are required when adding a product.",
+  "businessNameLabel": "Business Name *",
+  "businessSlugLabel": "URL Slug *",
+  "businessSlugHelper": "Public API path: /api/public/your-slug/products",
+  "internalSlugLabel": "Internal slug *",
+  "internalSlugHint": "electronics",
+  "internalSlugHelper": "Not translated. Used in API, relations, and database (e.g. electronics, pizza-drinks).",
+  "internalSlugImmutableHelper": "Internal slug cannot be changed after creation.",
+  "internalSlugImmutableNote": "Slug is fixed for stable API links and relations.",
+  "internalSlugTaken": "This internal slug is already in use.",
+  "localizedContentSection": "Translations",
+  "localizedContentHelper": "Only the default language tab is required. Use Auto translate to fill other languages from the default.",
+  "autoTranslateButton": "Auto translate",
+  "autoTranslateNeedSource": "Fill name or description in the default language first.",
+  "autoTranslateDone": "Translations generated. Review before saving.",
+  "seoTitleLabel": "SEO title",
+  "seoDescriptionLabel": "SEO description",
+  "localizedSlugsSection": "Localized shop URL slugs",
+  "localizedSlugsHelper": "Optional per language. Default uses internal slug \"{slug}\".",
+  "@localizedSlugsHelper": {
+    "placeholders": { "slug": { "type": "String" } }
+  },
+  "businessCreatedInvoiceFailed": "Store created, but invoice could not be saved. Check Billing & invoices.",
+  "paymentTitle": "Complete payment",
+  "paymentSubtitleRegistration": "Binisoft Admin · {plan} plan",
+  "@paymentSubtitleRegistration": {
+    "placeholders": { "plan": { "type": "String" } }
+  },
+  "paymentSubtitleNewBusiness": "New store · {name}",
+  "@paymentSubtitleNewBusiness": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "paymentPayRegistration": "Pay {amount} and create account",
+  "@paymentPayRegistration": {
+    "placeholders": { "amount": { "type": "String" } }
+  },
+  "paymentPayNewBusiness": "Pay {amount} and create store",
+  "@paymentPayNewBusiness": {
+    "placeholders": { "amount": { "type": "String" } }
+  },
+  "paymentDemoBannerRegistration": "Demo mode: no real charge yet. Confirm below to create your account.",
+  "paymentDemoBannerNewBusiness": "Demo mode: no real charge yet. Confirm below to activate your new store.",
+  "paymentActivationRegistration": "Registration (includes 1st month)",
+  "paymentActivationNewBusiness": "Store activation (includes 1st month)",
+  "paymentMethod": "Payment method",
+  "paymentCard": "Card",
+  "paymentPaypal": "PayPal",
+  "paymentAcceptTerms": "I agree to the subscription terms and recurring monthly fee after the first month.",
+  "paymentAcceptTermsRequired": "Please accept the terms to continue.",
+  "paymentInvalidCard": "Enter a valid card number.",
+  "paymentCancel": "Cancel",
+  "planChooseTitle": "Choose your plan",
+  "planChooseSubtitle": "€30 + €6/month per 100 products (1st month included in registration). Max {max} products per store.",
+  "@planChooseSubtitle": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+  "planBillingSoon": "Billing integration coming soon. Limits apply immediately after update.",
+  "planBillingLater": "You can register now and use your plan limits. Billing will be enabled later.",
+  "planPerMonth": "{price}/mo after 1st month",
+  "@planPerMonth": {
+    "placeholders": { "price": { "type": "String" } }
+  },
+  "planRegistration": "Registration {price} (1st month incl.)",
+  "@planRegistration": {
+    "placeholders": { "price": { "type": "String" } }
+  },
+  "paymentThenMonthly": "Then monthly",
+  "paymentTotalDueToday": "Total due today",
+  "planProductsCount": "{title} · {count} products",
+  "@planProductsCount": {
+    "placeholders": { "title": { "type": "String" }, "count": { "type": "int" } }
+  },
+  "defaultFieldRequired": "· required",
+  "teamSectionTitle": "Team & roles",
+  "teamSectionSubtitle": "Invite managers (catalog + orders) or employees (orders only). Share the invite code — they register at Join team.",
+  "teamInviteEmail": "Email",
+  "teamInviteRole": "Role",
+  "teamInviteButton": "Invite team member",
+  "teamEmpty": "No team members yet.",
+  "teamRemoveTitle": "Remove team member?",
+  "teamRemoveMessage": "They will lose access to this store.",
+  "teamRemoveConfirm": "Remove",
+  "teamRemoved": "Team member removed",
+  "teamInviteAssigned": "Team member added — they can sign in with their existing account.",
+  "teamInviteCreated": "Invite code: {code} — share it; they register at Join team.",
+  "@teamInviteCreated": {
+    "placeholders": {
+      "code": { "type": "String" }
+    }
+  },
+  "teamInviteCreatedCopied": "Invite code copied: {code} — share it; they register at Join team.",
+  "@teamInviteCreatedCopied": {
+    "placeholders": {
+      "code": { "type": "String" }
+    }
+  },
+  "tryAgain": "Try again",
+  "routerPageNotFound": "Page not found: {path}\n\nOpen: …/binisoft-ad/#/login",
+  "@routerPageNotFound": {
+    "placeholders": {
+      "path": { "type": "String" }
+    }
+  },
+  "roleSuperadmin": "Superadmin",
+  "roleOwner": "Owner",
+  "roleAdmin": "Admin",
+  "roleManager": "Manager",
+  "roleEmployee": "Employee",
+  "joinTeamTitle": "Join a store team",
+  "joinTeamSubtitle": "Use the invite code from your store owner. No subscription payment — team access only.",
+  "inviteCodeLabel": "Invite code",
+  "joinTeamButton": "Create account & join",
+  "joinTeamSuccess": "Welcome! You joined {store}.",
+  "@joinTeamSuccess": {
+    "placeholders": { "store": { "type": "String" } }
+  },
+  "haveAccountLogin": "Already have an account? Sign in",
+  "loginJoinTeam": "Join with invite code"
 }

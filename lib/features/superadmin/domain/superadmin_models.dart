@@ -53,3 +53,39 @@ class SuperAdminProductRow {
   final String status;
   final DateTime updatedAt;
 }
+
+class SuperAdminCategoryRow {
+  const SuperAdminCategoryRow({
+    required this.id,
+    required this.businessId,
+    required this.businessName,
+    required this.name,
+    required this.slug,
+  });
+
+  final String id;
+  final String businessId;
+  final String businessName;
+  final String name;
+  final String slug;
+}
+
+class SuperAdminOfferRow {
+  const SuperAdminOfferRow({
+    required this.id,
+    required this.businessId,
+    required this.businessName,
+    required this.title,
+    required this.active,
+    required this.itemCount,
+    required this.endsAt,
+  });
+
+  final String id;
+  final String businessId;
+  final String businessName;
+  final String title;
+  final bool active;
+  final int itemCount;
+  final DateTime endsAt;
+}

@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/widgets/shell_add_button.dart';
 import '../providers/business_providers.dart';
 import 'create_business_dialog.dart';
 
-/// Shell header action to open the create-business dialog.
+/// Shell header action to open the create-store dialog.
 class CreateBusinessHeaderButton extends ConsumerWidget {
   const CreateBusinessHeaderButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final quotaAsync = ref.watch(businessQuotaProvider);
+    final l10n = context.l10n;
 
     return quotaAsync.when(
       loading: () => const SizedBox.shrink(),
       error: (_, __) => const SizedBox.shrink(),
       data: (quota) => ShellAddButton(
-        label: 'Create new business',
+        label: l10n.menuCreateBusiness,
         icon: Icons.add_business_outlined,
         onPressed: () {
           if (!quota.canCreateMore) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                  'Business limit reached (${quota.label}). '
-                  'Upgrade your plan in Settings to add more.',
-                ),
+                content: Text(l10n.createStoreQuotaSnack(quota.max)),
               ),
             );
             return;

@@ -230,6 +230,42 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
                     'Enabled: ${enabledLocales.map(AppLocales.label).join(', ')}.',
               ),
               const SizedBox(height: 20),
+              if (business?.slug != null && business!.slug!.isNotEmpty)
+                AppSectionCard(
+                  title: l10n.apiPublicShopTitle,
+                  subtitle: l10n.apiPublicShopSubtitle,
+                  icon: Icons.storefront_outlined,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText(
+                          AppConstants.publicShopUrl(slug),
+                          style: GoogleFonts.jetBrainsMono(
+                            fontSize: 13,
+                            color: colors.accent,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      FilledButton.tonalIcon(
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(
+                              text: AppConstants.publicShopUrl(slug),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(l10n.apiLinkCopied)),
+                          );
+                        },
+                        icon: const Icon(Icons.link, size: 18),
+                        label: Text(l10n.apiPublicShopCopy),
+                      ),
+                    ],
+                  ),
+                ),
+              if (business?.slug != null && business!.slug!.isNotEmpty)
+                const SizedBox(height: 20),
               const ApiKeysSection(),
               const SizedBox(height: 20),
               for (final e in endpoints) ...[

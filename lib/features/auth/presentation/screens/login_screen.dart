@@ -8,6 +8,7 @@ import '../../../../core/router/post_auth_navigation.dart';
 import '../../../../core/utils/web_boot_overlay.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/utils/auth_error_message.dart';
 import '../../../../core/widgets/app_text_field.dart';
@@ -132,6 +133,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Center(
+              child: TextButton(
+                onPressed: () => context.go('/join'),
+                child: Text(context.l10n.loginJoinTeam),
               ),
             ),
           ],

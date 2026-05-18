@@ -119,6 +119,24 @@ service cloud.firestore {
       return isPlatformAdmin() || isBusinessOwner(businessId) || hasStaffWriteRole(businessId);
     }
 
+    function canManageOrders(businessId) {
+      return isMember(businessId)
+        && (isPlatformAdmin()
+            || isBusinessOwner(businessId)
+            || (userExists()
+                && userBusinessId() == businessId
+                && userRole() in ['owner', 'admin', 'manager', 'employee']));
+    }
+
+    function memberDoc(businessId, memberId) {
+      return get(/databases/$(database)/documents/businesses/$(businessId)/members/$(memberId));
+    }
+
+    function isStaffMember(businessId) {
+      return isSignedIn()
+        && memberDoc(businessId, request.auth.uid).exists;
+    }
+
     function canManageUsers(businessId) {
       return isPlatformAdmin()
         || isBusinessOwner(businessId)
@@ -155,6 +173,11 @@ service cloud.firestore {
           (
             request.resource.data.role in ['owner', 'admin']
             && validNewUserPlanLimits()
+          )
+          || (
+            request.resource.data.role in ['manager', 'employee']
+            && request.resource.data.maxBusinesses == 0
+            && request.resource.data.businessId == ''
           )
           || (request.resource.data.role == 'superadmin'
               && request.resource.data.email == 'kreshnik.sh.gashi@hotmail.com')
@@ -211,17 +234,20 @@ service cloud.firestore {
 
       match /categories/{docId} {
         allow read: if canRead(businessId);
-        allow create, update, delete: if canWrite(businessId);
+        allow create, update: if canWrite(businessId);
+        allow delete: if canWrite(businessId) || isPlatformAdmin();
       }
 
       match /products/{docId} {
         allow read: if canRead(businessId);
-        allow create, update, delete: if canWrite(businessId);
+        allow create, update: if canWrite(businessId);
+        allow delete: if canWrite(businessId) || isPlatformAdmin();
       }
 
       match /offers/{docId} {
         allow read: if canRead(businessId);
-        allow create, update, delete: if canWrite(businessId);
+        allow create, update: if canWrite(businessId);
+        allow delete: if canWrite(businessId) || isPlatformAdmin();
       }
 
       match /productVariants/{docId} {
@@ -256,11 +282,21 @@ service cloud.firestore {
 
       match /orders/{orderId} {
         allow read: if canRead(businessId);
-        allow update: if canWrite(businessId)
+        allow update: if canManageOrders(businessId)
           && request.resource.data.diff(resource.data).affectedKeys()
               .hasOnly(['status', 'updatedAt', 'cancelledAt', 'confirmedAt', 'cancelledBy']);
         allow create, delete: if false;
       }
+
+      match /members/{memberId} {
+        allow read: if canRead(businessId);
+        allow create, update, delete: if canManageUsers(businessId);
+      }
+    }
+
+    match /invites/{inviteId} {
+      allow read: if false;
+      allow write: if false;
     }
 
     match /slugs/{slugId} {
@@ -272,8 +308,16 @@ service cloud.firestore {
       allow update: if false;
     }
 
-    // collectionGroup('products') queries (superadmin products tab)
+    // collectionGroup queries (superadmin platform console)
     match /{path=**}/products/{productId} {
+      allow read, delete: if isPlatformAdmin();
+    }
+
+    match /{path=**}/categories/{categoryId} {
+      allow read, delete: if isPlatformAdmin();
+    }
+
+    match /{path=**}/offers/{offerId} {
       allow read, delete: if isPlatformAdmin();
     }
 

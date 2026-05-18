@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
-/// Sends transactional emails via Cloud Function (SendGrid or `mail` queue).
+/// Sends transactional emails via Cloud Function (Firestore `mail` queue).
 class EmailDispatchService {
   EmailDispatchService({http.Client? client}) : _client = client ?? http.Client();
 

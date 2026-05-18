@@ -40,26 +40,64 @@ class CategoryRepository {
         );
   }
 
+  Future<bool> isSlugTaken({
+    required String businessId,
+    required String slug,
+    String? excludeCategoryId,
+  }) async {
+    final normalized = slugify(slug);
+    if (normalized.isEmpty) return false;
+    final snap = await _paths
+        .categories(businessId)
+        .where('slug', isEqualTo: normalized)
+        .limit(5)
+        .get();
+    for (final doc in snap.docs) {
+      if (excludeCategoryId != null && doc.id == excludeCategoryId) continue;
+      return true;
+    }
+    return false;
+  }
+
   Future<Category> create({
     required String businessId,
     required String name,
+    required String slug,
     String? description,
+    String? seoTitle,
+    String? seoDescription,
     String? parentId,
     int order = 0,
     Map<String, String> nameI18n = const {},
     Map<String, String> descriptionI18n = const {},
+    Map<String, String> seoTitleI18n = const {},
+    Map<String, String> seoDescriptionI18n = const {},
+    Map<String, String> localizedSlugs = const {},
   }) async {
+    final internalSlug = slugify(slug);
+    if (internalSlug.isEmpty) {
+      throw Exception('Internal slug is required.');
+    }
+    if (await isSlugTaken(businessId: businessId, slug: internalSlug)) {
+      throw Exception('This internal slug is already used by another category.');
+    }
+
     final ref = _paths.categories(businessId).doc();
     final model = CategoryModel(
       id: ref.id,
       businessId: businessId,
       name: name,
-      slug: slugify(name),
+      slug: internalSlug,
       order: order,
       parentId: parentId,
       description: description,
+      seoTitle: seoTitle,
+      seoDescription: seoDescription,
       nameI18n: nameI18n,
       descriptionI18n: descriptionI18n,
+      seoTitleI18n: seoTitleI18n,
+      seoDescriptionI18n: seoDescriptionI18n,
+      localizedSlugs: localizedSlugs,
     );
     await ref.set(model.toMap());
     return model.toEntity();
@@ -77,8 +115,13 @@ class CategoryRepository {
       order: category.order,
       parentId: category.parentId,
       description: category.description,
+      seoTitle: category.seoTitle,
+      seoDescription: category.seoDescription,
       nameI18n: category.nameI18n,
       descriptionI18n: category.descriptionI18n,
+      seoTitleI18n: category.seoTitleI18n,
+      seoDescriptionI18n: category.seoDescriptionI18n,
+      localizedSlugs: category.localizedSlugs,
     );
     await _paths.categories(businessId).doc(category.id).update(model.toMap());
   }

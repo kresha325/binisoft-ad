@@ -72,6 +72,14 @@ function apiMeta(ctx) {
   };
 }
 
+/** Shop-facing URL slug for the active locale (internal slug stays canonical). */
+function resolveUrlSlug(data, locale) {
+  const internal = typeof data.slug === 'string' ? data.slug.trim() : '';
+  const map = parseI18nMap(data.localizedSlugs);
+  const localized = map[locale];
+  return localized || internal;
+}
+
 module.exports = {
   SUPPORTED_LOCALES,
   DEFAULT_LOCALE,
@@ -81,4 +89,5 @@ module.exports = {
   resolveBusinessLocales,
   pickRequestLocale,
   apiMeta,
+  resolveUrlSlug,
 };

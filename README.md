@@ -115,5 +115,6 @@ See **[DEPLOY.md](DEPLOY.md)** for rules, functions, GitHub Pages, and env vars.
 
 ## Roadmap
 
-- Stripe (real payments) · role-based UI guards · product variant UI
-- Broader i18n (superadmin strings) · monitoring (Crashlytics/Sentry)
+- Stripe (real payments)
+- Team roles: owner/admin invite manager & employee (`/join` + Settings → Team)
+- Broader i18n (superadmin, landing) · monitoring (Crashlytics/Sentry)

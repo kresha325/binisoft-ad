@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/business_plans.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_design.dart';
 import '../../../../core/widgets/app_section_card.dart';
@@ -14,7 +15,7 @@ import '../../../products/presentation/providers/products_providers.dart';
 import '../providers/business_providers.dart';
 import 'create_business_dialog.dart';
 
-/// List owned businesses + create new (up to plan limit: 10 or 100).
+/// List owned stores + create new (up to plan limit).
 class MyBusinessesSection extends ConsumerWidget {
   const MyBusinessesSection({super.key, this.forceVisible = false});
 
@@ -27,6 +28,7 @@ class MyBusinessesSection extends ConsumerWidget {
     final quotaAsync = ref.watch(businessQuotaProvider);
     final activeId = ref.watch(currentBusinessIdProvider);
     final colors = context.appColors;
+    final l10n = context.l10n;
 
     if (user == null) return const SizedBox.shrink();
 
@@ -41,11 +43,13 @@ class MyBusinessesSection extends ConsumerWidget {
     }
 
     return AppSectionCard(
-      title: forceVisible ? 'Your businesses' : 'My businesses',
-      subtitle:
-          'Your ${plan.title} plan allows up to ${user.maxBusinesses} businesses. '
-          'Each gets its own products, categories, custom fields, and public API.',
-      icon: Icons.business_center_outlined,
+      title: l10n.businessesSectionTitle,
+      subtitle: l10n.businessesSectionSubtitle(
+        user.maxBusinesses,
+        plan.title,
+        user.maxProducts,
+      ),
+      icon: Icons.storefront_outlined,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -59,7 +63,7 @@ class MyBusinessesSection extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      quota.label,
+                      l10n.businessesQuotaUsage(quota.owned, quota.max),
                       style: GoogleFonts.inter(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -70,7 +74,7 @@ class MyBusinessesSection extends ConsumerWidget {
                       TextButton.icon(
                         onPressed: () => showCreateBusinessDialog(context, ref),
                         icon: const Icon(Icons.add_rounded, size: 18),
-                        label: Text('New business (${quota.owned + 1}/${quota.max})'),
+                        label: Text(l10n.businessesAddStore(quota.owned + 1, quota.max)),
                       ),
                   ],
                 ),
@@ -113,7 +117,7 @@ class MyBusinessesSection extends ConsumerWidget {
                 ],
                 if (businesses.isEmpty)
                   Text(
-                    'No businesses yet. Create your first one below.',
+                    l10n.businessesEmpty,
                     style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
                   ),
               ],
@@ -127,8 +131,7 @@ class MyBusinessesSection extends ConsumerWidget {
               if (!quota.canCreateMore) {
                 return AppInfoBanner(
                   icon: Icons.info_outline_rounded,
-                  message:
-                      'You reached the limit of ${quota.max} businesses on ${plan.code}.',
+                  message: l10n.businessesLimitReached(quota.max, plan.code),
                 );
               }
               return SizedBox(
@@ -137,7 +140,7 @@ class MyBusinessesSection extends ConsumerWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => showCreateBusinessDialog(context, ref),
                   icon: const Icon(Icons.add_business_outlined),
-                  label: Text('Create new business (${quota.owned}/${quota.max})'),
+                  label: Text(l10n.businessesAddStoreFull(quota.owned, quota.max)),
                 ),
               );
             },
@@ -164,6 +167,7 @@ class _BusinessTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final l10n = context.l10n;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -190,21 +194,30 @@ class _BusinessTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'API slug: $slug',
+                  l10n.businessTileApiSlug(slug),
                   style: GoogleFonts.jetBrainsMono(
                     fontSize: 11,
                     color: colors.textMuted,
                   ),
                 ),
+                const SizedBox(height: 2),
+                Text(
+                  l10n.businessTileHint,
+                  style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
+                ),
               ],
             ),
           ),
           if (isActive)
-            const StatusChip(label: 'Active', tone: StatusChipTone.success, icon: Icons.check_rounded)
+            StatusChip(
+              label: l10n.businessTileActive,
+              tone: StatusChipTone.success,
+              icon: Icons.check_rounded,
+            )
           else
             TextButton(
               onPressed: onSwitch,
-              child: const Text('Switch'),
+              child: Text(l10n.businessTileSwitch),
             ),
         ],
       ),

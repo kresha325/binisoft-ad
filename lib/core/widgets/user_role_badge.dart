@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/user_roles.dart';
+import '../l10n/l10n_extension.dart';
+import '../l10n/role_l10n.dart';
 import '../theme/app_color_scheme.dart';
 class UserRoleBadge extends StatelessWidget {
   const UserRoleBadge({
@@ -33,7 +35,7 @@ class UserRoleBadge extends StatelessWidget {
         ),
       ),
       child: Text(
-        role.label,
+        role.localizedLabel(context.l10n),
         style: GoogleFonts.inter(
           fontSize: compact ? 11 : 12,
           fontWeight: FontWeight.w700,

@@ -45,6 +45,7 @@ app.*.map.json
 /android/app/release
 
 # Firebase / Node
+hosting-shop/
 .firebase/
 functions/node_modules/
 scripts/node_modules/

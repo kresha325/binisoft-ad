@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/business_plans.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/constants/payment_config.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_design.dart';
@@ -156,9 +157,10 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
   }
 
   Future<void> _pay() async {
+    final l10n = context.l10n;
     if (!_agreed) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please accept the terms to continue.')),
+        SnackBar(content: Text(l10n.paymentAcceptTermsRequired)),
       );
       return;
     }
@@ -166,7 +168,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
     if (!PaymentConfig.demoMode && _method == _PaymentMethod.card) {
       if (_cardNumber.text.replaceAll(' ', '').length < 16) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Enter a valid card number.')),
+          SnackBar(content: Text(l10n.paymentInvalidCard)),
         );
         return;
       }
@@ -182,7 +184,20 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final l10n = context.l10n;
     final maxHeight = MediaQuery.sizeOf(context).height * 0.9;
+    final primaryLabel = _checkout.kind == PaymentCheckoutKind.registration
+        ? l10n.paymentPayRegistration(_checkout.formattedTotal)
+        : l10n.paymentPayNewBusiness(_checkout.formattedTotal);
+    final subtitle = _checkout.kind == PaymentCheckoutKind.registration
+        ? l10n.paymentSubtitleRegistration(_checkout.plan.title)
+        : l10n.paymentSubtitleNewBusiness(_checkout.businessName ?? '');
+    final demoBanner = _checkout.kind == PaymentCheckoutKind.registration
+        ? l10n.paymentDemoBannerRegistration
+        : l10n.paymentDemoBannerNewBusiness;
+    final activationLabel = _checkout.kind == PaymentCheckoutKind.registration
+        ? l10n.paymentActivationRegistration
+        : l10n.paymentActivationNewBusiness;
 
     return Dialog(
       backgroundColor: colors.surface,
@@ -203,7 +218,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                 children: [
                   Expanded(
                     child: Text(
-                      _checkout.title,
+                      l10n.paymentTitle,
                       style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -219,7 +234,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
               ),
               const SizedBox(height: 8),
               Text(
-                _checkout.subtitle,
+                subtitle,
                 style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
               ),
               const SizedBox(height: 16),
@@ -231,13 +246,17 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                       if (PaymentConfig.demoMode)
                         AppInfoBanner(
                           icon: Icons.science_outlined,
-                          message: _checkout.demoBannerMessage,
+                          message: demoBanner,
                         ),
                       if (PaymentConfig.demoMode) const SizedBox(height: 16),
-                      _OrderSummary(checkout: _checkout, colors: colors),
+                      _OrderSummary(
+                        checkout: _checkout,
+                        colors: colors,
+                        activationLabel: activationLabel,
+                      ),
                       const SizedBox(height: 20),
                       Text(
-                        'Payment method',
+                        l10n.paymentMethod,
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -246,14 +265,14 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                       ),
                       const SizedBox(height: 10),
                       _MethodTile(
-                        label: 'Card',
+                        label: l10n.paymentCard,
                         icon: Icons.credit_card_rounded,
                         selected: _method == _PaymentMethod.card,
                         onTap: () => setState(() => _method = _PaymentMethod.card),
                       ),
                       const SizedBox(height: 8),
                       _MethodTile(
-                        label: 'PayPal',
+                        label: l10n.paymentPaypal,
                         icon: Icons.account_balance_wallet_outlined,
                         selected: _method == _PaymentMethod.paypal,
                         onTap: () => setState(() => _method = _PaymentMethod.paypal),
@@ -277,7 +296,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                         contentPadding: EdgeInsets.zero,
                         controlAffinity: ListTileControlAffinity.leading,
                         title: Text(
-                          'I agree to the subscription terms and recurring monthly fee after the first month.',
+                          l10n.paymentAcceptTerms,
                           style: GoogleFonts.inter(
                             fontSize: 13,
                             color: colors.textMuted,
@@ -309,7 +328,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                           ),
                         )
                       : Text(
-                          _checkout.primaryButtonLabel,
+                          primaryLabel,
                           style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 15),
                         ),
                 ),
@@ -317,7 +336,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
               const SizedBox(height: 8),
               TextButton(
                 onPressed: _processing ? null : () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+                child: Text(l10n.paymentCancel),
               ),
             ],
           ),
@@ -330,13 +349,19 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
 enum _PaymentMethod { card, paypal }
 
 class _OrderSummary extends StatelessWidget {
-  const _OrderSummary({required this.checkout, required this.colors});
+  const _OrderSummary({
+    required this.checkout,
+    required this.colors,
+    required this.activationLabel,
+  });
 
   final SubscriptionCheckout checkout;
   final AppColorScheme colors;
+  final String activationLabel;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final plan = checkout.plan;
     final businessName = checkout.businessName;
     final monthly = plan.monthlyEuro;
@@ -386,21 +411,21 @@ class _OrderSummary extends StatelessWidget {
           ),
           const Divider(height: 24),
           _Line(
-            label: checkout.activationLineLabel,
+            label: activationLabel,
             value: checkout.formattedTotal,
             bold: false,
             colors: colors,
           ),
           const SizedBox(height: 8),
           _Line(
-            label: 'Then monthly',
+            label: l10n.paymentThenMonthly,
             value: '$monthlyLabel / month',
             bold: false,
             colors: colors,
           ),
           const SizedBox(height: 12),
           _Line(
-            label: 'Total due today',
+            label: l10n.paymentTotalDueToday,
             value: checkout.formattedTotal,
             bold: true,
             colors: colors,

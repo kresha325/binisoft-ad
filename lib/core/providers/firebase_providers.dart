@@ -12,6 +12,7 @@ import '../../features/orders/data/repositories/api_key_repository.dart';
 import '../../features/offers/data/repositories/offer_repository.dart';
 import '../../features/orders/data/repositories/order_repository.dart';
 import '../../features/products/data/repositories/product_repository.dart';
+import '../../features/products/data/repositories/variant_repository.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
@@ -30,6 +31,10 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 
 final productRepositoryProvider = Provider<ProductRepository>((ref) {
   return ProductRepository(firestore: ref.watch(firestoreProvider));
+});
+
+final variantRepositoryProvider = Provider<VariantRepository>((ref) {
+  return VariantRepository(firestore: ref.watch(firestoreProvider));
 });
 
 final categoryRepositoryProvider = Provider<CategoryRepository>((ref) {

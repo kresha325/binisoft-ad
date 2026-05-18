@@ -58,8 +58,8 @@ class DataTableCard extends StatelessWidget {
               builder: (context, constraints) {
                 final table = DataTable(
                   headingRowHeight: 48,
-                  dataRowMinHeight: 54,
-                  dataRowMaxHeight: 76,
+                  dataRowMinHeight: dataRowMinHeight,
+                  dataRowMaxHeight: dataRowMaxHeight,
                   horizontalMargin: hMargin,
                   columnSpacing: colSpacing,
                   headingRowColor: WidgetStateProperty.all(colors.tableHeaderBg),
@@ -91,8 +91,16 @@ class DataTableCard extends StatelessWidget {
                   return horizontalTable;
                 }
 
-                return SingleChildScrollView(
-                  child: horizontalTable,
+                final tableHeight = constraints.maxHeight.clamp(minHeight, 2000.0);
+
+                return SizedBox(
+                  height: tableHeight,
+                  child: Scrollbar(
+                    thumbVisibility: rows.length > 6,
+                    child: SingleChildScrollView(
+                      child: horizontalTable,
+                    ),
+                  ),
                 );
               },
             ),

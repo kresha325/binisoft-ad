@@ -34,9 +34,15 @@ class Offer extends Equatable {
     required this.id,
     required this.businessId,
     required this.title,
+    required this.slug,
     this.titleI18n = const {},
     this.description,
     this.descriptionI18n = const {},
+    this.seoTitle,
+    this.seoDescription,
+    this.seoTitleI18n = const {},
+    this.seoDescriptionI18n = const {},
+    this.localizedSlugs = const {},
     required this.items,
     required this.productIds,
     required this.durationDays,
@@ -49,9 +55,15 @@ class Offer extends Equatable {
   final String id;
   final String businessId;
   final String title;
+  final String slug;
   final Map<String, String> titleI18n;
   final String? description;
   final Map<String, String> descriptionI18n;
+  final String? seoTitle;
+  final String? seoDescription;
+  final Map<String, String> seoTitleI18n;
+  final Map<String, String> seoDescriptionI18n;
+  final Map<String, String> localizedSlugs;
   final List<OfferItem> items;
   final List<String> productIds;
   final int durationDays;
@@ -77,9 +89,15 @@ class Offer extends Equatable {
         id,
         businessId,
         title,
+        slug,
         titleI18n,
         description,
         descriptionI18n,
+        seoTitle,
+        seoDescription,
+        seoTitleI18n,
+        seoDescriptionI18n,
+        localizedSlugs,
         items,
         productIds,
         durationDays,

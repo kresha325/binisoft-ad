@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/i18n/localized_text.dart';
+import '../../../../core/i18n/catalog_localized_content.dart';
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/utils/auth_error_message.dart';
+import '../../../../core/utils/internal_slug.dart';
 import '../../../../core/widgets/app_side_sheet.dart';
 import '../../../../core/widgets/app_switch_row.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/internal_slug_field.dart';
+import '../../../../core/widgets/localized_catalog_content_editor.dart';
 import '../../../../core/widgets/localized_fields_editor.dart';
+import '../../../../core/widgets/localized_slugs_editor.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/presentation/providers/business_locales_provider.dart';
 import '../../../products/domain/entities/product.dart';
@@ -42,18 +46,21 @@ Future<void> showOfferSheet(
   final l10n = context.l10n;
   final isEdit = offer != null;
   final locales = ref.read(businessLocalesProvider);
-  var titleValues = LocalizedText.initialValues(
+  var content = CatalogLocalizedContent.initial(
     defaultLocale: locales.defaultLocale,
     enabledLocales: locales.enabledLocales,
-    i18n: offer?.titleI18n,
-    primary: offer?.title,
+    nameI18n: offer?.titleI18n,
+    descriptionI18n: offer?.descriptionI18n,
+    seoTitleI18n: offer?.seoTitleI18n,
+    seoDescriptionI18n: offer?.seoDescriptionI18n,
+    primaryName: offer?.title,
+    primaryDescription: offer?.description,
+    primarySeoTitle: offer?.seoTitle,
+    primarySeoDescription: offer?.seoDescription,
   );
-  var descValues = LocalizedText.initialValues(
-    defaultLocale: locales.defaultLocale,
-    enabledLocales: locales.enabledLocales,
-    i18n: offer?.descriptionI18n,
-    primary: offer?.description,
-  );
+  final slugController = TextEditingController(text: offer?.slug ?? '');
+  var slugManual = isEdit;
+  var localizedSlugs = Map<String, String>.from(offer?.localizedSlugs ?? {});
 
   final products = (ref.read(productsListProvider).valueOrNull ?? [])
       .where((p) => p.status == ProductStatus.active)
@@ -86,10 +93,21 @@ Future<void> showOfferSheet(
     child: Consumer(
       builder: (context, ref, _) {
         final localeConfig = ref.watch(businessLocalesProvider);
+        final businessId = ref.watch(currentBusinessIdProvider);
         final colors = context.appColors;
+
+        if (businessId == null) return const SizedBox.shrink();
+
+        void maybeSuggestSlug(void Function(void Function()) setState) {
+          if (isEdit || slugManual) return;
+          final title = content.name[localeConfig.defaultLocale]?.trim() ?? '';
+          if (title.isEmpty) return;
+          setState(() => slugController.text = normalizeInternalSlug(title));
+        }
 
         return StatefulBuilder(
           builder: (context, setState) {
+            final internalSlug = normalizeInternalSlug(slugController.text.trim());
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -102,19 +120,34 @@ Future<void> showOfferSheet(
                   ),
                 ),
                 const SizedBox(height: 16),
-                LocalizedFieldsEditor(
-                  label: '${l10n.tableName} *',
-                  enabledLocales: localeConfig.enabledLocales,
-                  values: titleValues,
-                  onChanged: (v) => setState(() => titleValues = v),
+                InternalSlugField(
+                  controller: slugController,
+                  readOnly: isEdit,
+                  onManualEdit: () => slugManual = true,
                 ),
-                const SizedBox(height: 12),
-                LocalizedFieldsEditor(
-                  label: l10n.tableDescription,
+                const SizedBox(height: 8),
+                LocalizedSlugsEditor(
+                  internalSlug: internalSlug,
+                  defaultLocale: localeConfig.defaultLocale,
                   enabledLocales: localeConfig.enabledLocales,
-                  values: descValues,
-                  multiline: true,
-                  onChanged: (v) => setState(() => descValues = v),
+                  values: localizedSlugs,
+                  onChanged: (v) => setState(() => localizedSlugs = v),
+                ),
+                const SizedBox(height: 16),
+                LocalizedCatalogContentEditor(
+                  businessId: businessId,
+                  defaultLocale: localeConfig.defaultLocale,
+                  enabledLocales: localeConfig.enabledLocales,
+                  content: content,
+                  primaryTranslateKey: 'title',
+                  nameLabel: '${l10n.tableName} *',
+                  descriptionLabel: l10n.tableDescription,
+                  onChanged: (next) {
+                    setState(() {
+                      content = next;
+                      maybeSuggestSlug(setState);
+                    });
+                  },
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -278,7 +311,7 @@ Future<void> showOfferSheet(
 
       final localeConfig = ref.read(businessLocalesProvider);
       final nameError = validateLocalizedRequired(
-        values: titleValues,
+        values: content.name,
         defaultLocale: localeConfig.defaultLocale,
         fieldLabel: l10n.tableName,
       );
@@ -294,15 +327,38 @@ Future<void> showOfferSheet(
       final businessId = ref.read(currentBusinessIdProvider);
       if (businessId == null) return false;
 
-      final packedTitle = LocalizedText.packForSave(
-        defaultLocale: localeConfig.defaultLocale,
-        enabledLocales: localeConfig.enabledLocales,
-        values: titleValues,
+      final slugError = validateInternalSlugField(slugController.text.trim());
+      if (slugError != null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(slugError), backgroundColor: Colors.red),
+          );
+        }
+        return false;
+      }
+
+      final internalSlug = normalizeInternalSlug(slugController.text.trim());
+      final offerRepo = ref.read(offerRepositoryProvider);
+      final slugTaken = await offerRepo.isSlugTaken(
+        businessId: businessId,
+        slug: internalSlug,
+        excludeOfferId: offer?.id,
       );
-      final packedDesc = LocalizedText.packForSave(
+      if (slugTaken) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(context.l10n.internalSlugTaken),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return false;
+      }
+
+      final packed = content.packForSave(
         defaultLocale: localeConfig.defaultLocale,
         enabledLocales: localeConfig.enabledLocales,
-        values: descValues,
       );
 
       final items = <OfferItem>[];
@@ -353,34 +409,54 @@ Future<void> showOfferSheet(
       }
 
       try {
-        final repo = ref.read(offerRepositoryProvider);
         final days = durationDays.clamp(1, 30);
-        if (isEdit) {
-          await repo.update(
+        final seoTitle =
+            packed.seoTitle.primary.isEmpty ? null : packed.seoTitle.primary;
+        final seoDescription = packed.seoDescription.primary.isEmpty
+            ? null
+            : packed.seoDescription.primary;
+
+        if (isEdit && offer != null) {
+          final editing = offer;
+          await offerRepo.update(
             businessId: businessId,
-            previous: offer,
+            previous: editing,
             offer: Offer(
-              id: offer.id,
+              id: editing.id,
               businessId: businessId,
-              title: packedTitle.primary,
-              titleI18n: packedTitle.i18n,
-              description: packedDesc.primary.isEmpty ? null : packedDesc.primary,
-              descriptionI18n: packedDesc.i18n,
+              title: packed.name.primary,
+              slug: editing.slug,
+              titleI18n: packed.name.i18n,
+              description:
+                  packed.description.primary.isEmpty ? null : packed.description.primary,
+              descriptionI18n: packed.description.i18n,
+              seoTitle: seoTitle,
+              seoDescription: seoDescription,
+              seoTitleI18n: packed.seoTitle.i18n,
+              seoDescriptionI18n: packed.seoDescription.i18n,
+              localizedSlugs: localizedSlugs,
               items: items,
               productIds: items.map((i) => i.productId).toList(),
               durationDays: days,
-              startsAt: offer.startsAt,
-              endsAt: offer.endsAt,
+              startsAt: editing.startsAt,
+              endsAt: editing.endsAt,
               active: active,
             ),
           );
         } else {
-          await repo.create(
+          await offerRepo.create(
             businessId: businessId,
-            title: packedTitle.primary,
-            titleI18n: packedTitle.i18n,
-            description: packedDesc.primary.isEmpty ? null : packedDesc.primary,
-            descriptionI18n: packedDesc.i18n,
+            title: packed.name.primary,
+            slug: internalSlug,
+            titleI18n: packed.name.i18n,
+            description:
+                packed.description.primary.isEmpty ? null : packed.description.primary,
+            descriptionI18n: packed.description.i18n,
+            seoTitle: seoTitle,
+            seoDescription: seoDescription,
+            seoTitleI18n: packed.seoTitle.i18n,
+            seoDescriptionI18n: packed.seoDescription.i18n,
+            localizedSlugs: localizedSlugs,
             items: items,
             durationDays: days,
             active: active,
@@ -400,6 +476,8 @@ Future<void> showOfferSheet(
       }
     },
   );
+
+  slugController.dispose();
 
   if (ok == true && context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(

@@ -7,6 +7,7 @@ import '../../core/providers/firebase_providers.dart';
 import '../../features/api_docs/presentation/screens/api_docs_screen.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/join_team_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import 'router_refresh_notifier.dart';
 import '../../features/business/presentation/screens/businesses_screen.dart';
@@ -22,11 +23,15 @@ import '../../features/landing/presentation/screens/landing_screen.dart';
 import '../../features/billing/presentation/screens/superadmin_invoices_screen.dart';
 import '../../features/billing/presentation/screens/superadmin_reports_screen.dart';
 import '../../features/billing/presentation/screens/user_invoices_screen.dart';
+import '../../features/superadmin/presentation/screens/superadmin_api_screen.dart';
+import '../../features/superadmin/presentation/screens/superadmin_cards_screen.dart';
 import '../../features/superadmin/presentation/screens/superadmin_screen.dart';
 import '../auth/platform_admin.dart';
+import '../constants/user_roles.dart';
 import '../widgets/admin_shell.dart';
 import '../widgets/platform_admin_redirect_gate.dart';
 import '../widgets/superadmin_shell.dart';
+import '../l10n/l10n_extension.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ref.watch(routerRefreshNotifierProvider);
@@ -35,26 +40,30 @@ final routerProvider = Provider<GoRouter>((ref) {
     // Web admin demo: open login directly (lighter than marketing landing).
     initialLocation: '/login',
     refreshListenable: refresh,
-    errorBuilder: (context, state) => Scaffold(
-      backgroundColor: const Color(0xFF0F1A33),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Text(
-            'Page not found: ${state.uri}\n\nOpen: …/binisoft-ad/#/login',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70, fontSize: 15),
+    errorBuilder: (context, state) {
+      final l10n = context.l10n;
+      return Scaffold(
+        backgroundColor: const Color(0xFF0F1A33),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Text(
+              l10n.routerPageNotFound('${state.uri}'),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white70, fontSize: 15),
+            ),
           ),
         ),
-      ),
-    ),
+      );
+    },
     redirect: (context, state) {
       final authRepo = ref.read(authRepositoryProvider);
       final authState = ref.read(authStateProvider);
       final firebaseUser = authRepo.currentFirebaseUser;
       final firebaseSignedIn = firebaseUser != null;
       final location = state.uri.path;
-      final isAuthRoute = location == '/login' || location == '/register';
+      final isAuthRoute =
+          location == '/login' || location == '/register' || location == '/join';
       final isLanding = location == '/';
       final isSuperAdminRoute = location.startsWith('/superadmin');
 
@@ -109,13 +118,33 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (isAuthRoute) {
         return needsBusiness ? '/businesses' : '/dashboard';
       }
-      if (needsBusiness) return '/businesses';
+      if (needsBusiness) {
+        final isStaff =
+            profile.role == UserRole.manager || profile.role == UserRole.employee;
+        return isStaff ? '/login' : '/businesses';
+      }
+
+      if (profile.role == UserRole.employee) {
+        const allowed = {'/dashboard', '/orders', '/products'};
+        if (!allowed.contains(location)) return '/dashboard';
+      } else if (profile.role == UserRole.manager) {
+        const blocked = {
+          '/businesses',
+          '/billing',
+          '/api-docs',
+          '/settings',
+          '/custom-fields',
+        };
+        if (blocked.contains(location)) return '/dashboard';
+      }
+
       return null;
     },
     routes: [
       GoRoute(path: '/', builder: (_, __) => const LandingScreen()),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
+      GoRoute(path: '/join', builder: (_, __) => const JoinTeamScreen()),
       GoRoute(
         path: '/superadmin/reports',
         builder: (_, state) => SuperAdminShell(
@@ -130,6 +159,18 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: SuperAdminInvoicesScreen(
             initialTab: state.uri.queryParameters['tab'],
           ),
+        ),
+      ),
+      GoRoute(
+        path: '/superadmin/api',
+        builder: (_, __) => const SuperAdminShell(
+          child: SuperAdminApiScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/superadmin/cards',
+        builder: (_, __) => const SuperAdminShell(
+          child: SuperAdminCardsScreen(),
         ),
       ),
       GoRoute(

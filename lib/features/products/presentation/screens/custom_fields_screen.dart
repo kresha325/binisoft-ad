@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../domain/attribute_type_labels.dart';
+import '../../../../core/l10n/attribute_type_l10n.dart';
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/widgets/data_table_card.dart';
@@ -59,7 +59,7 @@ class CustomFieldsScreen extends ConsumerWidget {
                   DataRow(cells: [
                     DataCell(Text(a.name, style: GoogleFonts.inter(fontWeight: FontWeight.w500))),
                     DataCell(Text(a.key, style: const TextStyle(fontFamily: 'monospace'))),
-                    DataCell(Text(a.type.label)),
+                    DataCell(Text(a.type.localizedLabel(l10n))),
                     DataCell(Text(a.active ? l10n.statusActive : l10n.statusInactive)),
                     DataCell(Text(a.required ? l10n.yes : l10n.no)),
                   ]),

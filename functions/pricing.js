@@ -31,8 +31,8 @@ function isOfferActive(offer, nowMs = Date.now()) {
  * @param {string} productId
  * @param {Array<object>} offers - active offers with `id`
  */
-function resolveProductPricing(productData, productId, offers) {
-  const base = productData.basePrice != null ? Number(productData.basePrice) : 0;
+function resolveUnitPricing(basePrice, productId, offers) {
+  const base = basePrice != null ? Number(basePrice) : 0;
   let unitPrice = base;
   let offerId = null;
   let discountPercent = null;
@@ -78,6 +78,15 @@ function resolveProductPricing(productData, productId, offers) {
     onOffer,
     discountPercent: onOffer ? discountPercent : null,
   };
+}
+
+function resolveProductPricing(productData, productId, offers) {
+  const base = productData.basePrice != null ? Number(productData.basePrice) : 0;
+  return resolveUnitPricing(base, productId, offers);
+}
+
+function resolveVariantPricing(variantPrice, productId, offers) {
+  return resolveUnitPricing(variantPrice, productId, offers);
 }
 
 /**
@@ -138,7 +147,9 @@ async function loadActiveOffers(db, businessId) {
 module.exports = {
   roundMoney,
   isOfferActive,
+  resolveUnitPricing,
   resolveProductPricing,
+  resolveVariantPricing,
   resolveOfferItemDisplay,
   loadActiveOffers,
   toMillis,

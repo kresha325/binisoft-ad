@@ -27,15 +27,16 @@ firebase deploy --only functions
 Or targeted:
 
 ```bash
-firebase deploy --only functions:publicApi,functions:createInvoiceHttp,functions:onOfferWrittenReleaseLegacyHolds,functions:deactivateExpiredOffers
+firebase deploy --only functions:publicApi,functions:createInvoiceHttp,functions:onOfferWrittenReleaseLegacyHolds,functions:deactivateExpiredOffers,functions:inviteStaffHttp,functions:removeStaffHttp,functions:acceptInviteHttp
 ```
 
 ### Environment variables (Firebase Console → Functions → Environment)
 
 | Variable | Purpose |
 |----------|---------|
-| `SENDGRID_API_KEY` | Transactional email (optional) |
-| `EMAIL_FROM` | From address for SendGrid |
+### Email
+
+**Disabled** — no SendGrid, no Firebase Trigger Email extension. Team invites use the **invite code** only (Settings → Team → share code → recipient registers at **Join team**).
 | `ENABLE_DEMO_BOOTSTRAP` | Set `true` only in dev to enable demo shop bootstrap |
 | `DEMO_BOOTSTRAP_SECRET` | Header `x-demo-setup` value when bootstrap enabled |
 
@@ -47,20 +48,32 @@ Manual: Actions → **Deploy Web to GitHub Pages** → Run workflow.
 
 Live URL: https://kresha325.github.io/binisoft-ad/
 
+Demo shop (multi-tenant path): https://jon-sport-shop.web.app/{slug} — e.g. https://jon-sport-shop.web.app/napoletana-nostra. Deploy: `cd jon-sport-shop && npm run deploy`.
+
 ## 4. Firebase Auth (GitHub Pages)
 
 Authorized domains: `kresha325.github.io`, `localhost`
 
 API key HTTP referrers: `https://kresha325.github.io/*`, `http://localhost:*`
 
-## 5. Offers behaviour (API)
+## 5. Orders API (variants)
+
+POST `/api/public/{slug}/orders` line items:
+
+```json
+{ "productId": "...", "quantity": 2, "variantId": "optional-variant-doc-id" }
+```
+
+`variantId` is **required** when the product has variants. Catalog `products[].variants[]` includes offer pricing per variant.
+
+## 6. Offers behaviour (API)
 
 - Products stay **active** in `/products` during offers.
 - Catalog JSON includes `onOffer`, `originalPrice`, sale `price`.
 - `/offers` lists offer cards with discounted lines.
 - Expired offers: hourly `deactivateExpiredOffers`; legacy draft holds released by `onOfferWrittenReleaseLegacyHolds`.
 
-## 6. Verify after deploy
+## 7. Verify after deploy
 
 ```bash
 # Public catalog (replace slug + API key)

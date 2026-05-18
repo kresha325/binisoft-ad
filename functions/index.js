@@ -7,6 +7,8 @@ const { getStorage } = require('firebase-admin/storage');
 const { randomUUID } = require('crypto');
 const rateLimit = require('./rateLimit');
 const invoices = require('./invoices');
+const { deliverEmail, escapeHtml } = require('./email');
+const { logPublicApiError } = require('./apiMonitor');
 
 initializeApp();
 
@@ -153,6 +155,64 @@ async function handleUploadBusinessLogo(req, res) {
   }
 }
 
+async function handleUploadSiteAsset(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+
+  try {
+    const decoded = await verifyAuth(req);
+    const { businessId, fileName, contentType, base64 } = req.body || {};
+
+    if (!businessId || !fileName || !base64) {
+      throw new HttpsError('invalid-argument', 'Missing upload fields');
+    }
+
+    await assertBusinessMember(decoded.uid, businessId);
+
+    const storagePath = `businesses/${businessId}/site/${Date.now()}_${fileName}`;
+
+    const result = await uploadToStorage({ storagePath, fileName, contentType, base64 });
+    res.status(200).json(result);
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
+async function handleUploadBusinessCover(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+
+  try {
+    const decoded = await verifyAuth(req);
+    const { businessId, fileName, contentType, base64 } = req.body || {};
+
+    if (!businessId || !fileName || !base64) {
+      throw new HttpsError('invalid-argument', 'Missing upload fields');
+    }
+
+    await assertBusinessMember(decoded.uid, businessId);
+
+    const storagePath = `businesses/${businessId}/cover/${Date.now()}_${fileName}`;
+
+    const result = await uploadToStorage({ storagePath, fileName, contentType, base64 });
+    res.status(200).json(result);
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
 async function handleUploadBusinessBackground(req, res) {
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -209,12 +269,18 @@ async function findBusinessBySlug(slug) {
   return { id: doc.id, ...data };
 }
 
-async function assertSuperAdmin(uid) {
-  const snap = await getFirestore().doc(`users/${uid}`).get();
-  if (!snap.exists || snap.data().role !== 'superadmin') {
-    throw new HttpsError('permission-denied', 'Superadmin only');
-  }
-}
+const superadminDelete = require('./superadminDelete');
+const { assertPlatformAdmin } = superadminDelete;
+const { handleSuperadminDeleteContent } = superadminDelete.createSuperadminDeleteHandlers({
+  verifyAuth,
+  sendError,
+});
+const autoTranslate = require('./autoTranslate');
+const { handleAutoTranslateCatalog } = autoTranslate.createAutoTranslateHandlers({
+  verifyAuth,
+  assertBusinessMember,
+  sendError,
+});
 
 /** Mirrors lib/core/constants/business_plans.dart — only these limits may be set via API. */
 const SUBSCRIPTION_PLANS_BY_MAX_PRODUCTS = {
@@ -292,7 +358,7 @@ async function handleSuperadminDeleteUser(req, res) {
 
   try {
     const decoded = await verifyAuth(req);
-    await assertSuperAdmin(decoded.uid);
+    await assertPlatformAdmin(decoded);
 
     const targetUid = req.body?.targetUid;
     if (!targetUid || typeof targetUid !== 'string') {
@@ -322,9 +388,23 @@ function serializeCategory(doc, ctx) {
       defaultLocale: ctx.defaultLocale,
     }),
     slug: d.slug || '',
+    urlSlug: i18n.resolveUrlSlug(d, ctx.locale),
+    localizedSlugs: i18n.parseI18nMap(d.localizedSlugs),
     description: i18n.resolveLocalized({
       primary: d.description,
       i18n: d.descriptionI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    seoTitle: i18n.resolveLocalized({
+      primary: d.seoTitle,
+      i18n: d.seoTitleI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    seoDescription: i18n.resolveLocalized({
+      primary: d.seoDescription,
+      i18n: d.seoDescriptionI18n,
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
@@ -365,7 +445,57 @@ function formatAttributeDisplay(value, type) {
 
 const pricing = require('./pricing');
 
-function serializeProduct(doc, attributeDefs, ctx, activeOffers = []) {
+function serializeVariant(doc) {
+  const d = doc.data();
+  return {
+    id: doc.id,
+    sku: d.sku || '',
+    price: d.price != null ? Number(d.price) : 0,
+    quantity: d.quantity != null ? Number(d.quantity) : 0,
+    imageUrl: d.imageUrl || null,
+    attributes: d.attributes || {},
+  };
+}
+
+function activeProductImageUrls(data) {
+  if (Array.isArray(data.images) && data.images.length > 0) {
+    return data.images
+      .filter((img) => img && img.active !== false && img.url)
+      .map((img) => String(img.url));
+  }
+  return Array.isArray(data.imageUrls) ? data.imageUrls : [];
+}
+
+function enrichVariantsWithOffers(variants, productId, activeOffers) {
+  return variants.map((v) => {
+    const priceInfo = pricing.resolveVariantPricing(v.price, productId, activeOffers);
+    return {
+      ...v,
+      price: priceInfo.unitPrice,
+      originalPrice: priceInfo.onOffer ? priceInfo.originalPrice : null,
+      onOffer: priceInfo.onOffer,
+      offerId: priceInfo.offerId,
+      discountPercent: priceInfo.discountPercent,
+    };
+  });
+}
+
+async function loadVariantsByProductId(db, businessId) {
+  const snap = await db.collection(`businesses/${businessId}/productVariants`).get();
+  const byProduct = new Map();
+  for (const doc of snap.docs) {
+    const productId = doc.data().productId;
+    if (!productId) continue;
+    if (!byProduct.has(productId)) byProduct.set(productId, []);
+    byProduct.get(productId).push(serializeVariant(doc));
+  }
+  for (const list of byProduct.values()) {
+    list.sort((a, b) => String(a.sku).localeCompare(String(b.sku)));
+  }
+  return byProduct;
+}
+
+function serializeProduct(doc, attributeDefs, ctx, activeOffers = [], variants = []) {
   const d = doc.data();
   const attributeData = d.attributeData || {};
   const attributes = {};
@@ -391,7 +521,26 @@ function serializeProduct(doc, attributeDefs, ctx, activeOffers = []) {
     };
   }
 
-  const priceInfo = pricing.resolveProductPricing(d, doc.id, activeOffers);
+  const rawVariants = Array.isArray(variants) ? variants : [];
+  const variantList = enrichVariantsWithOffers(rawVariants, doc.id, activeOffers);
+  const priceInfo =
+    variantList.length > 0
+      ? (() => {
+          const minVariant = variantList.reduce((best, v) =>
+            v.price < best.price ? v : best,
+          );
+          return {
+            unitPrice: minVariant.price,
+            originalPrice: minVariant.onOffer ? minVariant.originalPrice : null,
+            onOffer: minVariant.onOffer,
+            offerId: minVariant.offerId,
+            discountPercent: minVariant.discountPercent,
+          };
+        })()
+      : pricing.resolveProductPricing(d, doc.id, activeOffers);
+  const totalVariantQty = variantList.reduce((sum, v) => sum + (v.quantity || 0), 0);
+  const quantity =
+    variantList.length > 0 ? totalVariantQty : d.baseQuantity ?? 0;
 
   return {
     id: doc.id,
@@ -402,9 +551,23 @@ function serializeProduct(doc, attributeDefs, ctx, activeOffers = []) {
       defaultLocale: ctx.defaultLocale,
     }),
     slug: d.slug || '',
+    urlSlug: i18n.resolveUrlSlug(d, ctx.locale),
+    localizedSlugs: i18n.parseI18nMap(d.localizedSlugs),
     description: i18n.resolveLocalized({
       primary: d.description,
       i18n: d.descriptionI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    seoTitle: i18n.resolveLocalized({
+      primary: d.seoTitle,
+      i18n: d.seoTitleI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    seoDescription: i18n.resolveLocalized({
+      primary: d.seoDescription,
+      i18n: d.seoDescriptionI18n,
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
@@ -413,12 +576,13 @@ function serializeProduct(doc, attributeDefs, ctx, activeOffers = []) {
     onOffer: priceInfo.onOffer,
     offerId: priceInfo.offerId,
     discountPercent: priceInfo.discountPercent,
-    quantity: d.baseQuantity ?? 0,
+    quantity,
     status: d.status || 'draft',
-    imageUrls: d.imageUrls || [],
+    imageUrls: activeProductImageUrls(d),
     categoryIds: d.categoryIds || [],
     attributeData,
     attributes,
+    variants: variantList,
   };
 }
 
@@ -446,29 +610,45 @@ function serializeOffer(offer, productsById, ctx) {
     })
     .filter(Boolean);
 
-  const startsAt = offer.startsAt;
-  const endsAt = offer.endsAt;
-
+  const od = offer;
+  const startsAt = od.startsAt;
+  const endsAt = od.endsAt;
   return {
-    id: offer.id,
+    id: od.id,
+    slug: od.slug || '',
+    urlSlug: i18n.resolveUrlSlug(od, ctx.locale),
     title: i18n.resolveLocalized({
-      primary: offer.title,
-      i18n: offer.titleI18n,
+      primary: od.title,
+      i18n: od.titleI18n,
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
     description: i18n.resolveLocalized({
-      primary: offer.description,
-      i18n: offer.descriptionI18n,
+      primary: od.description,
+      i18n: od.descriptionI18n,
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
-    durationDays: offer.durationDays ?? null,
+    seoTitle: i18n.resolveLocalized({
+      primary: od.seoTitle,
+      i18n: od.seoTitleI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    seoDescription: i18n.resolveLocalized({
+      primary: od.seoDescription,
+      i18n: od.seoDescriptionI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    durationDays: od.durationDays ?? null,
     startsAt: startsAt?.toDate?.()?.toISOString?.() || null,
     endsAt: endsAt?.toDate?.()?.toISOString?.() || null,
     items,
   };
 }
+
+const siteConfigModule = require('./siteConfig');
 
 function businessPayload(business, slug, ctx) {
   return {
@@ -479,13 +659,32 @@ function businessPayload(business, slug, ctx) {
       defaultLocale: ctx.defaultLocale,
     }),
     slug: business.slug || slug,
+    urlSlug: i18n.resolveUrlSlug({ slug: business.slug || slug, localizedSlugs: business.localizedSlugs }, ctx.locale),
+    localizedSlugs: i18n.parseI18nMap(business.localizedSlugs),
     description: i18n.resolveLocalized({
       primary: business.description,
       i18n: business.descriptionI18n,
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
+    seoTitle: i18n.resolveLocalized({
+      primary: business.seoTitle,
+      i18n: business.seoTitleI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    seoDescription: i18n.resolveLocalized({
+      primary: business.seoDescription,
+      i18n: business.seoDescriptionI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
     logoUrl: business.logoUrl || '',
+    coverImageUrl: business.coverImageUrl || '',
+    location: business.location || '',
+    website: business.website || '',
+    orderPhone: business.orderPhone || business.settings?.orderPhone || '',
+    siteConfig: siteConfigModule.publicSiteConfig(business.siteConfig),
   };
 }
 
@@ -500,12 +699,13 @@ async function loadAttributeDefs(businessId, ctx) {
 
 const publicOrders = require('./publicOrders');
 const i18n = require('./i18n');
+const shopCatalog = require('./shopCatalog');
 
 async function handlePublicApi(req, res) {
   const ip = rateLimit.clientIp(req);
   const path = requestPath(req);
   const orderDetailMatch = path.match(
-    /\/api\/public\/([^/]+)\/orders\/([^/]+)(\/cancel)?\/?$/,
+    /\/api\/(?:public|shop)\/([^/]+)\/orders\/([^/]+)(\/cancel)?\/?$/,
   );
   if (orderDetailMatch) {
     const slug = decodeURIComponent(orderDetailMatch[1]);
@@ -518,7 +718,14 @@ async function handlePublicApi(req, res) {
     return publicOrders.handlePublicGetOrder(req, res, ctx);
   }
 
-  if (/\/orders\/?$/.test(path)) {
+  if (/\/api\/(?:public|shop)\/checkout\/?$/.test(path)) {
+    return publicOrders.handlePublicCheckoutBatch(req, res, {
+      findBusinessBySlug,
+      sendError,
+    });
+  }
+
+  if (/\/api\/public\/[^/]+\/orders\/?$/.test(path)) {
     return publicOrders.handlePublicCreateOrder(req, res, {
       findBusinessBySlug,
       sendError,
@@ -534,12 +741,23 @@ async function handlePublicApi(req, res) {
     return;
   }
 
+  if (/\/api\/shop\/businesses\/?$/.test(path)) {
+    try {
+      rateLimit.checkRateLimit(`shop-businesses:${ip}`, { max: 120, windowMs: 60_000 });
+      const payload = await shopCatalog.listShopBusinesses();
+      res.status(200).json(payload);
+    } catch (err) {
+      sendError(res, err);
+    }
+    return;
+  }
+
+  let slug;
+  let resource;
+  let productId;
   try {
-    let slug;
-    let resource;
-    let productId;
     const match = path.match(
-      /\/api\/public\/([^/]+)\/(products|categories|offers)(?:\/([^/]+))?$/,
+      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|business)(?:\/([^/]+))?$/,
     );
 
     if (match) {
@@ -556,7 +774,7 @@ async function handlePublicApi(req, res) {
       res.status(404).json({
         error: {
           message:
-            'Not found. Use /api/public/{slug}/products or ?slug=...&resource=products',
+            'Not found. Use /api/shop/{slug}/products or /api/shop/businesses',
         },
       });
       return;
@@ -566,6 +784,14 @@ async function handlePublicApi(req, res) {
     const businessId = business.id;
     const db = getFirestore();
     const localeCtx = i18n.pickRequestLocale(req, business);
+
+    if (resource === 'business') {
+      res.status(200).json({
+        meta: i18n.apiMeta(localeCtx),
+        business: businessPayload(business, slug, localeCtx),
+      });
+      return;
+    }
 
     if (resource === 'categories') {
       const catSnap = await db
@@ -625,6 +851,7 @@ async function handlePublicApi(req, res) {
 
     const customFields = await loadAttributeDefs(businessId, localeCtx);
     const activeOffers = await pricing.loadActiveOffers(db, businessId);
+    const variantsByProduct = await loadVariantsByProductId(db, businessId);
 
     if (productId) {
       const doc = await db.doc(`businesses/${businessId}/products/${productId}`).get();
@@ -635,7 +862,13 @@ async function handlePublicApi(req, res) {
         meta: i18n.apiMeta(localeCtx),
         business: businessPayload(business, slug, localeCtx),
         customFields,
-        product: serializeProduct(doc, customFields, localeCtx, activeOffers),
+        product: serializeProduct(
+          doc,
+          customFields,
+          localeCtx,
+          activeOffers,
+          variantsByProduct.get(doc.id) || [],
+        ),
       });
       return;
     }
@@ -645,7 +878,7 @@ async function handlePublicApi(req, res) {
         .collection(`businesses/${businessId}/products`)
         .where('status', '==', 'active')
         .orderBy('createdAt', 'desc')
-        .limit(200)
+        .limit(500)
         .get(),
       db.collection(`businesses/${businessId}/categories`).orderBy('name').get(),
     ]);
@@ -656,7 +889,13 @@ async function handlePublicApi(req, res) {
     const categoryNames = Object.fromEntries(categories.map((c) => [c.id, c.name]));
 
     const products = productsSnap.docs.map((doc) => {
-      const p = serializeProduct(doc, customFields, localeCtx, activeOffers);
+      const p = serializeProduct(
+        doc,
+        customFields,
+        localeCtx,
+        activeOffers,
+        variantsByProduct.get(doc.id) || [],
+      );
       p.categories = (p.categoryIds || []).map((id) => categoryNames[id] || id);
       return p;
     });
@@ -667,8 +906,30 @@ async function handlePublicApi(req, res) {
       customFields,
       categories,
       products,
+      productCount: products.length,
     });
   } catch (err) {
+    const code = err instanceof HttpsError ? err.code : 'internal';
+    const status =
+      code === 'unauthenticated'
+        ? 401
+        : code === 'permission-denied'
+          ? 403
+          : code === 'invalid-argument'
+            ? 400
+            : code === 'not-found'
+              ? 404
+              : code === 'resource-exhausted'
+                ? 429
+                : 500;
+    logPublicApiError({
+      slug: slug || '',
+      resource: resource || '',
+      method: req.method,
+      statusCode: status,
+      code,
+      message: err.message,
+    });
     sendError(res, err);
   }
 }
@@ -722,7 +983,7 @@ async function handlePlatformNotify(req, res) {
 
   try {
     const decoded = await verifyAuth(req);
-    await assertSuperAdmin(decoded.uid);
+    await assertPlatformAdmin(decoded);
     const { type, title, body, businessId, actionRoute } = req.body || {};
     if (!type || !title || !body || !allowedTypes.has(type)) {
       throw new HttpsError('invalid-argument', 'Invalid platform notification payload');
@@ -774,44 +1035,6 @@ const EMAIL_PREF_BY_TEMPLATE = {
   business_created: 'businessUpdates',
 };
 
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-async function deliverEmail({ to, subject, html }) {
-  const apiKey = process.env.SENDGRID_API_KEY;
-  if (apiKey) {
-    const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        personalizations: [{ to: [{ email: to }] }],
-        from: { email: EMAIL_FROM, name: 'Binisoft Admin' },
-        subject,
-        content: [{ type: 'text/html', value: html }],
-      }),
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      throw new HttpsError('internal', `SendGrid failed: ${res.status} ${text.slice(0, 200)}`);
-    }
-    return { channel: 'sendgrid' };
-  }
-
-  await getFirestore().collection('mail').add({
-    to,
-    message: { subject, html },
-  });
-  return { channel: 'mail_queue' };
-}
-
 async function handleSendEmail(req, res) {
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -821,6 +1044,9 @@ async function handleSendEmail(req, res) {
     res.status(405).json({ error: { message: 'Method not allowed' } });
     return;
   }
+
+  res.status(200).json({ ok: true, skipped: 'email_disabled' });
+  return;
 
   try {
     const decoded = await verifyAuth(req);
@@ -899,9 +1125,24 @@ exports.onBusinessCreatedNotifySuperadmins = onDocumentCreated(
 // New HTTP endpoints (CORS + localhost). Old callable names must be deleted in Firebase first.
 exports.uploadProductImageHttp = onRequest(fnOptions, handleUploadProductImage);
 exports.uploadBusinessLogoHttp = onRequest(fnOptions, handleUploadBusinessLogo);
+exports.uploadBusinessCoverHttp = onRequest(fnOptions, handleUploadBusinessCover);
+exports.uploadSiteAssetHttp = onRequest(fnOptions, handleUploadSiteAsset);
 exports.uploadBusinessBackgroundHttp = onRequest(fnOptions, handleUploadBusinessBackground);
+
+const siteDeploy = require('./siteDeploy');
+exports.deployBusinessSiteHttp = onRequest(fnOptions, (req, res) =>
+  siteDeploy.handleDeployBusinessSite(req, res, {
+    verifyAuth,
+    assertBusinessMember,
+    sendError,
+  }),
+);
 exports.publicApi = onRequest(fnOptions, handlePublicApi);
+/** Same handler — shop app uses /api/shop/* routes (platform catalog). */
+exports.shopApi = onRequest(fnOptions, handlePublicApi);
 exports.superadminDeleteUserHttp = onRequest(fnOptions, handleSuperadminDeleteUser);
+exports.superadminDeleteContentHttp = onRequest(fnOptions, handleSuperadminDeleteContent);
+exports.autoTranslateCatalogHttp = onRequest(fnOptions, handleAutoTranslateCatalog);
 exports.updateSubscriptionPlanHttp = onRequest(fnOptions, handleUpdateSubscriptionPlan);
 
 /** Dev/demo: create API key + set orderPhone. Header: x-demo-setup: jon-sport-demo-2026 */
@@ -971,7 +1212,7 @@ async function handleCreateInvoice(req, res) {
     const userId = body.userId || decoded.uid;
 
     if (userId !== decoded.uid) {
-      await assertSuperAdmin(decoded.uid);
+      await assertPlatformAdmin(decoded);
     }
 
     const db = getFirestore();
@@ -998,6 +1239,98 @@ async function handleCreateInvoice(req, res) {
 }
 
 exports.createInvoiceHttp = onRequest(fnOptions, handleCreateInvoice);
+
+const staff = require('./staff');
+
+async function handleInviteStaff(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+  try {
+    const decoded = await verifyAuth(req);
+    const body = req.body || {};
+    const businessId = body.businessId;
+    const email = body.email;
+    const role = body.role;
+    if (!businessId || !email || !role) {
+      throw new HttpsError('invalid-argument', 'businessId, email, and role are required');
+    }
+    const db = getFirestore();
+    const result = await staff.inviteStaff(db, getAuth(), {
+      callerUid: decoded.uid,
+      businessId,
+      email,
+      role,
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
+async function handleRemoveStaff(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+  try {
+    const decoded = await verifyAuth(req);
+    const body = req.body || {};
+    const businessId = body.businessId;
+    const memberUid = body.memberUid;
+    if (!businessId || !memberUid) {
+      throw new HttpsError('invalid-argument', 'businessId and memberUid are required');
+    }
+    const db = getFirestore();
+    const result = await staff.removeStaff(db, {
+      callerUid: decoded.uid,
+      businessId,
+      memberUid,
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
+async function handleAcceptInvite(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+  try {
+    const decoded = await verifyAuth(req);
+    const body = req.body || {};
+    const code = body.code;
+    const email = body.email || decoded.email;
+    const db = getFirestore();
+    const result = await staff.acceptInvite(db, getAuth(), {
+      uid: decoded.uid,
+      code,
+      email,
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
+exports.inviteStaffHttp = onRequest(fnOptions, handleInviteStaff);
+exports.removeStaffHttp = onRequest(fnOptions, handleRemoveStaff);
+exports.acceptInviteHttp = onRequest(fnOptions, handleAcceptInvite);
 
 const billingReports = require('./billingReports');
 exports.billingReportDaily = billingReports.billingReportDaily;
