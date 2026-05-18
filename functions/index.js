@@ -6,6 +6,7 @@ const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 const { getStorage } = require('firebase-admin/storage');
 const { randomUUID } = require('crypto');
 const rateLimit = require('./rateLimit');
+const { withCors } = require('./httpCors');
 const invoices = require('./invoices');
 const { deliverEmail, escapeHtml } = require('./email');
 const { logPublicApiError } = require('./apiMonitor');
@@ -1001,7 +1002,7 @@ async function handlePlatformNotify(req, res) {
   }
 }
 
-exports.platformNotifyHttp = onRequest(fnOptions, handlePlatformNotify);
+exports.platformNotifyHttp = onRequest(fnOptions, withCors(handlePlatformNotify));
 
 const EMAIL_FROM = process.env.EMAIL_FROM || 'noreply@jon-sport.firebaseapp.com';
 
@@ -1086,7 +1087,7 @@ async function handleSendEmail(req, res) {
   }
 }
 
-exports.sendEmailHttp = onRequest(fnOptions, handleSendEmail);
+exports.sendEmailHttp = onRequest(fnOptions, withCors(handleSendEmail));
 
 exports.onUserCreatedNotifySuperadmins = onDocumentCreated(
   { document: 'users/{userId}', ...firestoreTriggerOptions },
@@ -1123,27 +1124,36 @@ exports.onBusinessCreatedNotifySuperadmins = onDocumentCreated(
 );
 
 // New HTTP endpoints (CORS + localhost). Old callable names must be deleted in Firebase first.
-exports.uploadProductImageHttp = onRequest(fnOptions, handleUploadProductImage);
-exports.uploadBusinessLogoHttp = onRequest(fnOptions, handleUploadBusinessLogo);
-exports.uploadBusinessCoverHttp = onRequest(fnOptions, handleUploadBusinessCover);
-exports.uploadSiteAssetHttp = onRequest(fnOptions, handleUploadSiteAsset);
-exports.uploadBusinessBackgroundHttp = onRequest(fnOptions, handleUploadBusinessBackground);
+exports.uploadProductImageHttp = onRequest(fnOptions, withCors(handleUploadProductImage));
+exports.uploadBusinessLogoHttp = onRequest(fnOptions, withCors(handleUploadBusinessLogo));
+exports.uploadBusinessCoverHttp = onRequest(fnOptions, withCors(handleUploadBusinessCover));
+exports.uploadSiteAssetHttp = onRequest(fnOptions, withCors(handleUploadSiteAsset));
+exports.uploadBusinessBackgroundHttp = onRequest(
+  fnOptions,
+  withCors(handleUploadBusinessBackground),
+);
 
 const siteDeploy = require('./siteDeploy');
-exports.deployBusinessSiteHttp = onRequest(fnOptions, (req, res) =>
-  siteDeploy.handleDeployBusinessSite(req, res, {
-    verifyAuth,
-    assertBusinessMember,
-    sendError,
-  }),
+exports.deployBusinessSiteHttp = onRequest(
+  fnOptions,
+  withCors((req, res) =>
+    siteDeploy.handleDeployBusinessSite(req, res, {
+      verifyAuth,
+      assertBusinessMember,
+      sendError,
+    }),
+  ),
 );
-exports.publicApi = onRequest(fnOptions, handlePublicApi);
+exports.publicApi = onRequest(fnOptions, withCors(handlePublicApi));
 /** Same handler — shop app uses /api/shop/* routes (platform catalog). */
-exports.shopApi = onRequest(fnOptions, handlePublicApi);
-exports.superadminDeleteUserHttp = onRequest(fnOptions, handleSuperadminDeleteUser);
-exports.superadminDeleteContentHttp = onRequest(fnOptions, handleSuperadminDeleteContent);
-exports.autoTranslateCatalogHttp = onRequest(fnOptions, handleAutoTranslateCatalog);
-exports.updateSubscriptionPlanHttp = onRequest(fnOptions, handleUpdateSubscriptionPlan);
+exports.shopApi = onRequest(fnOptions, withCors(handlePublicApi));
+exports.superadminDeleteUserHttp = onRequest(fnOptions, withCors(handleSuperadminDeleteUser));
+exports.superadminDeleteContentHttp = onRequest(
+  fnOptions,
+  withCors(handleSuperadminDeleteContent),
+);
+exports.autoTranslateCatalogHttp = onRequest(fnOptions, withCors(handleAutoTranslateCatalog));
+exports.updateSubscriptionPlanHttp = onRequest(fnOptions, withCors(handleUpdateSubscriptionPlan));
 
 /** Dev/demo: create API key + set orderPhone. Header: x-demo-setup: jon-sport-demo-2026 */
 async function handleDevBootstrapShop(req, res) {
@@ -1194,7 +1204,7 @@ async function handleDevBootstrapShop(req, res) {
   }
 }
 
-exports.devBootstrapShopHttp = onRequest(fnOptions, handleDevBootstrapShop);
+exports.devBootstrapShopHttp = onRequest(fnOptions, withCors(handleDevBootstrapShop));
 
 async function handleCreateInvoice(req, res) {
   if (req.method === 'OPTIONS') {
@@ -1238,7 +1248,7 @@ async function handleCreateInvoice(req, res) {
   }
 }
 
-exports.createInvoiceHttp = onRequest(fnOptions, handleCreateInvoice);
+exports.createInvoiceHttp = onRequest(fnOptions, withCors(handleCreateInvoice));
 
 const staff = require('./staff');
 
@@ -1328,9 +1338,9 @@ async function handleAcceptInvite(req, res) {
   }
 }
 
-exports.inviteStaffHttp = onRequest(fnOptions, handleInviteStaff);
-exports.removeStaffHttp = onRequest(fnOptions, handleRemoveStaff);
-exports.acceptInviteHttp = onRequest(fnOptions, handleAcceptInvite);
+exports.inviteStaffHttp = onRequest(fnOptions, withCors(handleInviteStaff));
+exports.removeStaffHttp = onRequest(fnOptions, withCors(handleRemoveStaff));
+exports.acceptInviteHttp = onRequest(fnOptions, withCors(handleAcceptInvite));
 
 const billingReports = require('./billingReports');
 exports.billingReportDaily = billingReports.billingReportDaily;

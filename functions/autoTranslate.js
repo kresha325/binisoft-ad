@@ -64,10 +64,6 @@ async function translateText(text, target, source) {
 
 function createAutoTranslateHandlers({ verifyAuth, assertBusinessMember, sendError }) {
   async function handleAutoTranslateCatalog(req, res) {
-    if (req.method === 'OPTIONS') {
-      res.status(204).send('');
-      return;
-    }
     if (req.method !== 'POST') {
       res.status(405).json({ error: { message: 'Method not allowed' } });
       return;
