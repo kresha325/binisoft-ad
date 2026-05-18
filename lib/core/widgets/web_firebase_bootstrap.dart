@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../firebase_options.dart';
 import '../bootstrap/firebase_web_config.dart';
+import '../constants/app_constants.dart';
 import '../utils/page_reload.dart';
 import '../utils/web_boot_overlay.dart';
 import 'web_init_error_screen.dart';
@@ -22,7 +22,7 @@ class WebFirebaseBootstrap extends StatefulWidget {
 }
 
 class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
-  static const _initTimeout = Duration(seconds: 12);
+  static const _initTimeout = Duration(seconds: 10);
 
   Object? _error;
   var _ready = false;
@@ -32,7 +32,18 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
   @override
   void initState() {
     super.initState();
+    if (!_isCorrectDeployPath()) {
+      _error = StateError(
+        'Wrong URL. Open:\n${AppConstants.dashboardWebUrl}/',
+      );
+      return;
+    }
     unawaited(_initFirebase());
+  }
+
+  bool _isCorrectDeployPath() {
+    final path = Uri.base.path;
+    return path.contains('binisoft-ad');
   }
 
   @override
@@ -41,16 +52,20 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
     super.dispose();
   }
 
+  void _fail(Object e) {
+    _watchdog?.cancel();
+    if (!mounted || _ready) return;
+    setState(() => _error = e);
+  }
+
   void _armWatchdog() {
     _watchdog?.cancel();
     _watchdog = Timer(_initTimeout, () {
-      if (!mounted || _ready || _error != null) return;
-      setState(() {
-        _error = TimeoutException(
-          'Firebase did not respond in ${_initTimeout.inSeconds}s. '
-          'Check Wi‑Fi and Safari settings (disable Private Browsing).',
-        );
-      });
+      _fail(
+        TimeoutException(
+          'Firebase did not respond in ${_initTimeout.inSeconds}s.',
+        ),
+      );
     });
   }
 
@@ -69,29 +84,22 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
         Future<void>.delayed(
           _initTimeout,
           () => throw TimeoutException(
-            'Firebase initialization timed out (${_initTimeout.inSeconds}s)',
+            'Firebase timed out (${_initTimeout.inSeconds}s)',
           ),
         ),
       ]);
       _watchdog?.cancel();
       if (mounted) setState(() => _ready = true);
-    } catch (e) {
-      _watchdog?.cancel();
-      if (kDebugMode) debugPrint('Web Firebase init failed: $e');
-      if (mounted) setState(() => _error = e);
+    } catch (e, st) {
+      if (kDebugMode) debugPrint('Web Firebase init failed: $e\n$st');
+      _fail(e);
     }
   }
 
+  /// Only core + Firestore settings — do not call setPersistence (hangs on iOS Safari).
   Future<void> _initializeFirebase(FirebaseOptions options) async {
     await Firebase.initializeApp(options: options);
     await configureFirestoreForWeb();
-    if (kIsWeb) {
-      try {
-        await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
-      } catch (_) {
-        await FirebaseAuth.instance.setPersistence(Persistence.NONE);
-      }
-    }
   }
 
   Future<void> _retry() async {
@@ -113,16 +121,22 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
       );
     }
     if (!_ready) {
-      return _WebFirebaseLoading(onRetry: _retrying ? null : _retry);
+      return _WebFirebaseLoading(
+        onRetry: _retrying ? null : _retry,
+        onGiveUp: () => _fail(
+          TimeoutException('Connection stalled. Tap Try again or Reload.'),
+        ),
+      );
     }
     return widget.child;
   }
 }
 
 class _WebFirebaseLoading extends StatefulWidget {
-  const _WebFirebaseLoading({this.onRetry});
+  const _WebFirebaseLoading({this.onRetry, this.onGiveUp});
 
   final VoidCallback? onRetry;
+  final VoidCallback? onGiveUp;
 
   @override
   State<_WebFirebaseLoading> createState() => _WebFirebaseLoadingState();
@@ -131,13 +145,19 @@ class _WebFirebaseLoading extends StatefulWidget {
 class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
   var _seconds = 0;
   Timer? _tick;
+  var _gaveUp = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => dismissWebBootOverlay());
     _tick = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted) setState(() => _seconds++);
+      if (!mounted) return;
+      setState(() => _seconds++);
+      if (_seconds >= 10 && !_gaveUp && widget.onGiveUp != null) {
+        _gaveUp = true;
+        widget.onGiveUp!();
+      }
     });
   }
 
@@ -149,6 +169,7 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
 
   @override
   Widget build(BuildContext context) {
+    final path = Uri.base.path;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -162,18 +183,23 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
                 const CircularProgressIndicator(color: Color(0xFF2EC4C6)),
                 const SizedBox(height: 20),
                 Text(
-                  _seconds < 12
-                      ? 'Connecting… ($_seconds s)'
-                      : 'Still connecting… ($_seconds s)',
+                  'Connecting… ($_seconds s)',
                   style: const TextStyle(color: Colors.white70, fontSize: 15),
                 ),
-                const SizedBox(height: 12),
-                const Text(
-                  'iPhone: use Wi‑Fi, not Private Browsing.',
+                const SizedBox(height: 8),
+                Text(
+                  path,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white54, fontSize: 13),
+                  style: const TextStyle(color: Colors.white38, fontSize: 11),
                 ),
-                if (_seconds >= 8 && widget.onRetry != null) ...[
+                const SizedBox(height: 12),
+                Text(
+                  'Use full URL:\n${AppConstants.dashboardWebUrl}/\n'
+                  'Wi‑Fi · not Private Browsing',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white54, fontSize: 13),
+                ),
+                if (_seconds >= 6 && widget.onRetry != null) ...[
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: widget.onRetry,
@@ -183,16 +209,14 @@ class _WebFirebaseLoadingState extends State<_WebFirebaseLoading> {
                     ),
                   ),
                 ],
-                if (_seconds >= 10) ...[
-                  const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: reloadPage,
-                    child: const Text(
-                      'Reload page',
-                      style: TextStyle(color: Colors.white54),
-                    ),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: reloadPage,
+                  child: const Text(
+                    'Reload page',
+                    style: TextStyle(color: Colors.white54),
                   ),
-                ],
+                ),
               ],
             ),
           ),
