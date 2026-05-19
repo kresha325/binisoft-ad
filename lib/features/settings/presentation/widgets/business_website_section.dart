@@ -74,7 +74,9 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
             plan: plan,
             markProfessionalRequested: plan == WebsitePlan.professional,
           );
-      ref.invalidate(currentBusinessProvider);
+      if (!mounted) return;
+      ProviderScope.containerOf(context, listen: false)
+          .invalidate(currentBusinessProvider);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -142,7 +144,9 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
             plan: WebsitePlan.professional,
             markProfessionalRequested: true,
           );
-      ref.invalidate(currentBusinessProvider);
+      if (!mounted) return;
+      ProviderScope.containerOf(context, listen: false)
+          .invalidate(currentBusinessProvider);
     }
 
     final name = business?.name ?? '';

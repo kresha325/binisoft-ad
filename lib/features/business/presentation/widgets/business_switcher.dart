@@ -78,12 +78,14 @@ class BusinessSwitcher extends ConsumerWidget {
             }
             try {
               await ref.read(authControllerProvider.notifier).switchBusiness(value);
-              ref.invalidate(currentBusinessProvider);
-              ref.invalidate(ownedBusinessesProvider);
-              ref.invalidate(businessQuotaProvider);
-              ref.invalidate(productsListProvider);
-              ref.invalidate(categoriesListProvider);
-              ref.invalidate(attributesListProvider);
+              if (!context.mounted) return;
+              final providers = ProviderScope.containerOf(context, listen: false);
+              providers.invalidate(currentBusinessProvider);
+              providers.invalidate(ownedBusinessesProvider);
+              providers.invalidate(businessQuotaProvider);
+              providers.invalidate(productsListProvider);
+              providers.invalidate(categoriesListProvider);
+              providers.invalidate(attributesListProvider);
             } catch (e) {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(

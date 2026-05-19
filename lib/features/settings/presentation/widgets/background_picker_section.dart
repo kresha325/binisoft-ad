@@ -86,17 +86,20 @@ class _BackgroundPickerSectionState extends ConsumerState<BackgroundPickerSectio
         : null;
 
     try {
-      await ref.read(businessRepositoryProvider).updateProfile(
+      final providers = ProviderScope.containerOf(context, listen: false);
+      final business = providers.read(currentBusinessProvider).valueOrNull;
+      await providers.read(businessRepositoryProvider).updateProfile(
             businessId: businessId,
-            name: ref.read(currentBusinessProvider).valueOrNull?.name ?? '',
-            description: ref.read(currentBusinessProvider).valueOrNull?.description,
-            logoUrl: ref.read(currentBusinessProvider).valueOrNull?.logoUrl,
+            name: business?.name ?? '',
+            description: business?.description,
+            logoUrl: business?.logoUrl,
             backgroundPresetId: preset,
             backgroundImageUrl: hasCustom ? custom : null,
             backgroundOverlayOpacity: _hasBackground ? _overlayOpacity : null,
           );
-      ref.invalidate(currentBusinessProvider);
-      ref.read(backgroundOverlayPreviewProvider.notifier).state = null;
+      if (!mounted) return;
+      providers.invalidate(currentBusinessProvider);
+      providers.read(backgroundOverlayPreviewProvider.notifier).state = null;
       _notify();
     } catch (e) {
       if (mounted) {
@@ -138,7 +141,9 @@ class _BackgroundPickerSectionState extends ConsumerState<BackgroundPickerSectio
 
     setState(() => _uploading = true);
     try {
-      final url = await ref.read(mediaUploadServiceProvider).uploadDashboardBackground(
+      final url = await ProviderScope.containerOf(context, listen: false)
+          .read(mediaUploadServiceProvider)
+          .uploadDashboardBackground(
             businessId: businessId,
             file: result.files.first,
           );

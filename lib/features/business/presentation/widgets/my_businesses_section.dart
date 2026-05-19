@@ -107,10 +107,13 @@ class MyBusinessesSection extends ConsumerWidget {
                       await ref
                           .read(authControllerProvider.notifier)
                           .switchBusiness(businesses[i].id);
-                      ref.invalidate(currentBusinessProvider);
-                      ref.invalidate(productsListProvider);
-                      ref.invalidate(categoriesListProvider);
-                      ref.invalidate(attributesListProvider);
+                      if (!context.mounted) return;
+                      final providers =
+                          ProviderScope.containerOf(context, listen: false);
+                      providers.invalidate(currentBusinessProvider);
+                      providers.invalidate(productsListProvider);
+                      providers.invalidate(categoriesListProvider);
+                      providers.invalidate(attributesListProvider);
                     },
                   ),
                   if (i < businesses.length - 1) const SizedBox(height: 8),

@@ -61,13 +61,15 @@ Future<void> showProductSheet(
   required List<Category> categories,
   Product? product,
 }) async {
+  // Parent [WidgetRef] may be disposed while the side sheet is open; use [container].
+  final providers = ProviderScope.containerOf(context, listen: false);
   final isEdit = product != null;
   final l10n = context.l10n;
-  final localesConfig = ref.read(businessLocalesProvider);
+  final localesConfig = providers.read(businessLocalesProvider);
   List<ProductVariant> initialVariants = [];
-  final businessIdForLoad = ref.read(currentBusinessIdProvider);
+  final businessIdForLoad = providers.read(currentBusinessIdProvider);
   if (isEdit && businessIdForLoad != null) {
-    initialVariants = await ref.read(variantRepositoryProvider).listByProduct(
+    initialVariants = await providers.read(variantRepositoryProvider).listByProduct(
           businessId: businessIdForLoad,
           productId: product.id,
         );
@@ -273,7 +275,7 @@ Future<void> showProductSheet(
       },
     ),
     onSave: () async {
-      final locales = ref.read(businessLocalesProvider);
+      final locales = providers.read(businessLocalesProvider);
       final nameError = validateLocalizedRequired(
         values: content.name,
         defaultLocale: locales.defaultLocale,
@@ -288,7 +290,7 @@ Future<void> showProductSheet(
         return false;
       }
 
-      final businessId = ref.read(currentBusinessIdProvider);
+      final businessId = providers.read(currentBusinessIdProvider);
       if (businessId == null) return false;
 
       final slugError = validateInternalSlugField(slugController.text.trim());
@@ -302,7 +304,7 @@ Future<void> showProductSheet(
       }
 
       final internalSlug = normalizeInternalSlug(slugController.text.trim());
-      final productRepo = ref.read(productRepositoryProvider);
+      final productRepo = providers.read(productRepositoryProvider);
       final slugTaken = await productRepo.isSlugTaken(
         businessId: businessId,
         slug: internalSlug,
@@ -320,7 +322,7 @@ Future<void> showProductSheet(
         return false;
       }
 
-      final attributes = (ref.read(attributesListProvider).valueOrNull ?? [])
+      final attributes = (providers.read(attributesListProvider).valueOrNull ?? [])
           .where((a) => a.active)
           .toList();
 
@@ -358,7 +360,7 @@ Future<void> showProductSheet(
         final editing = product;
         if (isEdit && editing != null) {
           final images = await _resolveProductImages(
-            ref: ref,
+            providers: providers,
             businessId: businessId,
             productId: editing.id,
             images: productImages,
@@ -366,7 +368,7 @@ Future<void> showProductSheet(
             invalidUrlMessage: context.l10n.productImageInvalidUrl,
           );
 
-          await ref.read(productRepositoryProvider).update(
+          await providers.read(productRepositoryProvider).update(
                 businessId: businessId,
                 product: Product(
                   id: editing.id,
@@ -393,7 +395,7 @@ Future<void> showProductSheet(
                 ),
               );
 
-          await ref.read(variantRepositoryProvider).replaceAllForProduct(
+          await providers.read(variantRepositoryProvider).replaceAllForProduct(
                 businessId: businessId,
                 productId: editing.id,
                 variants: variantDrafts
@@ -406,7 +408,7 @@ Future<void> showProductSheet(
                     .toList(),
               );
         } else {
-          final user = ref.read(authStateProvider).valueOrNull;
+          final user = providers.read(authStateProvider).valueOrNull;
           final created = await productRepo.create(
                 businessId: businessId,
                 maxProducts: user?.maxProducts,
@@ -427,7 +429,7 @@ Future<void> showProductSheet(
               );
 
           final images = await _resolveProductImages(
-            ref: ref,
+            providers: providers,
             businessId: businessId,
             productId: created.id,
             images: productImages,
@@ -435,7 +437,7 @@ Future<void> showProductSheet(
             invalidUrlMessage: context.l10n.productImageInvalidUrl,
           );
 
-          await ref.read(productRepositoryProvider).update(
+          await providers.read(productRepositoryProvider).update(
                 businessId: businessId,
                 product: Product(
                   id: created.id,
@@ -462,7 +464,7 @@ Future<void> showProductSheet(
                 ),
               );
 
-          await ref.read(variantRepositoryProvider).replaceAllForProduct(
+          await providers.read(variantRepositoryProvider).replaceAllForProduct(
                 businessId: businessId,
                 productId: created.id,
                 variants: variantDrafts
@@ -499,14 +501,14 @@ Future<void> showProductSheet(
 }
 
 Future<List<ProductImage>> _resolveProductImages({
-  required WidgetRef ref,
+  required ProviderContainer providers,
   required String businessId,
   required String productId,
   required List<ProductImage> images,
   required List<PlatformFile> pendingFiles,
   required String invalidUrlMessage,
 }) async {
-  final upload = ref.read(mediaUploadServiceProvider);
+  final upload = providers.read(mediaUploadServiceProvider);
   final resolved = <ProductImage>[];
 
   for (final img in images) {
@@ -549,15 +551,16 @@ Future<void> deleteProduct(
   );
   if (!confirmed || !context.mounted) return;
 
-  final businessId = ref.read(currentBusinessIdProvider);
+  final providers = ProviderScope.containerOf(context, listen: false);
+  final businessId = providers.read(currentBusinessIdProvider);
   if (businessId == null) return;
 
   try {
-    await ref.read(variantRepositoryProvider).deleteAllForProduct(
+    await providers.read(variantRepositoryProvider).deleteAllForProduct(
           businessId: businessId,
           productId: product.id,
         );
-    await ref.read(productRepositoryProvider).delete(
+    await providers.read(productRepositoryProvider).delete(
           businessId: businessId,
           productId: product.id,
         );

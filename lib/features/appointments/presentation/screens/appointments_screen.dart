@@ -61,6 +61,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
   Future<void> _syncExpiredAppointments(
     AsyncValue<List<Appointment>> appointmentsAsync,
   ) async {
+    if (!mounted) return;
     final businessId = ref.read(currentBusinessProvider).valueOrNull?.id;
     final list = appointmentsAsync.valueOrNull;
     if (businessId == null || list == null) return;

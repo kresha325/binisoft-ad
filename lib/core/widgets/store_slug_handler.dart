@@ -47,6 +47,7 @@ class _StoreSlugHandlerState extends ConsumerState<StoreSlugHandler> {
 
     try {
       await ref.read(authControllerProvider.notifier).switchBusiness(business.id);
+      if (!mounted) return;
       _lastHandled = slug;
     } catch (_) {
       // Ignore — user may not own this slug.

@@ -168,26 +168,27 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     setState(() => _saving = true);
     try {
+      final providers = ProviderScope.containerOf(context, listen: false);
       var logoUrl = _logoUrl.text.trim();
 
       if (_logoFile != null) {
-        logoUrl = await ref.read(mediaUploadServiceProvider).uploadBusinessLogo(
+        logoUrl = await providers.read(mediaUploadServiceProvider).uploadBusinessLogo(
               businessId: businessId,
               file: _logoFile!,
             );
       } else if (logoUrl.isNotEmpty && logoUrl.contains('firebasestorage')) {
-        logoUrl = await ref.read(mediaUploadServiceProvider).resolveImageUrl(logoUrl);
+        logoUrl = await providers.read(mediaUploadServiceProvider).resolveImageUrl(logoUrl);
       }
 
       var coverImageUrl = _coverUrl.text.trim();
       if (_coverFile != null) {
-        coverImageUrl = await ref.read(mediaUploadServiceProvider).uploadBusinessCover(
+        coverImageUrl = await providers.read(mediaUploadServiceProvider).uploadBusinessCover(
               businessId: businessId,
               file: _coverFile!,
             );
       } else if (coverImageUrl.isNotEmpty && coverImageUrl.contains('firebasestorage')) {
         coverImageUrl =
-            await ref.read(mediaUploadServiceProvider).resolveImageUrl(coverImageUrl);
+            await providers.read(mediaUploadServiceProvider).resolveImageUrl(coverImageUrl);
       }
 
       final customBg = _backgroundImageUrl?.trim() ?? '';
@@ -198,7 +199,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ? _backgroundPresetId
           : null;
 
-      await ref.read(businessRepositoryProvider).updateProfile(
+      await providers.read(businessRepositoryProvider).updateProfile(
             businessId: businessId,
             name: _name.text.trim(),
             description: descriptionText,
@@ -227,12 +228,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             orderPhone: _orderPhone.text.trim(),
             contactEmail: _contactEmail.text.trim(),
           );
-      ref.invalidate(currentBusinessProvider);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.l10n.changesSaved)),
-        );
-      }
+      if (!mounted) return;
+      providers.invalidate(currentBusinessProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.changesSaved)),
+      );
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -174,12 +174,13 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
     required String existingUrl,
   }) async {
     if (file == null) return existingUrl.trim().isEmpty ? null : existingUrl.trim();
-    var url = await ref.read(mediaUploadServiceProvider).uploadSiteAsset(
+    final providers = ProviderScope.containerOf(context, listen: false);
+    var url = await providers.read(mediaUploadServiceProvider).uploadSiteAsset(
           businessId: businessId,
           file: file,
         );
     if (url.contains('firebasestorage')) {
-      url = await ref.read(mediaUploadServiceProvider).resolveImageUrl(url);
+      url = await providers.read(mediaUploadServiceProvider).resolveImageUrl(url);
     }
     return url;
   }
@@ -235,16 +236,16 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
         }
       }
 
-      await ref.read(businessRepositoryProvider).updateSiteConfig(
+      final providers = ProviderScope.containerOf(context, listen: false);
+      await providers.read(businessRepositoryProvider).updateSiteConfig(
             businessId: businessId,
             siteConfig: _buildConfig(),
           );
-      ref.invalidate(currentBusinessProvider);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.l10n.siteEditorSaved)),
-        );
-      }
+      if (!mounted) return;
+      providers.invalidate(currentBusinessProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.siteEditorSaved)),
+      );
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

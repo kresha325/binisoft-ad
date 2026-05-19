@@ -43,9 +43,10 @@ Future<void> showOfferSheet(
   WidgetRef ref, {
   Offer? offer,
 }) async {
+  final providers = ProviderScope.containerOf(context, listen: false);
   final l10n = context.l10n;
   final isEdit = offer != null;
-  final locales = ref.read(businessLocalesProvider);
+  final locales = providers.read(businessLocalesProvider);
   var content = CatalogLocalizedContent.initial(
     defaultLocale: locales.defaultLocale,
     enabledLocales: locales.enabledLocales,
@@ -62,7 +63,7 @@ Future<void> showOfferSheet(
   var slugManual = isEdit;
   var localizedSlugs = Map<String, String>.from(offer?.localizedSlugs ?? {});
 
-  final products = (ref.read(productsListProvider).valueOrNull ?? [])
+  final products = (providers.read(productsListProvider).valueOrNull ?? [])
       .where((p) => p.status == ProductStatus.active)
       .toList();
 
@@ -309,7 +310,7 @@ Future<void> showOfferSheet(
         return false;
       }
 
-      final localeConfig = ref.read(businessLocalesProvider);
+      final localeConfig = providers.read(businessLocalesProvider);
       final nameError = validateLocalizedRequired(
         values: content.name,
         defaultLocale: localeConfig.defaultLocale,
@@ -324,7 +325,7 @@ Future<void> showOfferSheet(
         return false;
       }
 
-      final businessId = ref.read(currentBusinessIdProvider);
+      final businessId = providers.read(currentBusinessIdProvider);
       if (businessId == null) return false;
 
       final slugError = validateInternalSlugField(slugController.text.trim());
@@ -338,7 +339,7 @@ Future<void> showOfferSheet(
       }
 
       final internalSlug = normalizeInternalSlug(slugController.text.trim());
-      final offerRepo = ref.read(offerRepositoryProvider);
+      final offerRepo = providers.read(offerRepositoryProvider);
       final slugTaken = await offerRepo.isSlugTaken(
         businessId: businessId,
         slug: internalSlug,
@@ -499,11 +500,12 @@ Future<void> deleteOffer(
   );
   if (!ok || !context.mounted) return;
 
-  final businessId = ref.read(currentBusinessIdProvider);
+  final providers = ProviderScope.containerOf(context, listen: false);
+  final businessId = providers.read(currentBusinessIdProvider);
   if (businessId == null) return;
 
   try {
-    await ref.read(offerRepositoryProvider).delete(
+    await providers.read(offerRepositoryProvider).delete(
           businessId: businessId,
           offerId: offer.id,
         );

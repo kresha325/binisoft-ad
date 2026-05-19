@@ -27,8 +27,9 @@ Future<void> showCategoryDialog(
   WidgetRef ref, {
   Category? category,
 }) async {
+  final providers = ProviderScope.containerOf(context, listen: false);
   final isEdit = category != null;
-  final locales = ref.read(businessLocalesProvider);
+  final locales = providers.read(businessLocalesProvider);
   var content = CatalogLocalizedContent.initial(
     defaultLocale: locales.defaultLocale,
     enabledLocales: locales.enabledLocales,
@@ -133,7 +134,7 @@ Future<void> showCategoryDialog(
       },
     ),
     onSave: () async {
-      final localeConfig = ref.read(businessLocalesProvider);
+      final localeConfig = providers.read(businessLocalesProvider);
       final l10n = context.l10n;
 
       final nameError = validateLocalizedRequired(
@@ -160,11 +161,11 @@ Future<void> showCategoryDialog(
         return false;
       }
 
-      final businessId = ref.read(currentBusinessIdProvider);
+      final businessId = providers.read(currentBusinessIdProvider);
       if (businessId == null) return false;
 
       final internalSlug = normalizeInternalSlug(slugController.text.trim());
-      final repo = ref.read(categoryRepositoryProvider);
+      final repo = providers.read(categoryRepositoryProvider);
 
       final taken = await repo.isSlugTaken(
         businessId: businessId,
@@ -258,11 +259,12 @@ Future<void> deleteCategory(
   WidgetRef ref,
   Category category,
 ) async {
-  final businessId = ref.read(currentBusinessIdProvider);
+  final providers = ProviderScope.containerOf(context, listen: false);
+  final businessId = providers.read(currentBusinessIdProvider);
   if (businessId == null) return;
 
   try {
-    await ref.read(categoryRepositoryProvider).delete(
+    await providers.read(categoryRepositoryProvider).delete(
           businessId: businessId,
           categoryId: category.id,
         );

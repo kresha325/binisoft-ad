@@ -72,9 +72,10 @@ class _AppointmentReminderListenerState
 
   Future<void> _runSync() async {
     if (!mounted) return;
-    final business = ref.read(currentBusinessProvider).valueOrNull;
-    final uid = ref.read(authStateProvider).valueOrNull?.id;
-    final appointments = ref.read(appointmentsListProvider).valueOrNull;
+    final providers = ProviderScope.containerOf(context, listen: false);
+    final business = providers.read(currentBusinessProvider).valueOrNull;
+    final uid = providers.read(authStateProvider).valueOrNull?.id;
+    final appointments = providers.read(appointmentsListProvider).valueOrNull;
     if (business == null || uid == null || appointments == null) return;
 
     final l10n = context.l10n;
@@ -82,7 +83,7 @@ class _AppointmentReminderListenerState
     String body(String name, String serviceType, String when) =>
         l10n.appointmentReminderNotificationBody(name, serviceType, when);
 
-    await ref.read(appointmentReminderServiceProvider).syncReminders(
+    await providers.read(appointmentReminderServiceProvider).syncReminders(
           business: business,
           currentUserId: uid,
           appointments: appointments,
