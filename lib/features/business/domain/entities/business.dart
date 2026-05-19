@@ -62,6 +62,7 @@ class Business extends Equatable {
   final String? backgroundImageUrl;
   final double? backgroundOverlayOpacity;
   final String? orderPhone;
+  final String? contactEmail;
   final String? siteTemplateId;
   final String? siteDeployUrl;
   final String? siteCustomDomain;

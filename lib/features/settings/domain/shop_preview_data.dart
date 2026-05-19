@@ -12,6 +12,7 @@ class ShopPreviewData {
     this.city,
     this.state,
     this.orderPhone,
+    this.contactEmail,
     this.openingHours,
     this.website,
     this.businessTypeLabel,
@@ -27,6 +28,7 @@ class ShopPreviewData {
   final String? city;
   final String? state;
   final String? orderPhone;
+  final String? contactEmail;
   final String? openingHours;
   final String? website;
   final String? businessTypeLabel;
