@@ -81,53 +81,68 @@ class _AppFormDialogBodyState extends State<_AppFormDialogBody> {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  widget.title,
-                  style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: colors.textPrimary,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final bodyHeight = constraints.maxHeight.isFinite
+              ? constraints.maxHeight
+              : MediaQuery.sizeOf(context).height * 0.75;
+
+          return SizedBox(
+            height: bodyHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.title,
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: colors.textPrimary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close_rounded, size: 22, color: colors.textMuted),
+                      onPressed: () => Navigator.pop(context),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: widget.child,
                   ),
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.close_rounded, size: 22, color: colors.textMuted),
-                onPressed: () => Navigator.pop(context),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Flexible(
-            child: SingleChildScrollView(
-              child: widget.child,
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: _saving ? null : _handleSave,
+                    child: _saving
+                        ? SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: context.isDarkMode
+                                  ? colors.textPrimary
+                                  : Colors.white,
+                            ),
+                          )
+                        : Text(widget.saveLabel),
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 20),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: _saving ? null : _handleSave,
-              child: _saving
-                  ? SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: context.isDarkMode ? colors.textPrimary : Colors.white,
-                      ),
-                    )
-                  : Text(widget.saveLabel),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

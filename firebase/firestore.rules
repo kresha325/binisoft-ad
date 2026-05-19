@@ -238,6 +238,12 @@ service cloud.firestore {
         allow delete: if canWrite(businessId) || isPlatformAdmin();
       }
 
+      match /services/{docId} {
+        allow read: if canRead(businessId);
+        allow create, update: if canWrite(businessId);
+        allow delete: if canWrite(businessId) || isPlatformAdmin();
+      }
+
       match /products/{docId} {
         allow read: if canRead(businessId);
         allow create, update: if canWrite(businessId);
@@ -286,6 +292,11 @@ service cloud.firestore {
           && request.resource.data.diff(resource.data).affectedKeys()
               .hasOnly(['status', 'updatedAt', 'cancelledAt', 'confirmedAt', 'cancelledBy']);
         allow create, delete: if false;
+      }
+
+      match /appointments/{appointmentId} {
+        allow read: if canRead(businessId);
+        allow create, update, delete: if canManageOrders(businessId) || canWrite(businessId);
       }
 
       match /members/{memberId} {

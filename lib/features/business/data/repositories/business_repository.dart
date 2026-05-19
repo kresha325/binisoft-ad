@@ -4,7 +4,9 @@ import '../../../../core/i18n/app_locales.dart';
 import '../../../../core/firestore/tenant_paths.dart';
 import '../../../../core/utils/slug.dart';
 import '../models/business_model.dart';
+import '../../domain/business_address.dart';
 import '../../domain/entities/business.dart';
+import '../../domain/entities/business_type.dart';
 import '../../domain/entities/site_config.dart';
 import '../../domain/entities/website_plan.dart';
 import '../models/site_config_model.dart';
@@ -60,6 +62,7 @@ class BusinessRepository {
     required String ownerId,
     required String name,
     required String slug,
+    required BusinessType businessType,
   }) async {
     final businessSlug = slugify(slug.isNotEmpty ? slug : name);
     if (businessSlug.isEmpty) {
@@ -77,6 +80,7 @@ class BusinessRepository {
       active: true,
       defaultLocale: AppLocales.defaultLocale,
       locales: List<String>.from(AppLocales.all),
+      businessType: businessType,
     );
 
     await _firestore.runTransaction((tx) async {
@@ -98,6 +102,8 @@ class BusinessRepository {
     String? logoUrl,
     String? coverImageUrl,
     String? location,
+    String? city,
+    String? state,
     String? website,
     String? backgroundPresetId,
     String? backgroundImageUrl,
@@ -107,14 +113,24 @@ class BusinessRepository {
     List<String>? locales,
     Map<String, String>? nameI18n,
     Map<String, String>? descriptionI18n,
+    BusinessType? businessType,
+    String? googleMapsUrl,
   }) async {
     await _paths.business(businessId).update({
       'name': name,
       'description': description ?? '',
       'logoUrl': logoUrl ?? '',
       'coverImageUrl': coverImageUrl ?? '',
-      'location': location ?? '',
+      'city': city ?? '',
+      'state': state ?? '',
+      'location': location ??
+          BusinessAddress.displayLocation(
+            city: city,
+            state: state,
+          ),
+      'googleMapsUrl': googleMapsUrl ?? '',
       'website': website ?? '',
+      if (businessType != null) 'businessType': businessType.firestoreValue,
       'backgroundPresetId': backgroundPresetId ?? '',
       'backgroundImageUrl': backgroundImageUrl ?? '',
       if (backgroundOverlayOpacity != null)

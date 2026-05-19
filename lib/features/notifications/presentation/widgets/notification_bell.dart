@@ -167,6 +167,7 @@ class _NotificationTile extends ConsumerWidget {
         NotificationType.planUpdated => Icons.card_membership_outlined,
         NotificationType.platformUserRegistered => Icons.person_add_outlined,
         NotificationType.platformBusinessCreated => Icons.store_outlined,
+        NotificationType.appointmentReminder => Icons.event_outlined,
         NotificationType.system => Icons.info_outline,
       };
 

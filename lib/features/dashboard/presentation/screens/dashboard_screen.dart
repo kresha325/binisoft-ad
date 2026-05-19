@@ -6,7 +6,9 @@ import '../../../../core/layout/app_breakpoints.dart';
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/stat_card.dart';
+import '../../../appointments/presentation/providers/appointment_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../auth/presentation/providers/permissions_providers.dart';
 import '../../../business/presentation/widgets/active_store_banner.dart';
 import '../../../business/presentation/widgets/create_business_prompt_card.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
@@ -24,10 +26,18 @@ class DashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stats = ref.watch(dashboardStatsProvider);
     final orderStats = ref.watch(orderDashboardStatsProvider);
+    final appointmentStats = ref.watch(appointmentDashboardStatsProvider);
+    final canManageAppointments =
+        ref.watch(businessPermissionsProvider).canManageOrders;
     final productsLoading = ref.watch(productsListProvider).isLoading;
     final categoriesLoading = ref.watch(categoriesListProvider).isLoading;
     final ordersLoading = ref.watch(ordersListProvider).isLoading;
-    final statsLoading = productsLoading || categoriesLoading || ordersLoading;
+    final appointmentsLoading =
+        canManageAppointments && ref.watch(appointmentsListProvider).isLoading;
+    final statsLoading = productsLoading ||
+        categoriesLoading ||
+        ordersLoading ||
+        appointmentsLoading;
     final hasBusiness = ref.watch(hasActiveBusinessProvider);
     final l10n = context.l10n;
 
@@ -84,6 +94,20 @@ class DashboardScreen extends ConsumerWidget {
                   icon: Icons.sell_outlined,
                   onTap: () => context.go('/categories'),
                 ),
+                if (canManageAppointments) ...[
+                  StatCard(
+                    label: l10n.dashboardAppointmentsToday,
+                    value: '${appointmentStats.todayCount}',
+                    icon: Icons.event_available_outlined,
+                    onTap: () => context.go('/appointments'),
+                  ),
+                  StatCard(
+                    label: l10n.dashboardUpcomingAppointments,
+                    value: '${appointmentStats.upcomingCount}',
+                    icon: Icons.event_outlined,
+                    onTap: () => context.go('/appointments'),
+                  ),
+                ],
               ];
 
               if (isMobile) {

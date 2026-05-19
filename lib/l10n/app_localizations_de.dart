@@ -18,6 +18,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get navOrders => 'Bestellungen';
 
   @override
+  String get navAppointments => 'Termine / Reservierungen';
+
+  @override
   String get navReports => 'Berichte';
 
   @override
@@ -31,6 +34,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get navCategories => 'Kategorien';
+
+  @override
+  String get navServices => 'Dienstleistungen';
 
   @override
   String get navCustomFields => 'Benutzerdefinierte Felder';
@@ -89,6 +95,59 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageCategoriesSubtitle => 'Produktkategorien verwalten.';
 
   @override
+  String get pageServicesTitle => 'Dienstleistungen';
+
+  @override
+  String get pageServicesSubtitle =>
+      'Angebotene Leistungen (für Reservierungen und Katalog).';
+
+  @override
+  String get serviceAddTitle => 'Leistung hinzufügen';
+
+  @override
+  String get serviceEditTitle => 'Leistung bearbeiten';
+
+  @override
+  String get serviceSave => 'Leistung speichern';
+
+  @override
+  String get serviceName => 'Name';
+
+  @override
+  String get serviceDescription => 'Beschreibung';
+
+  @override
+  String get serviceDurationMinutes => 'Dauer (Minuten)';
+
+  @override
+  String get serviceDurationHint => 'z. B. 60';
+
+  @override
+  String get servicePriceEur => 'Preis (€)';
+
+  @override
+  String get serviceActive => 'Aktiv';
+
+  @override
+  String get servicesEmpty =>
+      'Noch keine Leistungen. Erste Leistung hinzufügen.';
+
+  @override
+  String get serviceCreated => 'Leistung erstellt';
+
+  @override
+  String get serviceUpdated => 'Leistung aktualisiert';
+
+  @override
+  String get serviceDeleted => 'Leistung gelöscht';
+
+  @override
+  String get appointmentServicePick => 'Leistung wählen';
+
+  @override
+  String get appointmentServiceCustom => 'Andere (manuell eingeben)';
+
+  @override
   String get pageCustomFieldsTitle => 'Benutzerdefinierte Felder';
 
   @override
@@ -119,6 +178,146 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pageOrdersSubtitle => 'Eingehende Shop-Bestellungen verwalten.';
+
+  @override
+  String get pageAppointmentsTitle => 'Termine / Reservierungen';
+
+  @override
+  String get pageAppointmentsSubtitle =>
+      'Reservierungen mit Kundendaten, Leistungsart und Erinnerungen verwalten.';
+
+  @override
+  String get appointmentAdd => 'Neue Reservierung';
+
+  @override
+  String get appointmentEditTitle => 'Reservierung bearbeiten';
+
+  @override
+  String get appointmentFirstName => 'Vorname';
+
+  @override
+  String get appointmentLastName => 'Nachname';
+
+  @override
+  String get appointmentFullName => 'Name';
+
+  @override
+  String get appointmentFirstNameRequired => 'Vorname ist erforderlich';
+
+  @override
+  String get appointmentLastNameRequired => 'Nachname ist erforderlich';
+
+  @override
+  String get appointmentDescription => 'Beschreibung';
+
+  @override
+  String get appointmentDescriptionRequired => 'Beschreibung ist erforderlich';
+
+  @override
+  String get appointmentServiceType => 'Leistungsart';
+
+  @override
+  String get appointmentServiceTypeRequired => 'Leistungsart ist erforderlich';
+
+  @override
+  String get appointmentPhone => 'Telefonnummer';
+
+  @override
+  String get appointmentPhoneRequired => 'Telefonnummer ist erforderlich';
+
+  @override
+  String get appointmentScheduledAt => 'Terminzeit';
+
+  @override
+  String get appointmentCreatedAt => 'Erstellt';
+
+  @override
+  String get appointmentReminder => 'Erinnerung';
+
+  @override
+  String get appointmentReminderNone => 'Keine Erinnerung';
+
+  @override
+  String get appointmentReminder15 => '15 Minuten vorher';
+
+  @override
+  String get appointmentReminder30 => '30 Minuten vorher';
+
+  @override
+  String get appointmentReminder60 => '1 Stunde vorher';
+
+  @override
+  String get appointmentReminder120 => '2 Stunden vorher';
+
+  @override
+  String get appointmentReminder1440 => '1 Tag vorher';
+
+  @override
+  String get appointmentStatusScheduled => 'Geplant';
+
+  @override
+  String get appointmentStatusCompleted => 'Abgeschlossen';
+
+  @override
+  String get appointmentStatusCancelled => 'Abgesagt';
+
+  @override
+  String get appointmentEmpty =>
+      'Noch keine Termine. Erstellen Sie den ersten Termin.';
+
+  @override
+  String get appointmentEmptyDay => 'Keine Reservierungen an diesem Tag.';
+
+  @override
+  String get appointmentTime => 'Uhrzeit';
+
+  @override
+  String get appointmentCalendarToday => 'Heute';
+
+  @override
+  String get appointmentCalendarPrevMonth => 'Vorheriger Monat';
+
+  @override
+  String get appointmentCalendarNextMonth => 'Nächster Monat';
+
+  @override
+  String appointmentDayCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Reservierungen an diesem Tag',
+      one: '1 Reservierung an diesem Tag',
+      zero: 'Keine Reservierungen an diesem Tag',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get appointmentSave => 'Termin speichern';
+
+  @override
+  String get appointmentDeleteConfirm => 'Termin löschen?';
+
+  @override
+  String get appointmentMarkCompleted => 'Als erledigt markieren';
+
+  @override
+  String get appointmentMarkCancelled => 'Termin absagen';
+
+  @override
+  String get appointmentReminderNotificationTitle => 'Terminerinnerung';
+
+  @override
+  String appointmentReminderNotificationBody(
+    String name,
+    String serviceType,
+    String when,
+  ) {
+    return '$name — $serviceType — $when';
+  }
+
+  @override
+  String get searchAppointments => 'Reservierungen suchen…';
 
   @override
   String get pageReportsTitle => 'Berichte';
@@ -416,6 +615,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardCategories => 'Kategorien';
 
   @override
+  String get dashboardAppointmentsToday => 'Termine heute';
+
+  @override
+  String get dashboardUpcomingAppointments => 'Kommende Termine';
+
+  @override
   String get topProductsTitle => 'Top-Produkte diese Woche';
 
   @override
@@ -435,6 +640,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addCategory => 'Kategorie hinzufügen';
+
+  @override
+  String get categoryTemplatesTitle =>
+      'Vorgeschlagene Kategorien für Ihre Geschäftsart';
 
   @override
   String get addProduct => 'Produkt hinzufügen';
@@ -541,10 +750,34 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wird oben im öffentlichen Shop-Profil angezeigt.';
 
   @override
-  String get settingsLocation => 'Standort';
+  String get settingsBusinessType => 'Geschäftsart';
 
   @override
-  String get settingsLocationHint => 'Stadt, Adresse oder Gebiet';
+  String get settingsCity => 'Stadt';
+
+  @override
+  String get settingsCityHint => 'z. B. Pristina';
+
+  @override
+  String get settingsState => 'Land / Region';
+
+  @override
+  String get settingsStateHint => 'z. B. Kosovo';
+
+  @override
+  String get settingsLocationMaps => 'Standort';
+
+  @override
+  String get settingsLocationMapsHint =>
+      'Link aus Google Maps → Teilen einfügen';
+
+  @override
+  String get settingsLocationMapsNote =>
+      'Interaktive Karte im öffentlichen Shop (Google Maps).';
+
+  @override
+  String get settingsGoogleMapsUrlInvalid =>
+      'Bitte einen gültigen Google-Maps-Link einfügen (maps.google.com oder maps.app.goo.gl).';
 
   @override
   String get settingsWebsite => 'Webseite';
@@ -750,6 +983,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get siteSectionProducts => 'Produkte';
+
+  @override
+  String get siteSectionServices => 'Dienstleistungen';
 
   @override
   String get siteSectionAbout => 'Über uns';
@@ -1254,6 +1490,105 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'Geschäftsname *';
+
+  @override
+  String get businessTypeLabel => 'Geschäftsart *';
+
+  @override
+  String get businessTypeSelect => 'Art wählen';
+
+  @override
+  String get businessTypeRequired => 'Bitte wählen Sie eine Geschäftsart.';
+
+  @override
+  String get businessTypeRetail => 'Einzelhandel';
+
+  @override
+  String get businessTypeFashion => 'Mode & Accessoires';
+
+  @override
+  String get businessTypeElectronics => 'Elektronik & Technik';
+
+  @override
+  String get businessTypeIt => 'IT & Software';
+
+  @override
+  String get businessTypeDigitalAgency => 'Digitalagentur & Marketing';
+
+  @override
+  String get businessTypeConstruction => 'Bau & Renovierung';
+
+  @override
+  String get businessTypeRealEstate => 'Immobilien';
+
+  @override
+  String get businessTypePhotography => 'Foto & Video';
+
+  @override
+  String get businessTypeEvents => 'Events & Hochzeiten';
+
+  @override
+  String get businessTypeLogistics => 'Transport & Logistik';
+
+  @override
+  String get businessTypeAgriculture => 'Landwirtschaft & Hof';
+
+  @override
+  String get businessTypeGrocery => 'Lebensmittel & Supermarkt';
+
+  @override
+  String get businessTypeBakery => 'Bäckerei & Konditorei';
+
+  @override
+  String get businessTypeWholesale => 'Großhandel / B2B';
+
+  @override
+  String get businessTypeRestaurant => 'Restaurant';
+
+  @override
+  String get businessTypeCafe => 'Café & Bar';
+
+  @override
+  String get businessTypeFastFood => 'Fast Food & Take-away';
+
+  @override
+  String get businessTypePharmacy => 'Apotheke & Gesundheit';
+
+  @override
+  String get businessTypePetShop => 'Tierhandlung & Grooming';
+
+  @override
+  String get businessTypeServices => 'Allgemeine Dienstleistungen (Termine)';
+
+  @override
+  String get businessTypeSalon => 'Friseur & Kosmetik';
+
+  @override
+  String get businessTypeSpa => 'Spa & Wellness';
+
+  @override
+  String get businessTypeClinic => 'Klinik & Arztpraxis';
+
+  @override
+  String get businessTypeAutomotive => 'Kfz-Service & Reparatur';
+
+  @override
+  String get businessTypeFitness => 'Fitnessstudio';
+
+  @override
+  String get businessTypeEducation => 'Bildung & Nachhilfe';
+
+  @override
+  String get businessTypeProfessional => 'Freie Berufe (Recht, Buchhaltung…)';
+
+  @override
+  String get businessTypeHomeServices => 'Hausservice (Reparatur, Reinigung…)';
+
+  @override
+  String get businessTypeHotel => 'Hotel & Unterkunft';
+
+  @override
+  String get businessTypeOther => 'Sonstiges';
 
   @override
   String get businessSlugLabel => 'URL-Slug *';

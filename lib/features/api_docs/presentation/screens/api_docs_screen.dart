@@ -18,6 +18,7 @@ import '../../../../core/widgets/status_chip.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/presentation/providers/business_providers.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
+import '../../../services/presentation/providers/services_providers.dart';
 import '../../../products/presentation/providers/attributes_providers.dart';
 import '../../../products/presentation/providers/products_providers.dart';
 import '../../../orders/presentation/widgets/api_keys_section.dart';
@@ -57,6 +58,12 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
 
   String _offersUrl(String slug, {String? lang}) {
     final base = '${AppConstants.publicApiBaseUrl}/api/public/$slug/offers';
+    if (lang == null || lang.isEmpty) return base;
+    return '$base?lang=$lang';
+  }
+
+  String _servicesUrl(String slug, {String? lang}) {
+    final base = '${AppConstants.publicApiBaseUrl}/api/public/$slug/services';
     if (lang == null || lang.isEmpty) return base;
     return '$base?lang=$lang';
   }
@@ -192,6 +199,14 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
           path: '/api/public/$slug/categories?lang=$lang',
           description: 'Categories in ${AppLocales.label(lang)}.',
           url: _categoriesUrl(slug, lang: lang),
+        ),
+        _Endpoint(
+          method: 'GET',
+          path: '/api/public/$slug/services?lang=$lang',
+          description:
+              'Active services (${AppLocales.label(lang)}): name, description, duration, price. '
+              'Use for booking pages or service menus.',
+          url: _servicesUrl(slug, lang: lang),
         ),
         _Endpoint(
           method: 'GET',

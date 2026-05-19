@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 /// Public storefront theme (CSS variables on shop).
 class SiteTheme extends Equatable {
   const SiteTheme({
-    this.primary = '#0a1628',
-    this.accent = '#f5c518',
+    this.primary = '#1c1917',
+    this.accent = '#ff6b35',
     this.background = '#ffffff',
     this.text = '#111827',
   });
@@ -136,6 +136,7 @@ class SiteConfig extends Equatable {
   static const sectionHero = 'hero';
   static const sectionOffers = 'offers';
   static const sectionProducts = 'products';
+  static const sectionServices = 'services';
   static const sectionAbout = 'about';
   static const sectionGallery = 'gallery';
   static const sectionContact = 'contact';
@@ -158,6 +159,11 @@ class SiteConfig extends Equatable {
             id: sectionProducts,
             enabled: true,
             title: 'Produktet',
+          ),
+          const SiteSectionConfig(
+            id: sectionServices,
+            enabled: true,
+            title: 'Shërbimet',
           ),
           const SiteSectionConfig(id: sectionAbout, enabled: true, title: 'Rreth nesh'),
           const SiteSectionConfig(id: sectionGallery, enabled: false, title: 'Galeria'),

@@ -118,6 +118,12 @@ abstract class AppLocalizations {
   /// **'Orders'**
   String get navOrders;
 
+  /// No description provided for @navAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments / Reservations'**
+  String get navAppointments;
+
   /// No description provided for @navReports.
   ///
   /// In en, this message translates to:
@@ -147,6 +153,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Categories'**
   String get navCategories;
+
+  /// No description provided for @navServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get navServices;
 
   /// No description provided for @navCustomFields.
   ///
@@ -256,6 +268,108 @@ abstract class AppLocalizations {
   /// **'Manage your product categories.'**
   String get pageCategoriesSubtitle;
 
+  /// No description provided for @pageServicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get pageServicesTitle;
+
+  /// No description provided for @pageServicesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Services your business offers (used for reservations and catalog).'**
+  String get pageServicesSubtitle;
+
+  /// No description provided for @serviceAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add service'**
+  String get serviceAddTitle;
+
+  /// No description provided for @serviceEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit service'**
+  String get serviceEditTitle;
+
+  /// No description provided for @serviceSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save service'**
+  String get serviceSave;
+
+  /// No description provided for @serviceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get serviceName;
+
+  /// No description provided for @serviceDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get serviceDescription;
+
+  /// No description provided for @serviceDurationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (minutes)'**
+  String get serviceDurationMinutes;
+
+  /// No description provided for @serviceDurationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 60'**
+  String get serviceDurationHint;
+
+  /// No description provided for @servicePriceEur.
+  ///
+  /// In en, this message translates to:
+  /// **'Price (€)'**
+  String get servicePriceEur;
+
+  /// No description provided for @serviceActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get serviceActive;
+
+  /// No description provided for @servicesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No services yet. Add your first service.'**
+  String get servicesEmpty;
+
+  /// No description provided for @serviceCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Service created'**
+  String get serviceCreated;
+
+  /// No description provided for @serviceUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Service updated'**
+  String get serviceUpdated;
+
+  /// No description provided for @serviceDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Service deleted'**
+  String get serviceDeleted;
+
+  /// No description provided for @appointmentServicePick.
+  ///
+  /// In en, this message translates to:
+  /// **'Select service'**
+  String get appointmentServicePick;
+
+  /// No description provided for @appointmentServiceCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Other (type manually)'**
+  String get appointmentServiceCustom;
+
   /// No description provided for @pageCustomFieldsTitle.
   ///
   /// In en, this message translates to:
@@ -315,6 +429,256 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage incoming orders from your shop.'**
   String get pageOrdersSubtitle;
+
+  /// No description provided for @pageAppointmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments / Reservations'**
+  String get pageAppointmentsTitle;
+
+  /// No description provided for @pageAppointmentsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage reservations with client details, service type, and reminders.'**
+  String get pageAppointmentsSubtitle;
+
+  /// No description provided for @appointmentAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'New reservation'**
+  String get appointmentAdd;
+
+  /// No description provided for @appointmentEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit reservation'**
+  String get appointmentEditTitle;
+
+  /// No description provided for @appointmentFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get appointmentFirstName;
+
+  /// No description provided for @appointmentLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get appointmentLastName;
+
+  /// No description provided for @appointmentFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get appointmentFullName;
+
+  /// No description provided for @appointmentFirstNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'First name is required'**
+  String get appointmentFirstNameRequired;
+
+  /// No description provided for @appointmentLastNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name is required'**
+  String get appointmentLastNameRequired;
+
+  /// No description provided for @appointmentDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get appointmentDescription;
+
+  /// No description provided for @appointmentDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get appointmentDescriptionRequired;
+
+  /// No description provided for @appointmentServiceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type'**
+  String get appointmentServiceType;
+
+  /// No description provided for @appointmentServiceTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type is required'**
+  String get appointmentServiceTypeRequired;
+
+  /// No description provided for @appointmentPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get appointmentPhone;
+
+  /// No description provided for @appointmentPhoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get appointmentPhoneRequired;
+
+  /// No description provided for @appointmentScheduledAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment time'**
+  String get appointmentScheduledAt;
+
+  /// No description provided for @appointmentCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get appointmentCreatedAt;
+
+  /// No description provided for @appointmentReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get appointmentReminder;
+
+  /// No description provided for @appointmentReminderNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder'**
+  String get appointmentReminderNone;
+
+  /// No description provided for @appointmentReminder15.
+  ///
+  /// In en, this message translates to:
+  /// **'15 minutes before'**
+  String get appointmentReminder15;
+
+  /// No description provided for @appointmentReminder30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 minutes before'**
+  String get appointmentReminder30;
+
+  /// No description provided for @appointmentReminder60.
+  ///
+  /// In en, this message translates to:
+  /// **'1 hour before'**
+  String get appointmentReminder60;
+
+  /// No description provided for @appointmentReminder120.
+  ///
+  /// In en, this message translates to:
+  /// **'2 hours before'**
+  String get appointmentReminder120;
+
+  /// No description provided for @appointmentReminder1440.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day before'**
+  String get appointmentReminder1440;
+
+  /// No description provided for @appointmentStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get appointmentStatusScheduled;
+
+  /// No description provided for @appointmentStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get appointmentStatusCompleted;
+
+  /// No description provided for @appointmentStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get appointmentStatusCancelled;
+
+  /// No description provided for @appointmentEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No reservations yet. Create your first reservation.'**
+  String get appointmentEmpty;
+
+  /// No description provided for @appointmentEmptyDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No reservations on this day.'**
+  String get appointmentEmptyDay;
+
+  /// No description provided for @appointmentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get appointmentTime;
+
+  /// No description provided for @appointmentCalendarToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get appointmentCalendarToday;
+
+  /// No description provided for @appointmentCalendarPrevMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get appointmentCalendarPrevMonth;
+
+  /// No description provided for @appointmentCalendarNextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get appointmentCalendarNextMonth;
+
+  /// No description provided for @appointmentDayCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No reservations this day} =1{1 reservation this day} other{{count} reservations this day}}'**
+  String appointmentDayCount(int count);
+
+  /// No description provided for @appointmentSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save appointment'**
+  String get appointmentSave;
+
+  /// No description provided for @appointmentDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete appointment?'**
+  String get appointmentDeleteConfirm;
+
+  /// No description provided for @appointmentMarkCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark completed'**
+  String get appointmentMarkCompleted;
+
+  /// No description provided for @appointmentMarkCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel appointment'**
+  String get appointmentMarkCancelled;
+
+  /// No description provided for @appointmentReminderNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment reminder'**
+  String get appointmentReminderNotificationTitle;
+
+  /// No description provided for @appointmentReminderNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} — {serviceType} — {when}'**
+  String appointmentReminderNotificationBody(
+    String name,
+    String serviceType,
+    String when,
+  );
+
+  /// No description provided for @searchAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'Search reservations…'**
+  String get searchAppointments;
 
   /// No description provided for @pageReportsTitle.
   ///
@@ -868,6 +1232,18 @@ abstract class AppLocalizations {
   /// **'Categories'**
   String get dashboardCategories;
 
+  /// No description provided for @dashboardAppointmentsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments today'**
+  String get dashboardAppointmentsToday;
+
+  /// No description provided for @dashboardUpcomingAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming appointments'**
+  String get dashboardUpcomingAppointments;
+
   /// No description provided for @topProductsTitle.
   ///
   /// In en, this message translates to:
@@ -909,6 +1285,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Category'**
   String get addCategory;
+
+  /// No description provided for @categoryTemplatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested categories for your business type'**
+  String get categoryTemplatesTitle;
 
   /// No description provided for @addProduct.
   ///
@@ -1114,17 +1496,59 @@ abstract class AppLocalizations {
   /// **'Displayed at the top of your public shop profile.'**
   String get settingsCoverNote;
 
-  /// No description provided for @settingsLocation.
+  /// No description provided for @settingsBusinessType.
+  ///
+  /// In en, this message translates to:
+  /// **'Business type'**
+  String get settingsBusinessType;
+
+  /// No description provided for @settingsCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get settingsCity;
+
+  /// No description provided for @settingsCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Pristina'**
+  String get settingsCityHint;
+
+  /// No description provided for @settingsState.
+  ///
+  /// In en, this message translates to:
+  /// **'Country / region'**
+  String get settingsState;
+
+  /// No description provided for @settingsStateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Kosovo'**
+  String get settingsStateHint;
+
+  /// No description provided for @settingsLocationMaps.
   ///
   /// In en, this message translates to:
   /// **'Location'**
-  String get settingsLocation;
+  String get settingsLocationMaps;
 
-  /// No description provided for @settingsLocationHint.
+  /// No description provided for @settingsLocationMapsHint.
   ///
   /// In en, this message translates to:
-  /// **'City, address, or area'**
-  String get settingsLocationHint;
+  /// **'Paste link from Google Maps → Share'**
+  String get settingsLocationMapsHint;
+
+  /// No description provided for @settingsLocationMapsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive map on your public shop (Google Maps).'**
+  String get settingsLocationMapsNote;
+
+  /// No description provided for @settingsGoogleMapsUrlInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste a valid Google Maps link (maps.google.com or maps.app.goo.gl).'**
+  String get settingsGoogleMapsUrlInvalid;
 
   /// No description provided for @settingsWebsite.
   ///
@@ -1515,6 +1939,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Products'**
   String get siteSectionProducts;
+
+  /// No description provided for @siteSectionServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get siteSectionServices;
 
   /// No description provided for @siteSectionAbout.
   ///
@@ -2407,6 +2837,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Business Name *'**
   String get businessNameLabel;
+
+  /// No description provided for @businessTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business type *'**
+  String get businessTypeLabel;
+
+  /// No description provided for @businessTypeSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a type'**
+  String get businessTypeSelect;
+
+  /// No description provided for @businessTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a business type.'**
+  String get businessTypeRequired;
+
+  /// No description provided for @businessTypeRetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Retail store'**
+  String get businessTypeRetail;
+
+  /// No description provided for @businessTypeFashion.
+  ///
+  /// In en, this message translates to:
+  /// **'Fashion & accessories'**
+  String get businessTypeFashion;
+
+  /// No description provided for @businessTypeElectronics.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronics & tech'**
+  String get businessTypeElectronics;
+
+  /// No description provided for @businessTypeIt.
+  ///
+  /// In en, this message translates to:
+  /// **'IT & software'**
+  String get businessTypeIt;
+
+  /// No description provided for @businessTypeDigitalAgency.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital agency & marketing'**
+  String get businessTypeDigitalAgency;
+
+  /// No description provided for @businessTypeConstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Construction & renovation'**
+  String get businessTypeConstruction;
+
+  /// No description provided for @businessTypeRealEstate.
+  ///
+  /// In en, this message translates to:
+  /// **'Real estate'**
+  String get businessTypeRealEstate;
+
+  /// No description provided for @businessTypePhotography.
+  ///
+  /// In en, this message translates to:
+  /// **'Photography & video'**
+  String get businessTypePhotography;
+
+  /// No description provided for @businessTypeEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events & weddings'**
+  String get businessTypeEvents;
+
+  /// No description provided for @businessTypeLogistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport & logistics'**
+  String get businessTypeLogistics;
+
+  /// No description provided for @businessTypeAgriculture.
+  ///
+  /// In en, this message translates to:
+  /// **'Agriculture & farm'**
+  String get businessTypeAgriculture;
+
+  /// No description provided for @businessTypeGrocery.
+  ///
+  /// In en, this message translates to:
+  /// **'Grocery & supermarket'**
+  String get businessTypeGrocery;
+
+  /// No description provided for @businessTypeBakery.
+  ///
+  /// In en, this message translates to:
+  /// **'Bakery & confectionery'**
+  String get businessTypeBakery;
+
+  /// No description provided for @businessTypeWholesale.
+  ///
+  /// In en, this message translates to:
+  /// **'Wholesale / B2B'**
+  String get businessTypeWholesale;
+
+  /// No description provided for @businessTypeRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant'**
+  String get businessTypeRestaurant;
+
+  /// No description provided for @businessTypeCafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Café & bar'**
+  String get businessTypeCafe;
+
+  /// No description provided for @businessTypeFastFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast food & takeaway'**
+  String get businessTypeFastFood;
+
+  /// No description provided for @businessTypePharmacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pharmacy & health'**
+  String get businessTypePharmacy;
+
+  /// No description provided for @businessTypePetShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet shop & grooming'**
+  String get businessTypePetShop;
+
+  /// No description provided for @businessTypeServices.
+  ///
+  /// In en, this message translates to:
+  /// **'General services (appointments)'**
+  String get businessTypeServices;
+
+  /// No description provided for @businessTypeSalon.
+  ///
+  /// In en, this message translates to:
+  /// **'Hair salon & beauty'**
+  String get businessTypeSalon;
+
+  /// No description provided for @businessTypeSpa.
+  ///
+  /// In en, this message translates to:
+  /// **'Spa & wellness'**
+  String get businessTypeSpa;
+
+  /// No description provided for @businessTypeClinic.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinic & medical practice'**
+  String get businessTypeClinic;
+
+  /// No description provided for @businessTypeAutomotive.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto service & repair'**
+  String get businessTypeAutomotive;
+
+  /// No description provided for @businessTypeFitness.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym & fitness studio'**
+  String get businessTypeFitness;
+
+  /// No description provided for @businessTypeEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Education & tutoring'**
+  String get businessTypeEducation;
+
+  /// No description provided for @businessTypeProfessional.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional services (legal, accounting…)'**
+  String get businessTypeProfessional;
+
+  /// No description provided for @businessTypeHomeServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Home services (repairs, cleaning…)'**
+  String get businessTypeHomeServices;
+
+  /// No description provided for @businessTypeHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel & accommodation'**
+  String get businessTypeHotel;
+
+  /// No description provided for @businessTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get businessTypeOther;
 
   /// No description provided for @businessSlugLabel.
   ///

@@ -13,7 +13,11 @@ import '../../../../core/widgets/localized_slugs_editor.dart';
 import '../../../../core/widgets/localized_fields_editor.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/presentation/providers/business_locales_provider.dart';
+import '../../../business/presentation/providers/business_providers.dart';
+import '../../domain/business_category_templates.dart';
 import '../../domain/entities/category.dart';
+import '../providers/categories_providers.dart';
+import 'category_template_picker.dart';
 
 Future<void> showAddCategoryDialog(BuildContext context, WidgetRef ref) =>
     showCategoryDialog(context, ref);
@@ -61,10 +65,39 @@ Future<void> showCategoryDialog(
           return const SizedBox.shrink();
         }
 
+        final business = ref.watch(currentBusinessProvider).valueOrNull;
+        final existing = ref.watch(categoriesListProvider).valueOrNull ?? [];
+
         return StatefulBuilder(
-          builder: (context, setState) => Column(
+          builder: (context, setState) {
+            void applyTemplate(CategoryTemplateSuggestion template) {
+              setState(() {
+                final names = Map<String, String>.from(content.name);
+                final descriptions = Map<String, String>.from(content.description);
+                for (final locale in localeConfig.enabledLocales) {
+                  names[locale] = template.nameFor(locale);
+                  final desc = template.descriptionFor(locale);
+                  if (desc != null) descriptions[locale] = desc;
+                }
+                content = content.copyWith(
+                  name: names,
+                  description: descriptions,
+                );
+                slugController.text = template.slug;
+                slugManual = true;
+              });
+            }
+
+            return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (!isEdit)
+                CategoryTemplatePicker(
+                  businessType: business?.businessType,
+                  existingCategories: existing,
+                  defaultLocale: localeConfig.defaultLocale,
+                  onSelected: applyTemplate,
+                ),
               InternalSlugField(
                 controller: slugController,
                 readOnly: isEdit,
@@ -94,7 +127,8 @@ Future<void> showCategoryDialog(
                 },
               ),
             ],
-          ),
+          );
+          },
         );
       },
     ),

@@ -56,12 +56,20 @@ class BusinessPermissions {
     if (path == '/api-docs') return canAccessApiDocs;
     if (path == '/settings') return canAccessSettings;
     if (path == '/custom-fields') return canManageTeam;
-    if (path == '/categories' || path == '/offers') return canWriteCatalog;
+    if (path == '/categories' ||
+        path == '/services' ||
+        path == '/offers') {
+      return canWriteCatalog;
+    }
     if (path == '/products') {
       return canWriteCatalog || role == UserRole.employee;
     }
     if (path == '/reports') return canAccessReports;
-    if (path == '/orders' || path == '/dashboard') return canManageOrders;
+    if (path == '/orders' ||
+        path == '/appointments' ||
+        path == '/dashboard') {
+      return canManageOrders;
+    }
 
     return true;
   }

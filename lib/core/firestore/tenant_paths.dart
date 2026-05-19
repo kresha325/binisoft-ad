@@ -25,6 +25,9 @@ class TenantPaths {
   CollectionReference<Map<String, dynamic>> categories(String businessId) =>
       businessSub(businessId, FirestoreCollections.categories);
 
+  CollectionReference<Map<String, dynamic>> services(String businessId) =>
+      businessSub(businessId, FirestoreCollections.services);
+
   CollectionReference<Map<String, dynamic>> productVariants(String businessId) =>
       businessSub(businessId, FirestoreCollections.productVariants);
 
@@ -33,6 +36,9 @@ class TenantPaths {
 
   CollectionReference<Map<String, dynamic>> orders(String businessId) =>
       businessSub(businessId, FirestoreCollections.orders);
+
+  CollectionReference<Map<String, dynamic>> appointments(String businessId) =>
+      businessSub(businessId, FirestoreCollections.appointments);
 
   CollectionReference<Map<String, dynamic>> apiKeys(String businessId) =>
       businessSub(businessId, FirestoreCollections.apiKeys);

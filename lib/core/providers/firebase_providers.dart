@@ -7,6 +7,7 @@ import '../../core/services/media_upload_service.dart';
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../../features/business/data/repositories/business_repository.dart';
 import '../../features/categories/data/repositories/category_repository.dart';
+import '../../features/services/data/repositories/service_repository.dart';
 import '../../features/products/data/repositories/attribute_repository.dart';
 import '../../features/orders/data/repositories/api_key_repository.dart';
 import '../../features/offers/data/repositories/offer_repository.dart';
@@ -39,6 +40,10 @@ final variantRepositoryProvider = Provider<VariantRepository>((ref) {
 
 final categoryRepositoryProvider = Provider<CategoryRepository>((ref) {
   return CategoryRepository(firestore: ref.watch(firestoreProvider));
+});
+
+final serviceRepositoryProvider = Provider<ServiceRepository>((ref) {
+  return ServiceRepository(firestore: ref.watch(firestoreProvider));
 });
 
 final offerRepositoryProvider = Provider<OfferRepository>((ref) {

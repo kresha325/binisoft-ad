@@ -61,6 +61,10 @@ class ShellPageHeader extends ConsumerWidget {
           title: l10n.pageCategoriesTitle,
           subtitle: l10n.pageCategoriesSubtitle,
         ),
+      '/services' => ShellPageMeta(
+          title: l10n.pageServicesTitle,
+          subtitle: l10n.pageServicesSubtitle,
+        ),
       '/offers' => ShellPageMeta(
           title: l10n.pageOffersTitle,
           subtitle: l10n.pageOffersSubtitle,
@@ -84,6 +88,10 @@ class ShellPageHeader extends ConsumerWidget {
       '/reports' => ShellPageMeta(
           title: l10n.pageReportsTitle,
           subtitle: l10n.pageReportsSubtitleLong,
+        ),
+      '/appointments' => ShellPageMeta(
+          title: l10n.pageAppointmentsTitle,
+          subtitle: l10n.pageAppointmentsSubtitle,
         ),
       _ => null,
     };

@@ -12,12 +12,14 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import 'router_refresh_notifier.dart';
 import '../../features/business/presentation/screens/businesses_screen.dart';
 import '../../features/categories/presentation/screens/categories_screen.dart';
+import '../../features/services/presentation/screens/services_screen.dart';
 import '../../features/dashboard/presentation/screens/business_reports_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/products/presentation/screens/custom_fields_screen.dart';
 import '../../features/products/presentation/screens/products_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/offers/presentation/screens/offers_screen.dart';
+import '../../features/appointments/presentation/screens/appointments_screen.dart';
 import '../../features/orders/presentation/screens/orders_screen.dart';
 import '../../features/landing/presentation/screens/landing_screen.dart';
 import '../../features/billing/presentation/screens/superadmin_invoices_screen.dart';
@@ -195,10 +197,15 @@ final routerProvider = Provider<GoRouter>((ref) {
               view: state.uri.queryParameters['view'],
             ),
           ),
+          GoRoute(
+            path: '/appointments',
+            builder: (_, __) => const AppointmentsScreen(),
+          ),
           GoRoute(path: '/reports', builder: (_, __) => const BusinessReportsScreen()),
           GoRoute(path: '/businesses', builder: (_, __) => const BusinessesScreen()),
           GoRoute(path: '/products', builder: (_, __) => const ProductsScreen()),
           GoRoute(path: '/categories', builder: (_, __) => const CategoriesScreen()),
+          GoRoute(path: '/services', builder: (_, __) => const ServicesScreen()),
           GoRoute(path: '/offers', builder: (_, __) => const OffersScreen()),
           GoRoute(path: '/custom-fields', builder: (_, __) => const CustomFieldsScreen()),
           GoRoute(path: '/api-docs', builder: (_, __) => const ApiDocsScreen()),

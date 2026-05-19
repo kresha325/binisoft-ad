@@ -154,7 +154,7 @@ See **[DEPLOY.md](DEPLOY.md)** for rules, functions, GitHub Pages, and env vars.
 
 ## Implemented
 
-- Public API (`/products`, `/categories`, `/offers`, `/orders`) via `publicApi`
+- Public API (`/products`, `/categories`, `/services`, `/offers`, `/orders`) via `publicApi`
 - Offers with sale pricing on catalog (`onOffer`, `originalPrice`) — products stay active
 - API keys, billing/invoices (demo payments), notifications, multi-locale ARB
 

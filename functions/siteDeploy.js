@@ -141,7 +141,7 @@ async function handleDeployBusinessSite(req, res, { verifyAuth, assertBusinessMe
       deployStatus,
       deployError,
       dns,
-      sections: ['hero', 'offers', 'products', 'about', 'contact'],
+      sections: ['hero', 'offers', 'products', 'services', 'about', 'contact'],
     });
   } catch (err) {
     sendError(res, err);

@@ -7,6 +7,7 @@ import '../../features/auth/presentation/providers/permissions_providers.dart';
 import '../../features/business/presentation/providers/business_providers.dart';
 import '../../features/business/presentation/widgets/business_switcher.dart';
 import '../../features/business/presentation/widgets/create_business_dialog.dart';
+import '../../features/appointments/presentation/widgets/appointment_reminder_listener.dart';
 import '../../features/notifications/presentation/widgets/notification_bell.dart';
 import '../../features/settings/presentation/providers/background_preview_providers.dart';
 import '../constants/dashboard_backgrounds.dart';
@@ -68,8 +69,10 @@ class AdminShell extends ConsumerWidget {
           child: Padding(
             padding: AppBreakpoints.screenPadding(context),
             child: AdminContent(
-              child: StoreSlugHandler(
-                child: AdminPageScroll(child: child),
+              child: AppointmentReminderListener(
+                child: StoreSlugHandler(
+                  child: AdminPageScroll(child: child),
+                ),
               ),
             ),
           ),

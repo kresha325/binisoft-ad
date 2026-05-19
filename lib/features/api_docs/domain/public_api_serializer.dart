@@ -2,6 +2,7 @@ import '../../../core/i18n/app_locales.dart';
 import '../../../core/i18n/localized_text.dart';
 import '../../business/domain/entities/business.dart';
 import '../../categories/domain/entities/category.dart';
+import '../../services/domain/entities/business_service.dart';
 import '../../products/domain/entities/attribute_definition.dart';
 import '../../products/domain/entities/product.dart';
 import '../../products/domain/product_display_fields.dart';
@@ -188,6 +189,66 @@ Map<String, dynamic> serializePublicProduct(
     'categories': product.categoryIds.map((id) => categoryNames[id] ?? id).toList(),
     'attributeData': product.attributeData,
     'attributes': attributesFormatted,
+  };
+}
+
+Map<String, dynamic> buildPublicServicesPayload({
+  required Business? business,
+  required String slug,
+  required List<BusinessService> services,
+  String? locale,
+}) {
+  final defaultLocale = business?.defaultLocale ?? AppLocales.defaultLocale;
+  final enabled = business?.locales ?? AppLocales.all;
+  final resolvedLocale = AppLocales.normalize(locale) ?? defaultLocale;
+  final lang = enabled.contains(resolvedLocale) ? resolvedLocale : defaultLocale;
+
+  final active = services.where((s) => s.active).toList()
+    ..sort((a, b) => a.order.compareTo(b.order));
+
+  return {
+    'meta': _apiMeta(locale: lang, business: business),
+    'business': {
+      'name': _resolveName(
+        locale: lang,
+        defaultLocale: defaultLocale,
+        name: business?.name ?? '',
+        i18n: business?.nameI18n,
+      ),
+      'slug': slug,
+      'description': _resolveName(
+        locale: lang,
+        defaultLocale: defaultLocale,
+        name: business?.description ?? '',
+        i18n: business?.descriptionI18n,
+      ),
+      'logoUrl': business?.logoUrl,
+    },
+    'services': active
+        .map(
+          (s) => {
+            'id': s.id,
+            'name': _resolveName(
+              locale: lang,
+              defaultLocale: defaultLocale,
+              name: s.name,
+              i18n: s.nameI18n,
+            ),
+            'slug': s.slug,
+            'description': _resolveName(
+              locale: lang,
+              defaultLocale: defaultLocale,
+              name: s.description ?? '',
+              i18n: s.descriptionI18n,
+            ),
+            'durationMinutes': s.durationMinutes,
+            'priceEur': s.priceEur,
+            'active': s.active,
+            'order': s.order,
+          },
+        )
+        .toList(),
+    'serviceCount': active.length,
   };
 }
 

@@ -18,7 +18,9 @@ import '../../../billing/services/billing_service.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
 import '../../../products/presentation/providers/attributes_providers.dart';
 import '../../../products/presentation/providers/products_providers.dart';
+import '../../domain/entities/business_type.dart';
 import '../providers/business_providers.dart';
+import 'business_type_dropdown_field.dart';
 
 Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async {
   final l10n = context.l10n;
@@ -44,6 +46,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
   final nameController = TextEditingController();
   final slugController = TextEditingController();
   var slugManual = false;
+  BusinessType? selectedType;
 
   final formOk = await showAppFormDialog<bool>(
     context: context,
@@ -76,12 +79,27 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
             helperText: l10n.businessSlugHelper,
             onChanged: (_) => slugManual = true,
           ),
+          const SizedBox(height: 16),
+          BusinessTypeDropdownField(
+            value: selectedType,
+            labelText: l10n.businessTypeLabel,
+            hint: l10n.businessTypeSelect,
+            onChanged: (v) => setState(() => selectedType = v),
+          ),
         ],
       ),
     ),
     onSave: () async {
       if (nameController.text.trim().isEmpty) return false;
       if (slugify(slugController.text.trim()).isEmpty) return false;
+      if (selectedType == null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.businessTypeRequired)),
+          );
+        }
+        return false;
+      }
       return true;
     },
   );
@@ -94,6 +112,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
 
   final businessName = nameController.text.trim();
   final businessSlug = slugify(slugController.text.trim());
+  final businessType = selectedType!;
   nameController.dispose();
   slugController.dispose();
 
@@ -110,6 +129,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
     await ref.read(authControllerProvider.notifier).createBusiness(
           name: businessName,
           slug: businessSlug,
+          businessType: businessType,
         );
 
     try {

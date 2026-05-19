@@ -10,6 +10,8 @@ const { withCors } = require('./httpCors');
 const invoices = require('./invoices');
 const { deliverEmail, escapeHtml } = require('./email');
 const { logPublicApiError } = require('./apiMonitor');
+const { googleMapsEmbedUrl } = require('./googleMaps');
+const { displayLocation } = require('./businessAddress');
 
 initializeApp();
 
@@ -414,6 +416,32 @@ function serializeCategory(doc, ctx) {
   };
 }
 
+function serializeService(doc, ctx) {
+  const d = doc.data();
+  if (d.active === false) return null;
+  return {
+    id: doc.id,
+    name: i18n.resolveLocalized({
+      primary: d.name,
+      i18n: d.nameI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    slug: d.slug || '',
+    description: i18n.resolveLocalized({
+      primary: d.description,
+      i18n: d.descriptionI18n,
+      locale: ctx.locale,
+      defaultLocale: ctx.defaultLocale,
+    }),
+    durationMinutes:
+      d.durationMinutes != null ? Number(d.durationMinutes) : null,
+    priceEur: d.priceEur != null ? Number(d.priceEur) : null,
+    active: true,
+    order: d.order != null ? Number(d.order) : 0,
+  };
+}
+
 function serializeAttribute(doc, ctx) {
   const d = doc.data();
   const name = i18n.resolveLocalized({
@@ -684,7 +712,12 @@ function businessPayload(business, slug, ctx) {
     }),
     logoUrl: business.logoUrl || '',
     coverImageUrl: business.coverImageUrl || '',
-    location: business.location || '',
+    location: displayLocation(business),
+    city: business.city || '',
+    state: business.state || '',
+    googleMapsUrl: business.googleMapsUrl || '',
+    googleMapsEmbedUrl: googleMapsEmbedUrl(business.googleMapsUrl) || '',
+    businessType: business.businessType || '',
     website: business.website || '',
     orderPhone: business.orderPhone || business.settings?.orderPhone || '',
     siteConfig: siteConfigModule.publicSiteConfig(business.siteConfig),
@@ -777,7 +810,7 @@ async function handlePublicApi(req, res) {
   let productId;
   try {
     const match = path.match(
-      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|business)(?:\/([^/]+))?$/,
+      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|services|business)(?:\/([^/]+))?$/,
     );
 
     if (match) {
@@ -822,6 +855,23 @@ async function handlePublicApi(req, res) {
         meta: i18n.apiMeta(localeCtx),
         business: businessPayload(business, slug, localeCtx),
         categories: catSnap.docs.map((doc) => serializeCategory(doc, localeCtx)),
+      });
+      return;
+    }
+
+    if (resource === 'services') {
+      const svcSnap = await db
+        .collection(`businesses/${businessId}/services`)
+        .orderBy('order')
+        .get();
+      const services = svcSnap.docs
+        .map((doc) => serializeService(doc, localeCtx))
+        .filter(Boolean);
+      res.status(200).json({
+        meta: i18n.apiMeta(localeCtx),
+        business: businessPayload(business, slug, localeCtx),
+        services,
+        serviceCount: services.length,
       });
       return;
     }

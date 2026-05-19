@@ -13,13 +13,17 @@ abstract final class WebIntegrationGuide {
     final localesList = enabledLocales.map(AppLocales.label).join(', ');
     final base = AppConstants.publicApiBaseUrl;
     final catalogUrl = '$base/api/public/$slug/products?lang=$defaultLocale';
+    final servicesUrl = '$base/api/public/$slug/services?lang=$defaultLocale';
     final offersUrl = '$base/api/public/$slug/offers?lang=$defaultLocale';
     final ordersUrl = '$base/api/public/$slug/orders';
 
     return switch (lang) {
-      'sq' => _sq(slug, localesList, defaultLocale, catalogUrl, offersUrl, ordersUrl),
-      'de' => _de(slug, localesList, defaultLocale, catalogUrl, offersUrl, ordersUrl),
-      _ => _en(slug, localesList, defaultLocale, catalogUrl, offersUrl, ordersUrl),
+      'sq' => _sq(
+          slug, localesList, defaultLocale, catalogUrl, servicesUrl, offersUrl, ordersUrl),
+      'de' => _de(
+          slug, localesList, defaultLocale, catalogUrl, servicesUrl, offersUrl, ordersUrl),
+      _ => _en(
+          slug, localesList, defaultLocale, catalogUrl, servicesUrl, offersUrl, ordersUrl),
     };
   }
 
@@ -28,6 +32,7 @@ abstract final class WebIntegrationGuide {
     String localesList,
     String defaultLocale,
     String catalogUrl,
+    String servicesUrl,
     String offersUrl,
     String ordersUrl,
   ) =>
@@ -46,18 +51,24 @@ API languages enabled: $localesList (default: ${AppLocales.label(defaultLocale)}
    Each product includes price, optional onOffer, originalPrice, offerId when a promotion applies.
    Pass ?lang=sq|en|de on every GET to match your site language.
 
-2) Read active offers (optional, no API key)
+2) Services on your public shop (recommended for bookings)
+   On your Binisoft shop page ($slug), the Services section shows each active
+   service with a green **Rezervo** button that opens WhatsApp with a pre-filled
+   reservation message. Set the order phone in Settings.
+   Optional API: GET $servicesUrl — same data as JSON for custom sites.
+
+3) Read active offers (optional, no API key)
    GET $offersUrl
    Returns active promotions with productId, originalPrice, salePrice.
    You decide how to show badges, banners, or strikethrough prices in your UI.
 
-3) Display products on your site
+4) Display products on your site
    • Fetch products once and cache (re-fetch when user changes language).
    • Map categoryIds to category names from the categories array.
    • Use product.imageUrls[0] for thumbnails.
    • Show attributeData / attributes for filters (size, color, etc.).
 
-4) Submit orders (API key required)
+5) Submit orders (API key required)
    POST $ordersUrl
    Header: Authorization: Bearer YOUR_API_KEY
    Body example:
@@ -68,16 +79,16 @@ API languages enabled: $localesList (default: ${AppLocales.label(defaultLocale)}
    }
    Prices are calculated server-side (including active offers). Do not send prices from the browser.
 
-5) API keys
+6) API keys
    Create keys in this app: API Docs → API Keys. One key per website or environment.
 
-6) CORS & hosting
+7) CORS & hosting
    The Cloud Function allows browser requests. Call the API from your frontend or via your own backend proxy if you prefer to hide keys (recommended for order POST only).
 
-7) Typical flow
+8) Typical flow
    Home → GET products → product page → add to cart (local) → checkout → POST /orders → show WhatsApp link from response (messageText / whatsAppUrl).
 
-8) Deploy
+9) Deploy
    After backend changes: firebase deploy --project=jon-sport --only functions:publicApi,firestore:rules
 ''';
 
@@ -86,6 +97,7 @@ API languages enabled: $localesList (default: ${AppLocales.label(defaultLocale)}
     String localesList,
     String defaultLocale,
     String catalogUrl,
+    String servicesUrl,
     String offersUrl,
     String ordersUrl,
   ) =>
@@ -104,18 +116,23 @@ Gjuhët e API: $localesList (default: ${AppLocales.label(defaultLocale)})
    Çdo produkt ka price; nëse ka ofertë aktive: onOffer, originalPrice, offerId.
    Përdor ?lang=sq|en|de në çdo GET sipas gjuhës së faqes.
 
-2) Lexo ofertat aktive (opsionale, pa API key)
+2) Shërbimet në dyqanin publik (rekomandohet për rezervime)
+   Në faqen e dyqanit ($slug), seksioni Shërbimet ka butonin jeshil **Rezervo**
+   që hap WhatsApp me mesazh të paraplotësuar. Vendosni telefonin e porosive te Cilësimet.
+   API opsionale: GET $servicesUrl — të njëjtat të dhëna si JSON.
+
+3) Lexo ofertat aktive (opsionale, pa API key)
    GET $offersUrl
    Kthen promocionet me productId, originalPrice, salePrice.
    Ti vendos si t’i shfaqësh në UI (badge, banner, çmim i vjetër).
 
-3) Shfaq produktet në web
+4) Shfaq produktet në web
    • Merr produktet dhe ruaji në cache (rifresko kur ndryshon gjuha).
    • Lidh categoryIds me emrat nga categories.
    • Përdor imageUrls për foto.
    • Përdor attributes për filtra (madhësi, ngjyrë, etj.).
 
-4) Dërgo porositë (kërkon API key)
+5) Dërgo porositë (kërkon API key)
    POST $ordersUrl
    Header: Authorization: Bearer API_KEY_JUAJ
    Trupi shembull:
@@ -126,16 +143,16 @@ Gjuhët e API: $localesList (default: ${AppLocales.label(defaultLocale)})
    }
    Çmimet llogariten në server (përfshirë ofertat). Mos dërgo çmime nga browser.
 
-5) API keys
+6) API keys
    Krijoji këtu: API Docs → API Keys. Një çelës për çdo faqe ose mjedis.
 
-6) CORS & hosting
+7) CORS & hosting
    Cloud Function lejon kërkesa nga browser. Mund ta thërrasësh direkt nga frontend ose përmes backend-it tënd (rekomandohet për POST porosi).
 
-7) Rrjedha tipike
+8) Rrjedha tipike
    Faqja kryesore → GET products → faqja produktit → shporta (lokale) → checkout → POST /orders → shfaq linkun WhatsApp nga përgjigjja.
 
-8) Deploy
+9) Deploy
    Pas ndryshimeve: firebase deploy --project=jon-sport --only functions:publicApi,firestore:rules
 ''';
 
@@ -144,6 +161,7 @@ Gjuhët e API: $localesList (default: ${AppLocales.label(defaultLocale)})
     String localesList,
     String defaultLocale,
     String catalogUrl,
+    String servicesUrl,
     String offersUrl,
     String ordersUrl,
   ) =>
@@ -162,32 +180,36 @@ API-Sprachen: $localesList (Standard: ${AppLocales.label(defaultLocale)})
    Produkte enthalten price; bei aktiven Angeboten: onOffer, originalPrice, offerId.
    ?lang=sq|en|de bei jedem GET verwenden.
 
-2) Aktive Angebote (optional, ohne API-Key)
+2) Aktive Leistungen (optional, ohne API-Key)
+   GET $servicesUrl
+   Aktive Dienstleistungen: name, description, durationMinutes, priceEur, slug.
+
+3) Aktive Angebote (optional, ohne API-Key)
    GET $offersUrl
    Aktive Aktionen mit productId, originalPrice, salePrice.
    Darstellung (Badge, Banner) liegt bei Ihnen.
 
-3) Produkte anzeigen
+4) Produkte anzeigen
    • Produkte laden und cachen (bei Sprachwechsel neu laden).
    • categoryIds den Kategorien zuordnen.
    • imageUrls für Bilder nutzen.
    • attributes für Filter verwenden.
 
-4) Bestellungen senden (API-Key erforderlich)
+5) Bestellungen senden (API-Key erforderlich)
    POST $ordersUrl
    Header: Authorization: Bearer IHR_API_KEY
    Preise werden serverseitig berechnet (inkl. Angebote). Keine Preise vom Browser senden.
 
-5) API-Keys
+6) API-Keys
    Unter API Docs → API Keys erstellen.
 
-6) CORS
+7) CORS
    Browser-Aufrufe sind erlaubt. Für POST /orders Backend-Proxy empfohlen.
 
-7) Ablauf
+8) Ablauf
    Start → GET products → Produktseite → Warenkorb → POST /orders → WhatsApp-Link aus Antwort.
 
-8) Deploy
+9) Deploy
    firebase deploy --project=jon-sport --only functions:publicApi,firestore:rules
 ''';
 }

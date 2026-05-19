@@ -6,7 +6,9 @@ const BOOTSTRAP_SUPERADMIN_EMAILS = new Set(['kreshnik.sh.gashi@hotmail.com']);
 const BUSINESS_SUBCOLLECTIONS = [
   'products',
   'categories',
+  'services',
   'offers',
+  'appointments',
   'productVariants',
   'attributes',
   'attributeValues',

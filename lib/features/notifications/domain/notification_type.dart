@@ -6,7 +6,8 @@ enum NotificationType {
   planUpdated('plan.updated'),
   system('system'),
   platformUserRegistered('platform.user.registered'),
-  platformBusinessCreated('platform.business.created');
+  platformBusinessCreated('platform.business.created'),
+  appointmentReminder('appointment.reminder');
 
   const NotificationType(this.value);
   final String value;

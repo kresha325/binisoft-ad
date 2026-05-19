@@ -560,6 +560,8 @@ class _SectionTile extends StatelessWidget {
         return l10n.siteSectionOffers;
       case SiteConfig.sectionProducts:
         return l10n.siteSectionProducts;
+      case SiteConfig.sectionServices:
+        return l10n.siteSectionServices;
       case SiteConfig.sectionAbout:
         return l10n.siteSectionAbout;
       case SiteConfig.sectionGallery:

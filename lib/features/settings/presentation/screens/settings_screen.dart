@@ -13,8 +13,12 @@ import '../../../../core/widgets/image_url_upload_row.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/constants/business_plans.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../business/domain/business_address.dart';
+import '../../../business/domain/entities/business_type.dart';
 import '../../../business/domain/entities/website_plan.dart';
+import '../../../business/presentation/widgets/business_type_dropdown_field.dart';
 import '../../../business/presentation/providers/business_providers.dart';
+import '../../../../core/utils/google_maps_url.dart';
 import '../../../products/presentation/providers/products_providers.dart';
 import '../../../auth/presentation/providers/permissions_providers.dart';
 import '../../../business/presentation/widgets/change_plan_dialog.dart';
@@ -38,8 +42,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _description = TextEditingController();
   final _logoUrl = TextEditingController();
   final _coverUrl = TextEditingController();
-  final _location = TextEditingController();
+  final _city = TextEditingController();
+  final _state = TextEditingController();
+  final _googleMapsUrl = TextEditingController();
   final _website = TextEditingController();
+  BusinessType? _businessType;
   final _orderPhone = TextEditingController();
   bool _initialized = false;
   bool _saving = false;
@@ -55,7 +62,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _description.dispose();
     _logoUrl.dispose();
     _coverUrl.dispose();
-    _location.dispose();
+    _city.dispose();
+    _state.dispose();
+    _googleMapsUrl.dispose();
     _website.dispose();
     _orderPhone.dispose();
     super.dispose();
@@ -68,7 +77,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _description.text = business.description ?? '';
     _logoUrl.text = business.logoUrl ?? '';
     _coverUrl.text = business.coverImageUrl ?? '';
-    _location.text = business.location ?? '';
+    final parsed = BusinessAddress.fromLegacyLocation(business.location);
+    _city.text = business.city?.trim().isNotEmpty == true
+        ? business.city!.trim()
+        : parsed.city;
+    _state.text = business.state?.trim().isNotEmpty == true
+        ? business.state!.trim()
+        : parsed.state;
+    _googleMapsUrl.text = business.googleMapsUrl ?? '';
+    _businessType = business.businessType;
     _website.text = business.website ?? '';
     _orderPhone.text = business.orderPhone ?? '';
     _backgroundPresetId = business.backgroundPresetId;
@@ -85,6 +102,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> _save() async {
     final businessId = ref.read(currentBusinessIdProvider);
     if (businessId == null) return;
+
+    final mapsLink = _googleMapsUrl.text.trim();
+    if (mapsLink.isNotEmpty && !isLikelyGoogleMapsUrl(mapsLink)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.settingsGoogleMapsUrlInvalid),
+          backgroundColor: context.appColors.danger,
+        ),
+      );
+      return;
+    }
 
     setState(() => _saving = true);
     try {
@@ -124,7 +152,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             description: _description.text.trim(),
             logoUrl: logoUrl,
             coverImageUrl: coverImageUrl,
-            location: _location.text.trim(),
+            city: _city.text.trim(),
+            state: _state.text.trim(),
+            location: BusinessAddress.displayLocation(
+              city: _city.text.trim(),
+              state: _state.text.trim(),
+            ),
+            googleMapsUrl: mapsLink,
+            businessType: _businessType,
             website: _website.text.trim(),
             backgroundPresetId: presetId,
             backgroundImageUrl: hasCustomBg ? customBg : null,
@@ -243,10 +278,39 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  BusinessTypeDropdownField(
+                    value: _businessType,
+                    labelText: l10n.settingsBusinessType,
+                    hint: l10n.businessTypeSelect,
+                    onChanged: (v) => setState(() => _businessType = v),
+                  ),
+                  const SizedBox(height: 20),
                   AppTextField(
-                    label: l10n.settingsLocation,
-                    controller: _location,
-                    hint: l10n.settingsLocationHint,
+                    label: l10n.settingsCity,
+                    controller: _city,
+                    hint: l10n.settingsCityHint,
+                  ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsState,
+                    controller: _state,
+                    hint: l10n.settingsStateHint,
+                  ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsLocationMaps,
+                    controller: _googleMapsUrl,
+                    hint: l10n.settingsLocationMapsHint,
+                    keyboardType: TextInputType.url,
+                    maxLines: 2,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.settingsLocationMapsNote,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: context.appColors.textMuted,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   AppTextField(

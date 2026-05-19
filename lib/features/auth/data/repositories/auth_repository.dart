@@ -9,6 +9,7 @@ import '../../../../core/firestore/tenant_paths.dart';
 import '../../../../core/services/subscription_plan_service.dart';
 import '../../../business/data/repositories/business_repository.dart';
 import '../../../business/domain/entities/business.dart';
+import '../../../business/domain/entities/business_type.dart';
 import '../../domain/entities/app_user.dart';
 import '../models/app_user_model.dart';
 
@@ -334,6 +335,7 @@ class AuthRepository {
   Future<Business> createAdditionalBusiness({
     required String name,
     required String slug,
+    required BusinessType businessType,
   }) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) throw const AuthException('Not signed in');
@@ -350,7 +352,12 @@ class AuthRepository {
       );
     }
 
-    final business = await repo.create(ownerId: uid, name: name, slug: slug);
+    final business = await repo.create(
+      ownerId: uid,
+      name: name,
+      slug: slug,
+      businessType: businessType,
+    );
     await _paths.user(uid).update({'businessId': business.id});
     return business;
   }

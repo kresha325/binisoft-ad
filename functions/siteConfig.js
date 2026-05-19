@@ -2,6 +2,7 @@ const ALLOWED_SECTION_IDS = new Set([
   'hero',
   'offers',
   'products',
+  'services',
   'about',
   'gallery',
   'contact',
@@ -55,16 +56,17 @@ function sanitizeYoutube(value) {
 function defaultSiteConfig() {
   return {
     theme: {
-      primary: '#0a1628',
-      accent: '#f5c518',
+      primary: '#1c1917',
+      accent: '#ff6b35',
       background: '#ffffff',
-      text: '#111827',
+      text: '#1c1917',
     },
     layout: 'default',
     sections: [
       { id: 'hero', enabled: true, useProfileCover: true },
       { id: 'offers', enabled: true, title: 'Ofertat' },
       { id: 'products', enabled: true, title: 'Produktet' },
+      { id: 'services', enabled: true, title: 'Shërbimet' },
       { id: 'about', enabled: true, title: 'Rreth nesh' },
       { id: 'gallery', enabled: false, title: 'Galeria', galleryItems: [] },
       { id: 'contact', enabled: true, title: 'Kontakt' },

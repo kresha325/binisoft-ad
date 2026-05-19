@@ -1,5 +1,7 @@
 const { getFirestore } = require('firebase-admin/firestore');
 const siteConfigModule = require('./siteConfig');
+const { googleMapsEmbedUrl } = require('./googleMaps');
+const { displayLocation } = require('./businessAddress');
 const i18n = require('./i18n');
 const pricing = require('./pricing');
 
@@ -24,7 +26,12 @@ async function listShopBusinesses() {
       description: data.description || '',
       logoUrl: data.logoUrl || '',
       coverImageUrl: data.coverImageUrl || '',
-      location: data.location || '',
+      location: displayLocation(data),
+      city: data.city || '',
+      state: data.state || '',
+      googleMapsUrl: data.googleMapsUrl || '',
+      googleMapsEmbedUrl: googleMapsEmbedUrl(data.googleMapsUrl) || '',
+      businessType: data.businessType || '',
       siteDeployUrl: data.siteDeployUrl || '',
       siteConfig: siteConfigModule.publicSiteConfig(data.siteConfig),
     });

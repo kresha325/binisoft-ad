@@ -57,14 +57,8 @@ class _PageHeaderActionScopeState extends ConsumerState<PageHeaderActionScope> {
 
   @override
   void dispose() {
-    final route = widget.route;
-    final notifier = ref.read(pageHeaderActionProvider.notifier);
+    _clearForRoute(widget.route);
     super.dispose();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (notifier.state?.route == route) {
-        notifier.state = null;
-      }
-    });
   }
 
   @override

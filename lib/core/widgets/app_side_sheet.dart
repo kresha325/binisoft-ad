@@ -11,6 +11,8 @@ Future<T?> showAppSideSheet<T>({
   required Widget child,
   String saveLabel = 'Save',
   Future<bool> Function()? onSave,
+  /// When false, the sheet has no footer button (child handles submit).
+  bool showFooter = true,
 }) {
   final theme = Theme.of(context);
 
@@ -49,6 +51,7 @@ Future<T?> showAppSideSheet<T>({
                 title: title,
                 saveLabel: saveLabel,
                 onSave: onSave,
+                showFooter: showFooter,
                 child: child,
               ),
             ),
@@ -75,12 +78,14 @@ class _AppSideSheetBody extends StatefulWidget {
     required this.saveLabel,
     required this.child,
     this.onSave,
+    this.showFooter = true,
   });
 
   final String title;
   final String saveLabel;
   final Widget child;
   final Future<bool> Function()? onSave;
+  final bool showFooter;
 
   @override
   State<_AppSideSheetBody> createState() => _AppSideSheetBodyState();
@@ -136,27 +141,31 @@ class _AppSideSheetBodyState extends State<_AppSideSheetBody> {
             child: widget.child,
           ),
         ),
-        Divider(height: 1, color: colors.cardBorder),
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: _saving ? null : _handleSave,
-              child: _saving
-                  ? SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: context.isDarkMode ? colors.textPrimary : Colors.white,
-                      ),
-                    )
-                  : Text(widget.saveLabel),
+        if (widget.showFooter) ...[
+          Divider(height: 1, color: colors.cardBorder),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: _saving ? null : _handleSave,
+                child: _saving
+                    ? SizedBox(
+                        width: 22,
+                        height: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: context.isDarkMode
+                              ? colors.textPrimary
+                              : Colors.white,
+                        ),
+                      )
+                    : Text(widget.saveLabel),
+              ),
             ),
           ),
-        ),
+        ],
       ],
     );
   }

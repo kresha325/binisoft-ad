@@ -38,6 +38,7 @@ class FirestoreCollections {
   static const String businesses = 'businesses';
   static const String users = 'users';
   static const String categories = 'categories';
+  static const String services = 'services';
   static const String products = 'products';
   static const String offers = 'offers';
   static const String productVariants = 'productVariants';
@@ -46,6 +47,7 @@ class FirestoreCollections {
   static const String media = 'media';
   static const String apiKeys = 'apiKeys';
   static const String orders = 'orders';
+  static const String appointments = 'appointments';
   static const String settings = 'settings';
   static const String members = 'members';
   static const String invites = 'invites';

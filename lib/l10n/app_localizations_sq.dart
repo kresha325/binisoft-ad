@@ -18,6 +18,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get navOrders => 'Porositë';
 
   @override
+  String get navAppointments => 'Terminet / Rezervimet';
+
+  @override
   String get navReports => 'Raportet';
 
   @override
@@ -31,6 +34,9 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get navCategories => 'Kategoritë';
+
+  @override
+  String get navServices => 'Shërbimet';
 
   @override
   String get navCustomFields => 'Fushat e personalizuara';
@@ -89,6 +95,58 @@ class AppLocalizationsSq extends AppLocalizations {
   String get pageCategoriesSubtitle => 'Menaxho kategoritë e produkteve.';
 
   @override
+  String get pageServicesTitle => 'Shërbimet';
+
+  @override
+  String get pageServicesSubtitle =>
+      'Shërbimet që ofron biznesi (për rezervime dhe katalog).';
+
+  @override
+  String get serviceAddTitle => 'Shto shërbim';
+
+  @override
+  String get serviceEditTitle => 'Ndrysho shërbimin';
+
+  @override
+  String get serviceSave => 'Ruaj shërbimin';
+
+  @override
+  String get serviceName => 'Emri';
+
+  @override
+  String get serviceDescription => 'Përshkrimi';
+
+  @override
+  String get serviceDurationMinutes => 'Kohëzgjatja (minuta)';
+
+  @override
+  String get serviceDurationHint => 'p.sh. 60';
+
+  @override
+  String get servicePriceEur => 'Çmimi (€)';
+
+  @override
+  String get serviceActive => 'Aktiv';
+
+  @override
+  String get servicesEmpty => 'Ende pa shërbime. Shto shërbimin e parë.';
+
+  @override
+  String get serviceCreated => 'Shërbimi u krijua';
+
+  @override
+  String get serviceUpdated => 'Shërbimi u përditësua';
+
+  @override
+  String get serviceDeleted => 'Shërbimi u fshi';
+
+  @override
+  String get appointmentServicePick => 'Zgjidh shërbimin';
+
+  @override
+  String get appointmentServiceCustom => 'Tjetër (shkruaj manualisht)';
+
+  @override
   String get pageCustomFieldsTitle => 'Fushat e personalizuara';
 
   @override
@@ -118,6 +176,147 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get pageOrdersSubtitle => 'Menaxho porositë nga dyqani.';
+
+  @override
+  String get pageAppointmentsTitle => 'Terminet / Rezervimet';
+
+  @override
+  String get pageAppointmentsSubtitle =>
+      'Menaxho rezervimet me emër, përshkrim, lloj shërbimi dhe kujtesa.';
+
+  @override
+  String get appointmentAdd => 'Rezervim i ri';
+
+  @override
+  String get appointmentEditTitle => 'Ndrysho rezervimin';
+
+  @override
+  String get appointmentFirstName => 'Emri';
+
+  @override
+  String get appointmentLastName => 'Mbiemri';
+
+  @override
+  String get appointmentFullName => 'Emri dhe mbiemri';
+
+  @override
+  String get appointmentFirstNameRequired => 'Emri është i detyrueshëm';
+
+  @override
+  String get appointmentLastNameRequired => 'Mbiemri është i detyrueshëm';
+
+  @override
+  String get appointmentDescription => 'Përshkrimi';
+
+  @override
+  String get appointmentDescriptionRequired => 'Përshkrimi është i detyrueshëm';
+
+  @override
+  String get appointmentServiceType => 'Lloji i shërbimit';
+
+  @override
+  String get appointmentServiceTypeRequired =>
+      'Lloji i shërbimit është i detyrueshëm';
+
+  @override
+  String get appointmentPhone => 'Numri i telefonit';
+
+  @override
+  String get appointmentPhoneRequired =>
+      'Numri i telefonit është i detyrueshëm';
+
+  @override
+  String get appointmentScheduledAt => 'Koha e terminit';
+
+  @override
+  String get appointmentCreatedAt => 'Krijuar';
+
+  @override
+  String get appointmentReminder => 'Kujtesë';
+
+  @override
+  String get appointmentReminderNone => 'Pa kujtesë';
+
+  @override
+  String get appointmentReminder15 => '15 minuta para';
+
+  @override
+  String get appointmentReminder30 => '30 minuta para';
+
+  @override
+  String get appointmentReminder60 => '1 orë para';
+
+  @override
+  String get appointmentReminder120 => '2 orë para';
+
+  @override
+  String get appointmentReminder1440 => '1 ditë para';
+
+  @override
+  String get appointmentStatusScheduled => 'Planifikuar';
+
+  @override
+  String get appointmentStatusCompleted => 'Përfunduar';
+
+  @override
+  String get appointmentStatusCancelled => 'Anuluar';
+
+  @override
+  String get appointmentEmpty => 'Ende pa rezervime. Krijo rezervimin e parë.';
+
+  @override
+  String get appointmentEmptyDay => 'Nuk ka rezervime për këtë ditë.';
+
+  @override
+  String get appointmentTime => 'Ora';
+
+  @override
+  String get appointmentCalendarToday => 'Sot';
+
+  @override
+  String get appointmentCalendarPrevMonth => 'Muaji i kaluar';
+
+  @override
+  String get appointmentCalendarNextMonth => 'Muaji tjetër';
+
+  @override
+  String appointmentDayCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count rezervime për këtë ditë',
+      one: '1 rezervim për këtë ditë',
+      zero: 'Nuk ka rezervime për këtë ditë',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get appointmentSave => 'Ruaj terminin';
+
+  @override
+  String get appointmentDeleteConfirm => 'Fshij këtë termin?';
+
+  @override
+  String get appointmentMarkCompleted => 'Shëno si përfunduar';
+
+  @override
+  String get appointmentMarkCancelled => 'Anulo terminin';
+
+  @override
+  String get appointmentReminderNotificationTitle => 'Kujtesë për termin';
+
+  @override
+  String appointmentReminderNotificationBody(
+    String name,
+    String serviceType,
+    String when,
+  ) {
+    return '$name — $serviceType — $when';
+  }
+
+  @override
+  String get searchAppointments => 'Kërko rezervime…';
 
   @override
   String get pageReportsTitle => 'Raportet';
@@ -413,6 +612,12 @@ class AppLocalizationsSq extends AppLocalizations {
   String get dashboardCategories => 'Kategoritë';
 
   @override
+  String get dashboardAppointmentsToday => 'Terminet sot';
+
+  @override
+  String get dashboardUpcomingAppointments => 'Terminet e ardhshme';
+
+  @override
   String get topProductsTitle => 'Produktet kryesore këtë javë';
 
   @override
@@ -433,6 +638,10 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get addCategory => 'Shto kategori';
+
+  @override
+  String get categoryTemplatesTitle =>
+      'Kategori të sugjeruara për llojin e biznesit tuaj';
 
   @override
   String get addProduct => 'Shto produkt';
@@ -539,10 +748,34 @@ class AppLocalizationsSq extends AppLocalizations {
       'Shfaqet në krye të profilit të dyqanit publik.';
 
   @override
-  String get settingsLocation => 'Lokacioni';
+  String get settingsBusinessType => 'Lloji i biznesit';
 
   @override
-  String get settingsLocationHint => 'Qyteti, adresa ose zona';
+  String get settingsCity => 'Qyteti';
+
+  @override
+  String get settingsCityHint => 'p.sh. Prishtinë';
+
+  @override
+  String get settingsState => 'Shteti';
+
+  @override
+  String get settingsStateHint => 'p.sh. Kosovë';
+
+  @override
+  String get settingsLocationMaps => 'Lokacioni';
+
+  @override
+  String get settingsLocationMapsHint =>
+      'Ngjisni lidhjen nga Google Maps → Share / Ndaj';
+
+  @override
+  String get settingsLocationMapsNote =>
+      'Harta interaktive në dyqanin publik (Google Maps).';
+
+  @override
+  String get settingsGoogleMapsUrlInvalid =>
+      'Vendosni një lidhje të vlefshme Google Maps (maps.google.com ose maps.app.goo.gl).';
 
   @override
   String get settingsWebsite => 'Faqja web';
@@ -750,6 +983,9 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get siteSectionProducts => 'Produktet';
+
+  @override
+  String get siteSectionServices => 'Shërbimet';
 
   @override
   String get siteSectionAbout => 'Rreth nesh';
@@ -1256,6 +1492,107 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'Emri i biznesit *';
+
+  @override
+  String get businessTypeLabel => 'Lloji i biznesit *';
+
+  @override
+  String get businessTypeSelect => 'Zgjidhni llojin';
+
+  @override
+  String get businessTypeRequired => 'Zgjidhni llojin e biznesit.';
+
+  @override
+  String get businessTypeRetail => 'Dyqan me pakicë';
+
+  @override
+  String get businessTypeFashion => 'Modë & aksesorë';
+
+  @override
+  String get businessTypeElectronics => 'Elektronikë & teknologji';
+
+  @override
+  String get businessTypeIt => 'IT & softuer';
+
+  @override
+  String get businessTypeDigitalAgency => 'Agjenci digjitale & marketing';
+
+  @override
+  String get businessTypeConstruction => 'Ndërtim & renovim';
+
+  @override
+  String get businessTypeRealEstate => 'Pasuri të paluajtshme';
+
+  @override
+  String get businessTypePhotography => 'Fotografi & video';
+
+  @override
+  String get businessTypeEvents => 'Evente & dasma';
+
+  @override
+  String get businessTypeLogistics => 'Transport & logjistikë';
+
+  @override
+  String get businessTypeAgriculture => 'Bujqësi & fermë';
+
+  @override
+  String get businessTypeGrocery => 'Market & ushqimore';
+
+  @override
+  String get businessTypeBakery => 'Furrë & ëmbëlsira';
+
+  @override
+  String get businessTypeWholesale => 'Shumicë / B2B';
+
+  @override
+  String get businessTypeRestaurant => 'Restorant';
+
+  @override
+  String get businessTypeCafe => 'Kafene & bar';
+
+  @override
+  String get businessTypeFastFood => 'Fast food & take away';
+
+  @override
+  String get businessTypePharmacy => 'Farmaci & shëndet';
+
+  @override
+  String get businessTypePetShop => 'Dyqan kafshësh & grooming';
+
+  @override
+  String get businessTypeServices => 'Shërbime të përgjithshme (termina)';
+
+  @override
+  String get businessTypeSalon => 'Sallon flokësh & bukurie';
+
+  @override
+  String get businessTypeSpa => 'Spa & wellness';
+
+  @override
+  String get businessTypeClinic => 'Klinikë & praktikë mjekësore';
+
+  @override
+  String get businessTypeAutomotive => 'Servis & riparim automjeti';
+
+  @override
+  String get businessTypeFitness => 'Palestër & fitness';
+
+  @override
+  String get businessTypeEducation => 'Arsim & kurse/mësime';
+
+  @override
+  String get businessTypeProfessional =>
+      'Shërbime profesionale (ligjore, kontabilitet…)';
+
+  @override
+  String get businessTypeHomeServices =>
+      'Shërbime në shtëpi (hidraulik, pastrim…)';
+
+  @override
+  String get businessTypeHotel => 'Hotel & akomodim';
+
+  @override
+  String get businessTypeOther => 'Tjetër';
 
   @override
   String get businessSlugLabel => 'URL Slug *';

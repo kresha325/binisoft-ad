@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/i18n/app_locales.dart';
 import '../../../../core/i18n/localized_text.dart';
 import '../../domain/entities/business.dart';
+import '../../domain/entities/business_type.dart';
 import '../../domain/entities/site_config.dart';
 import '../../domain/entities/website_plan.dart';
 import 'site_config_model.dart';
@@ -18,6 +19,8 @@ class BusinessModel {
     this.logoUrl,
     this.coverImageUrl,
     this.location,
+    this.city,
+    this.state,
     this.website,
     this.backgroundPresetId,
     this.backgroundImageUrl,
@@ -36,6 +39,8 @@ class BusinessModel {
     this.locales = AppLocales.all,
     this.nameI18n = const {},
     this.descriptionI18n = const {},
+    this.businessType,
+    this.googleMapsUrl,
   });
 
   final String id;
@@ -48,6 +53,8 @@ class BusinessModel {
   final String? logoUrl;
   final String? coverImageUrl;
   final String? location;
+  final String? city;
+  final String? state;
   final String? website;
   final String? backgroundPresetId;
   final String? backgroundImageUrl;
@@ -65,6 +72,8 @@ class BusinessModel {
   final List<String> locales;
   final Map<String, String> nameI18n;
   final Map<String, String> descriptionI18n;
+  final BusinessType? businessType;
+  final String? googleMapsUrl;
 
   factory BusinessModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
@@ -87,6 +96,8 @@ class BusinessModel {
       logoUrl: data['logoUrl'] as String?,
       coverImageUrl: data['coverImageUrl'] as String?,
       location: data['location'] as String?,
+      city: data['city'] as String?,
+      state: data['state'] as String?,
       website: data['website'] as String?,
       backgroundPresetId: data['backgroundPresetId'] as String?,
       backgroundImageUrl: data['backgroundImageUrl'] as String?,
@@ -110,6 +121,8 @@ class BusinessModel {
       ),
       nameI18n: nameI18n,
       descriptionI18n: descriptionI18n,
+      businessType: BusinessType.fromFirestore(data['businessType'] as String?),
+      googleMapsUrl: data['googleMapsUrl'] as String?,
     );
   }
 
@@ -127,12 +140,17 @@ class BusinessModel {
         if (logoUrl != null) 'logoUrl': logoUrl,
         if (coverImageUrl != null) 'coverImageUrl': coverImageUrl,
         if (location != null) 'location': location,
+        if (city != null && city!.isNotEmpty) 'city': city,
+        if (state != null && state!.isNotEmpty) 'state': state,
         if (website != null) 'website': website,
         if (backgroundPresetId != null) 'backgroundPresetId': backgroundPresetId,
         if (backgroundImageUrl != null) 'backgroundImageUrl': backgroundImageUrl,
         if (backgroundOverlayOpacity != null)
           'backgroundOverlayOpacity': backgroundOverlayOpacity,
         if (orderPhone != null) 'orderPhone': orderPhone,
+        if (businessType != null) 'businessType': businessType!.firestoreValue,
+        if (googleMapsUrl != null && googleMapsUrl!.isNotEmpty)
+          'googleMapsUrl': googleMapsUrl,
       };
 
   Business toEntity() => Business(
@@ -145,6 +163,8 @@ class BusinessModel {
         logoUrl: logoUrl,
         coverImageUrl: coverImageUrl,
         location: location,
+        city: city,
+        state: state,
         website: website,
         backgroundPresetId: backgroundPresetId,
         backgroundImageUrl: backgroundImageUrl,
@@ -163,5 +183,7 @@ class BusinessModel {
         locales: locales,
         nameI18n: nameI18n,
         descriptionI18n: descriptionI18n,
+        businessType: businessType,
+        googleMapsUrl: googleMapsUrl,
       );
 }

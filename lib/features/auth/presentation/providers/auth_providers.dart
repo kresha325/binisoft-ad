@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/business_plans.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../business/domain/entities/business.dart';
+import '../../../business/domain/entities/business_type.dart';
 import '../../../notifications/data/models/notification_model.dart';
 import '../../../notifications/data/notification_messages.dart';
 import '../../../notifications/presentation/providers/notification_providers.dart';
@@ -69,12 +70,14 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
   Future<Business> createBusiness({
     required String name,
     required String slug,
+    required BusinessType businessType,
   }) async {
     state = const AsyncLoading();
     try {
       final business = await _repo.createAdditionalBusiness(
         name: name,
         slug: slug,
+        businessType: businessType,
       );
       await _createNotification(
         NotificationMessages.businessCreated(
