@@ -212,7 +212,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               state: _state.text.trim(),
             ),
             googleMapsUrl: mapsLink,
-            aboutBio: aboutBioText.isNotEmpty ? aboutBioText : descriptionText,
+            aboutBio: aboutBioText,
             openingHours: _openingHours.text.trim(),
             businessType: _businessType,
             website: _website.text.trim(),
