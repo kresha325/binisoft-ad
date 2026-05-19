@@ -28,6 +28,8 @@ import '../widgets/appearance_section.dart';
 import '../widgets/background_picker_section.dart';
 import '../widgets/business_website_section.dart';
 import '../widgets/business_site_editor_section.dart';
+import '../widgets/shop_preview_dialog.dart';
+import '../../domain/shop_preview_data.dart';
 import '../../../../core/constants/dashboard_backgrounds.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -40,6 +42,8 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _name = TextEditingController();
   final _description = TextEditingController();
+  final _aboutBio = TextEditingController();
+  final _openingHours = TextEditingController();
   final _logoUrl = TextEditingController();
   final _coverUrl = TextEditingController();
   final _city = TextEditingController();
@@ -60,6 +64,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void dispose() {
     _name.dispose();
     _description.dispose();
+    _aboutBio.dispose();
+    _openingHours.dispose();
     _logoUrl.dispose();
     _coverUrl.dispose();
     _city.dispose();
@@ -75,6 +81,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     if (business == null || _initialized) return;
     _name.text = business.name;
     _description.text = business.description ?? '';
+    _aboutBio.text = business.aboutBio ?? '';
+    _openingHours.text = business.openingHours ?? '';
     _logoUrl.text = business.logoUrl ?? '';
     _coverUrl.text = business.coverImageUrl ?? '';
     final parsed = BusinessAddress.fromLegacyLocation(business.location);
@@ -84,7 +92,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _state.text = business.state?.trim().isNotEmpty == true
         ? business.state!.trim()
         : parsed.state;
-    _googleMapsUrl.text = business.googleMapsUrl ?? '';
+    _googleMapsUrl.text =
+        extractGoogleMapsUrl(business.googleMapsUrl) ?? business.googleMapsUrl ?? '';
     _businessType = business.businessType;
     _website.text = business.website ?? '';
     _orderPhone.text = business.orderPhone ?? '';
@@ -99,20 +108,53 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _initialized = true;
   }
 
+  ShopPreviewData _buildShopPreviewData() {
+    final business = ref.read(currentBusinessProvider).valueOrNull;
+    final l10n = context.l10n;
+    return ShopPreviewData(
+      name: _name.text.trim(),
+      slug: business?.slug,
+      heroTagline: _description.text.trim(),
+      aboutBio: _aboutBio.text.trim(),
+      logoUrl: _logoUrl.text.trim(),
+      coverUrl: _coverUrl.text.trim(),
+      city: _city.text.trim(),
+      state: _state.text.trim(),
+      orderPhone: _orderPhone.text.trim(),
+      openingHours: _openingHours.text.trim(),
+      website: _website.text.trim(),
+      businessTypeLabel: _businessType?.label(l10n),
+      siteConfig: business?.siteConfig,
+    );
+  }
+
   Future<void> _save() async {
     final businessId = ref.read(currentBusinessIdProvider);
     if (businessId == null) return;
 
-    final mapsLink = _googleMapsUrl.text.trim();
-    if (mapsLink.isNotEmpty && !isLikelyGoogleMapsUrl(mapsLink)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.settingsGoogleMapsUrlInvalid),
-          backgroundColor: context.appColors.danger,
-        ),
-      );
-      return;
+    final mapsRaw = _googleMapsUrl.text.trim();
+    if (mapsRaw.isNotEmpty) {
+      if (RegExp(r'<\s*iframe', caseSensitive: false).hasMatch(mapsRaw) ||
+          mapsRaw.contains('</iframe>')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.l10n.settingsGoogleMapsNoIframe),
+            backgroundColor: context.appColors.danger,
+          ),
+        );
+        return;
+      }
+      if (!isLikelyGoogleMapsUrl(mapsRaw)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.l10n.settingsGoogleMapsUrlInvalid),
+            backgroundColor: context.appColors.danger,
+          ),
+        );
+        return;
+      }
     }
+    final mapsLink = normalizeGoogleMapsUrl(mapsRaw) ?? '';
 
     setState(() => _saving = true);
     try {
@@ -159,6 +201,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               state: _state.text.trim(),
             ),
             googleMapsUrl: mapsLink,
+            aboutBio: _aboutBio.text.trim(),
+            openingHours: _openingHours.text.trim(),
             businessType: _businessType,
             website: _website.text.trim(),
             backgroundPresetId: presetId,
@@ -240,8 +284,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             const SizedBox(height: 16),
             AppSectionCard(
-              title: l10n.settingsActiveBusinessTitle,
-              subtitle: l10n.settingsActiveBusinessSubtitle,
+              title: l10n.settingsPublicShopProfileTitle,
+              subtitle: l10n.settingsPublicShopProfileSubtitle,
               icon: Icons.storefront_outlined,
               padding: const EdgeInsets.all(28),
               child: Column(
@@ -249,11 +293,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 children: [
                   AppTextField(label: l10n.settingsBusinessName, controller: _name),
                   const SizedBox(height: 20),
+                  BusinessTypeDropdownField(
+                    value: _businessType,
+                    labelText: l10n.settingsBusinessType,
+                    hint: l10n.businessTypeSelect,
+                    onChanged: (v) => setState(() => _businessType = v),
+                  ),
+                  const SizedBox(height: 20),
                   AppTextField(
-                    label: l10n.settingsDescription,
+                    label: l10n.settingsHeroTagline,
                     controller: _description,
-                    hint: l10n.settingsDescriptionHint,
+                    hint: l10n.settingsHeroTaglineHint,
                     maxLines: 3,
+                  ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsAboutBio,
+                    controller: _aboutBio,
+                    hint: l10n.settingsAboutBioHint,
+                    maxLines: 5,
                   ),
                   const SizedBox(height: 20),
                   ImageUrlUploadRow(
@@ -278,13 +336,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  BusinessTypeDropdownField(
-                    value: _businessType,
-                    labelText: l10n.settingsBusinessType,
-                    hint: l10n.businessTypeSelect,
-                    onChanged: (v) => setState(() => _businessType = v),
-                  ),
-                  const SizedBox(height: 20),
                   AppTextField(
                     label: l10n.settingsCity,
                     controller: _city,
@@ -302,7 +353,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     controller: _googleMapsUrl,
                     hint: l10n.settingsLocationMapsHint,
                     keyboardType: TextInputType.url,
-                    maxLines: 2,
+                    maxLines: 1,
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -314,10 +365,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                   const SizedBox(height: 20),
                   AppTextField(
-                    label: l10n.settingsWebsite,
-                    controller: _website,
-                    hint: 'https://example.com',
-                    keyboardType: TextInputType.url,
+                    label: l10n.settingsOpeningHours,
+                    controller: _openingHours,
+                    hint: l10n.settingsOpeningHoursHint,
+                    maxLines: 4,
                   ),
                   const SizedBox(height: 20),
                   AppTextField(
@@ -334,19 +385,48 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       color: context.appColors.textMuted,
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsWebsite,
+                    controller: _website,
+                    hint: 'https://example.com',
+                    keyboardType: TextInputType.url,
+                  ),
                   const SizedBox(height: 28),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: _saving ? null : _save,
-                      child: _saving
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : Text(l10n.saveChanges),
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 48,
+                          child: OutlinedButton.icon(
+                            onPressed: _saving
+                                ? null
+                                : () => showShopPreviewDialog(
+                                      context,
+                                      _buildShopPreviewData(),
+                                    ),
+                            icon: const Icon(Icons.visibility_outlined, size: 20),
+                            label: Text(l10n.shopPreviewButton),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: SizedBox(
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: _saving ? null : _save,
+                            child: _saving
+                                ? const SizedBox(
+                                    height: 22,
+                                    width: 22,
+                                    child: CircularProgressIndicator(strokeWidth: 2),
+                                  )
+                                : Text(l10n.saveChanges),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

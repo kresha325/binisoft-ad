@@ -115,6 +115,8 @@ class BusinessRepository {
     Map<String, String>? descriptionI18n,
     BusinessType? businessType,
     String? googleMapsUrl,
+    String? aboutBio,
+    String? openingHours,
   }) async {
     await _paths.business(businessId).update({
       'name': name,
@@ -129,6 +131,8 @@ class BusinessRepository {
             state: state,
           ),
       'googleMapsUrl': googleMapsUrl ?? '',
+      'aboutBio': aboutBio ?? '',
+      'openingHours': openingHours ?? '',
       'website': website ?? '',
       if (businessType != null) 'businessType': businessType.firestoreValue,
       'backgroundPresetId': backgroundPresetId ?? '',

@@ -720,7 +720,12 @@ function businessPayload(business, slug, ctx) {
     businessType: business.businessType || '',
     website: business.website || '',
     orderPhone: business.orderPhone || business.settings?.orderPhone || '',
-    siteConfig: siteConfigModule.publicSiteConfig(business.siteConfig),
+    aboutBio: business.aboutBio || '',
+    openingHours: business.openingHours || '',
+    siteConfig: siteConfigModule.publicSiteConfig(
+      business.siteConfig,
+      business.businessType || '',
+    ),
   };
 }
 

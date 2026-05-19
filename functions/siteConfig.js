@@ -8,6 +8,10 @@ const ALLOWED_SECTION_IDS = new Set([
   'contact',
 ]);
 
+const ALLOWED_CTA_TARGETS = new Set(['products', 'services', 'contact', 'offers', 'whatsapp']);
+
+const ctaPresets = require('./siteCtaPresets');
+
 const ALLOWED_SOCIAL = new Set([
   'facebook',
   'instagram',
@@ -68,7 +72,7 @@ function defaultSiteConfig() {
       { id: 'products', enabled: true, title: 'Produktet' },
       { id: 'services', enabled: true, title: 'Shërbimet' },
       { id: 'about', enabled: true, title: 'Rreth nesh' },
-      { id: 'gallery', enabled: false, title: 'Galeria', galleryItems: [] },
+      { id: 'gallery', enabled: true, title: 'Galeria', galleryItems: [] },
       { id: 'contact', enabled: true, title: 'Kontakt' },
     ],
     socials: [],
@@ -92,8 +96,19 @@ function mergeSections(saved) {
 /**
  * Sanitize siteConfig from Firestore for public API.
  */
-function publicSiteConfig(raw) {
-  if (!raw || typeof raw !== 'object') return defaultSiteConfig();
+function sanitizeCtaTarget(value) {
+  const v = clip(value, 20);
+  return ALLOWED_CTA_TARGETS.has(v) ? v : '';
+}
+
+function publicSiteConfig(raw, businessType = '') {
+  if (!raw || typeof raw !== 'object') {
+    const base = defaultSiteConfig();
+    return {
+      ...base,
+      sections: ctaPresets.enrichSections(base.sections, businessType),
+    };
+  }
 
   const themeIn = raw.theme && typeof raw.theme === 'object' ? raw.theme : {};
   const mergedSections = mergeSections(raw.sections);
@@ -107,9 +122,23 @@ function publicSiteConfig(raw) {
     const title = sanitizeText(s.title, 120);
     const description = sanitizeText(s.description, 800);
     const navLabel = sanitizeText(s.navLabel, 40);
+    const ctaLabel = sanitizeText(s.ctaLabel, 60);
+    const secondaryCtaLabel = sanitizeText(s.secondaryCtaLabel, 60);
     if (title) out.title = title;
-    if (description) out.description = description;
+    if (description && s.id !== 'about') out.description = description;
     if (navLabel) out.navLabel = navLabel;
+    if (ctaLabel) out.ctaLabel = ctaLabel;
+    if (secondaryCtaLabel) out.secondaryCtaLabel = secondaryCtaLabel;
+    const ctaTarget = sanitizeCtaTarget(s.ctaTarget);
+    const secondaryCtaTarget = sanitizeCtaTarget(s.secondaryCtaTarget);
+    if (ctaTarget) out.ctaTarget = ctaTarget;
+    if (secondaryCtaTarget) out.secondaryCtaTarget = secondaryCtaTarget;
+    if (s.id === 'hero' && Array.isArray(s.trustBullets)) {
+      out.trustBullets = s.trustBullets
+        .map((t) => sanitizeText(t, 80))
+        .filter(Boolean)
+        .slice(0, 5);
+    }
     if (s.id === 'hero') {
       const imageUrl = sanitizeUrl(s.imageUrl);
       if (imageUrl) out.imageUrl = imageUrl;
@@ -139,6 +168,8 @@ function publicSiteConfig(raw) {
     }
   }
 
+  const enrichedSections = ctaPresets.enrichSections(sections, businessType);
+
   return {
     theme: {
       primary: sanitizeColor(themeIn.primary, '#0a1628'),
@@ -147,7 +178,7 @@ function publicSiteConfig(raw) {
       text: sanitizeColor(themeIn.text, '#111827'),
     },
     layout: raw.layout === 'wide' ? 'wide' : 'default',
-    sections,
+    sections: enrichedSections,
     socials,
     footerShowLocation: raw.footerShowLocation !== false,
     footerShowPhone: raw.footerShowPhone !== false,

@@ -1,4 +1,5 @@
 import '../../domain/entities/site_config.dart';
+import '../../domain/entities/site_cta_target.dart';
 
 class SiteConfigModel {
   static SiteConfig fromMap(Map<String, dynamic>? data) {
@@ -35,6 +36,14 @@ class SiteConfigModel {
             );
           }
         }
+        final trustRaw = m['trustBullets'];
+        final trustBullets = <String>[];
+        if (trustRaw is List) {
+          for (final t in trustRaw.take(5)) {
+            final line = t?.toString().trim() ?? '';
+            if (line.isNotEmpty) trustBullets.add(line);
+          }
+        }
         sections.add(
           SiteSectionConfig(
             id: m['id'] as String? ?? '',
@@ -45,6 +54,12 @@ class SiteConfigModel {
             imageUrl: m['imageUrl'] as String?,
             useProfileCover: m['useProfileCover'] as bool? ?? true,
             galleryItems: galleryItems,
+            ctaLabel: m['ctaLabel'] as String?,
+            secondaryCtaLabel: m['secondaryCtaLabel'] as String?,
+            ctaTarget: SiteCtaTarget.fromValue(m['ctaTarget'] as String?),
+            secondaryCtaTarget:
+                SiteCtaTarget.fromValue(m['secondaryCtaTarget'] as String?),
+            trustBullets: trustBullets,
           ),
         );
       }
@@ -98,6 +113,14 @@ class SiteConfigModel {
           if (s.navLabel != null && s.navLabel!.isNotEmpty) 'navLabel': s.navLabel,
           if (s.imageUrl != null && s.imageUrl!.isNotEmpty) 'imageUrl': s.imageUrl,
           'useProfileCover': s.useProfileCover,
+          if (s.ctaLabel != null && s.ctaLabel!.isNotEmpty) 'ctaLabel': s.ctaLabel,
+          if (s.secondaryCtaLabel != null && s.secondaryCtaLabel!.isNotEmpty)
+            'secondaryCtaLabel': s.secondaryCtaLabel,
+          if (s.ctaTarget != null) 'ctaTarget': s.ctaTarget!.value,
+          if (s.secondaryCtaTarget != null)
+            'secondaryCtaTarget': s.secondaryCtaTarget!.value,
+          if (s.id == SiteConfig.sectionHero && s.trustBullets.isNotEmpty)
+            'trustBullets': s.trustBullets.take(5).toList(),
           if (s.id == SiteConfig.sectionGallery && s.galleryItems.isNotEmpty)
             'galleryItems': s.galleryItems
                 .take(5)

@@ -41,6 +41,8 @@ class BusinessModel {
     this.descriptionI18n = const {},
     this.businessType,
     this.googleMapsUrl,
+    this.aboutBio,
+    this.openingHours,
   });
 
   final String id;
@@ -74,6 +76,8 @@ class BusinessModel {
   final Map<String, String> descriptionI18n;
   final BusinessType? businessType;
   final String? googleMapsUrl;
+  final String? aboutBio;
+  final String? openingHours;
 
   factory BusinessModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
@@ -123,6 +127,8 @@ class BusinessModel {
       descriptionI18n: descriptionI18n,
       businessType: BusinessType.fromFirestore(data['businessType'] as String?),
       googleMapsUrl: data['googleMapsUrl'] as String?,
+      aboutBio: data['aboutBio'] as String?,
+      openingHours: data['openingHours'] as String?,
     );
   }
 
@@ -151,6 +157,9 @@ class BusinessModel {
         if (businessType != null) 'businessType': businessType!.firestoreValue,
         if (googleMapsUrl != null && googleMapsUrl!.isNotEmpty)
           'googleMapsUrl': googleMapsUrl,
+        if (aboutBio != null && aboutBio!.isNotEmpty) 'aboutBio': aboutBio,
+        if (openingHours != null && openingHours!.isNotEmpty)
+          'openingHours': openingHours,
       };
 
   Business toEntity() => Business(
@@ -185,5 +194,7 @@ class BusinessModel {
         descriptionI18n: descriptionI18n,
         businessType: businessType,
         googleMapsUrl: googleMapsUrl,
+        aboutBio: aboutBio,
+        openingHours: openingHours,
       );
 }

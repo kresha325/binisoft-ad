@@ -33,7 +33,10 @@ async function listShopBusinesses() {
       googleMapsEmbedUrl: googleMapsEmbedUrl(data.googleMapsUrl) || '',
       businessType: data.businessType || '',
       siteDeployUrl: data.siteDeployUrl || '',
-      siteConfig: siteConfigModule.publicSiteConfig(data.siteConfig),
+      siteConfig: siteConfigModule.publicSiteConfig(
+        data.siteConfig,
+        data.businessType || '',
+      ),
     });
   }
 

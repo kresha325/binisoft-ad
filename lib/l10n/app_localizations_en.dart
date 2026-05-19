@@ -730,6 +730,61 @@ class AppLocalizationsEn extends AppLocalizations {
       'Update your public-facing business details.';
 
   @override
+  String get settingsPublicShopProfileTitle => 'Public shop profile';
+
+  @override
+  String get settingsPublicShopProfileSubtitle =>
+      'Copy, logo, location and contact shown on your online shop. Layout (colors, sections) is in the site editor below.';
+
+  @override
+  String get settingsHeroTagline => 'Hero tagline';
+
+  @override
+  String get settingsHeroTaglineHint =>
+      'Paragraph under your business name on the home section';
+
+  @override
+  String get settingsAboutBio => 'About us (bio)';
+
+  @override
+  String get settingsAboutBioHint => 'Full text for the About section';
+
+  @override
+  String get settingsOpeningHours => 'Opening hours';
+
+  @override
+  String get settingsOpeningHoursHint =>
+      'e.g. Mon–Fri 9:00–22:00, Sat 10:00–23:00';
+
+  @override
+  String get siteEditorProfileHintHero =>
+      'Name (H1), tagline and cover come from Public shop profile above — here you only toggle the section, menu label and optional hero image.';
+
+  @override
+  String get siteEditorProfileHintAbout =>
+      'About text comes from the Bio field in profile — here you only toggle the section and menu label.';
+
+  @override
+  String get shopPreviewTitle => 'Shop preview';
+
+  @override
+  String get shopPreviewDraftNote =>
+      'This preview uses your current form values — not saved yet. Use Save to publish to the live shop.';
+
+  @override
+  String get shopPreviewButton => 'Preview';
+
+  @override
+  String get shopPreviewOpenLive => 'Open live shop (saved)';
+
+  @override
+  String get shopPreviewSections => 'Sections on page';
+
+  @override
+  String get shopPreviewEmptyHint =>
+      'Add name, tagline and contact for a richer preview.';
+
+  @override
   String get settingsBusinessName => 'Business Name';
 
   @override
@@ -767,15 +822,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLocationMaps => 'Location';
 
   @override
-  String get settingsLocationMapsHint => 'Paste link from Google Maps → Share';
+  String get settingsLocationMapsHint =>
+      'https://maps.google.com/... or maps.app.goo.gl/...';
 
   @override
   String get settingsLocationMapsNote =>
-      'Interactive map on your public shop (Google Maps).';
+      'Google Maps link (URL) only — Share from Maps. Do not paste iframe embed code.';
 
   @override
   String get settingsGoogleMapsUrlInvalid =>
       'Paste a valid Google Maps link (maps.google.com or maps.app.goo.gl).';
+
+  @override
+  String get settingsGoogleMapsNoIframe =>
+      'Do not paste iframe HTML. In Google Maps use Share and copy the link (URL) only.';
 
   @override
   String get settingsWebsite => 'Website';
@@ -906,7 +966,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get siteEditorSubtitle =>
-      'Colors, sections, gallery and social links for your public storefront.';
+      'Colors, enabled sections, gallery and social links — no duplicate text (that comes from profile above).';
 
   @override
   String get siteEditorColorsTitle => 'Colors';
@@ -1010,6 +1070,44 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get siteGalleryHint =>
       'Up to 5 items — image and/or YouTube embed per slot.';
+
+  @override
+  String get siteSectionCtaLabel => 'Primary button text';
+
+  @override
+  String get siteSectionSecondaryCtaLabel => 'Secondary button text';
+
+  @override
+  String get siteSectionTrustBullets => 'Trust bullets (hero)';
+
+  @override
+  String get siteSectionTrustBulletsHint => 'One line per bullet, up to 5.';
+
+  @override
+  String get siteCtaTargetLabel => 'Button goes to';
+
+  @override
+  String get siteCtaTargetProducts => 'Products';
+
+  @override
+  String get siteCtaTargetServices => 'Services';
+
+  @override
+  String get siteCtaTargetContact => 'Contact';
+
+  @override
+  String get siteCtaTargetOffers => 'Offers';
+
+  @override
+  String get siteCtaTargetWhatsapp => 'WhatsApp (open directly)';
+
+  @override
+  String get siteCtaTypeHint =>
+      'Clinics and similar businesses should use “Book appointment” or “Contact us”, not “Order now”. Labels and actions are fully customizable.';
+
+  @override
+  String get siteCtaApplyTypeSuggestions =>
+      'Apply suggestions for business type';
 
   @override
   String get siteGalleryAdd => 'Add gallery item';

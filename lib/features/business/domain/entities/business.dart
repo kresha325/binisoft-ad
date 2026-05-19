@@ -40,6 +40,8 @@ class Business extends Equatable {
     this.descriptionI18n = const {},
     this.businessType,
     this.googleMapsUrl,
+    this.aboutBio,
+    this.openingHours,
   });
 
   final String id;
@@ -74,6 +76,10 @@ class Business extends Equatable {
   final BusinessType? businessType;
   /// Share link from Google Maps (used to build embed on public site).
   final String? googleMapsUrl;
+  /// Long-form “Rreth nesh” text (public shop).
+  final String? aboutBio;
+  /// Opening hours shown on contact / footer (e.g. Hënë–Prem 09:00–22:00).
+  final String? openingHours;
 
   String? get googleMapsEmbedUrl => maps_util.googleMapsEmbedUrl(googleMapsUrl);
 
@@ -116,5 +122,7 @@ class Business extends Equatable {
         descriptionI18n,
         businessType,
         googleMapsUrl,
+        aboutBio,
+        openingHours,
       ];
 }

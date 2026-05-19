@@ -28,21 +28,42 @@ function variantLabel(attributes) {
   return parts.join(' / ');
 }
 
-function formatWhatsAppMessage({ businessName, orderNumber, lines, subtotalEur, customer, notes }) {
+function formatWhatsAppMessage({
+  businessName,
+  orderNumber,
+  lines,
+  subtotalEur,
+  customer,
+  address,
+  notes,
+}) {
   const rows = lines
-    .map((l) => `${l.quantity}× ${l.productName} — €${l.lineTotalEur.toFixed(2)}`)
+    .map((l) => `• ${l.quantity}× ${l.productName} — €${l.lineTotalEur.toFixed(2)}`)
     .join('\n');
+  const addr = String(address || customer?.address || '').trim();
+  const phone = String(customer?.phone || '').trim();
+  const orderNotes = String(notes || '').trim();
   const parts = [
-    `Porosi ${orderNumber} — ${businessName}`,
-    '─────────────────',
+    'Përshëndetje!',
+    '',
+    `Porosi online — ${businessName}`,
+    `Referenca: ${orderNumber}`,
+    '',
+    '▸ POROSIA',
     rows,
-    '─────────────────',
-    `Total: €${subtotalEur.toFixed(2)}`,
-    `Klienti: ${customer.name}, ${customer.phone}`,
+    '',
+    `▸ TOTALI: €${subtotalEur.toFixed(2)}`,
+    '',
+    '▸ KLIENTI',
+    `Emri: ${customer.name}`,
   ];
-  if (notes && String(notes).trim()) {
-    parts.push(`Shënime: ${String(notes).trim()}`);
+  if (addr) parts.push(`Adresa: ${addr}`);
+  if (phone) parts.push(`Telefoni: ${phone}`);
+  else parts.push('Telefoni: (kontakt përmes WhatsApp)');
+  if (orderNotes) {
+    parts.push('', '▸ KËRKESA PËR POROSINË', orderNotes);
   }
+  parts.push('', 'Faleminderit!');
   return parts.join('\n');
 }
 
@@ -141,13 +162,15 @@ async function createPublicOrder({ business, businessId, body }) {
   const customer = body.customer || {};
   const name = String(customer.name || '').trim();
   const phone = String(customer.phone || '').trim();
+  const address = customer.address != null ? String(customer.address).trim() : '';
   const notes = customer.notes != null ? String(customer.notes).trim() : '';
 
   if (!name || name.length < 2) {
     throw new HttpsError('invalid-argument', 'customer.name is required');
   }
-  if (!phone || phone.length < 6) {
-    throw new HttpsError('invalid-argument', 'customer.phone is required');
+  const phoneDigits = normalizePhone(phone);
+  if (phone && phoneDigits.length > 0 && phoneDigits.length < 8) {
+    throw new HttpsError('invalid-argument', 'customer.phone is invalid');
   }
 
   const rawLines = body.lines;
@@ -266,7 +289,12 @@ async function createPublicOrder({ business, businessId, body }) {
     orderNumber,
     status: 'pending',
     createdAt: FieldValue.serverTimestamp(),
-    customer: { name, phone, notes: notes || null },
+    customer: {
+      name,
+      phone: phone || null,
+      address: address || null,
+      notes: notes || null,
+    },
     lines,
     subtotalEur,
     currency: 'EUR',
@@ -286,7 +314,8 @@ async function createPublicOrder({ business, businessId, body }) {
     orderNumber,
     lines,
     subtotalEur,
-    customer: { name, phone },
+    customer: { name, phone: phone || null },
+    address,
     notes,
   });
 
@@ -359,6 +388,11 @@ async function loadOrderForCustomer(businessId, orderId, phone) {
     throw new HttpsError('not-found', 'Order not found');
   }
   const data = snap.data();
+  const storedPhone = String(data.customer?.phone || '').trim();
+  const requestPhone = String(phone || '').trim();
+  if (!storedPhone && !requestPhone) {
+    return { ref, snap, data };
+  }
   if (!phonesMatch(phone, data.customer?.phone)) {
     throw new HttpsError('permission-denied', 'Phone number does not match this order');
   }
@@ -552,14 +586,12 @@ async function handlePublicCheckoutBatch(req, res, { findBusinessBySlug, sendErr
     const customer = body.customer || {};
     const name = String(customer.name || '').trim();
     const phone = String(customer.phone || '').trim();
-    const notes = customer.notes != null ? String(customer.notes) : '';
+    const address = customer.address != null ? String(customer.address).trim() : '';
+    const notes = customer.notes != null ? String(customer.notes).trim() : '';
     const channel = body.channel === 'sms' ? 'sms' : 'whatsapp';
 
     if (!name || name.length < 2) {
       throw new HttpsError('invalid-argument', 'customer.name is required');
-    }
-    if (normalizePhone(phone).length < 8) {
-      throw new HttpsError('invalid-argument', 'customer.phone is required');
     }
 
     const groups = Array.isArray(body.groups) ? body.groups : [];
@@ -583,7 +615,7 @@ async function handlePublicCheckoutBatch(req, res, { findBusinessBySlug, sendErr
       const result = await createPublicOrder({
         business,
         businessId: business.id,
-        body: { customer: { name, phone, notes }, lines, channel },
+        body: { customer: { name, phone, address, notes }, lines, channel },
       });
       orders.push({
         slug,

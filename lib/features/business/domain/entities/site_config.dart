@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'site_cta_target.dart';
+
 /// Public storefront theme (CSS variables on shop).
 class SiteTheme extends Equatable {
   const SiteTheme({
@@ -68,6 +70,11 @@ class SiteSectionConfig extends Equatable {
     this.imageUrl,
     this.useProfileCover = true,
     this.galleryItems = const [],
+    this.ctaLabel,
+    this.secondaryCtaLabel,
+    this.ctaTarget,
+    this.secondaryCtaTarget,
+    this.trustBullets = const [],
   });
 
   final String id;
@@ -78,6 +85,15 @@ class SiteSectionConfig extends Equatable {
   final String? imageUrl;
   final bool useProfileCover;
   final List<SiteGalleryItem> galleryItems;
+  /// Primary button label (hero, contact WhatsApp, etc.).
+  final String? ctaLabel;
+  /// Hero secondary button (e.g. services).
+  final String? secondaryCtaLabel;
+  /// Where the primary CTA navigates (products, contact, whatsapp, …).
+  final SiteCtaTarget? ctaTarget;
+  final SiteCtaTarget? secondaryCtaTarget;
+  /// Hero trust bullets (one per line in admin).
+  final List<String> trustBullets;
 
   SiteSectionConfig copyWith({
     bool? enabled,
@@ -87,6 +103,11 @@ class SiteSectionConfig extends Equatable {
     String? imageUrl,
     bool? useProfileCover,
     List<SiteGalleryItem>? galleryItems,
+    String? ctaLabel,
+    String? secondaryCtaLabel,
+    SiteCtaTarget? ctaTarget,
+    SiteCtaTarget? secondaryCtaTarget,
+    List<String>? trustBullets,
   }) =>
       SiteSectionConfig(
         id: id,
@@ -97,11 +118,29 @@ class SiteSectionConfig extends Equatable {
         imageUrl: imageUrl ?? this.imageUrl,
         useProfileCover: useProfileCover ?? this.useProfileCover,
         galleryItems: galleryItems ?? this.galleryItems,
+        ctaLabel: ctaLabel ?? this.ctaLabel,
+        secondaryCtaLabel: secondaryCtaLabel ?? this.secondaryCtaLabel,
+        ctaTarget: ctaTarget ?? this.ctaTarget,
+        secondaryCtaTarget: secondaryCtaTarget ?? this.secondaryCtaTarget,
+        trustBullets: trustBullets ?? this.trustBullets,
       );
 
   @override
-  List<Object?> get props =>
-      [id, enabled, title, description, navLabel, imageUrl, useProfileCover, galleryItems];
+  List<Object?> get props => [
+        id,
+        enabled,
+        title,
+        description,
+        navLabel,
+        imageUrl,
+        useProfileCover,
+        galleryItems,
+        ctaLabel,
+        secondaryCtaLabel,
+        ctaTarget,
+        secondaryCtaTarget,
+        trustBullets,
+      ];
 }
 
 class SiteSocialLink extends Equatable {
@@ -153,7 +192,11 @@ class SiteConfig extends Equatable {
 
   static SiteConfig defaults() => SiteConfig(
         sections: [
-          const SiteSectionConfig(id: sectionHero, enabled: true, useProfileCover: true),
+          const SiteSectionConfig(
+            id: sectionHero,
+            enabled: true,
+            useProfileCover: true,
+          ),
           const SiteSectionConfig(id: sectionOffers, enabled: true, title: 'Ofertat'),
           const SiteSectionConfig(
             id: sectionProducts,
@@ -166,8 +209,12 @@ class SiteConfig extends Equatable {
             title: 'Shërbimet',
           ),
           const SiteSectionConfig(id: sectionAbout, enabled: true, title: 'Rreth nesh'),
-          const SiteSectionConfig(id: sectionGallery, enabled: false, title: 'Galeria'),
-          const SiteSectionConfig(id: sectionContact, enabled: true, title: 'Kontakt'),
+          const SiteSectionConfig(id: sectionGallery, enabled: true, title: 'Galeria'),
+          const SiteSectionConfig(
+            id: sectionContact,
+            enabled: true,
+            title: 'Kontakt',
+          ),
         ],
       );
 

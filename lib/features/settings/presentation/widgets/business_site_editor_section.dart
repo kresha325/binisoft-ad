@@ -11,8 +11,14 @@ import '../../../../core/widgets/app_section_card.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/image_url_upload_row.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../business/domain/entities/business_type.dart';
 import '../../../business/domain/entities/site_config.dart';
+import '../../../business/domain/entities/site_cta_target.dart';
+import '../../../business/domain/site_config_merge.dart';
+import '../../../business/domain/site_cta_presets.dart';
 import '../../../business/presentation/providers/business_providers.dart';
+import '../../domain/shop_preview_data.dart';
+import 'shop_preview_dialog.dart';
 
 class BusinessSiteEditorSection extends ConsumerStatefulWidget {
   const BusinessSiteEditorSection({super.key});
@@ -59,7 +65,8 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
     final business = ref.read(currentBusinessProvider).valueOrNull;
     if (business == null || _initialized) return;
 
-    _config = (business.siteConfig ?? SiteConfig.defaults()).mergeWithDefaults();
+    _config = (business.siteConfig ?? SiteConfig.defaults())
+        .mergeForBusiness(businessType: business.businessType);
     _primary.text = _config.theme.primary;
     _accent.text = _config.theme.accent;
     _background.text = _config.theme.background;
@@ -77,6 +84,11 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
       f.galleryItems
         ..clear()
         ..addAll(s.galleryItems);
+      f.ctaLabel.text = s.ctaLabel ?? '';
+      f.secondaryCtaLabel.text = s.secondaryCtaLabel ?? '';
+      f.ctaTarget = s.ctaTarget;
+      f.secondaryCtaTarget = s.secondaryCtaTarget;
+      f.trustBullets.text = s.trustBullets.join('\n');
     }
 
     _activeSocials.clear();
@@ -93,18 +105,44 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
   }
 
   SiteConfig _buildConfig() {
+    final businessType =
+        ref.read(currentBusinessProvider).valueOrNull?.businessType;
+    final heroPreset = SiteCtaPresets.heroFor(businessType);
     final sections = SiteConfig.defaults().sections.map((template) {
       final f = _fieldsFor(template.id);
+      final profileDriven = template.id == SiteConfig.sectionHero ||
+          template.id == SiteConfig.sectionAbout;
       return SiteSectionConfig(
         id: template.id,
         enabled: f.enabled,
-        title: f.title.text.trim().isEmpty ? null : f.title.text.trim(),
-        description:
-            f.description.text.trim().isEmpty ? null : f.description.text.trim(),
+        title: profileDriven || f.title.text.trim().isEmpty
+            ? null
+            : f.title.text.trim(),
+        description: profileDriven || f.description.text.trim().isEmpty
+            ? null
+            : f.description.text.trim(),
         navLabel: f.navLabel.text.trim().isEmpty ? null : f.navLabel.text.trim(),
         imageUrl: f.imageUrl.text.trim().isEmpty ? null : f.imageUrl.text.trim(),
         useProfileCover: f.useProfileCover,
         galleryItems: List<SiteGalleryItem>.from(f.galleryItems),
+        ctaLabel: f.ctaLabel.text.trim().isEmpty ? null : f.ctaLabel.text.trim(),
+        secondaryCtaLabel: f.secondaryCtaLabel.text.trim().isEmpty
+            ? null
+            : f.secondaryCtaLabel.text.trim(),
+        ctaTarget: template.id == SiteConfig.sectionHero
+            ? (f.ctaTarget ?? heroPreset.primaryTarget)
+            : null,
+        secondaryCtaTarget: template.id == SiteConfig.sectionHero
+            ? (f.secondaryCtaTarget ?? heroPreset.secondaryTarget)
+            : null,
+        trustBullets: template.id == SiteConfig.sectionHero
+            ? f.trustBullets.text
+                .split('\n')
+                .map((e) => e.trim())
+                .where((e) => e.isNotEmpty)
+                .take(5)
+                .toList()
+            : const [],
       );
     }).toList();
 
@@ -144,6 +182,26 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
       url = await ref.read(mediaUploadServiceProvider).resolveImageUrl(url);
     }
     return url;
+  }
+
+  ShopPreviewData _buildPreviewData() {
+    final business = ref.read(currentBusinessProvider).valueOrNull;
+    final l10n = context.l10n;
+    return ShopPreviewData(
+      name: business?.name ?? '',
+      slug: business?.slug,
+      heroTagline: business?.description,
+      aboutBio: business?.aboutBio,
+      logoUrl: business?.logoUrl,
+      coverUrl: business?.coverImageUrl,
+      city: business?.city,
+      state: business?.state,
+      orderPhone: business?.orderPhone,
+      openingHours: business?.openingHours,
+      website: business?.website,
+      businessTypeLabel: business?.businessType?.label(l10n),
+      siteConfig: _buildConfig(),
+    );
   }
 
   Future<void> _save() async {
@@ -238,11 +296,15 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
           Text(l10n.siteEditorSectionsTitle,
               style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14)),
           const SizedBox(height: 8),
-          ..._config.mergeWithDefaults().sections.map((s) => _SectionTile(
-                sectionId: s.id,
-                fields: _fieldsFor(s.id),
-                onChanged: () => setState(() {}),
-              )),
+          ..._config.mergeWithDefaults().sections.map((s) {
+            final business = ref.watch(currentBusinessProvider).valueOrNull;
+            return _SectionTile(
+              sectionId: s.id,
+              fields: _fieldsFor(s.id),
+              businessType: business?.businessType,
+              onChanged: () => setState(() {}),
+            );
+          }),
           const SizedBox(height: 24),
           Text(l10n.siteEditorSocialsTitle,
               style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14)),
@@ -300,19 +362,38 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
                 setState(() => _config = _config.copyWith(footerShowWhatsApp: v)),
           ),
           const SizedBox(height: 24),
-          SizedBox(
-            height: 48,
-            child: FilledButton.icon(
-              onPressed: _saving ? null : _save,
-              icon: _saving
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.save_outlined),
-              label: Text(l10n.siteEditorSaveButton),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 48,
+                  child: OutlinedButton.icon(
+                    onPressed: _saving
+                        ? null
+                        : () => showShopPreviewDialog(context, _buildPreviewData()),
+                    icon: const Icon(Icons.visibility_outlined, size: 20),
+                    label: Text(l10n.shopPreviewButton),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: SizedBox(
+                  height: 48,
+                  child: FilledButton.icon(
+                    onPressed: _saving ? null : _save,
+                    icon: _saving
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.save_outlined),
+                    label: Text(l10n.siteEditorSaveButton),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -351,12 +432,20 @@ class _SectionFields {
   PlatformFile? imageFile;
   final galleryItems = <SiteGalleryItem>[];
   final galleryFiles = <PlatformFile?>[];
+  final ctaLabel = TextEditingController();
+  final secondaryCtaLabel = TextEditingController();
+  final trustBullets = TextEditingController();
+  SiteCtaTarget? ctaTarget;
+  SiteCtaTarget? secondaryCtaTarget;
 
   void dispose() {
     title.dispose();
     description.dispose();
     navLabel.dispose();
     imageUrl.dispose();
+    ctaLabel.dispose();
+    secondaryCtaLabel.dispose();
+    trustBullets.dispose();
   }
 }
 
@@ -408,11 +497,44 @@ class _SectionTile extends StatelessWidget {
     required this.sectionId,
     required this.fields,
     required this.onChanged,
+    this.businessType,
   });
 
   final String sectionId;
   final _SectionFields fields;
   final VoidCallback onChanged;
+  final BusinessType? businessType;
+
+  void _applyTypeSuggestions() {
+    final preset = SiteCtaPresets.applyTo(SiteConfig.defaults(), businessType);
+    if (sectionId == SiteConfig.sectionHero) {
+      final hero = preset.section(SiteConfig.sectionHero)!;
+      fields.ctaLabel.text = hero.ctaLabel ?? '';
+      fields.secondaryCtaLabel.text = hero.secondaryCtaLabel ?? '';
+      fields.ctaTarget = hero.ctaTarget;
+      fields.secondaryCtaTarget = hero.secondaryCtaTarget;
+      fields.trustBullets.text = hero.trustBullets.join('\n');
+    } else if (sectionId == SiteConfig.sectionContact) {
+      final contact = preset.section(SiteConfig.sectionContact)!;
+      fields.ctaLabel.text = contact.ctaLabel ?? '';
+    }
+    onChanged();
+  }
+
+  String _ctaTargetLabel(dynamic l10n, SiteCtaTarget target) {
+    switch (target) {
+      case SiteCtaTarget.products:
+        return l10n.siteCtaTargetProducts;
+      case SiteCtaTarget.services:
+        return l10n.siteCtaTargetServices;
+      case SiteCtaTarget.contact:
+        return l10n.siteCtaTargetContact;
+      case SiteCtaTarget.offers:
+        return l10n.siteCtaTargetOffers;
+      case SiteCtaTarget.whatsapp:
+        return l10n.siteCtaTargetWhatsapp;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -447,27 +569,148 @@ class _SectionTile extends StatelessWidget {
               hint: title,
             ),
           ),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: AppTextField(
-              label: sectionId == SiteConfig.sectionHero
-                  ? l10n.siteSectionHeroH1
-                  : l10n.siteSectionTitle,
-              controller: fields.title,
+          if (sectionId == SiteConfig.sectionHero ||
+              sectionId == SiteConfig.sectionAbout) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              child: Text(
+                sectionId == SiteConfig.sectionHero
+                    ? l10n.siteEditorProfileHintHero
+                    : l10n.siteEditorProfileHintAbout,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  height: 1.45,
+                  color: context.appColors.textMuted,
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: AppTextField(
-              label: sectionId == SiteConfig.sectionHero
-                  ? l10n.siteSectionHeroP
-                  : l10n.siteSectionDescription,
-              controller: fields.description,
-              maxLines: 3,
+          ] else ...[
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AppTextField(
+                label: l10n.siteSectionTitle,
+                controller: fields.title,
+              ),
             ),
-          ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AppTextField(
+                label: l10n.siteSectionDescription,
+                controller: fields.description,
+                maxLines: 3,
+              ),
+            ),
+          ],
+          if (sectionId == SiteConfig.sectionHero) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text(
+                l10n.siteCtaTypeHint,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  height: 1.45,
+                  color: context.appColors.textMuted,
+                ),
+              ),
+            ),
+            if (businessType != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: OutlinedButton.icon(
+                    onPressed: _applyTypeSuggestions,
+                    icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
+                    label: Text(l10n.siteCtaApplyTypeSuggestions),
+                  ),
+                ),
+              ),
+          ],
+          if (sectionId == SiteConfig.sectionHero ||
+              sectionId == SiteConfig.sectionContact) ...[
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AppTextField(
+                label: l10n.siteSectionCtaLabel,
+                controller: fields.ctaLabel,
+                hint: sectionId == SiteConfig.sectionHero
+                    ? SiteCtaPresets.heroFor(businessType).primaryLabel
+                    : SiteCtaPresets.contactLabelFor(businessType),
+              ),
+            ),
+          ],
+          if (sectionId == SiteConfig.sectionHero) ...[
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: DropdownButtonFormField<SiteCtaTarget>(
+                value: fields.ctaTarget ??
+                    SiteCtaPresets.heroFor(businessType).primaryTarget,
+                decoration: InputDecoration(
+                  labelText: l10n.siteCtaTargetLabel,
+                  border: const OutlineInputBorder(),
+                ),
+                items: SiteCtaTarget.values
+                    .map(
+                      (t) => DropdownMenuItem(
+                        value: t,
+                        child: Text(_ctaTargetLabel(l10n, t)),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) {
+                  fields.ctaTarget = v;
+                  onChanged();
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AppTextField(
+                label: l10n.siteSectionSecondaryCtaLabel,
+                controller: fields.secondaryCtaLabel,
+                hint: SiteCtaPresets.heroFor(businessType).secondaryLabel ?? '',
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: DropdownButtonFormField<SiteCtaTarget>(
+                value: fields.secondaryCtaTarget ??
+                    SiteCtaPresets.heroFor(businessType).secondaryTarget,
+                decoration: InputDecoration(
+                  labelText: '${l10n.siteCtaTargetLabel} (${l10n.siteSectionSecondaryCtaLabel})',
+                  border: const OutlineInputBorder(),
+                ),
+                items: SiteCtaTarget.values
+                    .map(
+                      (t) => DropdownMenuItem(
+                        value: t,
+                        child: Text(_ctaTargetLabel(l10n, t)),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) {
+                  fields.secondaryCtaTarget = v;
+                  onChanged();
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AppTextField(
+                label: l10n.siteSectionTrustBullets,
+                controller: fields.trustBullets,
+                hint: l10n.siteSectionTrustBulletsHint,
+                maxLines: 4,
+              ),
+            ),
+          ],
           if (sectionId == SiteConfig.sectionHero) ...[
             const SizedBox(height: 12),
             Padding(

@@ -5,8 +5,17 @@
  */
 (function () {
   var FIREBASE_VERSION = '11.9.1';
+  var isLocalDev =
+    location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  var devApiKey =
+    typeof window.__BINISOFT_FIREBASE_API_KEY === 'string'
+      ? window.__BINISOFT_FIREBASE_API_KEY.trim()
+      : '';
   var firebaseConfig = {
-    apiKey: 'AIzaSyBkHpcfoxEZSvmFRKGwUwuO1LnmihUdGfU',
+    apiKey:
+      isLocalDev && devApiKey.length > 0
+        ? devApiKey
+        : 'AIzaSyBkHpcfoxEZSvmFRKGwUwuO1LnmihUdGfU',
     authDomain: 'jon-sport.firebaseapp.com',
     projectId: 'jon-sport',
     storageBucket: 'jon-sport.firebasestorage.app',
@@ -39,10 +48,12 @@
     try {
       var core = window.firebase_core;
       var apps = core.getApps();
-      var isLocalDev =
-        location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-      // On localhost, Flutter uses env/dev.json API key — do not init with prod apiKey here.
-      if ((!apps || apps.length === 0) && !isLocalDev) {
+      // Localhost: init only when dev key present (tool/dev_run_chrome.sh writes firebase_dev_config.js).
+      var mayInit =
+        !apps || apps.length === 0
+          ? !isLocalDev || devApiKey.length > 0
+          : false;
+      if (mayInit) {
         core.initializeApp(firebaseConfig);
       }
       window.__binisoft_firebase_preload = 'ok';

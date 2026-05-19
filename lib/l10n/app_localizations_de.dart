@@ -731,6 +731,59 @@ class AppLocalizationsDe extends AppLocalizations {
       'Öffentliche Geschäftsdaten aktualisieren.';
 
   @override
+  String get settingsPublicShopProfileTitle => 'Öffentliches Shop-Profil';
+
+  @override
+  String get settingsPublicShopProfileSubtitle =>
+      'Texte, Logo, Standort und Kontakt im Online-Shop. Layout (Farben, Bereiche) im Site-Editor unten.';
+
+  @override
+  String get settingsHeroTagline => 'Hero-Slogan';
+
+  @override
+  String get settingsHeroTaglineHint => 'Absatz unter dem Geschäftsnamen';
+
+  @override
+  String get settingsAboutBio => 'Über uns (Bio)';
+
+  @override
+  String get settingsAboutBioHint => 'Volltext für den Bereich Über uns';
+
+  @override
+  String get settingsOpeningHours => 'Öffnungszeiten';
+
+  @override
+  String get settingsOpeningHoursHint => 'z. B. Mo–Fr 9:00–22:00';
+
+  @override
+  String get siteEditorProfileHintHero =>
+      'Name, Slogan und Cover kommen aus dem Profil oben — hier nur Bereich, Menülabel und optionales Hero-Bild.';
+
+  @override
+  String get siteEditorProfileHintAbout =>
+      'Über-uns-Text kommt aus dem Bio-Feld im Profil — hier nur Bereich und Menülabel.';
+
+  @override
+  String get shopPreviewTitle => 'Shop-Vorschau';
+
+  @override
+  String get shopPreviewDraftNote =>
+      'Vorschau mit aktuellen Formularwerten — noch nicht gespeichert.';
+
+  @override
+  String get shopPreviewButton => 'Vorschau';
+
+  @override
+  String get shopPreviewOpenLive => 'Live-Shop öffnen (gespeichert)';
+
+  @override
+  String get shopPreviewSections => 'Bereiche auf der Seite';
+
+  @override
+  String get shopPreviewEmptyHint =>
+      'Name, Slogan und Kontakt ausfüllen für mehr Vorschau.';
+
+  @override
   String get settingsBusinessName => 'Geschäftsname';
 
   @override
@@ -769,15 +822,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsLocationMapsHint =>
-      'Link aus Google Maps → Teilen einfügen';
+      'https://maps.google.com/... oder maps.app.goo.gl/...';
 
   @override
   String get settingsLocationMapsNote =>
-      'Interaktive Karte im öffentlichen Shop (Google Maps).';
+      'Nur Google-Maps-Link (URL) aus Teilen — kein iframe-Einbettungscode.';
 
   @override
   String get settingsGoogleMapsUrlInvalid =>
       'Bitte einen gültigen Google-Maps-Link einfügen (maps.google.com oder maps.app.goo.gl).';
+
+  @override
+  String get settingsGoogleMapsNoIframe =>
+      'Kein iframe-HTML einfügen. In Google Maps Teilen → nur den Link (URL) kopieren.';
 
   @override
   String get settingsWebsite => 'Webseite';
@@ -907,7 +964,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get siteEditorSubtitle =>
-      'Farben, Bereiche, Galerie und Social Links für den öffentlichen Shop.';
+      'Farben, Bereiche, Galerie und Social Links — ohne doppelte Texte (die stehen im Profil oben).';
 
   @override
   String get siteEditorColorsTitle => 'Farben';
@@ -1011,6 +1068,44 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get siteGalleryHint => 'Bis zu 5 — Bild und/oder YouTube pro Platz.';
+
+  @override
+  String get siteSectionCtaLabel => 'Primärer Button-Text';
+
+  @override
+  String get siteSectionSecondaryCtaLabel => 'Sekundärer Button-Text';
+
+  @override
+  String get siteSectionTrustBullets => 'Vertrauenspunkte (Hero)';
+
+  @override
+  String get siteSectionTrustBulletsHint => 'Eine Zeile pro Punkt, max. 5.';
+
+  @override
+  String get siteCtaTargetLabel => 'Button führt zu';
+
+  @override
+  String get siteCtaTargetProducts => 'Produkte';
+
+  @override
+  String get siteCtaTargetServices => 'Dienstleistungen';
+
+  @override
+  String get siteCtaTargetContact => 'Kontakt';
+
+  @override
+  String get siteCtaTargetOffers => 'Angebote';
+
+  @override
+  String get siteCtaTargetWhatsapp => 'WhatsApp (direkt öffnen)';
+
+  @override
+  String get siteCtaTypeHint =>
+      'Kliniken sollten z. B. «Termin buchen» oder «Kontakt» nutzen, nicht «Bestellen». Texte und Aktionen sind frei anpassbar.';
+
+  @override
+  String get siteCtaApplyTypeSuggestions =>
+      'Vorschläge für Geschäftsart übernehmen';
 
   @override
   String get siteGalleryAdd => 'Galerieeintrag hinzufügen';

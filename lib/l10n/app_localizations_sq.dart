@@ -729,6 +729,62 @@ class AppLocalizationsSq extends AppLocalizations {
       'Përditëso detajet publike të biznesit.';
 
   @override
+  String get settingsPublicShopProfileTitle => 'Profili i faqes publike';
+
+  @override
+  String get settingsPublicShopProfileSubtitle =>
+      'Teksti, logo, lokacioni dhe kontakt shfaqen në dyqanin online. Pamja (ngjyrat, seksionet) është te redaktori i faqes më poshtë.';
+
+  @override
+  String get settingsHeroTagline => 'Slogan / përshkrim hero';
+
+  @override
+  String get settingsHeroTaglineHint =>
+      'Paragrafi nën emrin e biznesit në faqen kryesore';
+
+  @override
+  String get settingsAboutBio => 'Rreth nesh (bio)';
+
+  @override
+  String get settingsAboutBioHint =>
+      'Teksti i plotë për seksionin «Rreth nesh»';
+
+  @override
+  String get settingsOpeningHours => 'Orari';
+
+  @override
+  String get settingsOpeningHoursHint =>
+      'p.sh. Hënë–Prem: 09:00–22:00, Sht: 10:00–23:00';
+
+  @override
+  String get siteEditorProfileHintHero =>
+      'Emri (H1), slogani dhe cover vijnë nga «Profili i faqes publike» lart — këtu vetëm ndez/fik seksionin, etiketën e menysë dhe foto hero opsionale.';
+
+  @override
+  String get siteEditorProfileHintAbout =>
+      'Teksti «Rreth nesh» vjen nga fusha Bio te profili — këtu vetëm ndez/fik seksionin dhe etiketën e menysë.';
+
+  @override
+  String get shopPreviewTitle => 'Parashikim i dyqanit';
+
+  @override
+  String get shopPreviewDraftNote =>
+      'Kjo është pamja me të dhënat nga formulari — ende nuk është ruajtur. Pas «Ruaj» do të shfaqet në faqen publike.';
+
+  @override
+  String get shopPreviewButton => 'Parashiko';
+
+  @override
+  String get shopPreviewOpenLive => 'Hap faqen live (e ruajtur)';
+
+  @override
+  String get shopPreviewSections => 'Seksionet në faqe';
+
+  @override
+  String get shopPreviewEmptyHint =>
+      'Plotësoni emrin, sloganin dhe kontaktin për parashikim më të plotë.';
+
+  @override
   String get settingsBusinessName => 'Emri i biznesit';
 
   @override
@@ -767,15 +823,19 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get settingsLocationMapsHint =>
-      'Ngjisni lidhjen nga Google Maps → Share / Ndaj';
+      'https://maps.google.com/... ose maps.app.goo.gl/...';
 
   @override
   String get settingsLocationMapsNote =>
-      'Harta interaktive në dyqanin publik (Google Maps).';
+      'Vetëm lidhja (URL) nga Google Maps → Ndaj. Mos ngjisni kod iframe.';
 
   @override
   String get settingsGoogleMapsUrlInvalid =>
       'Vendosni një lidhje të vlefshme Google Maps (maps.google.com ose maps.app.goo.gl).';
+
+  @override
+  String get settingsGoogleMapsNoIframe =>
+      'Mos ngjisni kod iframe. Hapni Google Maps → Ndaj → kopjoni vetëm lidhjen (URL).';
 
   @override
   String get settingsWebsite => 'Faqja web';
@@ -907,7 +967,7 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get siteEditorSubtitle =>
-      'Ngjyrat, seksionet, galeria dhe rrjetet sociale për faqen publike.';
+      'Ngjyrat, seksionet e aktivizuara, galeria dhe rrjetet sociale — pa tekst të dyfishtë (ai vjen nga profili lart).';
 
   @override
   String get siteEditorColorsTitle => 'Ngjyrat';
@@ -1012,6 +1072,44 @@ class AppLocalizationsSq extends AppLocalizations {
   @override
   String get siteGalleryHint =>
       'Deri në 5 — imazh dhe/ose YouTube për çdo vend.';
+
+  @override
+  String get siteSectionCtaLabel => 'Teksti i butonit kryesor';
+
+  @override
+  String get siteSectionSecondaryCtaLabel => 'Teksti i butonit dytësor';
+
+  @override
+  String get siteSectionTrustBullets => 'Pikat e besimit (hero)';
+
+  @override
+  String get siteSectionTrustBulletsHint => 'Një rresht për pikë, deri në 5.';
+
+  @override
+  String get siteCtaTargetLabel => 'Ku çon butoni';
+
+  @override
+  String get siteCtaTargetProducts => 'Produktet';
+
+  @override
+  String get siteCtaTargetServices => 'Shërbimet';
+
+  @override
+  String get siteCtaTargetContact => 'Kontakt';
+
+  @override
+  String get siteCtaTargetOffers => 'Ofertat';
+
+  @override
+  String get siteCtaTargetWhatsapp => 'WhatsApp (hap direkt)';
+
+  @override
+  String get siteCtaTypeHint =>
+      'Për klinika/ordinanca përdorni «Rezervo termin» ose «Na kontaktoni», jo «Porosit». Teksti dhe veprimi janë të plotësisht të personalizueshëm.';
+
+  @override
+  String get siteCtaApplyTypeSuggestions =>
+      'Apliko sugjerimet për llojin e biznesit';
 
   @override
   String get siteGalleryAdd => 'Shto në galeri';

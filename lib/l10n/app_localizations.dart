@@ -1460,6 +1460,102 @@ abstract class AppLocalizations {
   /// **'Update your public-facing business details.'**
   String get settingsActiveBusinessSubtitle;
 
+  /// No description provided for @settingsPublicShopProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Public shop profile'**
+  String get settingsPublicShopProfileTitle;
+
+  /// No description provided for @settingsPublicShopProfileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy, logo, location and contact shown on your online shop. Layout (colors, sections) is in the site editor below.'**
+  String get settingsPublicShopProfileSubtitle;
+
+  /// No description provided for @settingsHeroTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Hero tagline'**
+  String get settingsHeroTagline;
+
+  /// No description provided for @settingsHeroTaglineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paragraph under your business name on the home section'**
+  String get settingsHeroTaglineHint;
+
+  /// No description provided for @settingsAboutBio.
+  ///
+  /// In en, this message translates to:
+  /// **'About us (bio)'**
+  String get settingsAboutBio;
+
+  /// No description provided for @settingsAboutBioHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Full text for the About section'**
+  String get settingsAboutBioHint;
+
+  /// No description provided for @settingsOpeningHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening hours'**
+  String get settingsOpeningHours;
+
+  /// No description provided for @settingsOpeningHoursHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mon–Fri 9:00–22:00, Sat 10:00–23:00'**
+  String get settingsOpeningHoursHint;
+
+  /// No description provided for @siteEditorProfileHintHero.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (H1), tagline and cover come from Public shop profile above — here you only toggle the section, menu label and optional hero image.'**
+  String get siteEditorProfileHintHero;
+
+  /// No description provided for @siteEditorProfileHintAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About text comes from the Bio field in profile — here you only toggle the section and menu label.'**
+  String get siteEditorProfileHintAbout;
+
+  /// No description provided for @shopPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop preview'**
+  String get shopPreviewTitle;
+
+  /// No description provided for @shopPreviewDraftNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This preview uses your current form values — not saved yet. Use Save to publish to the live shop.'**
+  String get shopPreviewDraftNote;
+
+  /// No description provided for @shopPreviewButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get shopPreviewButton;
+
+  /// No description provided for @shopPreviewOpenLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Open live shop (saved)'**
+  String get shopPreviewOpenLive;
+
+  /// No description provided for @shopPreviewSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Sections on page'**
+  String get shopPreviewSections;
+
+  /// No description provided for @shopPreviewEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add name, tagline and contact for a richer preview.'**
+  String get shopPreviewEmptyHint;
+
   /// No description provided for @settingsBusinessName.
   ///
   /// In en, this message translates to:
@@ -1535,13 +1631,13 @@ abstract class AppLocalizations {
   /// No description provided for @settingsLocationMapsHint.
   ///
   /// In en, this message translates to:
-  /// **'Paste link from Google Maps → Share'**
+  /// **'https://maps.google.com/... or maps.app.goo.gl/...'**
   String get settingsLocationMapsHint;
 
   /// No description provided for @settingsLocationMapsNote.
   ///
   /// In en, this message translates to:
-  /// **'Interactive map on your public shop (Google Maps).'**
+  /// **'Google Maps link (URL) only — Share from Maps. Do not paste iframe embed code.'**
   String get settingsLocationMapsNote;
 
   /// No description provided for @settingsGoogleMapsUrlInvalid.
@@ -1549,6 +1645,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Paste a valid Google Maps link (maps.google.com or maps.app.goo.gl).'**
   String get settingsGoogleMapsUrlInvalid;
+
+  /// No description provided for @settingsGoogleMapsNoIframe.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not paste iframe HTML. In Google Maps use Share and copy the link (URL) only.'**
+  String get settingsGoogleMapsNoIframe;
 
   /// No description provided for @settingsWebsite.
   ///
@@ -1787,7 +1889,7 @@ abstract class AppLocalizations {
   /// No description provided for @siteEditorSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Colors, sections, gallery and social links for your public storefront.'**
+  /// **'Colors, enabled sections, gallery and social links — no duplicate text (that comes from profile above).'**
   String get siteEditorSubtitle;
 
   /// No description provided for @siteEditorColorsTitle.
@@ -1993,6 +2095,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Up to 5 items — image and/or YouTube embed per slot.'**
   String get siteGalleryHint;
+
+  /// No description provided for @siteSectionCtaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary button text'**
+  String get siteSectionCtaLabel;
+
+  /// No description provided for @siteSectionSecondaryCtaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary button text'**
+  String get siteSectionSecondaryCtaLabel;
+
+  /// No description provided for @siteSectionTrustBullets.
+  ///
+  /// In en, this message translates to:
+  /// **'Trust bullets (hero)'**
+  String get siteSectionTrustBullets;
+
+  /// No description provided for @siteSectionTrustBulletsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One line per bullet, up to 5.'**
+  String get siteSectionTrustBulletsHint;
+
+  /// No description provided for @siteCtaTargetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Button goes to'**
+  String get siteCtaTargetLabel;
+
+  /// No description provided for @siteCtaTargetProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get siteCtaTargetProducts;
+
+  /// No description provided for @siteCtaTargetServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get siteCtaTargetServices;
+
+  /// No description provided for @siteCtaTargetContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get siteCtaTargetContact;
+
+  /// No description provided for @siteCtaTargetOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get siteCtaTargetOffers;
+
+  /// No description provided for @siteCtaTargetWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp (open directly)'**
+  String get siteCtaTargetWhatsapp;
+
+  /// No description provided for @siteCtaTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinics and similar businesses should use “Book appointment” or “Contact us”, not “Order now”. Labels and actions are fully customizable.'**
+  String get siteCtaTypeHint;
+
+  /// No description provided for @siteCtaApplyTypeSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply suggestions for business type'**
+  String get siteCtaApplyTypeSuggestions;
 
   /// No description provided for @siteGalleryAdd.
   ///
