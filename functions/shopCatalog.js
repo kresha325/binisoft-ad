@@ -144,7 +144,7 @@ function serializeMarketplaceOffer(doc, biz, ctx) {
 }
 
 /**
- * Global marketplace feed: all active businesses + featured catalog slices.
+ * Global marketplace feed: all active businesses + full catalog (same limits as /{slug}/products).
  */
 async function getMarketplaceSnapshot(req) {
   const ctx = i18n.pickRequestLocale(req, null);
@@ -158,17 +158,28 @@ async function getMarketplaceSnapshot(req) {
   const businesses = [];
 
   for (const b of baseBusinesses) {
-    const [pSnap, cSnap, oSnap] = await Promise.all([
-      db.collection(`businesses/${b.id}/products`).where('status', '==', 'active').limit(24).get(),
-      db.collection(`businesses/${b.id}/categories`).limit(30).get(),
-      db.collection(`businesses/${b.id}/offers`).where('active', '==', true).limit(12).get(),
+    const productsCol = db
+      .collection(`businesses/${b.id}/products`)
+      .where('status', '==', 'active');
+
+    const [pSnap, productCountSnap, cSnap, oSnap] = await Promise.all([
+      productsCol.orderBy('createdAt', 'desc').limit(500).get(),
+      productsCol.count().get(),
+      db.collection(`businesses/${b.id}/categories`).orderBy('name').get(),
+      db.collection(`businesses/${b.id}/offers`).where('active', '==', true).get(),
     ]);
+
+    const activeOffers = [];
+    for (const doc of oSnap.docs) {
+      const row = serializeMarketplaceOffer(doc, b, ctx);
+      if (row) activeOffers.push(row);
+    }
 
     businesses.push({
       ...b,
-      productCount: pSnap.size,
+      productCount: productCountSnap.data().count || 0,
       categoryCount: cSnap.size,
-      offerCount: oSnap.size,
+      offerCount: activeOffers.length,
     });
 
     for (const doc of pSnap.docs) {
@@ -178,10 +189,7 @@ async function getMarketplaceSnapshot(req) {
     for (const doc of cSnap.docs) {
       categories.push(serializeMarketplaceCategory(doc, b, ctx));
     }
-    for (const doc of oSnap.docs) {
-      const row = serializeMarketplaceOffer(doc, b, ctx);
-      if (row) offers.push(row);
-    }
+    offers.push(...activeOffers);
   }
 
   products.sort((a, b) => a.businessName.localeCompare(b.businessName, 'sq'));
