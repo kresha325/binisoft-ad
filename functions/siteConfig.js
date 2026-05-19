@@ -24,6 +24,8 @@ const ALLOWED_SOCIAL = new Set([
 
 const HEX_COLOR = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 
+const MAX_GALLERY_ITEMS = 8;
+
 function clip(str, max) {
   if (str == null) return '';
   return String(str).trim().slice(0, max);
@@ -144,7 +146,7 @@ function publicSiteConfig(raw, businessType = '') {
       if (imageUrl) out.imageUrl = imageUrl;
     }
     if (s.id === 'gallery' && Array.isArray(s.galleryItems)) {
-      out.galleryItems = s.galleryItems.slice(0, 5).map((g) => {
+      out.galleryItems = s.galleryItems.slice(0, MAX_GALLERY_ITEMS).map((g) => {
         const item = {};
         const img = sanitizeUrl(g?.imageUrl);
         const yt = sanitizeYoutube(g?.youtubeUrl);

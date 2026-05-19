@@ -104,6 +104,7 @@ class BusinessRepository {
     String? location,
     String? city,
     String? state,
+    String? postalCode,
     String? website,
     String? backgroundPresetId,
     String? backgroundImageUrl,
@@ -126,6 +127,7 @@ class BusinessRepository {
       'coverImageUrl': coverImageUrl ?? '',
       'city': city ?? '',
       'state': state ?? '',
+      if (postalCode != null) 'postalCode': postalCode.trim(),
       'location': location ??
           BusinessAddress.displayLocation(
             city: city,

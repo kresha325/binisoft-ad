@@ -806,6 +806,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsBusinessType => 'Geschäftsart';
 
   @override
+  String get settingsPostalCode => 'Postleitzahl';
+
+  @override
+  String get settingsPostalCodeHint => 'z. B. 10000';
+
+  @override
   String get settingsCity => 'Stadt';
 
   @override
@@ -1067,7 +1073,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get siteHeroImage => 'Hero-Hintergrundbild';
 
   @override
-  String get siteGalleryHint => 'Bis zu 5 — Bild und/oder YouTube pro Platz.';
+  String get siteGalleryHint => 'Bis zu 8 — Bild und/oder YouTube pro Platz.';
 
   @override
   String get siteSectionCtaLabel => 'Primärer Button-Text';

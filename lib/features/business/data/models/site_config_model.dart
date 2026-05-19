@@ -24,7 +24,7 @@ class SiteConfigModel {
         final galleryRaw = m['galleryItems'];
         final galleryItems = <SiteGalleryItem>[];
         if (galleryRaw is List) {
-          for (final g in galleryRaw.take(5)) {
+          for (final g in galleryRaw.take(SiteConfig.maxGalleryItems)) {
             if (g is! Map) continue;
             final gm = Map<String, dynamic>.from(g);
             galleryItems.add(
@@ -123,7 +123,7 @@ class SiteConfigModel {
             'trustBullets': s.trustBullets.take(5).toList(),
           if (s.id == SiteConfig.sectionGallery && s.galleryItems.isNotEmpty)
             'galleryItems': s.galleryItems
-                .take(5)
+                .take(SiteConfig.maxGalleryItems)
                 .map((g) => {
                       if (g.imageUrl != null && g.imageUrl!.isNotEmpty)
                         'imageUrl': g.imageUrl,

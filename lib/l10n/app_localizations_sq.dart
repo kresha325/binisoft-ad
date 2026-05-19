@@ -807,6 +807,12 @@ class AppLocalizationsSq extends AppLocalizations {
   String get settingsBusinessType => 'Lloji i biznesit';
 
   @override
+  String get settingsPostalCode => 'Kodi postar';
+
+  @override
+  String get settingsPostalCodeHint => 'p.sh. 20000';
+
+  @override
   String get settingsCity => 'Qyteti';
 
   @override
@@ -1071,7 +1077,7 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get siteGalleryHint =>
-      'Deri në 5 — imazh dhe/ose YouTube për çdo vend.';
+      'Deri në 8 — imazh dhe/ose YouTube për çdo vend.';
 
   @override
   String get siteSectionCtaLabel => 'Teksti i butonit kryesor';

@@ -807,6 +807,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsBusinessType => 'Business type';
 
   @override
+  String get settingsPostalCode => 'Postal code';
+
+  @override
+  String get settingsPostalCodeHint => 'e.g. 10000';
+
+  @override
   String get settingsCity => 'City';
 
   @override
@@ -1069,7 +1075,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get siteGalleryHint =>
-      'Up to 5 items — image and/or YouTube embed per slot.';
+      'Up to 8 items — image and/or YouTube embed per slot.';
 
   @override
   String get siteSectionCtaLabel => 'Primary button text';

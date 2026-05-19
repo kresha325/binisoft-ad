@@ -9,6 +9,7 @@ class ShopPreviewData {
     this.aboutBio,
     this.logoUrl,
     this.coverUrl,
+    this.postalCode,
     this.city,
     this.state,
     this.orderPhone,
@@ -25,6 +26,7 @@ class ShopPreviewData {
   final String? aboutBio;
   final String? logoUrl;
   final String? coverUrl;
+  final String? postalCode;
   final String? city;
   final String? state;
   final String? orderPhone;

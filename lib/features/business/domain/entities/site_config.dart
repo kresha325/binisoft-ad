@@ -180,6 +180,9 @@ class SiteConfig extends Equatable {
   static const sectionGallery = 'gallery';
   static const sectionContact = 'contact';
 
+  /// Max images/videos per gallery section (admin + public API).
+  static const maxGalleryItems = 8;
+
   static const socialPlatforms = [
     'facebook',
     'instagram',

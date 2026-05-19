@@ -21,6 +21,7 @@ class BusinessModel {
     this.location,
     this.city,
     this.state,
+    this.postalCode,
     this.website,
     this.backgroundPresetId,
     this.backgroundImageUrl,
@@ -58,6 +59,7 @@ class BusinessModel {
   final String? location;
   final String? city;
   final String? state;
+  final String? postalCode;
   final String? website;
   final String? backgroundPresetId;
   final String? backgroundImageUrl;
@@ -104,6 +106,7 @@ class BusinessModel {
       location: data['location'] as String?,
       city: data['city'] as String?,
       state: data['state'] as String?,
+      postalCode: data['postalCode'] as String?,
       website: data['website'] as String?,
       backgroundPresetId: data['backgroundPresetId'] as String?,
       backgroundImageUrl: data['backgroundImageUrl'] as String?,
@@ -151,6 +154,7 @@ class BusinessModel {
         if (location != null) 'location': location,
         if (city != null && city!.isNotEmpty) 'city': city,
         if (state != null && state!.isNotEmpty) 'state': state,
+        if (postalCode != null && postalCode!.isNotEmpty) 'postalCode': postalCode,
         if (website != null) 'website': website,
         if (backgroundPresetId != null) 'backgroundPresetId': backgroundPresetId,
         if (backgroundImageUrl != null) 'backgroundImageUrl': backgroundImageUrl,
@@ -177,6 +181,7 @@ class BusinessModel {
         location: location,
         city: city,
         state: state,
+        postalCode: postalCode,
         website: website,
         backgroundPresetId: backgroundPresetId,
         backgroundImageUrl: backgroundImageUrl,

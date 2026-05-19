@@ -1598,6 +1598,18 @@ abstract class AppLocalizations {
   /// **'Business type'**
   String get settingsBusinessType;
 
+  /// No description provided for @settingsPostalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Postal code'**
+  String get settingsPostalCode;
+
+  /// No description provided for @settingsPostalCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 10000'**
+  String get settingsPostalCodeHint;
+
   /// No description provided for @settingsCity.
   ///
   /// In en, this message translates to:
@@ -2093,7 +2105,7 @@ abstract class AppLocalizations {
   /// No description provided for @siteGalleryHint.
   ///
   /// In en, this message translates to:
-  /// **'Up to 5 items — image and/or YouTube embed per slot.'**
+  /// **'Up to 8 items — image and/or YouTube embed per slot.'**
   String get siteGalleryHint;
 
   /// No description provided for @siteSectionCtaLabel.

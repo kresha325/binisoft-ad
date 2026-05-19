@@ -775,7 +775,7 @@ class _SectionTile extends StatelessWidget {
                 },
               );
             }),
-            if (fields.galleryItems.length < 5)
+            if (fields.galleryItems.length < SiteConfig.maxGalleryItems)
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: OutlinedButton.icon(

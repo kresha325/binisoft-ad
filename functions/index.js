@@ -715,6 +715,7 @@ function businessPayload(business, slug, ctx) {
     location: displayLocation(business),
     city: business.city || '',
     state: business.state || '',
+    postalCode: business.postalCode || '',
     googleMapsUrl: business.googleMapsUrl || '',
     googleMapsEmbedUrl: googleMapsEmbedUrl(business.googleMapsUrl) || '',
     businessType: business.businessType || '',

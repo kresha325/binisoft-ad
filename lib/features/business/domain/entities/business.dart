@@ -20,6 +20,7 @@ class Business extends Equatable {
     this.location,
     this.city,
     this.state,
+    this.postalCode,
     this.website,
     this.backgroundPresetId,
     this.backgroundImageUrl,
@@ -57,6 +58,7 @@ class Business extends Equatable {
   final String? location;
   final String? city;
   final String? state;
+  final String? postalCode;
   final String? website;
   final String? backgroundPresetId;
   final String? backgroundImageUrl;
@@ -104,6 +106,7 @@ class Business extends Equatable {
         location,
         city,
         state,
+        postalCode,
         website,
         backgroundPresetId,
         backgroundImageUrl,

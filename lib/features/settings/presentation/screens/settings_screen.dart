@@ -46,6 +46,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _openingHours = TextEditingController();
   final _logoUrl = TextEditingController();
   final _coverUrl = TextEditingController();
+  final _postalCode = TextEditingController();
   final _city = TextEditingController();
   final _state = TextEditingController();
   final _googleMapsUrl = TextEditingController();
@@ -69,6 +70,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _openingHours.dispose();
     _logoUrl.dispose();
     _coverUrl.dispose();
+    _postalCode.dispose();
     _city.dispose();
     _state.dispose();
     _googleMapsUrl.dispose();
@@ -88,6 +90,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _logoUrl.text = business.logoUrl ?? '';
     _coverUrl.text = business.coverImageUrl ?? '';
     final parsed = BusinessAddress.fromLegacyLocation(business.location);
+    _postalCode.text = business.postalCode ?? '';
     _city.text = business.city?.trim().isNotEmpty == true
         ? business.city!.trim()
         : parsed.city;
@@ -121,6 +124,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       aboutBio: _aboutBio.text.trim(),
       logoUrl: _logoUrl.text.trim(),
       coverUrl: _coverUrl.text.trim(),
+      postalCode: _postalCode.text.trim(),
       city: _city.text.trim(),
       state: _state.text.trim(),
       orderPhone: _orderPhone.text.trim(),
@@ -198,6 +202,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             description: _description.text.trim(),
             logoUrl: logoUrl,
             coverImageUrl: coverImageUrl,
+            postalCode: _postalCode.text.trim(),
             city: _city.text.trim(),
             state: _state.text.trim(),
             location: BusinessAddress.displayLocation(
@@ -339,6 +344,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
+                  ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsPostalCode,
+                    controller: _postalCode,
+                    hint: l10n.settingsPostalCodeHint,
                   ),
                   const SizedBox(height: 20),
                   AppTextField(
