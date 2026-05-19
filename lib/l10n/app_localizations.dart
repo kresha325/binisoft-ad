@@ -1517,8 +1517,20 @@ abstract class AppLocalizations {
   /// No description provided for @siteEditorProfileHintAbout.
   ///
   /// In en, this message translates to:
-  /// **'About text comes from the Bio field in profile — here you only toggle the section and menu label.'**
+  /// **'Fill here or use «About bio» in business profile — not the hero tagline.'**
   String get siteEditorProfileHintAbout;
+
+  /// No description provided for @siteSectionAboutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'About section text'**
+  String get siteSectionAboutBody;
+
+  /// No description provided for @siteSectionAboutBodyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Full paragraph for this section'**
+  String get siteSectionAboutBodyHint;
 
   /// No description provided for @shopPreviewTitle.
   ///

@@ -762,7 +762,13 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get siteEditorProfileHintAbout =>
-      'Teksti «Rreth nesh» vjen nga fusha Bio te profili — këtu vetëm ndez/fik seksionin dhe etiketën e menysë.';
+      'Mund ta plotësoni këtu ose te «Rreth nesh (bio)» në profilin e biznesit — jo slogani i hero-s.';
+
+  @override
+  String get siteSectionAboutBody => 'Teksti «Rreth nesh»';
+
+  @override
+  String get siteSectionAboutBodyHint => 'Paragrafi i plotë për këtë seksion';
 
   @override
   String get shopPreviewTitle => 'Parashikim i dyqanit';

@@ -569,19 +569,38 @@ class _SectionTile extends StatelessWidget {
               hint: title,
             ),
           ),
-          if (sectionId == SiteConfig.sectionHero ||
-              sectionId == SiteConfig.sectionAbout) ...[
+          if (sectionId == SiteConfig.sectionHero) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               child: Text(
-                sectionId == SiteConfig.sectionHero
-                    ? l10n.siteEditorProfileHintHero
-                    : l10n.siteEditorProfileHintAbout,
+                l10n.siteEditorProfileHintHero,
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   height: 1.45,
                   color: context.appColors.textMuted,
                 ),
+              ),
+            ),
+          ] else if (sectionId == SiteConfig.sectionAbout) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text(
+                l10n.siteEditorProfileHintAbout,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  height: 1.45,
+                  color: context.appColors.textMuted,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AppTextField(
+                label: l10n.siteSectionAboutBody,
+                controller: fields.description,
+                hint: l10n.siteSectionAboutBodyHint,
+                maxLines: 6,
               ),
             ),
           ] else ...[

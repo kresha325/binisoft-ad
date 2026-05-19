@@ -761,7 +761,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get siteEditorProfileHintAbout =>
-      'Über-uns-Text kommt aus dem Bio-Feld im Profil — hier nur Bereich und Menülabel.';
+      'Hier oder im Profil unter «Über uns (Bio)» — nicht der Hero-Slogan.';
+
+  @override
+  String get siteSectionAboutBody => 'Text «Über uns»';
+
+  @override
+  String get siteSectionAboutBodyHint =>
+      'Vollständiger Absatz für diesen Bereich';
 
   @override
   String get shopPreviewTitle => 'Shop-Vorschau';

@@ -762,7 +762,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get siteEditorProfileHintAbout =>
-      'About text comes from the Bio field in profile — here you only toggle the section and menu label.';
+      'Fill here or use «About bio» in business profile — not the hero tagline.';
+
+  @override
+  String get siteSectionAboutBody => 'About section text';
+
+  @override
+  String get siteSectionAboutBodyHint => 'Full paragraph for this section';
 
   @override
   String get shopPreviewTitle => 'Shop preview';
