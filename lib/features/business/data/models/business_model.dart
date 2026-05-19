@@ -4,6 +4,7 @@ import '../../../../core/i18n/app_locales.dart';
 import '../../../../core/i18n/localized_text.dart';
 import '../../domain/entities/business.dart';
 import '../../domain/entities/business_type.dart';
+import '../../domain/entities/shop_checkout_config.dart';
 import '../../domain/entities/site_config.dart';
 import '../../domain/entities/website_plan.dart';
 import 'site_config_model.dart';
@@ -45,6 +46,7 @@ class BusinessModel {
     this.googleMapsUrl,
     this.aboutBio,
     this.openingHours,
+    this.shopCheckout = ShopCheckoutConfig.defaults,
   });
 
   final String id;
@@ -82,6 +84,7 @@ class BusinessModel {
   final String? googleMapsUrl;
   final String? aboutBio;
   final String? openingHours;
+  final ShopCheckoutConfig shopCheckout;
 
   factory BusinessModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
@@ -135,6 +138,11 @@ class BusinessModel {
       googleMapsUrl: data['googleMapsUrl'] as String?,
       aboutBio: data['aboutBio'] as String?,
       openingHours: data['openingHours'] as String?,
+      shopCheckout: ShopCheckoutConfig.fromMap(
+        data['shopCheckout'] is Map
+            ? Map<String, dynamic>.from(data['shopCheckout'] as Map)
+            : null,
+      ),
     );
   }
 
@@ -205,5 +213,6 @@ class BusinessModel {
         googleMapsUrl: googleMapsUrl,
         aboutBio: aboutBio,
         openingHours: openingHours,
+        shopCheckout: shopCheckout,
       );
 }

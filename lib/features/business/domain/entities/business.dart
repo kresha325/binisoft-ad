@@ -4,6 +4,7 @@ import '../../../../core/i18n/app_locales.dart';
 import '../../../../core/utils/google_maps_url.dart' as maps_util;
 import '../business_address.dart';
 import 'business_type.dart';
+import 'shop_checkout_config.dart';
 import 'site_config.dart';
 import 'website_plan.dart';
 
@@ -44,6 +45,7 @@ class Business extends Equatable {
     this.googleMapsUrl,
     this.aboutBio,
     this.openingHours,
+    this.shopCheckout = ShopCheckoutConfig.defaults,
   });
 
   final String id;
@@ -84,6 +86,8 @@ class Business extends Equatable {
   final String? aboutBio;
   /// Opening hours shown on contact / footer (e.g. Hënë–Prem 09:00–22:00).
   final String? openingHours;
+
+  final ShopCheckoutConfig shopCheckout;
 
   String? get googleMapsEmbedUrl => maps_util.googleMapsEmbedUrl(googleMapsUrl);
 
@@ -130,5 +134,6 @@ class Business extends Equatable {
         googleMapsUrl,
         aboutBio,
         openingHours,
+        shopCheckout,
       ];
 }

@@ -2264,6 +2264,60 @@ abstract class AppLocalizations {
   /// **'WhatsApp'**
   String get siteSocialWhatsapp;
 
+  /// No description provided for @settingsShopCheckoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Online orders (cart)'**
+  String get settingsShopCheckoutTitle;
+
+  /// No description provided for @settingsShopCheckoutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active options appear in the shop cart; inactive fields are hidden.'**
+  String get settingsShopCheckoutSubtitle;
+
+  /// No description provided for @settingsShopCheckoutCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Online cart'**
+  String get settingsShopCheckoutCart;
+
+  /// No description provided for @settingsShopCheckoutCartNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive: no “Add to cart”, no cart icon — catalog only.'**
+  String get settingsShopCheckoutCartNote;
+
+  /// No description provided for @settingsShopCheckoutName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer name'**
+  String get settingsShopCheckoutName;
+
+  /// No description provided for @settingsShopCheckoutDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery address'**
+  String get settingsShopCheckoutDelivery;
+
+  /// No description provided for @settingsShopCheckoutDeliveryNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable only if you deliver; customers must fill it in.'**
+  String get settingsShopCheckoutDeliveryNote;
+
+  /// No description provided for @settingsShopCheckoutNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Order notes'**
+  String get settingsShopCheckoutNotes;
+
+  /// No description provided for @settingsShopCheckoutPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone (optional)'**
+  String get settingsShopCheckoutPhone;
+
   /// No description provided for @settingsOrderPhone.
   ///
   /// In en, this message translates to:

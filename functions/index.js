@@ -681,6 +681,21 @@ function serializeOffer(offer, productsById, ctx) {
 
 const siteConfigModule = require('./siteConfig');
 
+function publicShopCheckout(business) {
+  const sc = business.shopCheckout && typeof business.shopCheckout === 'object'
+    ? business.shopCheckout
+    : {};
+  const deliveryAddress =
+    sc.deliveryAddress === true || business.offersDelivery === true;
+  return {
+    cartEnabled: sc.cartEnabled !== false,
+    customerName: sc.customerName !== false,
+    deliveryAddress,
+    orderNotes: sc.orderNotes !== false,
+    phone: sc.phone !== false,
+  };
+}
+
 function businessPayload(business, slug, ctx) {
   return {
     name: i18n.resolveLocalized({
@@ -724,6 +739,7 @@ function businessPayload(business, slug, ctx) {
     contactEmail: business.contactEmail || '',
     aboutBio: business.aboutBio || '',
     openingHours: business.openingHours || '',
+    shopCheckout: publicShopCheckout(business),
     siteConfig: siteConfigModule.publicSiteConfig(
       business.siteConfig,
       business.businessType || '',

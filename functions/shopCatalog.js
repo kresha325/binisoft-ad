@@ -5,6 +5,18 @@ const { displayLocation } = require('./businessAddress');
 const i18n = require('./i18n');
 const pricing = require('./pricing');
 
+function publicShopCheckoutFromData(data) {
+  const sc =
+    data.shopCheckout && typeof data.shopCheckout === 'object' ? data.shopCheckout : {};
+  return {
+    cartEnabled: sc.cartEnabled !== false,
+    customerName: sc.customerName !== false,
+    deliveryAddress: sc.deliveryAddress === true || data.offersDelivery === true,
+    orderNotes: sc.orderNotes !== false,
+    phone: sc.phone !== false,
+  };
+}
+
 /**
  * Platform shop catalog (same data superadmin manages in Firestore).
  * GET /api/public/businesses | /api/public/marketplace
@@ -37,6 +49,7 @@ async function listShopBusinesses() {
         data.siteConfig,
         data.businessType || '',
       ),
+      shopCheckout: publicShopCheckoutFromData(data),
     });
   }
 

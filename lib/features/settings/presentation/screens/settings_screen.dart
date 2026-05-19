@@ -8,6 +8,7 @@ import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/utils/auth_error_message.dart';
 import '../../../../core/widgets/app_section_card.dart';
+import '../../../../core/widgets/app_switch_row.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/image_url_upload_row.dart';
 import '../../../../core/widgets/loading_overlay.dart';
@@ -15,6 +16,7 @@ import '../../../../core/constants/business_plans.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/domain/business_address.dart';
 import '../../../business/domain/entities/business_type.dart';
+import '../../../business/domain/entities/shop_checkout_config.dart';
 import '../../../business/domain/entities/website_plan.dart';
 import '../../../business/presentation/widgets/business_type_dropdown_field.dart';
 import '../../../business/presentation/providers/business_providers.dart';
@@ -61,6 +63,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   String? _backgroundPresetId;
   String? _backgroundImageUrl;
   double _backgroundOverlayOpacity = DashboardBackgrounds.defaultOverlayOpacity;
+  bool _shopCartEnabled = true;
+  bool _checkoutNameEnabled = true;
+  bool _checkoutDeliveryEnabled = false;
+  bool _checkoutNotesEnabled = true;
+  bool _checkoutPhoneEnabled = true;
 
   @override
   void dispose() {
@@ -111,8 +118,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     if (_backgroundPresetId == null || _backgroundPresetId!.isEmpty) {
       _backgroundPresetId = DashboardBackgrounds.noneId;
     }
+    final checkout = business.shopCheckout;
+    _shopCartEnabled = checkout.cartEnabled;
+    _checkoutNameEnabled = checkout.customerName;
+    _checkoutDeliveryEnabled = checkout.deliveryAddress;
+    _checkoutNotesEnabled = checkout.orderNotes;
+    _checkoutPhoneEnabled = checkout.phone;
     _initialized = true;
   }
+
+  ShopCheckoutConfig get _shopCheckoutConfig => ShopCheckoutConfig(
+        cartEnabled: _shopCartEnabled,
+        customerName: _checkoutNameEnabled,
+        deliveryAddress: _checkoutDeliveryEnabled,
+        orderNotes: _checkoutNotesEnabled,
+        phone: _checkoutPhoneEnabled,
+      );
 
   ShopPreviewData _buildShopPreviewData() {
     final business = ref.read(currentBusinessProvider).valueOrNull;
@@ -227,6 +248,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 : null,
             orderPhone: _orderPhone.text.trim(),
             contactEmail: _contactEmail.text.trim(),
+            shopCheckout: _shopCheckoutConfig,
           );
       if (!mounted) return;
       providers.invalidate(currentBusinessProvider);
@@ -387,6 +409,69 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     controller: _openingHours,
                     hint: l10n.settingsOpeningHoursHint,
                     maxLines: 4,
+                  ),
+                  const SizedBox(height: 28),
+                  Text(
+                    l10n.settingsShopCheckoutTitle,
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: context.appColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.settingsShopCheckoutSubtitle,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: context.appColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  AppSwitchRow(
+                    label: l10n.settingsShopCheckoutCart,
+                    value: _shopCartEnabled,
+                    onChanged: (v) => setState(() => _shopCartEnabled = v),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.settingsShopCheckoutCartNote,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: context.appColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  AppSwitchRow(
+                    label: l10n.settingsShopCheckoutName,
+                    value: _checkoutNameEnabled,
+                    onChanged: (v) => setState(() => _checkoutNameEnabled = v),
+                  ),
+                  const SizedBox(height: 12),
+                  AppSwitchRow(
+                    label: l10n.settingsShopCheckoutDelivery,
+                    value: _checkoutDeliveryEnabled,
+                    onChanged: (v) => setState(() => _checkoutDeliveryEnabled = v),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.settingsShopCheckoutDeliveryNote,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: context.appColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  AppSwitchRow(
+                    label: l10n.settingsShopCheckoutNotes,
+                    value: _checkoutNotesEnabled,
+                    onChanged: (v) => setState(() => _checkoutNotesEnabled = v),
+                  ),
+                  const SizedBox(height: 12),
+                  AppSwitchRow(
+                    label: l10n.settingsShopCheckoutPhone,
+                    value: _checkoutPhoneEnabled,
+                    onChanged: (v) => setState(() => _checkoutPhoneEnabled = v),
                   ),
                   const SizedBox(height: 20),
                   AppTextField(

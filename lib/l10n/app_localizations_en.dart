@@ -1159,6 +1159,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get siteSocialWhatsapp => 'WhatsApp';
 
   @override
+  String get settingsShopCheckoutTitle => 'Online orders (cart)';
+
+  @override
+  String get settingsShopCheckoutSubtitle =>
+      'Active options appear in the shop cart; inactive fields are hidden.';
+
+  @override
+  String get settingsShopCheckoutCart => 'Online cart';
+
+  @override
+  String get settingsShopCheckoutCartNote =>
+      'Inactive: no “Add to cart”, no cart icon — catalog only.';
+
+  @override
+  String get settingsShopCheckoutName => 'Customer name';
+
+  @override
+  String get settingsShopCheckoutDelivery => 'Delivery address';
+
+  @override
+  String get settingsShopCheckoutDeliveryNote =>
+      'Enable only if you deliver; customers must fill it in.';
+
+  @override
+  String get settingsShopCheckoutNotes => 'Order notes';
+
+  @override
+  String get settingsShopCheckoutPhone => 'Phone (optional)';
+
+  @override
   String get settingsOrderPhone => 'Phone (calls & WhatsApp)';
 
   @override

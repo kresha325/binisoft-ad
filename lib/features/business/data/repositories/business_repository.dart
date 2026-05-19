@@ -7,6 +7,7 @@ import '../models/business_model.dart';
 import '../../domain/business_address.dart';
 import '../../domain/entities/business.dart';
 import '../../domain/entities/business_type.dart';
+import '../../domain/entities/shop_checkout_config.dart';
 import '../../domain/entities/site_config.dart';
 import '../../domain/entities/website_plan.dart';
 import '../models/site_config_model.dart';
@@ -119,6 +120,7 @@ class BusinessRepository {
     String? googleMapsUrl,
     String? aboutBio,
     String? openingHours,
+    ShopCheckoutConfig? shopCheckout,
   }) async {
     await _paths.business(businessId).update({
       'name': name,
@@ -148,6 +150,7 @@ class BusinessRepository {
       if (locales != null) 'locales': locales,
       if (nameI18n != null) 'nameI18n': nameI18n,
       if (descriptionI18n != null) 'descriptionI18n': descriptionI18n,
+      if (shopCheckout != null) 'shopCheckout': shopCheckout.toMap(),
     });
   }
 

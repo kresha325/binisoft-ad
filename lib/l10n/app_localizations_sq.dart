@@ -1161,6 +1161,36 @@ class AppLocalizationsSq extends AppLocalizations {
   String get siteSocialWhatsapp => 'WhatsApp';
 
   @override
+  String get settingsShopCheckoutTitle => 'Porositë online (shporta)';
+
+  @override
+  String get settingsShopCheckoutSubtitle =>
+      'Çdo opsion aktiv shfaqet në shportë te klienti; joaktiv = fusha fshihet.';
+
+  @override
+  String get settingsShopCheckoutCart => 'Shporta online';
+
+  @override
+  String get settingsShopCheckoutCartNote =>
+      'Joaktiv: pa «Shto në shportë», pa ikonë shporte — vetëm katalog.';
+
+  @override
+  String get settingsShopCheckoutName => 'Emri i klientit';
+
+  @override
+  String get settingsShopCheckoutDelivery => 'Adresa e dorëzimit';
+
+  @override
+  String get settingsShopCheckoutDeliveryNote =>
+      'Aktiv vetëm nëse ofroni dërgesë; klienti duhet ta plotësojë.';
+
+  @override
+  String get settingsShopCheckoutNotes => 'Kërkesa për porosinë';
+
+  @override
+  String get settingsShopCheckoutPhone => 'Telefoni (opsional)';
+
+  @override
   String get settingsOrderPhone => 'Telefoni (thirrje & WhatsApp)';
 
   @override
