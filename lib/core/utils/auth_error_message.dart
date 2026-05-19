@@ -20,6 +20,11 @@ String firebaseAuthErrorMessage(FirebaseAuthException e) {
       return 'Format email i pavlefshëm.';
     case 'network-request-failed':
       return 'Problem rrjeti. Kontrollo lidhjen dhe provo përsëri.';
+    case 'requests-from-referer-are-blocked':
+    case 'referer-blocked':
+      return 'API key bllokon localhost. Në GCP hap key-in AIzaSyBkH…UdGfU '
+          '(firebase_options web) → Application restrictions: None për test, '
+          'ose shto http://localhost:8080/* te aty key, jo te një key tjetër.';
     case 'invalid-api-key':
     case 'api-key-not-valid':
       return 'API key i Firebase është i kufizuar. Në Google Cloud Console → Credentials → '
@@ -40,14 +45,18 @@ String authErrorMessage(Object error) {
   if (text.contains('email-already-in-use')) {
     return 'Ky email është i regjistruar. Hyr me fjalëkalim.';
   }
+  if ((text.contains('referer') && text.contains('blocked')) ||
+      text.contains('API_KEY_HTTP_REFERRER_BLOCKED')) {
+    return 'Login 403: localhost nuk është te key-i i duhur në GCP. '
+        'Hap key-in AIzaSyBkHpcfoxEZSvmFRKGwUwuO1LnmihUdGfU → None (test) '
+        'ose http://localhost:8080/*. Ose: export FIREBASE_WEB_API_KEY=key_dev && ./tool/dev_run_chrome.sh';
+  }
   if (text.contains('API key not valid') ||
       text.contains('API_KEY_INVALID') ||
-      text.contains('API_KEY_HTTP_REFERRER_BLOCKED') ||
       (text.contains('identitytoolkit') &&
           (text.contains('400') || text.contains('403')))) {
-    return 'Login u bllokua nga API key (403). Për lokal: shto http://localhost:* dhe '
-        'http://127.0.0.1:* në Google Cloud → Credentials → Browser key. '
-        'Për live: https://kresha325.github.io/* dhe Firebase Auth → kresha325.github.io.';
+    return 'Login u bllokua nga API key (403). Për lokal: shto http://localhost:8080/* te key-i UdGfU. '
+        'Për live: https://kresha325.github.io/*';
   }
   if (text.contains('invalid-credential') ||
       text.contains('invalid-login-credentials') ||

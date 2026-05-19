@@ -51,6 +51,7 @@ functions/node_modules/
 scripts/node_modules/
 .env
 .env.*
+env/dev.json
 
 # Local secrets (use flutterfire configure)
 # lib/firebase_options.dart is committed for team builds — restrict keys in Firebase Console.

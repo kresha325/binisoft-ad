@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'core/bootstrap/firebase_options_runtime.dart';
 import 'core/bootstrap/firebase_web_config.dart';
-import 'firebase_options.dart';
 
 Future<void> bootstrap(Future<void> Function() runApp) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ Future<void> bootstrap(Future<void> Function() runApp) async {
     return;
   }
 
-  final options = firebaseOptionsWithoutRtdb(DefaultFirebaseOptions.currentPlatform);
+  final options = runtimeFirebaseOptions;
 
   try {
     await Firebase.initializeApp(options: options).timeout(

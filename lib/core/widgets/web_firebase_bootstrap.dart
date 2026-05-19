@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../firebase_options.dart';
+import '../bootstrap/firebase_options_runtime.dart';
 import '../bootstrap/firebase_web_config.dart';
 import '../bootstrap/firebase_web_preload_wait.dart';
 import '../constants/app_constants.dart';
@@ -85,7 +85,7 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
     }
 
     _armWatchdog();
-    final options = firebaseOptionsWithoutRtdb(DefaultFirebaseOptions.currentPlatform);
+    final options = runtimeFirebaseOptions;
 
     try {
       await awaitFirebaseWebPreload(timeout: _initTimeout);

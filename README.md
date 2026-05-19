@@ -41,11 +41,13 @@ firebase deploy --only firestore:rules,firestore:indexes,storage
 
 Do not use `jon-sport.web.app` for the admin UI unless you add that domain in Firebase (this project uses GitHub Pages only).
 
-In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport), open the **Browser API key** (web `apiKey` in `lib/firebase_options.dart`). Under **HTTP referrers** add:
+In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport), open the **Browser API key** matching `lib/firebase_options.dart` web `apiKey`. Under **HTTP referrers** add (no `:*` port wildcard — invalid):
 
-- `http://localhost:*`
-- `http://127.0.0.1:*`
+- `http://localhost:8080/*` (use `flutter run -d chrome --web-port=8080`)
+- `http://127.0.0.1:8080/*`
 - `https://kresha325.github.io/*`
+
+If Flutter picks another port (e.g. `55394`), add that exact port too: `http://localhost:55394/*`
 
 Under **API restrictions**, either **Don’t restrict key** or ensure **Identity Toolkit API** is allowed.
 
@@ -89,17 +91,38 @@ Open the URL Chrome prints (e.g. `http://localhost:54321`) and go to **`#/login`
 
 ### Local login (required once)
 
-Firebase Auth and the Browser API key must allow **localhost**:
+**Use a fixed port** (Flutter otherwise picks random ports like `55394` → GCP referrer mismatch → 403):
 
-1. [Firebase Auth → Authorized domains](https://console.firebase.google.com/project/jon-sport/authentication/settings): ensure **`localhost`** is listed.
-2. [Google Cloud → Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport) → your **Browser API key** → **HTTP referrers** add:
-   - `http://localhost:*`
-   - `http://127.0.0.1:*`
-3. Wait 2–5 minutes after Save, then hard-refresh Chrome (`Cmd+Shift+R`).
+```bash
+./tool/dev_run_chrome.sh
+# opens http://localhost:8080/#/login
+```
 
-Use an existing account from production, or **Register** locally (creates real data in `jon-sport` Firestore).
+In [Google Cloud → Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport), open the **Browser API key** (`AIzaSyBkH…` in `lib/firebase_options.dart`):
 
-After code changes: press **`r`** (hot reload) or **`R`** (hot restart) in the `flutter run` terminal.
+1. **HTTP referrers:** `http://localhost:8080/*`, `http://127.0.0.1:8080/*`, `https://kresha325.github.io/*` (do not use `localhost:*` — invalid).
+2. **API restrictions:** include **Identity Toolkit API** (or “Don’t restrict key” for testing).
+3. [Firebase Auth → Authorized domains](https://console.firebase.google.com/project/jon-sport/authentication/settings): **`localhost`**.
+
+Wait 5 minutes after Save → `Cmd+Shift+R`.
+
+#### Still 403 on `signInWithPassword`?
+
+The production web key (`AIzaSyBkH…` in `firebase_options.dart`) blocks `localhost` until referrers match. **Easiest fix — separate dev key:**
+
+1. [GCP Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport) → **Create credentials** → **API key**
+2. Name: `Binisoft local` → **Application restrictions: None** → Save
+3. In the repo:
+
+```bash
+cp env/dev.json.example env/dev.json
+# Edit env/dev.json — paste the new API key (not the production UdGfU key)
+./tool/dev_run_chrome.sh
+```
+
+Login screen (debug) should say **“Dev API key active”**. Production on GitHub keeps the old restricted key.
+
+After code changes: **`r`** hot reload or **`R`** hot restart in the terminal.
 
 ## Register flow
 

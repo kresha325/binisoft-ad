@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +22,17 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  static const _devApiKey = String.fromEnvironment('FIREBASE_WEB_API_KEY');
+
+  static String _webDevLoginHint() {
+    final origin = Uri.base.origin;
+    if (_devApiKey.isNotEmpty) {
+      return 'Dev API key active · $origin · login should work.';
+    }
+    return 'No dev API key — copy env/dev.json.example → env/dev.json '
+        '(GCP key with None). Origin: $origin';
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -134,6 +146,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Text(context.l10n.loginJoinTeam),
               ),
             ),
+            if (kDebugMode && kIsWeb) ...[
+              const SizedBox(height: 20),
+              Text(
+                _webDevLoginHint(),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  color: context.appColors.textMuted,
+                ),
+              ),
+            ],
           ],
         ),
       ),
