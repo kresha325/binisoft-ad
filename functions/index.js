@@ -720,6 +720,7 @@ function businessPayload(business, slug, ctx) {
     businessType: business.businessType || '',
     website: business.website || '',
     orderPhone: business.orderPhone || business.settings?.orderPhone || '',
+    contactEmail: business.contactEmail || '',
     aboutBio: business.aboutBio || '',
     openingHours: business.openingHours || '',
     siteConfig: siteConfigModule.publicSiteConfig(

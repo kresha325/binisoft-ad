@@ -1146,7 +1146,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get siteSocialWhatsapp => 'WhatsApp';
 
   @override
-  String get settingsOrderPhone => 'Order phone (WhatsApp)';
+  String get settingsOrderPhone => 'Phone (calls & WhatsApp)';
+
+  @override
+  String get settingsContactEmail => 'Contact email';
+
+  @override
+  String get settingsContactEmailNote =>
+      'Shown in the public Contact section — tap opens email.';
 
   @override
   String get subscriptionPlanTitle => 'Subscription plan';
@@ -1156,7 +1163,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsOrderPhoneNote =>
-      'Used when your online shop sends orders via WhatsApp.';
+      'Number for calls, WhatsApp, and checkout orders.';
 
   @override
   String get productsByCategoryEmpty =>

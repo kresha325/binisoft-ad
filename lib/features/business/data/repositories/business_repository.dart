@@ -109,6 +109,7 @@ class BusinessRepository {
     String? backgroundImageUrl,
     double? backgroundOverlayOpacity,
     String? orderPhone,
+    String? contactEmail,
     String? defaultLocale,
     List<String>? locales,
     Map<String, String>? nameI18n,
@@ -140,6 +141,7 @@ class BusinessRepository {
       if (backgroundOverlayOpacity != null)
         'backgroundOverlayOpacity': backgroundOverlayOpacity,
       if (orderPhone != null) 'orderPhone': orderPhone.trim(),
+      if (contactEmail != null) 'contactEmail': contactEmail.trim(),
       if (defaultLocale != null) 'defaultLocale': defaultLocale,
       if (locales != null) 'locales': locales,
       if (nameI18n != null) 'nameI18n': nameI18n,

@@ -26,6 +26,7 @@ class BusinessModel {
     this.backgroundImageUrl,
     this.backgroundOverlayOpacity,
     this.orderPhone,
+    this.contactEmail,
     this.siteTemplateId,
     this.siteDeployUrl,
     this.siteCustomDomain,
@@ -62,6 +63,7 @@ class BusinessModel {
   final String? backgroundImageUrl;
   final double? backgroundOverlayOpacity;
   final String? orderPhone;
+  final String? contactEmail;
   final String? siteTemplateId;
   final String? siteDeployUrl;
   final String? siteCustomDomain;
@@ -107,6 +109,7 @@ class BusinessModel {
       backgroundImageUrl: data['backgroundImageUrl'] as String?,
       backgroundOverlayOpacity: (data['backgroundOverlayOpacity'] as num?)?.toDouble(),
       orderPhone: data['orderPhone'] as String?,
+      contactEmail: data['contactEmail'] as String?,
       siteTemplateId: data['siteTemplateId'] as String?,
       siteDeployUrl: data['siteDeployUrl'] as String?,
       siteCustomDomain: data['siteCustomDomain'] as String?,
@@ -179,6 +182,7 @@ class BusinessModel {
         backgroundImageUrl: backgroundImageUrl,
         backgroundOverlayOpacity: backgroundOverlayOpacity,
         orderPhone: orderPhone,
+        contactEmail: contactEmail,
         siteTemplateId: siteTemplateId,
         siteDeployUrl: siteDeployUrl,
         siteCustomDomain: siteCustomDomain,

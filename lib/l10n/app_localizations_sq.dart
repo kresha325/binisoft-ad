@@ -1148,7 +1148,14 @@ class AppLocalizationsSq extends AppLocalizations {
   String get siteSocialWhatsapp => 'WhatsApp';
 
   @override
-  String get settingsOrderPhone => 'Telefoni i porosive (WhatsApp)';
+  String get settingsOrderPhone => 'Telefoni (thirrje & WhatsApp)';
+
+  @override
+  String get settingsContactEmail => 'Email i kontaktit';
+
+  @override
+  String get settingsContactEmailNote =>
+      'Shfaqet te seksioni Kontakt në faqen publike — klik hap email.';
 
   @override
   String get subscriptionPlanTitle => 'Plani i abonimit';
@@ -1158,7 +1165,7 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get settingsOrderPhoneNote =>
-      'Përdoret kur dyqani online dërgon porosi përmes WhatsApp.';
+      'Numri për thirrje, WhatsApp dhe porosi nga shporta.';
 
   @override
   String get productsByCategoryEmpty =>

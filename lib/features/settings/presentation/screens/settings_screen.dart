@@ -52,6 +52,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _website = TextEditingController();
   BusinessType? _businessType;
   final _orderPhone = TextEditingController();
+  final _contactEmail = TextEditingController();
   bool _initialized = false;
   bool _saving = false;
   PlatformFile? _logoFile;
@@ -73,6 +74,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _googleMapsUrl.dispose();
     _website.dispose();
     _orderPhone.dispose();
+    _contactEmail.dispose();
     super.dispose();
   }
 
@@ -97,6 +99,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _businessType = business.businessType;
     _website.text = business.website ?? '';
     _orderPhone.text = business.orderPhone ?? '';
+    _contactEmail.text = business.contactEmail ?? '';
     _backgroundPresetId = business.backgroundPresetId;
     _backgroundImageUrl = business.backgroundImageUrl;
     _backgroundOverlayOpacity = DashboardBackgrounds.resolveOverlayOpacity(
@@ -121,6 +124,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       city: _city.text.trim(),
       state: _state.text.trim(),
       orderPhone: _orderPhone.text.trim(),
+      contactEmail: _contactEmail.text.trim(),
       openingHours: _openingHours.text.trim(),
       website: _website.text.trim(),
       businessTypeLabel: _businessType?.label(l10n),
@@ -214,6 +218,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ? _backgroundOverlayOpacity
                 : null,
             orderPhone: _orderPhone.text.trim(),
+            contactEmail: _contactEmail.text.trim(),
           );
       ref.invalidate(currentBusinessProvider);
       if (mounted) {
@@ -380,6 +385,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.settingsOrderPhoneNote,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: context.appColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  AppTextField(
+                    label: l10n.settingsContactEmail,
+                    controller: _contactEmail,
+                    hint: 'info@biznesi.com',
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.settingsContactEmailNote,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: context.appColors.textMuted,

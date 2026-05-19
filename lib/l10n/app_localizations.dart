@@ -2243,8 +2243,20 @@ abstract class AppLocalizations {
   /// No description provided for @settingsOrderPhone.
   ///
   /// In en, this message translates to:
-  /// **'Order phone (WhatsApp)'**
+  /// **'Phone (calls & WhatsApp)'**
   String get settingsOrderPhone;
+
+  /// No description provided for @settingsContactEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact email'**
+  String get settingsContactEmail;
+
+  /// No description provided for @settingsContactEmailNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown in the public Contact section — tap opens email.'**
+  String get settingsContactEmailNote;
 
   /// No description provided for @subscriptionPlanTitle.
   ///
@@ -2261,7 +2273,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsOrderPhoneNote.
   ///
   /// In en, this message translates to:
-  /// **'Used when your online shop sends orders via WhatsApp.'**
+  /// **'Number for calls, WhatsApp, and checkout orders.'**
   String get settingsOrderPhoneNote;
 
   /// No description provided for @productsByCategoryEmpty.
