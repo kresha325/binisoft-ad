@@ -85,6 +85,22 @@ flutter pub get
 flutter run -d chrome
 ```
 
+Open the URL Chrome prints (e.g. `http://localhost:54321`) and go to **`#/login`** or **`#/register`**.
+
+### Local login (required once)
+
+Firebase Auth and the Browser API key must allow **localhost**:
+
+1. [Firebase Auth → Authorized domains](https://console.firebase.google.com/project/jon-sport/authentication/settings): ensure **`localhost`** is listed.
+2. [Google Cloud → Credentials](https://console.cloud.google.com/apis/credentials?project=jon-sport) → your **Browser API key** → **HTTP referrers** add:
+   - `http://localhost:*`
+   - `http://127.0.0.1:*`
+3. Wait 2–5 minutes after Save, then hard-refresh Chrome (`Cmd+Shift+R`).
+
+Use an existing account from production, or **Register** locally (creates real data in `jon-sport` Firestore).
+
+After code changes: press **`r`** (hot reload) or **`R`** (hot restart) in the `flutter run` terminal.
+
 ## Register flow
 
 1. **Register** → Firebase Auth user + `businesses/{businessId}` + `users/{uid}` (role: `owner`)

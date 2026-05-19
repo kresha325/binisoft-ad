@@ -23,7 +23,7 @@ String firebaseAuthErrorMessage(FirebaseAuthException e) {
     case 'invalid-api-key':
     case 'api-key-not-valid':
       return 'API key i Firebase është i kufizuar. Në Google Cloud Console → Credentials → '
-          'Browser key, shto HTTP referrers: localhost/* dhe '
+          'Browser key, shto HTTP referrers: http://localhost:*, http://127.0.0.1:* dhe '
           'https://kresha325.github.io/*';
     default:
       return e.message ?? 'Autentifikimi dështoi (${e.code}).';
@@ -45,9 +45,9 @@ String authErrorMessage(Object error) {
       text.contains('API_KEY_HTTP_REFERRER_BLOCKED') ||
       (text.contains('identitytoolkit') &&
           (text.contains('400') || text.contains('403')))) {
-    return 'Login u bllokua nga API key (403). Hap dashboard vetëm nga '
-        'https://kresha325.github.io/binisoft-ad/app/ — në Google Cloud shto referrer '
-        'https://kresha325.github.io/* dhe në Firebase Auth domain kresha325.github.io.';
+    return 'Login u bllokua nga API key (403). Për lokal: shto http://localhost:* dhe '
+        'http://127.0.0.1:* në Google Cloud → Credentials → Browser key. '
+        'Për live: https://kresha325.github.io/* dhe Firebase Auth → kresha325.github.io.';
   }
   if (text.contains('invalid-credential') ||
       text.contains('invalid-login-credentials') ||

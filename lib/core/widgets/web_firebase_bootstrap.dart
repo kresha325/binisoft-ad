@@ -46,8 +46,13 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
   }
 
   bool _isCorrectDeployPath() {
-    final path = Uri.base.path;
-    return path.contains('binisoft-ad');
+    final uri = Uri.base;
+    final host = uri.host.toLowerCase();
+    // Local dev (flutter run -d chrome) — always allow Firebase init.
+    if (host == 'localhost' || host == '127.0.0.1') {
+      return true;
+    }
+    return uri.path.contains('binisoft-ad');
   }
 
   @override
