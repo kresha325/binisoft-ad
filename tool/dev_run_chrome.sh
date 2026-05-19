@@ -12,8 +12,12 @@ fi
 ARGS=(run -d chrome --web-port=8080 --web-hostname=localhost)
 
 if [[ -f env/dev.json ]]; then
+  if grep -q 'PASTE_DEV_API_KEY_HERE' env/dev.json 2>/dev/null; then
+    echo "ERROR: Edit env/dev.json — replace PASTE_DEV_API_KEY_HERE with your dev API key."
+    exit 1
+  fi
   ARGS+=(--dart-define-from-file=env/dev.json)
-  echo "✓ Using env/dev.json (dev API key with GCP restrictions = None)."
+  echo "✓ Using env/dev.json (dev API key). After login, Network tab must NOT show key …UdGfU."
 elif [[ -n "${FIREBASE_WEB_API_KEY:-}" ]]; then
   ARGS+=(--dart-define="FIREBASE_WEB_API_KEY=${FIREBASE_WEB_API_KEY}")
   echo "✓ Using FIREBASE_WEB_API_KEY from shell."

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../bootstrap/firebase_options_runtime.dart';
 import '../bootstrap/firebase_web_config.dart';
+
+const _devApiKeyOverride = String.fromEnvironment('FIREBASE_WEB_API_KEY');
 import '../bootstrap/firebase_web_preload_wait.dart';
 import '../constants/app_constants.dart';
 import '../utils/client_platform.dart';
@@ -41,6 +43,20 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
         'Wrong URL. Open:\n${AppConstants.dashboardWebUrl}/#/login',
       );
       return;
+    }
+    if (kDebugMode) {
+      final host = Uri.base.host;
+      if ((host == 'localhost' || host == '127.0.0.1') && _devApiKeyOverride.isEmpty) {
+        debugPrint(
+          'LOCAL DEV: No FIREBASE_WEB_API_KEY — login will 403 with prod key UdGfU. '
+          'Create env/dev.json and run ./tool/dev_run_chrome.sh',
+        );
+      } else if (_devApiKeyOverride.isNotEmpty) {
+        final tail = _devApiKeyOverride.length >= 6
+            ? _devApiKeyOverride.substring(_devApiKeyOverride.length - 6)
+            : _devApiKeyOverride;
+        debugPrint('LOCAL DEV: Using API key …$tail');
+      }
     }
     unawaited(_initFirebase());
   }

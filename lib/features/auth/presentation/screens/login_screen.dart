@@ -27,10 +27,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   static String _webDevLoginHint() {
     final origin = Uri.base.origin;
     if (_devApiKey.isNotEmpty) {
-      return 'Dev API key active · $origin · login should work.';
+      final tail = _devApiKey.length >= 6 ? _devApiKey.substring(_devApiKey.length - 6) : _devApiKey;
+      return 'Dev API key active (…$tail). Stop flutter run and use ./tool/dev_run_chrome.sh '
+          'if login still shows key …UdGfU in Console.';
     }
-    return 'No dev API key — copy env/dev.json.example → env/dev.json '
-        '(GCP key with None). Origin: $origin';
+    return 'WRONG KEY: still using production …UdGfU → 403. '
+        '1) cp env/dev.json.example env/dev.json  2) paste NEW GCP key (None) '
+        '3) q then ./tool/dev_run_chrome.sh (hot reload is NOT enough).';
   }
 
   final _formKey = GlobalKey<FormState>();
