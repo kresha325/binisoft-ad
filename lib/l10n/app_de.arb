@@ -347,7 +347,12 @@
   "siteSectionHeroP": "Hero-Text",
   "siteHeroUseProfileCover": "Titelbild aus den Einstellungen verwenden",
   "siteHeroImage": "Hero-Hintergrundbild",
-  "siteGalleryHint": "Bis zu 8 — Bild und/oder YouTube pro Platz.",
+  "siteGalleryHint": "Bis zu {max} — Bild und/oder YouTube pro Platz.",
+  "@siteGalleryHint": {
+    "placeholders": {
+      "max": { "type": "int" }
+    }
+  },
   "siteSectionCtaLabel": "Primärer Button-Text",
   "siteSectionSecondaryCtaLabel": "Sekundärer Button-Text",
   "siteSectionTrustBullets": "Vertrauenspunkte (Hero)",

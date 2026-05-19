@@ -765,7 +765,7 @@ class _SectionTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                l10n.siteGalleryHint,
+                l10n.siteGalleryHint(SiteConfig.maxGalleryItems),
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   color: context.appColors.textMuted,

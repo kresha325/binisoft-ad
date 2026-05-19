@@ -347,7 +347,12 @@
   "siteSectionHeroP": "Teksti hero (paragraf)",
   "siteHeroUseProfileCover": "Përdor cover-in nga profili i biznesit",
   "siteHeroImage": "Imazhi i sfondit hero",
-  "siteGalleryHint": "Deri në 8 — imazh dhe/ose YouTube për çdo vend.",
+  "siteGalleryHint": "Deri në {max} — imazh dhe/ose YouTube për çdo vend.",
+  "@siteGalleryHint": {
+    "placeholders": {
+      "max": { "type": "int" }
+    }
+  },
   "siteSectionCtaLabel": "Teksti i butonit kryesor",
   "siteSectionSecondaryCtaLabel": "Teksti i butonit dytësor",
   "siteSectionTrustBullets": "Pikat e besimit (hero)",

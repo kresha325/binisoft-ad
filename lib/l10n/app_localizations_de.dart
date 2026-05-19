@@ -1080,7 +1080,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get siteHeroImage => 'Hero-Hintergrundbild';
 
   @override
-  String get siteGalleryHint => 'Bis zu 8 — Bild und/oder YouTube pro Platz.';
+  String siteGalleryHint(int max) {
+    return 'Bis zu $max — Bild und/oder YouTube pro Platz.';
+  }
 
   @override
   String get siteSectionCtaLabel => 'Primärer Button-Text';

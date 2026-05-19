@@ -1082,8 +1082,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get siteHeroImage => 'Imazhi i sfondit hero';
 
   @override
-  String get siteGalleryHint =>
-      'Deri në 8 — imazh dhe/ose YouTube për çdo vend.';
+  String siteGalleryHint(int max) {
+    return 'Deri në $max — imazh dhe/ose YouTube për çdo vend.';
+  }
 
   @override
   String get siteSectionCtaLabel => 'Teksti i butonit kryesor';

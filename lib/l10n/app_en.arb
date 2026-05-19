@@ -364,7 +364,12 @@
   "siteSectionHeroP": "Hero text (paragraph)",
   "siteHeroUseProfileCover": "Use profile cover image from settings",
   "siteHeroImage": "Hero background image",
-  "siteGalleryHint": "Up to 8 items — image and/or YouTube embed per slot.",
+  "siteGalleryHint": "Up to {max} items — image and/or YouTube embed per slot.",
+  "@siteGalleryHint": {
+    "placeholders": {
+      "max": { "type": "int" }
+    }
+  },
   "siteSectionCtaLabel": "Primary button text",
   "siteSectionSecondaryCtaLabel": "Secondary button text",
   "siteSectionTrustBullets": "Trust bullets (hero)",

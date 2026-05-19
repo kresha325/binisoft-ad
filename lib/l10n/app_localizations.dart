@@ -2117,8 +2117,8 @@ abstract class AppLocalizations {
   /// No description provided for @siteGalleryHint.
   ///
   /// In en, this message translates to:
-  /// **'Up to 8 items — image and/or YouTube embed per slot.'**
-  String get siteGalleryHint;
+  /// **'Up to {max} items — image and/or YouTube embed per slot.'**
+  String siteGalleryHint(int max);
 
   /// No description provided for @siteSectionCtaLabel.
   ///
