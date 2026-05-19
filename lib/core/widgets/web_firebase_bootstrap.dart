@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../bootstrap/firebase_options_runtime.dart';
 import '../bootstrap/firebase_web_config.dart';
-
-const _devApiKeyOverride = String.fromEnvironment('FIREBASE_WEB_API_KEY');
 import '../bootstrap/firebase_web_preload_wait.dart';
 import '../constants/app_constants.dart';
 import '../utils/client_platform.dart';
@@ -15,6 +13,8 @@ import '../utils/open_dashboard_url.dart';
 import '../utils/page_reload.dart';
 import '../utils/web_boot_overlay.dart';
 import 'web_init_error_screen.dart';
+
+const _devApiKeyOverride = String.fromEnvironment('FIREBASE_WEB_API_KEY');
 
 /// On web: start Flutter UI first, then init Firebase (Safari/iPhone can hang on IndexedDB).
 class WebFirebaseBootstrap extends StatefulWidget {
