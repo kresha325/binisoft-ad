@@ -1641,10 +1641,34 @@ class AppLocalizationsDe extends AppLocalizations {
   String get businessTypeRestaurant => 'Restaurant';
 
   @override
-  String get businessTypeCafe => 'Café & Bar';
+  String get businessTypePizzeria => 'Pizzeria';
+
+  @override
+  String get businessTypeCafe => 'Café';
 
   @override
   String get businessTypeFastFood => 'Fast Food & Take-away';
+
+  @override
+  String get businessTypeBar => 'Bar & Lounge';
+
+  @override
+  String get businessTypeCatering => 'Catering & Bankett';
+
+  @override
+  String get businessTypeButcher => 'Metzgerei';
+
+  @override
+  String get businessTypeIceCream => 'Eis & Desserts';
+
+  @override
+  String get businessTypeFlowerShop => 'Blumenladen';
+
+  @override
+  String get businessTypeJewelry => 'Schmuck & Uhren';
+
+  @override
+  String get businessTypeBookstore => 'Buchhandlung & Schreibwaren';
 
   @override
   String get businessTypePharmacy => 'Apotheke & Gesundheit';

@@ -1642,10 +1642,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessTypeRestaurant => 'Restaurant';
 
   @override
-  String get businessTypeCafe => 'Café & bar';
+  String get businessTypePizzeria => 'Pizzeria';
+
+  @override
+  String get businessTypeCafe => 'Café';
 
   @override
   String get businessTypeFastFood => 'Fast food & takeaway';
+
+  @override
+  String get businessTypeBar => 'Bar & lounge';
+
+  @override
+  String get businessTypeCatering => 'Catering & banquets';
+
+  @override
+  String get businessTypeButcher => 'Butcher shop';
+
+  @override
+  String get businessTypeIceCream => 'Ice cream & desserts';
+
+  @override
+  String get businessTypeFlowerShop => 'Flower shop';
+
+  @override
+  String get businessTypeJewelry => 'Jewelry & watches';
+
+  @override
+  String get businessTypeBookstore => 'Bookstore & stationery';
 
   @override
   String get businessTypePharmacy => 'Pharmacy & health';

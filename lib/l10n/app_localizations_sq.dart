@@ -1646,10 +1646,34 @@ class AppLocalizationsSq extends AppLocalizations {
   String get businessTypeRestaurant => 'Restorant';
 
   @override
-  String get businessTypeCafe => 'Kafene & bar';
+  String get businessTypePizzeria => 'Piceri';
+
+  @override
+  String get businessTypeCafe => 'Kafene';
 
   @override
   String get businessTypeFastFood => 'Fast food & take away';
+
+  @override
+  String get businessTypeBar => 'Bar & lounge';
+
+  @override
+  String get businessTypeCatering => 'Catering & banak';
+
+  @override
+  String get businessTypeButcher => 'Qendër mishi / berati';
+
+  @override
+  String get businessTypeIceCream => 'Akullore & ëmbëlsira';
+
+  @override
+  String get businessTypeFlowerShop => 'Floristeri / lule';
+
+  @override
+  String get businessTypeJewelry => 'Argjendari & orë';
+
+  @override
+  String get businessTypeBookstore => 'Librari & shkollë';
 
   @override
   String get businessTypePharmacy => 'Farmaci & shëndet';

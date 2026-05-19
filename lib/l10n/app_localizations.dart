@@ -3120,10 +3120,16 @@ abstract class AppLocalizations {
   /// **'Restaurant'**
   String get businessTypeRestaurant;
 
+  /// No description provided for @businessTypePizzeria.
+  ///
+  /// In en, this message translates to:
+  /// **'Pizzeria'**
+  String get businessTypePizzeria;
+
   /// No description provided for @businessTypeCafe.
   ///
   /// In en, this message translates to:
-  /// **'Café & bar'**
+  /// **'Café'**
   String get businessTypeCafe;
 
   /// No description provided for @businessTypeFastFood.
@@ -3131,6 +3137,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fast food & takeaway'**
   String get businessTypeFastFood;
+
+  /// No description provided for @businessTypeBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Bar & lounge'**
+  String get businessTypeBar;
+
+  /// No description provided for @businessTypeCatering.
+  ///
+  /// In en, this message translates to:
+  /// **'Catering & banquets'**
+  String get businessTypeCatering;
+
+  /// No description provided for @businessTypeButcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Butcher shop'**
+  String get businessTypeButcher;
+
+  /// No description provided for @businessTypeIceCream.
+  ///
+  /// In en, this message translates to:
+  /// **'Ice cream & desserts'**
+  String get businessTypeIceCream;
+
+  /// No description provided for @businessTypeFlowerShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Flower shop'**
+  String get businessTypeFlowerShop;
+
+  /// No description provided for @businessTypeJewelry.
+  ///
+  /// In en, this message translates to:
+  /// **'Jewelry & watches'**
+  String get businessTypeJewelry;
+
+  /// No description provided for @businessTypeBookstore.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookstore & stationery'**
+  String get businessTypeBookstore;
 
   /// No description provided for @businessTypePharmacy.
   ///

@@ -165,8 +165,12 @@ class SiteCtaPresets {
 
   static const _foodOrder = {
     BusinessType.restaurant,
+    BusinessType.pizzeria,
     BusinessType.cafe,
     BusinessType.fastFood,
+    BusinessType.bar,
+    BusinessType.catering,
+    BusinessType.iceCream,
   };
 
   static const _retailOrder = {
@@ -176,6 +180,10 @@ class SiteCtaPresets {
     BusinessType.grocery,
     BusinessType.bakery,
     BusinessType.wholesale,
+    BusinessType.butcher,
+    BusinessType.flowerShop,
+    BusinessType.jewelry,
+    BusinessType.bookstore,
     BusinessType.pharmacy,
     BusinessType.agriculture,
     BusinessType.petShop,
