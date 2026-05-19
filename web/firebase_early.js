@@ -39,7 +39,10 @@
     try {
       var core = window.firebase_core;
       var apps = core.getApps();
-      if (!apps || apps.length === 0) {
+      var isLocalDev =
+        location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      // On localhost, Flutter uses env/dev.json API key — do not init with prod apiKey here.
+      if ((!apps || apps.length === 0) && !isLocalDev) {
         core.initializeApp(firebaseConfig);
       }
       window.__binisoft_firebase_preload = 'ok';
