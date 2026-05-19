@@ -140,6 +140,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final businessId = ref.read(currentBusinessIdProvider);
     if (businessId == null) return;
 
+    final aboutBioText = _aboutBio.text.trim();
+    final descriptionText = _description.text.trim();
     final mapsRaw = _googleMapsUrl.text.trim();
     if (mapsRaw.isNotEmpty) {
       if (RegExp(r'<\s*iframe', caseSensitive: false).hasMatch(mapsRaw) ||
@@ -199,7 +201,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       await ref.read(businessRepositoryProvider).updateProfile(
             businessId: businessId,
             name: _name.text.trim(),
-            description: _description.text.trim(),
+            description: descriptionText,
             logoUrl: logoUrl,
             coverImageUrl: coverImageUrl,
             postalCode: _postalCode.text.trim(),
@@ -210,7 +212,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               state: _state.text.trim(),
             ),
             googleMapsUrl: mapsLink,
-            aboutBio: _aboutBio.text.trim(),
+            aboutBio: aboutBioText.isNotEmpty ? aboutBioText : descriptionText,
             openingHours: _openingHours.text.trim(),
             businessType: _businessType,
             website: _website.text.trim(),

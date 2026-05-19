@@ -127,7 +127,7 @@ function publicSiteConfig(raw, businessType = '') {
     const ctaLabel = sanitizeText(s.ctaLabel, 60);
     const secondaryCtaLabel = sanitizeText(s.secondaryCtaLabel, 60);
     if (title) out.title = title;
-    if (description && s.id !== 'about') out.description = description;
+    if (description) out.description = description;
     if (navLabel) out.navLabel = navLabel;
     if (ctaLabel) out.ctaLabel = ctaLabel;
     if (secondaryCtaLabel) out.secondaryCtaLabel = secondaryCtaLabel;
