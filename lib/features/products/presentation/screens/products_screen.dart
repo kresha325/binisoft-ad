@@ -184,6 +184,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 children: [
                   for (final p in filtered)
                     CatalogEntityCard(
+                      dense: true,
                       title: p.name,
                       subtitle: p.categoryIds.isEmpty
                           ? null
@@ -192,20 +193,21 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                           ? '€${p.basePrice!.toStringAsFixed(2)} · /${p.slug}'
                           : '/${p.slug}',
                       leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(6),
                         child: p.imageUrls.isNotEmpty
                             ? StorageNetworkImage(
                                 url: p.imageUrls.first,
-                                width: 56,
-                                height: 56,
+                                width: 44,
+                                height: 44,
+                                fit: BoxFit.cover,
                               )
                             : Container(
-                                width: 56,
-                                height: 56,
+                                width: 44,
+                                height: 44,
                                 color: colors.surfaceElevated,
                                 child: Icon(
                                   Icons.image_outlined,
-                                  size: 24,
+                                  size: 20,
                                   color: colors.textMuted,
                                 ),
                               ),

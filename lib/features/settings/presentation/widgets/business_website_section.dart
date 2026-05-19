@@ -114,7 +114,9 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
             businessId: businessId,
             customDomain: _customDomain.text,
           );
-      ref.invalidate(currentBusinessProvider);
+      if (!mounted) return;
+      ProviderScope.containerOf(context, listen: false)
+          .invalidate(currentBusinessProvider);
       if (mounted) {
         setState(() => _lastDeploy = result);
         ScaffoldMessenger.of(context).showSnackBar(

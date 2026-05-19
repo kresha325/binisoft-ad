@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/page_header_action_provider.dart';
+import '../utils/provider_scope_reader.dart';
 
 /// Registers a page header action for [route] (cleared when this scope disposes).
 class PageHeaderActionScope extends ConsumerStatefulWidget {
@@ -22,10 +23,15 @@ class PageHeaderActionScope extends ConsumerStatefulWidget {
 }
 
 class _PageHeaderActionScopeState extends ConsumerState<PageHeaderActionScope> {
+  ProviderContainer? _providers;
+
+  ProviderContainer _container(BuildContext context) =>
+      _providers ??= providerScopeOf(context);
+
   @override
   void initState() {
     super.initState();
-    _apply();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _apply());
   }
 
   @override
@@ -40,7 +46,8 @@ class _PageHeaderActionScopeState extends ConsumerState<PageHeaderActionScope> {
   void _apply() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      ref.read(pageHeaderActionProvider.notifier).state = PageHeaderActionEntry(
+      final container = _container(context);
+      container.read(pageHeaderActionProvider.notifier).state = PageHeaderActionEntry(
         route: widget.route,
         action: widget.action,
       );
@@ -48,7 +55,9 @@ class _PageHeaderActionScopeState extends ConsumerState<PageHeaderActionScope> {
   }
 
   void _clearForRoute(String route) {
-    final notifier = ref.read(pageHeaderActionProvider.notifier);
+    final container = _providers;
+    if (container == null) return;
+    final notifier = container.read(pageHeaderActionProvider.notifier);
     final current = notifier.state;
     if (current?.route == route) {
       notifier.state = null;

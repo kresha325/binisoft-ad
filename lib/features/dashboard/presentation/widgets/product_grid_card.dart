@@ -16,7 +16,7 @@ class ProductGridCard extends ConsumerWidget {
 
   final Product product;
 
-  static const _imageHeight = 110.0;
+  static const _imageHeight = 88.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +48,12 @@ class ProductGridCard extends ConsumerWidget {
             height: _imageHeight,
             width: double.infinity,
             child: imageUrl != null
-                ? StorageNetworkImage(url: imageUrl, fit: BoxFit.cover)
+                ? StorageNetworkImage(
+                    url: imageUrl,
+                    width: double.infinity,
+                    height: _imageHeight,
+                    fit: BoxFit.cover,
+                  )
                 : _placeholder(colors),
           ),
           Padding(

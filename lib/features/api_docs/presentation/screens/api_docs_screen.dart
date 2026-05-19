@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/utils/provider_scope_reader.dart';
 import '../../../../core/utils/open_external_url.dart';
 import '../../../../core/i18n/app_locales.dart';
 import '../../../../core/l10n/l10n_extension.dart';
@@ -18,7 +19,6 @@ import '../../../../core/widgets/status_chip.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/presentation/providers/business_providers.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
-import '../../../services/presentation/providers/services_providers.dart';
 import '../../../products/presentation/providers/attributes_providers.dart';
 import '../../../products/presentation/providers/products_providers.dart';
 import '../../../orders/presentation/widgets/api_keys_section.dart';
@@ -112,16 +112,17 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
 
     if (!mounted) return;
 
-    final businessId = ref.read(currentBusinessIdProvider);
+    final providers = providerScopeOf(context);
+    final businessId = providers.read(currentBusinessIdProvider);
     if (businessId == null) {
       if (mounted) setState(() => _loadingPreview = false);
       return;
     }
 
-    final business = ref.read(currentBusinessProvider).valueOrNull;
-    final products = ref.read(productsListProvider).valueOrNull ?? [];
-    final categories = ref.read(categoriesListProvider).valueOrNull ?? [];
-    final attributes = ref.read(attributesListProvider).valueOrNull ?? [];
+    final business = providers.read(currentBusinessProvider).valueOrNull;
+    final products = providers.read(productsListProvider).valueOrNull ?? [];
+    final categories = providers.read(categoriesListProvider).valueOrNull ?? [];
+    final attributes = providers.read(attributesListProvider).valueOrNull ?? [];
 
     final payload = buildPublicProductsPayload(
       business: business,

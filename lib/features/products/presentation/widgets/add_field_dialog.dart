@@ -12,14 +12,16 @@ import '../../../../core/widgets/app_switch_row.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_input_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/utils/provider_scope_reader.dart';
 import '../../../../core/widgets/localized_fields_editor.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../business/presentation/providers/business_locales_provider.dart';
 import '../../domain/entities/attribute_definition.dart';
 
 Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
+  final providers = providerScopeOf(context);
   final l10n = context.l10n;
-  final locales = ref.read(businessLocalesProvider);
+  final locales = providers.read(businessLocalesProvider);
   var labelValues = LocalizedText.initialValues(
     defaultLocale: locales.defaultLocale,
     enabledLocales: locales.enabledLocales,
@@ -99,7 +101,7 @@ Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
       },
     ),
     onSave: () async {
-      final localeConfig = ref.read(businessLocalesProvider);
+      final localeConfig = providers.read(businessLocalesProvider);
       final labelError = validateLocalizedRequired(
         values: labelValues,
         defaultLocale: localeConfig.defaultLocale,
@@ -114,7 +116,7 @@ Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
         return false;
       }
 
-      final businessId = ref.read(currentBusinessIdProvider);
+      final businessId = providers.read(currentBusinessIdProvider);
       if (businessId == null) return false;
 
       final packed = LocalizedText.packForSave(
@@ -124,7 +126,7 @@ Future<void> showAddFieldDialog(BuildContext context, WidgetRef ref) async {
       );
 
       try {
-        await ref.read(attributeRepositoryProvider).create(
+        await providers.read(attributeRepositoryProvider).create(
               businessId: businessId,
               name: packed.primary,
               nameI18n: packed.i18n,

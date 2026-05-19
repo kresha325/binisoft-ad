@@ -92,15 +92,23 @@ class _StorageNetworkImageState extends State<StorageNetworkImage> {
     }
   }
 
+  /// HTML &lt;img&gt; on web can detach from Flutter scroll views; only use for
+  /// full-bleed images without explicit bounds.
+  bool _useWebHtmlElement(String url) =>
+      kIsWeb &&
+      widget.width == null &&
+      widget.height == null &&
+      !StorageUrlResolver.hasDownloadToken(url);
+
   Widget _imageWidget(String url) {
     return Image.network(
       url,
       fit: widget.fit,
       width: widget.width,
       height: widget.height,
-      // Web: HTML <img> bypasses Storage GET CORS (XHR/fetch would fail on localhost).
-      webHtmlElementStrategy:
-          kIsWeb ? WebHtmlElementStrategy.prefer : WebHtmlElementStrategy.never,
+      webHtmlElementStrategy: _useWebHtmlElement(url)
+          ? WebHtmlElementStrategy.prefer
+          : WebHtmlElementStrategy.never,
       errorBuilder: (_, __, ___) => _placeholder(),
       loadingBuilder: (context, child, progress) {
         if (progress == null) return child;
@@ -154,7 +162,11 @@ class _StorageNetworkImageState extends State<StorageNetworkImage> {
     }
 
     if (widget.width != null || widget.height != null) {
-      return SizedBox(width: widget.width, height: widget.height, child: child);
+      return SizedBox(
+        width: widget.width,
+        height: widget.height,
+        child: ClipRect(child: child),
+      );
     }
     return child;
   }

@@ -17,6 +17,7 @@ class CatalogEntityCard extends StatelessWidget {
     this.trailing,
     this.chips = const [],
     this.onTap,
+    this.dense = false,
   });
 
   final String title;
@@ -26,57 +27,73 @@ class CatalogEntityCard extends StatelessWidget {
   final Widget? trailing;
   final List<Widget> chips;
   final VoidCallback? onTap;
+  /// Tighter padding and typography for product/category grids.
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
 
+    final pad = dense
+        ? 10.0
+        : (AppBreakpoints.isMobile(context) ? 14.0 : 16.0);
+    final titleSize = dense ? 13.0 : 15.0;
+    final subtitleSize = dense ? 12.0 : 13.0;
+
     final body = GlassSurface(
-      borderRadius: BorderRadius.circular(AppDesign.radiusLg),
-      padding: EdgeInsets.all(AppBreakpoints.isMobile(context) ? 14 : 16),
+      borderRadius: BorderRadius.circular(dense ? AppDesign.radiusMd : AppDesign.radiusLg),
+      padding: EdgeInsets.all(pad),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (leading != null) ...[
                 leading!,
-                const SizedBox(width: 12),
+                SizedBox(width: dense ? 10 : 12),
               ],
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       title,
-                      maxLines: 2,
+                      maxLines: dense ? 1 : 2,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.inter(
-                        fontSize: 15,
+                        fontSize: titleSize,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
+                        height: 1.2,
                       ),
                     ),
                     if (subtitle != null && subtitle!.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      SizedBox(height: dense ? 2 : 4),
                       Text(
                         subtitle!,
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                        style: GoogleFonts.inter(
+                          fontSize: subtitleSize,
+                          color: colors.textMuted,
+                          height: 1.2,
+                        ),
                       ),
                     ],
                     if (meta != null && meta!.isNotEmpty) ...[
-                      const SizedBox(height: 6),
+                      SizedBox(height: dense ? 3 : 6),
                       Text(
                         meta!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(
-                          fontSize: 11,
+                          fontSize: dense ? 10 : 11,
                           fontWeight: FontWeight.w500,
                           color: colors.textMuted,
+                          height: 1.2,
                         ),
                       ),
                     ],
@@ -87,8 +104,8 @@ class CatalogEntityCard extends StatelessWidget {
             ],
           ),
           if (chips.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Wrap(spacing: 6, runSpacing: 6, children: chips),
+            SizedBox(height: dense ? 8 : 12),
+            Wrap(spacing: 6, runSpacing: 4, children: chips),
           ],
         ],
       ),

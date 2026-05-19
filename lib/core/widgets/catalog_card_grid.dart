@@ -46,22 +46,33 @@ class CatalogCardGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        final crossAxisCount = width > 1100
-            ? 3
-            : width > 680
-                ? 2
-                : 1;
+        final crossAxisCount = width > 1280
+            ? 4
+            : width > 960
+                ? 3
+                : width > 560
+                    ? 2
+                    : 1;
+
+        // Horizontal catalog cards are ~88–96px tall; avoid square cells (was 1.05).
+        final childAspectRatio = switch (crossAxisCount) {
+          4 => 3.5,
+          3 => 3.2,
+          2 => 2.85,
+          _ => 2.4,
+        };
 
         final grid = GridView.count(
           crossAxisCount: crossAxisCount,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          childAspectRatio: crossAxisCount == 1 ? 2.4 : 1.05,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: childAspectRatio,
           shrinkWrap: !scrollable,
           physics: scrollable
               ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 8),
+          clipBehavior: Clip.hardEdge,
           children: children,
         );
 
