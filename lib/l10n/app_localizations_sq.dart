@@ -1637,7 +1637,13 @@ class AppLocalizationsSq extends AppLocalizations {
   String get businessTypeGrocery => 'Market & ushqimore';
 
   @override
-  String get businessTypeBakery => 'Furrë & ëmbëlsira';
+  String get businessTypeConvenienceStore => 'Market 24h / kiosk';
+
+  @override
+  String get businessTypeBakery => 'Furrë';
+
+  @override
+  String get businessTypePastry => 'Pastiçeri & torta';
 
   @override
   String get businessTypeWholesale => 'Shumicë / B2B';
@@ -1682,6 +1688,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get businessTypePetShop => 'Dyqan kafshësh & grooming';
 
   @override
+  String get businessTypeVeterinary => 'Veteriner / klinikë për kafshë';
+
+  @override
   String get businessTypeServices => 'Shërbime të përgjithshme (termina)';
 
   @override
@@ -1692,6 +1701,9 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get businessTypeClinic => 'Klinikë & praktikë mjekësore';
+
+  @override
+  String get businessTypeDental => 'Stomatologji';
 
   @override
   String get businessTypeAutomotive => 'Servis & riparim automjeti';

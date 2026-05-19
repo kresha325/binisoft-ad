@@ -142,12 +142,27 @@ abstract final class BusinessCategoryTemplates {
       _t('beverages', 'Pije', 'Beverages', 'Getränke'),
       _t('household', 'Shtëpiakë', 'Household', 'Haushalt'),
     ],
+    BusinessType.convenienceStore: [
+      _t('snacks', 'Snacks', 'Snacks', 'Snacks'),
+      _t('drinks', 'Pije', 'Drinks', 'Getränke'),
+      _t('essentials', 'Urgjencë', 'Essentials', 'Grundbedarf'),
+      _t('tobacco', 'Duhan', 'Tobacco', 'Tabak'),
+      _t('frozen', 'I ngrirë', 'Frozen', 'Tiefkühl'),
+      _t('household', 'Shtëpiakë', 'Household', 'Haushalt'),
+    ],
     BusinessType.bakery: [
       _t('bread', 'Bukë', 'Bread', 'Brot'),
       _t('pastries', 'Ëmbëlsira', 'Pastries', 'Gebäck'),
       _t('cakes', 'Torta', 'Cakes', 'Kuchen'),
       _t('sandwiches', 'Sanduiçe', 'Sandwiches', 'Sandwiches'),
       _t('beverages', 'Pije', 'Beverages', 'Getränke'),
+    ],
+    BusinessType.pastry: [
+      _t('cakes', 'Torta', 'Cakes', 'Torten'),
+      _t('pastries', 'Ëmbëlsira', 'Pastries', 'Gebäck'),
+      _t('wedding-cakes', 'Torta dasme', 'Wedding cakes', 'Hochzeitstorten'),
+      _t('custom', 'Porosi speciale', 'Custom orders', 'Sonderbestellungen'),
+      _t('cookies', 'Kekse', 'Cookies', 'Kekse'),
     ],
     BusinessType.wholesale: [
       _t('bulk', 'Shumicë', 'Bulk', 'Großpackungen'),
@@ -251,6 +266,13 @@ abstract final class BusinessCategoryTemplates {
       _t('accessories', 'Aksesorë', 'Accessories', 'Zubehör'),
       _t('grooming', 'Grooming', 'Grooming', 'Pflege'),
     ],
+    BusinessType.veterinary: [
+      _t('consultations', 'Konsulta', 'Consultations', 'Sprechstunden'),
+      _t('vaccines', 'Vaksina', 'Vaccines', 'Impfungen'),
+      _t('surgery', 'Kirurgji', 'Surgery', 'Chirurgie'),
+      _t('grooming', 'Grooming', 'Grooming', 'Pflege'),
+      _t('pet-food', 'Ushqim', 'Pet food', 'Tierfutter'),
+    ],
     BusinessType.services: [
       _t('consulting', 'Konsulencë', 'Consulting', 'Beratung'),
       _t('installation', 'Instalim', 'Installation', 'Installation'),
@@ -278,6 +300,13 @@ abstract final class BusinessCategoryTemplates {
       _t('treatments', 'Trajtime', 'Treatments', 'Behandlungen'),
       _t('dental', 'Stomatologji', 'Dental', 'Zahnmedizin'),
       _t('pediatrics', 'Pediatri', 'Pediatrics', 'Pädiatrie'),
+    ],
+    BusinessType.dental: [
+      _t('checkups', 'Kontroll', 'Checkups', 'Kontrolle'),
+      _t('cleaning', 'Pastrim', 'Cleaning', 'Reinigung'),
+      _t('fillings', 'Mbushje', 'Fillings', 'Füllungen'),
+      _t('whitening', 'Zbardhim', 'Whitening', 'Bleaching'),
+      _t('orthodontics', 'Ortodonci', 'Orthodontics', 'Kieferorthopädie'),
     ],
     BusinessType.automotive: [
       _t('oil-change', 'Ndërrim vaji', 'Oil change', 'Ölwechsel'),

@@ -69,23 +69,37 @@ class SiteCtaPresets {
           ],
         ),
       _CtaCategory.appointment => SiteHeroCtaPreset(
-          primaryLabel: type == BusinessType.clinic
+          primaryLabel: (type == BusinessType.clinic ||
+                  type == BusinessType.dental ||
+                  type == BusinessType.veterinary)
               ? 'Rezervo termin'
               : 'Rezervo termin',
           primaryTarget: SiteCtaTarget.whatsapp,
           secondaryLabel: 'Shërbimet',
           secondaryTarget: SiteCtaTarget.services,
-          trustBullets: type == BusinessType.clinic
+          trustBullets: type == BusinessType.dental
               ? const [
-                  'Termine & konsultime',
+                  'Kontroll & pastrim',
+                  'Rezervo termin',
                   'Na kontaktoni',
-                  'Lokacion i qartë',
                 ]
-              : const [
-                  'Rezervim i lehtë',
-                  'Na kontaktoni',
-                  'Orar i përshtatshëm',
-                ],
+              : type == BusinessType.veterinary
+                  ? const [
+                      'Kujdes për kafshët',
+                      'Rezervo termin',
+                      'Na kontaktoni',
+                    ]
+                  : type == BusinessType.clinic
+                      ? const [
+                          'Termine & konsultime',
+                          'Na kontaktoni',
+                          'Lokacion i qartë',
+                        ]
+                      : const [
+                          'Rezervim i lehtë',
+                          'Na kontaktoni',
+                          'Orar i përshtatshëm',
+                        ],
         ),
       _CtaCategory.contactLead => SiteHeroCtaPreset(
           primaryLabel: type == BusinessType.hotel
@@ -171,6 +185,7 @@ class SiteCtaPresets {
     BusinessType.bar,
     BusinessType.catering,
     BusinessType.iceCream,
+    BusinessType.pastry,
   };
 
   static const _retailOrder = {
@@ -178,6 +193,7 @@ class SiteCtaPresets {
     BusinessType.fashion,
     BusinessType.electronics,
     BusinessType.grocery,
+    BusinessType.convenienceStore,
     BusinessType.bakery,
     BusinessType.wholesale,
     BusinessType.butcher,
@@ -194,6 +210,8 @@ class SiteCtaPresets {
     BusinessType.salon,
     BusinessType.spa,
     BusinessType.clinic,
+    BusinessType.dental,
+    BusinessType.veterinary,
     BusinessType.fitness,
     BusinessType.education,
     BusinessType.automotive,

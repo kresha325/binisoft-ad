@@ -3102,11 +3102,23 @@ abstract class AppLocalizations {
   /// **'Grocery & supermarket'**
   String get businessTypeGrocery;
 
+  /// No description provided for @businessTypeConvenienceStore.
+  ///
+  /// In en, this message translates to:
+  /// **'24/7 convenience store'**
+  String get businessTypeConvenienceStore;
+
   /// No description provided for @businessTypeBakery.
   ///
   /// In en, this message translates to:
-  /// **'Bakery & confectionery'**
+  /// **'Bakery'**
   String get businessTypeBakery;
+
+  /// No description provided for @businessTypePastry.
+  ///
+  /// In en, this message translates to:
+  /// **'Pastry shop & cakes'**
+  String get businessTypePastry;
 
   /// No description provided for @businessTypeWholesale.
   ///
@@ -3192,6 +3204,12 @@ abstract class AppLocalizations {
   /// **'Pet shop & grooming'**
   String get businessTypePetShop;
 
+  /// No description provided for @businessTypeVeterinary.
+  ///
+  /// In en, this message translates to:
+  /// **'Veterinary clinic'**
+  String get businessTypeVeterinary;
+
   /// No description provided for @businessTypeServices.
   ///
   /// In en, this message translates to:
@@ -3215,6 +3233,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clinic & medical practice'**
   String get businessTypeClinic;
+
+  /// No description provided for @businessTypeDental.
+  ///
+  /// In en, this message translates to:
+  /// **'Dental practice'**
+  String get businessTypeDental;
 
   /// No description provided for @businessTypeAutomotive.
   ///

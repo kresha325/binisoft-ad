@@ -1633,7 +1633,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessTypeGrocery => 'Grocery & supermarket';
 
   @override
-  String get businessTypeBakery => 'Bakery & confectionery';
+  String get businessTypeConvenienceStore => '24/7 convenience store';
+
+  @override
+  String get businessTypeBakery => 'Bakery';
+
+  @override
+  String get businessTypePastry => 'Pastry shop & cakes';
 
   @override
   String get businessTypeWholesale => 'Wholesale / B2B';
@@ -1678,6 +1684,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessTypePetShop => 'Pet shop & grooming';
 
   @override
+  String get businessTypeVeterinary => 'Veterinary clinic';
+
+  @override
   String get businessTypeServices => 'General services (appointments)';
 
   @override
@@ -1688,6 +1697,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get businessTypeClinic => 'Clinic & medical practice';
+
+  @override
+  String get businessTypeDental => 'Dental practice';
 
   @override
   String get businessTypeAutomotive => 'Auto service & repair';
