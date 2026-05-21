@@ -116,7 +116,7 @@ class _OffersScreenState extends ConsumerState<OffersScreen> {
                         chips: [
                           _OfferStatusChip(status: o.lifecycleStatus),
                           StatusChip(
-                            label: '${o.productIds.length} ${l10n.offerColumnProducts}',
+                            label: '${o.productCount} ${l10n.offerColumnProducts}',
                             tone: StatusChipTone.neutral,
                           ),
                           if (_discountSummary(context, o) != '—')

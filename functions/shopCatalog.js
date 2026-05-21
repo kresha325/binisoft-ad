@@ -263,11 +263,17 @@ async function getMarketplaceSnapshot(req) {
       if (row) activeOffers.push(row);
     }
 
+    const offerProductCount = activeOffers.reduce(
+      (sum, o) => sum + (o.itemCount || 0),
+      0,
+    );
+
     businesses.push({
       ...b,
       productCount: productCountSnap.data().count || 0,
       categoryCount: cSnap.size,
       offerCount: activeOffers.length,
+      offerProductCount,
     });
 
     for (const doc of pSnap.docs) {
@@ -288,6 +294,10 @@ async function getMarketplaceSnapshot(req) {
     productCount: businesses.reduce((s, b) => s + (b.productCount || 0), 0),
     categoryCount: businesses.reduce((s, b) => s + (b.categoryCount || 0), 0),
     offerCount: businesses.reduce((s, b) => s + (b.offerCount || 0), 0),
+    offerProductCount: businesses.reduce(
+      (s, b) => s + (b.offerProductCount || 0),
+      0,
+    ),
   };
 
   return {

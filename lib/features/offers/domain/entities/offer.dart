@@ -84,6 +84,10 @@ class Offer extends Equatable {
 
   bool get isExpired => lifecycleStatus == OfferLifecycleStatus.expired;
 
+  /// Products included in this offer (prefers `items` over legacy `productIds`).
+  int get productCount =>
+      items.isNotEmpty ? items.length : productIds.length;
+
   @override
   List<Object?> get props => [
         id,
