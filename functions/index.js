@@ -982,8 +982,9 @@ async function handlePublicApi(req, res) {
         .get();
 
       const contests = contestsSnap.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() }))
-        .filter((row) => contestPublic.isContestActive(row))
+        .filter((doc) =>
+          contestPublic.isContestActive({ id: doc.id, ...doc.data() }),
+        )
         .map((doc) => contestPublic.serializeContest(doc, localeCtx));
 
       if (productId) {
@@ -1016,8 +1017,9 @@ async function handlePublicApi(req, res) {
         .get();
 
       const jobOpenings = jobsSnap.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() }))
-        .filter((row) => jobOpeningPublic.isJobOpeningActive(row))
+        .filter((doc) =>
+          jobOpeningPublic.isJobOpeningActive({ id: doc.id, ...doc.data() }),
+        )
         .map((doc) => jobOpeningPublic.serializeJobOpening(doc, localeCtx));
 
       if (productId) {
