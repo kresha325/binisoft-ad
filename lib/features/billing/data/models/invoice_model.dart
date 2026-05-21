@@ -20,6 +20,9 @@ class InvoiceModel {
     required this.periodMonth,
     this.paymentMethod,
     this.lineItems = const [],
+    this.buyerLegalName,
+    this.buyerNipt,
+    this.buyerAddress,
   });
 
   final String id;
@@ -37,6 +40,9 @@ class InvoiceModel {
   final int periodMonth;
   final String? paymentMethod;
   final List<String> lineItems;
+  final String? buyerLegalName;
+  final String? buyerNipt;
+  final String? buyerAddress;
 
   factory InvoiceModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data() ?? {};
@@ -60,6 +66,9 @@ class InvoiceModel {
               ?.map((e) => e.toString())
               .toList() ??
           const [],
+      buyerLegalName: data['buyerLegalName'] as String?,
+      buyerNipt: data['buyerNipt'] as String?,
+      buyerAddress: data['buyerAddress'] as String?,
     );
   }
 
@@ -78,6 +87,9 @@ class InvoiceModel {
         'periodMonth': periodMonth,
         if (paymentMethod != null) 'paymentMethod': paymentMethod,
         'lineItems': lineItems,
+        if (buyerLegalName != null) 'buyerLegalName': buyerLegalName,
+        if (buyerNipt != null) 'buyerNipt': buyerNipt,
+        if (buyerAddress != null) 'buyerAddress': buyerAddress,
       };
 
   Invoice toEntity() => Invoice(
@@ -96,5 +108,8 @@ class InvoiceModel {
         periodMonth: periodMonth,
         paymentMethod: paymentMethod,
         lineItems: lineItems,
+        buyerLegalName: buyerLegalName,
+        buyerNipt: buyerNipt,
+        buyerAddress: buyerAddress,
       );
 }

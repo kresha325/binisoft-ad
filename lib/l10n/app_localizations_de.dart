@@ -1742,6 +1742,40 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get createStoreDialogAtkIntro =>
+      'Enter the legal entity details for your invoice (ATK): legal name, NIPT, and address.';
+
+  @override
+  String get createStoreFiscalSectionTitle => 'Invoice details (ATK)';
+
+  @override
+  String get createStoreCreateButton => 'Create';
+
+  @override
+  String get businessLegalNameLabel => 'Legal entity name *';
+
+  @override
+  String get businessLegalNameHint => 'As registered with tax authority';
+
+  @override
+  String get businessLegalNameRequired => 'Legal name is required.';
+
+  @override
+  String get businessNiptLabel => 'NIPT *';
+
+  @override
+  String get businessNiptInvalid => 'NIPT is not valid.';
+
+  @override
+  String get businessFiscalAddressLabel => 'Fiscal address *';
+
+  @override
+  String get businessFiscalAddressHint => 'Street, city';
+
+  @override
+  String get businessFiscalAddressRequired => 'Fiscal address is required.';
+
+  @override
   String get createStoreContinuePayment => 'Weiter zur Zahlung';
 
   @override

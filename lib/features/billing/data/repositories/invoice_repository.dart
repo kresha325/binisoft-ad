@@ -18,6 +18,9 @@ class CreateInvoiceInput {
     this.paymentMethod,
     this.lineItems = const [],
     this.paidAt,
+    this.buyerLegalName,
+    this.buyerNipt,
+    this.buyerAddress,
   });
 
   final String userId;
@@ -29,6 +32,9 @@ class CreateInvoiceInput {
   final String? paymentMethod;
   final List<String> lineItems;
   final DateTime? paidAt;
+  final String? buyerLegalName;
+  final String? buyerNipt;
+  final String? buyerAddress;
 }
 
 class InvoiceRepository {
@@ -65,6 +71,9 @@ class InvoiceRepository {
               ?.map((e) => e.toString())
               .toList() ??
           const [],
+      buyerLegalName: data['buyerLegalName'] as String?,
+      buyerNipt: data['buyerNipt'] as String?,
+      buyerAddress: data['buyerAddress'] as String?,
     ).toEntity();
   }
 
@@ -84,6 +93,12 @@ class InvoiceRepository {
       'periodMonth': paidAt.month,
       if (input.paymentMethod != null) 'paymentMethod': input.paymentMethod,
       'lineItems': input.lineItems,
+      if (input.buyerLegalName != null && input.buyerLegalName!.isNotEmpty)
+        'buyerLegalName': input.buyerLegalName,
+      if (input.buyerNipt != null && input.buyerNipt!.isNotEmpty)
+        'buyerNipt': input.buyerNipt,
+      if (input.buyerAddress != null && input.buyerAddress!.isNotEmpty)
+        'buyerAddress': input.buyerAddress,
     });
     return _invoiceFromApi(data);
   }
@@ -153,7 +168,13 @@ class InvoiceRepository {
     required String businessName,
     required double amountEur,
     String? paymentMethod,
+    String? buyerLegalName,
+    String? buyerNipt,
+    String? buyerAddress,
   }) {
+    final buyer = buyerLegalName?.trim();
+    final nipt = buyerNipt?.trim();
+    final addr = buyerAddress?.trim();
     return createInvoice(
       CreateInvoiceInput(
         userId: userId,
@@ -163,8 +184,14 @@ class InvoiceRepository {
         description: 'New business · $businessName',
         plan: plan,
         paymentMethod: paymentMethod,
+        buyerLegalName: buyer,
+        buyerNipt: nipt,
+        buyerAddress: addr,
         lineItems: [
           'Business: $businessName',
+          if (buyer != null && buyer.isNotEmpty) 'Legal name: $buyer',
+          if (nipt != null && nipt.isNotEmpty) 'NIPT: $nipt',
+          if (addr != null && addr.isNotEmpty) 'Address: $addr',
           '${plan.registrationPriceLabel} (includes 1st month)',
           'Then ${plan.priceLabel} per business',
           'Up to ${plan.maxProducts} products in catalog',

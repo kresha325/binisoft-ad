@@ -636,10 +636,21 @@
   "@createStoreDialogTitle": {
     "placeholders": { "next": { "type": "int" }, "max": { "type": "int" } }
   },
-  "createStoreDialogIntro": "Each new store needs a one-time activation ({price}, first month included). You will get an invoice on this account.",
+  "createStoreDialogIntro": "After you tap Create, payment opens ({price}, first month included). Your ATK invoice is saved on this account.",
   "@createStoreDialogIntro": {
     "placeholders": { "price": { "type": "String" } }
   },
+  "createStoreDialogAtkIntro": "Enter the legal entity details for your invoice (ATK): legal name, NIPT, and address.",
+  "createStoreFiscalSectionTitle": "Invoice details (ATK)",
+  "createStoreCreateButton": "Create",
+  "businessLegalNameLabel": "Legal entity name *",
+  "businessLegalNameHint": "As registered with tax authority",
+  "businessLegalNameRequired": "Legal name is required.",
+  "businessNiptLabel": "NIPT *",
+  "businessNiptInvalid": "NIPT is not valid.",
+  "businessFiscalAddressLabel": "Fiscal address *",
+  "businessFiscalAddressHint": "Street, city",
+  "businessFiscalAddressRequired": "Fiscal address is required.",
   "createStoreContinuePayment": "Continue to payment",
   "createStoreQuotaSnack": "Store limit reached ({max} on your plan).",
   "@createStoreQuotaSnack": {

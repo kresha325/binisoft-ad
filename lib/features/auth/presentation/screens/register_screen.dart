@@ -6,8 +6,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/router/post_auth_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../core/constants/business_plans.dart';
-import '../../../../core/constants/payment_config.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/auth_error_message.dart';
@@ -15,11 +13,9 @@ import '../../../../core/theme/app_design.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/auth_scaffold.dart';
 import '../../../../core/widgets/brand_logo.dart';
-import '../../../billing/services/billing_service.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../providers/auth_providers.dart';
 import '../widgets/register_pricing_card.dart';
-import '../widgets/registration_payment_modal.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -44,19 +40,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _onCreateAccountTap() async {
     if (!_formKey.currentState!.validate()) return;
-
-    final paid = await showRegistrationPaymentModal(
-      context,
-      plan: BusinessPlan.defaultPlan,
-    );
-    if (!paid || !mounted) return;
-
     await _submit();
   }
 
   Future<void> _submit() async {
     try {
-      final plan = BusinessPlan.defaultPlan;
       final user = await ref.read(authControllerProvider.notifier).register(
             RegisterAdminInput(
               email: _email.text.trim(),
@@ -66,26 +54,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   : _displayName.text.trim(),
             ),
           );
-      if (!mounted) return;
-
-      try {
-        await ref.read(billingServiceProvider).recordRegistrationPayment(
-              userId: user.id,
-              userEmail: user.email,
-              plan: plan,
-              amountEur: plan.registrationEuro,
-              paymentMethod: PaymentConfig.demoMode ? 'demo' : 'card',
-            );
-      } catch (_) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Account created, but invoice could not be saved. Contact support.'),
-            ),
-          );
-        }
-      }
-
       if (!mounted) return;
       ref.invalidate(authStateProvider);
       navigateAfterAuth(GoRouter.of(context), user);
@@ -130,7 +98,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  BusinessPlan.defaultPlan.pricingDetail,
+                  'Free account and app access. Payment is required only when you create a business (ATK invoice).',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
                 ),
@@ -240,9 +208,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : Text(
-                        'Create account · ${BusinessPlan.defaultPlan.registrationPriceLabel}',
-                      ),
+                    : const Text('Create free account'),
               ),
             ),
           ],

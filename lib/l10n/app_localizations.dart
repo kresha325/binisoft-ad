@@ -3291,8 +3291,74 @@ abstract class AppLocalizations {
   /// No description provided for @createStoreDialogIntro.
   ///
   /// In en, this message translates to:
-  /// **'Each new store needs a one-time activation ({price}, first month included). You will get an invoice on this account.'**
+  /// **'After you tap Create, payment opens ({price}, first month included). Your ATK invoice is saved on this account.'**
   String createStoreDialogIntro(String price);
+
+  /// No description provided for @createStoreDialogAtkIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the legal entity details for your invoice (ATK): legal name, NIPT, and address.'**
+  String get createStoreDialogAtkIntro;
+
+  /// No description provided for @createStoreFiscalSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice details (ATK)'**
+  String get createStoreFiscalSectionTitle;
+
+  /// No description provided for @createStoreCreateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get createStoreCreateButton;
+
+  /// No description provided for @businessLegalNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal entity name *'**
+  String get businessLegalNameLabel;
+
+  /// No description provided for @businessLegalNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'As registered with tax authority'**
+  String get businessLegalNameHint;
+
+  /// No description provided for @businessLegalNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal name is required.'**
+  String get businessLegalNameRequired;
+
+  /// No description provided for @businessNiptLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'NIPT *'**
+  String get businessNiptLabel;
+
+  /// No description provided for @businessNiptInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'NIPT is not valid.'**
+  String get businessNiptInvalid;
+
+  /// No description provided for @businessFiscalAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fiscal address *'**
+  String get businessFiscalAddressLabel;
+
+  /// No description provided for @businessFiscalAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Street, city'**
+  String get businessFiscalAddressHint;
+
+  /// No description provided for @businessFiscalAddressRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Fiscal address is required.'**
+  String get businessFiscalAddressRequired;
 
   /// No description provided for @createStoreContinuePayment.
   ///

@@ -18,6 +18,7 @@ import '../../../billing/services/billing_service.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
 import '../../../products/presentation/providers/attributes_providers.dart';
 import '../../../products/presentation/providers/products_providers.dart';
+import '../../domain/business_fiscal_details.dart';
 import '../../domain/entities/business_type.dart';
 import '../providers/business_providers.dart';
 import 'business_type_dropdown_field.dart';
@@ -45,13 +46,16 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
 
   final nameController = TextEditingController();
   final slugController = TextEditingController();
+  final legalNameController = TextEditingController();
+  final niptController = TextEditingController();
+  final fiscalAddressController = TextEditingController();
   var slugManual = false;
   BusinessType? selectedType;
 
   final formOk = await showAppFormDialog<bool>(
     context: context,
     title: l10n.createStoreDialogTitle(quota.owned + 1, quota.max),
-    saveLabel: l10n.createStoreContinuePayment,
+    saveLabel: l10n.createStoreCreateButton,
     child: StatefulBuilder(
       builder: (context, setState) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -64,12 +68,24 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
               height: 1.4,
             ),
           ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.createStoreDialogAtkIntro,
+            style: GoogleFonts.inter(
+              fontSize: 12,
+              color: context.appColors.textMuted,
+              height: 1.4,
+            ),
+          ),
           const SizedBox(height: 16),
           AppTextField(
             label: l10n.businessNameLabel,
             controller: nameController,
             onChanged: (v) {
               if (!slugManual) slugController.text = slugify(v);
+              if (legalNameController.text.trim().isEmpty) {
+                legalNameController.text = v;
+              }
             },
           ),
           const SizedBox(height: 16),
@@ -86,6 +102,34 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
             hint: l10n.businessTypeSelect,
             onChanged: (v) => setState(() => selectedType = v),
           ),
+          const SizedBox(height: 20),
+          Text(
+            l10n.createStoreFiscalSectionTitle,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: context.appColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 12),
+          AppTextField(
+            label: l10n.businessLegalNameLabel,
+            controller: legalNameController,
+            hint: l10n.businessLegalNameHint,
+          ),
+          const SizedBox(height: 16),
+          AppTextField(
+            label: l10n.businessNiptLabel,
+            controller: niptController,
+            hint: 'K12345678A',
+          ),
+          const SizedBox(height: 16),
+          AppTextField(
+            label: l10n.businessFiscalAddressLabel,
+            controller: fiscalAddressController,
+            hint: l10n.businessFiscalAddressHint,
+            maxLines: 2,
+          ),
         ],
       ),
     ),
@@ -100,6 +144,31 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
         }
         return false;
       }
+      if (legalNameController.text.trim().isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.businessLegalNameRequired)),
+          );
+        }
+        return false;
+      }
+      final niptErr = BusinessFiscalDetails.validateNipt(niptController.text);
+      if (niptErr != null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.businessNiptInvalid)),
+          );
+        }
+        return false;
+      }
+      if (fiscalAddressController.text.trim().isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.businessFiscalAddressRequired)),
+          );
+        }
+        return false;
+      }
       return true;
     },
   );
@@ -107,14 +176,23 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
   if (formOk != true || !context.mounted) {
     nameController.dispose();
     slugController.dispose();
+    legalNameController.dispose();
+    niptController.dispose();
+    fiscalAddressController.dispose();
     return;
   }
 
   final businessName = nameController.text.trim();
   final businessSlug = slugify(slugController.text.trim());
   final businessType = selectedType!;
+  final legalName = legalNameController.text.trim();
+  final nipt = niptController.text.trim().toUpperCase().replaceAll(RegExp(r'\s+'), '');
+  final fiscalAddress = fiscalAddressController.text.trim();
   nameController.dispose();
   slugController.dispose();
+  legalNameController.dispose();
+  niptController.dispose();
+  fiscalAddressController.dispose();
 
   if (user == null) return;
 
@@ -130,6 +208,9 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
           name: businessName,
           slug: businessSlug,
           businessType: businessType,
+          legalName: legalName,
+          nipt: nipt,
+          fiscalAddress: fiscalAddress,
         );
 
     try {
@@ -140,6 +221,9 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
             businessName: businessName,
             amountEur: plan.registrationEuro,
             paymentMethod: PaymentConfig.demoMode ? 'demo' : 'card',
+            buyerLegalName: legalName,
+            buyerNipt: nipt,
+            buyerAddress: fiscalAddress,
           );
     } catch (_) {
       if (context.mounted) {

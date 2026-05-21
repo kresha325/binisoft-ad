@@ -71,6 +71,9 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     required String name,
     required String slug,
     required BusinessType businessType,
+    String? legalName,
+    String? nipt,
+    String? fiscalAddress,
   }) async {
     state = const AsyncLoading();
     try {
@@ -78,6 +81,9 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
         name: name,
         slug: slug,
         businessType: businessType,
+        legalName: legalName,
+        nipt: nipt,
+        fiscalAddress: fiscalAddress,
       );
       await _createNotification(
         NotificationMessages.businessCreated(

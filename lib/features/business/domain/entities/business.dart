@@ -45,6 +45,9 @@ class Business extends Equatable {
     this.googleMapsUrl,
     this.aboutBio,
     this.openingHours,
+    this.legalName,
+    this.nipt,
+    this.fiscalAddress,
     this.shopCheckout = ShopCheckoutConfig.defaults,
   });
 
@@ -86,6 +89,10 @@ class Business extends Equatable {
   final String? aboutBio;
   /// Opening hours shown on contact / footer (e.g. Hënë–Prem 09:00–22:00).
   final String? openingHours;
+  /// Legal name on ATK invoices (may differ from public shop name).
+  final String? legalName;
+  final String? nipt;
+  final String? fiscalAddress;
 
   final ShopCheckoutConfig shopCheckout;
 
@@ -134,6 +141,9 @@ class Business extends Equatable {
         googleMapsUrl,
         aboutBio,
         openingHours,
+        legalName,
+        nipt,
+        fiscalAddress,
         shopCheckout,
       ];
 }

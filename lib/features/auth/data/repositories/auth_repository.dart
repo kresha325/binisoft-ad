@@ -336,6 +336,9 @@ class AuthRepository {
     required String name,
     required String slug,
     required BusinessType businessType,
+    String? legalName,
+    String? nipt,
+    String? fiscalAddress,
   }) async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) throw const AuthException('Not signed in');
@@ -357,6 +360,9 @@ class AuthRepository {
       name: name,
       slug: slug,
       businessType: businessType,
+      legalName: legalName,
+      nipt: nipt,
+      fiscalAddress: fiscalAddress,
     );
     await _paths.user(uid).update({'businessId': business.id});
     return business;

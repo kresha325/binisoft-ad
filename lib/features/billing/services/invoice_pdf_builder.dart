@@ -180,9 +180,34 @@ class InvoicePdfBuilder {
             ),
           ),
           pw.SizedBox(height: 8),
+          if (invoice.buyerLegalName != null && invoice.buyerLegalName!.isNotEmpty)
+            pw.Text(
+              BillingPdfTheme.pdfSafe(invoice.buyerLegalName!),
+              style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
+            )
+          else
+            pw.Text(
+              invoice.userEmail,
+              style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
+            ),
+          if (invoice.buyerNipt != null && invoice.buyerNipt!.isNotEmpty) ...[
+            pw.SizedBox(height: 4),
+            pw.Text(
+              'NIPT: ${BillingPdfTheme.pdfSafe(invoice.buyerNipt!)}',
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ],
+          if (invoice.buyerAddress != null && invoice.buyerAddress!.isNotEmpty) ...[
+            pw.SizedBox(height: 4),
+            pw.Text(
+              BillingPdfTheme.pdfSafe(invoice.buyerAddress!),
+              style: pw.TextStyle(fontSize: 10, color: BillingPdfTheme.textMuted),
+            ),
+          ],
+          pw.SizedBox(height: 6),
           pw.Text(
             invoice.userEmail,
-            style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
+            style: pw.TextStyle(fontSize: 9, color: BillingPdfTheme.textMuted),
           ),
           pw.SizedBox(height: 6),
           pw.Text(

@@ -33,7 +33,7 @@ class AppLocalizationsSq extends AppLocalizations {
   String get navOffers => 'Ofertat';
 
   @override
-  String get navContests => 'Konkurset';
+  String get navContests => 'Dhurata';
 
   @override
   String get navJobOpenings => 'Konkurse pune';
@@ -95,7 +95,7 @@ class AppLocalizationsSq extends AppLocalizations {
       'Promocione me % ose çmim shitjeje. Ofertat aktive vlejnë në API dhe porosi.';
 
   @override
-  String get pageContestsTitle => 'Konkurset';
+  String get pageContestsTitle => 'Dhurata';
 
   @override
   String get pageContestsSubtitle =>
@@ -1741,8 +1741,42 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String createStoreDialogIntro(String price) {
-    return 'Çdo dyqan i ri kërkon aktivizim një herë ($price, përfshin muajin e parë). Fatura ruhet në këtë llogari.';
+    return 'Pas «Krijo» hapet pagesa ($price, përfshin muajin e parë). Fatura ATK ruhet në këtë llogari.';
   }
+
+  @override
+  String get createStoreDialogAtkIntro =>
+      'Plotësoni të dhënat e subjektit për faturën (kërkesa ATK): emri ligjor, NIPT dhe adresa.';
+
+  @override
+  String get createStoreFiscalSectionTitle => 'Të dhëna për faturë (ATK)';
+
+  @override
+  String get createStoreCreateButton => 'Krijo';
+
+  @override
+  String get businessLegalNameLabel => 'Emri ligjor i subjektit *';
+
+  @override
+  String get businessLegalNameHint => 'Si në regjistrin e biznesit';
+
+  @override
+  String get businessLegalNameRequired => 'Plotësoni emrin ligjor.';
+
+  @override
+  String get businessNiptLabel => 'NIPT *';
+
+  @override
+  String get businessNiptInvalid => 'NIPT nuk është i vlefshëm.';
+
+  @override
+  String get businessFiscalAddressLabel => 'Adresa (fiskale) *';
+
+  @override
+  String get businessFiscalAddressHint => 'Rruga, qyteti';
+
+  @override
+  String get businessFiscalAddressRequired => 'Plotësoni adresën fiskale.';
 
   @override
   String get createStoreContinuePayment => 'Vazhdo te pagesa';

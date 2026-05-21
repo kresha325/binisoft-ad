@@ -55,7 +55,7 @@ class RegisterPricingCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Create your admin account, then add your business from the dashboard.',
+            'Account and app install are free. Create your business from the dashboard — payment opens when you tap Create.',
             style: GoogleFonts.inter(
               fontSize: 14,
               color: colors.textMuted,
@@ -64,7 +64,7 @@ class RegisterPricingCard extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            starter.registrationPriceLabel,
+            'Free',
             style: GoogleFonts.inter(
               fontSize: 32,
               fontWeight: FontWeight.w700,
@@ -74,7 +74,7 @@ class RegisterPricingCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'then ${starter.priceLabel} · up to ${starter.maxProducts} products',
+            '${starter.registrationPriceLabel} per store when you create a business',
             style: GoogleFonts.inter(
               fontSize: 15,
               fontWeight: FontWeight.w600,
@@ -83,7 +83,7 @@ class RegisterPricingCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'First month included in registration',
+            'First month included · ATK invoice with your NIPT',
             style: GoogleFonts.inter(
               fontSize: 12,
               fontWeight: FontWeight.w600,

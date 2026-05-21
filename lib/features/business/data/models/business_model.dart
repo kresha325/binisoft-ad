@@ -46,6 +46,9 @@ class BusinessModel {
     this.googleMapsUrl,
     this.aboutBio,
     this.openingHours,
+    this.legalName,
+    this.nipt,
+    this.fiscalAddress,
     this.shopCheckout = ShopCheckoutConfig.defaults,
   });
 
@@ -84,6 +87,9 @@ class BusinessModel {
   final String? googleMapsUrl;
   final String? aboutBio;
   final String? openingHours;
+  final String? legalName;
+  final String? nipt;
+  final String? fiscalAddress;
   final ShopCheckoutConfig shopCheckout;
 
   factory BusinessModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -138,6 +144,9 @@ class BusinessModel {
       googleMapsUrl: data['googleMapsUrl'] as String?,
       aboutBio: data['aboutBio'] as String?,
       openingHours: data['openingHours'] as String?,
+      legalName: data['legalName'] as String?,
+      nipt: data['nipt'] as String?,
+      fiscalAddress: data['fiscalAddress'] as String?,
       shopCheckout: ShopCheckoutConfig.fromMap(
         data['shopCheckout'] is Map
             ? Map<String, dynamic>.from(data['shopCheckout'] as Map)
@@ -175,6 +184,10 @@ class BusinessModel {
         if (aboutBio != null && aboutBio!.isNotEmpty) 'aboutBio': aboutBio,
         if (openingHours != null && openingHours!.isNotEmpty)
           'openingHours': openingHours,
+        if (legalName != null && legalName!.isNotEmpty) 'legalName': legalName,
+        if (nipt != null && nipt!.isNotEmpty) 'nipt': nipt,
+        if (fiscalAddress != null && fiscalAddress!.isNotEmpty)
+          'fiscalAddress': fiscalAddress,
       };
 
   Business toEntity() => Business(
@@ -213,6 +226,9 @@ class BusinessModel {
         googleMapsUrl: googleMapsUrl,
         aboutBio: aboutBio,
         openingHours: openingHours,
+        legalName: legalName,
+        nipt: nipt,
+        fiscalAddress: fiscalAddress,
         shopCheckout: shopCheckout,
       );
 }

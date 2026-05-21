@@ -36,6 +36,9 @@ class BillingService {
     required String businessName,
     required double amountEur,
     String? paymentMethod,
+    String? buyerLegalName,
+    String? buyerNipt,
+    String? buyerAddress,
   }) async {
     await _invoices.createNewBusinessInvoice(
       userId: userId,
@@ -44,6 +47,9 @@ class BillingService {
       businessName: businessName,
       amountEur: amountEur,
       paymentMethod: paymentMethod,
+      buyerLegalName: buyerLegalName,
+      buyerNipt: buyerNipt,
+      buyerAddress: buyerAddress,
     );
   }
 

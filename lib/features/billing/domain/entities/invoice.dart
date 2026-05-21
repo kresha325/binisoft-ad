@@ -19,6 +19,9 @@ class Invoice extends Equatable {
     required this.periodMonth,
     this.paymentMethod,
     this.lineItems = const [],
+    this.buyerLegalName,
+    this.buyerNipt,
+    this.buyerAddress,
   });
 
   final String id;
@@ -36,6 +39,9 @@ class Invoice extends Equatable {
   final int periodMonth;
   final String? paymentMethod;
   final List<String> lineItems;
+  final String? buyerLegalName;
+  final String? buyerNipt;
+  final String? buyerAddress;
 
   String get periodKey =>
       '$periodYear-${periodMonth.toString().padLeft(2, '0')}';

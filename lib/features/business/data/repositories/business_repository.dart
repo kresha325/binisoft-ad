@@ -64,6 +64,9 @@ class BusinessRepository {
     required String name,
     required String slug,
     required BusinessType businessType,
+    String? legalName,
+    String? nipt,
+    String? fiscalAddress,
   }) async {
     final businessSlug = slugify(slug.isNotEmpty ? slug : name);
     if (businessSlug.isEmpty) {
@@ -82,6 +85,9 @@ class BusinessRepository {
       defaultLocale: AppLocales.defaultLocale,
       locales: List<String>.from(AppLocales.all),
       businessType: businessType,
+      legalName: legalName?.trim(),
+      nipt: nipt?.trim().toUpperCase(),
+      fiscalAddress: fiscalAddress?.trim(),
     );
 
     await _firestore.runTransaction((tx) async {

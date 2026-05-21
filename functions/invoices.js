@@ -35,6 +35,9 @@ async function createUserInvoice(db, payload) {
     periodMonth,
     paymentMethod,
     lineItems,
+    buyerLegalName,
+    buyerNipt,
+    buyerAddress,
   } = payload;
 
   if (!userId || !userEmail || !type || !description) {
@@ -60,6 +63,9 @@ async function createUserInvoice(db, payload) {
     lineItems: Array.isArray(lineItems) ? lineItems.map(String) : [],
   };
   if (paymentMethod) doc.paymentMethod = paymentMethod;
+  if (buyerLegalName) doc.buyerLegalName = String(buyerLegalName).trim();
+  if (buyerNipt) doc.buyerNipt = String(buyerNipt).trim();
+  if (buyerAddress) doc.buyerAddress = String(buyerAddress).trim();
 
   const ref = await db.collection(`users/${userId}/invoices`).add(doc);
   return {
@@ -78,6 +84,9 @@ async function createUserInvoice(db, payload) {
     periodMonth: doc.periodMonth,
     paymentMethod: doc.paymentMethod || null,
     lineItems: doc.lineItems,
+    buyerLegalName: doc.buyerLegalName || null,
+    buyerNipt: doc.buyerNipt || null,
+    buyerAddress: doc.buyerAddress || null,
   };
 }
 

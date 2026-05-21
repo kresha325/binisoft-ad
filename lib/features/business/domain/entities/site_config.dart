@@ -203,7 +203,7 @@ class SiteConfig extends Equatable {
             useProfileCover: true,
           ),
           const SiteSectionConfig(id: sectionOffers, enabled: true, title: 'Ofertat'),
-          const SiteSectionConfig(id: sectionContests, enabled: true, title: 'Konkurset'),
+          const SiteSectionConfig(id: sectionContests, enabled: true, title: 'Dhurata'),
           const SiteSectionConfig(
             id: sectionJobOpenings,
             enabled: true,
