@@ -114,32 +114,90 @@ function serializeMarketplaceCategory(doc, biz, ctx) {
   };
 }
 
-function serializeMarketplaceOffer(doc, biz, ctx) {
-  const od = { id: doc.id, ...doc.data() };
-  if (!pricing.isOfferActive(od)) return null;
-  const itemCount = (od.items || []).length || (od.productIds || []).length;
-  if (itemCount === 0) return null;
+function offerLineItems(offer) {
+  if (Array.isArray(offer.items) && offer.items.length > 0) return offer.items;
+  return (offer.productIds || [])
+    .filter(Boolean)
+    .map((productId) => ({
+      productId,
+      discountPercent: offer.discountPercent ?? undefined,
+    }));
+}
+
+async function loadVariantsByProductId(db, businessId) {
+  const snap = await db.collection(`businesses/${businessId}/productVariants`).get();
+  const byProduct = new Map();
+  for (const doc of snap.docs) {
+    const d = doc.data();
+    const productId = d.productId;
+    if (!productId) continue;
+    if (!byProduct.has(productId)) byProduct.set(productId, []);
+    byProduct.get(productId).push({
+      price: d.price != null ? Number(d.price) : 0,
+      imageUrl: d.imageUrl || null,
+    });
+  }
+  return byProduct;
+}
+
+function marketplaceOfferLineItems(offer, productsById, variantsByProduct, ctx) {
+  return offerLineItems(offer)
+    .map((item) => {
+      const d = productsById.get(item.productId);
+      if (!d) return null;
+      const onOfferHold = !!d.hiddenByOfferId;
+      const variants = variantsByProduct.get(item.productId) || [];
+      const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer, variants);
+      if (!onOfferHold && !priceInfo.hasDiscount) return null;
+      let imageUrl = productImageUrls(d)[0] || null;
+      if (!imageUrl && variants.length) {
+        const withImg = variants.find((v) => v.imageUrl);
+        if (withImg) imageUrl = String(withImg.imageUrl);
+      }
+      return {
+        productId: item.productId,
+        productName: i18n.resolveLocalized({
+          primary: d.name,
+          i18n: d.nameI18n,
+          locale: ctx.locale,
+          defaultLocale: ctx.defaultLocale,
+        }),
+        imageUrl,
+        originalPrice: priceInfo.originalPrice,
+        salePrice: priceInfo.salePrice,
+        discountPercent: priceInfo.discountPercent,
+        onOfferHold,
+      };
+    })
+    .filter(Boolean);
+}
+
+function serializeMarketplaceOffer(offer, biz, ctx, productsById, variantsByProduct) {
+  if (!pricing.isOfferActive(offer)) return null;
+  const items = marketplaceOfferLineItems(offer, productsById, variantsByProduct, ctx);
+  if (!items.length) return null;
 
   return {
-    id: od.id,
+    id: offer.id,
     businessId: biz.id,
     businessSlug: biz.slug,
     businessName: biz.name,
     title: i18n.resolveLocalized({
-      primary: od.title,
-      i18n: od.titleI18n,
+      primary: offer.title,
+      i18n: offer.titleI18n,
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
     description: i18n.resolveLocalized({
-      primary: od.description,
-      i18n: od.descriptionI18n,
+      primary: offer.description,
+      i18n: offer.descriptionI18n,
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
-    itemCount,
-    startsAt: od.startsAt?.toDate?.()?.toISOString?.() || null,
-    endsAt: od.endsAt?.toDate?.()?.toISOString?.() || null,
+    itemCount: items.length,
+    items,
+    startsAt: offer.startsAt?.toDate?.()?.toISOString?.() || null,
+    endsAt: offer.endsAt?.toDate?.()?.toISOString?.() || null,
   };
 }
 
@@ -169,9 +227,39 @@ async function getMarketplaceSnapshot(req) {
       db.collection(`businesses/${b.id}/offers`).where('active', '==', true).get(),
     ]);
 
+    const activeOfferDocs = oSnap.docs
+      .map((doc) => ({ id: doc.id, ...doc.data() }))
+      .filter((offer) => pricing.isOfferActive(offer));
+
+    const offerProductIds = new Set();
+    for (const offer of activeOfferDocs) {
+      for (const item of offerLineItems(offer)) {
+        if (item.productId) offerProductIds.add(item.productId);
+      }
+    }
+
+    const offerProductsById = new Map();
+    await Promise.all(
+      [...offerProductIds].map(async (pid) => {
+        const doc = await db.doc(`businesses/${b.id}/products/${pid}`).get();
+        if (doc.exists) offerProductsById.set(pid, doc.data());
+      }),
+    );
+
+    const variantsByProduct =
+      offerProductIds.size > 0
+        ? await loadVariantsByProductId(db, b.id)
+        : new Map();
+
     const activeOffers = [];
-    for (const doc of oSnap.docs) {
-      const row = serializeMarketplaceOffer(doc, b, ctx);
+    for (const offer of activeOfferDocs) {
+      const row = serializeMarketplaceOffer(
+        offer,
+        b,
+        ctx,
+        offerProductsById,
+        variantsByProduct,
+      );
       if (row) activeOffers.push(row);
     }
 
