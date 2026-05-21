@@ -1325,6 +1325,29 @@ class AppLocalizationsSq extends AppLocalizations {
   }
 
   @override
+  String get offerQuickTitleHint =>
+      'Titulli plotësohet nga produktet e zgjedhura — mund ta ndryshoni.';
+
+  @override
+  String get offerSearchProducts => 'Kërko produkt…';
+
+  @override
+  String offerResultPrice(String price) {
+    return 'Çmimi në ofertë: €$price';
+  }
+
+  @override
+  String get productPutOnOffer => 'Vendose në ofertë';
+
+  @override
+  String get productEditOffer => 'Ndrysho ofertën';
+
+  @override
+  String productAlreadyOnOffer(String title) {
+    return 'Në ofertë: «$title»';
+  }
+
+  @override
   String get apiPublicShopTitle => 'Dyqani online';
 
   @override

@@ -1322,6 +1322,29 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get offerQuickTitleHint =>
+      'Titel wird aus den Produkten übernommen — Sie können ihn anpassen.';
+
+  @override
+  String get offerSearchProducts => 'Produkte suchen…';
+
+  @override
+  String offerResultPrice(String price) {
+    return 'Angebotspreis: €$price';
+  }
+
+  @override
+  String get productPutOnOffer => 'Zum Angebot hinzufügen';
+
+  @override
+  String get productEditOffer => 'Angebot bearbeiten';
+
+  @override
+  String productAlreadyOnOffer(String title) {
+    return 'Im Angebot: «$title»';
+  }
+
+  @override
   String get apiPublicShopTitle => 'Online-Shop';
 
   @override

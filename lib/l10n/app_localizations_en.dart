@@ -1321,6 +1321,29 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get offerQuickTitleHint =>
+      'Title is filled from selected products — you can edit it.';
+
+  @override
+  String get offerSearchProducts => 'Search products…';
+
+  @override
+  String offerResultPrice(String price) {
+    return 'Offer price: €$price';
+  }
+
+  @override
+  String get productPutOnOffer => 'Add to offer';
+
+  @override
+  String get productEditOffer => 'Edit offer';
+
+  @override
+  String productAlreadyOnOffer(String title) {
+    return 'On offer: «$title»';
+  }
+
+  @override
   String get apiPublicShopTitle => 'Online shop (your store)';
 
   @override

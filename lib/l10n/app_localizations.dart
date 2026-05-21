@@ -2558,6 +2558,42 @@ abstract class AppLocalizations {
   /// **'€{price}'**
   String offerSummarySalePrice(double price);
 
+  /// No description provided for @offerQuickTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is filled from selected products — you can edit it.'**
+  String get offerQuickTitleHint;
+
+  /// No description provided for @offerSearchProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Search products…'**
+  String get offerSearchProducts;
+
+  /// No description provided for @offerResultPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer price: €{price}'**
+  String offerResultPrice(String price);
+
+  /// No description provided for @productPutOnOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to offer'**
+  String get productPutOnOffer;
+
+  /// No description provided for @productEditOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit offer'**
+  String get productEditOffer;
+
+  /// No description provided for @productAlreadyOnOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'On offer: «{title}»'**
+  String productAlreadyOnOffer(String title);
+
   /// No description provided for @apiPublicShopTitle.
   ///
   /// In en, this message translates to:

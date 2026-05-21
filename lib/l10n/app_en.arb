@@ -455,6 +455,18 @@
   "@offerSummarySalePrice": {
     "placeholders": { "price": { "type": "double" } }
   },
+  "offerQuickTitleHint": "Title is filled from selected products — you can edit it.",
+  "offerSearchProducts": "Search products…",
+  "offerResultPrice": "Offer price: €{price}",
+  "@offerResultPrice": {
+    "placeholders": { "price": { "type": "String" } }
+  },
+  "productPutOnOffer": "Add to offer",
+  "productEditOffer": "Edit offer",
+  "productAlreadyOnOffer": "On offer: «{title}»",
+  "@productAlreadyOnOffer": {
+    "placeholders": { "title": { "type": "String" } }
+  },
   "apiPublicShopTitle": "Online shop (your store)",
   "apiPublicShopSubtitle": "Each business gets a public menu at this link. Generate an API key below, then open the shop once with ?key=… so customers can place orders.",
   "apiPublicShopCopy": "Copy shop link",

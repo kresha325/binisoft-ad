@@ -33,6 +33,7 @@ import '../providers/attributes_providers.dart';
 import '../providers/products_providers.dart';
 import 'attribute_field_builder.dart';
 import 'product_variants_editor.dart';
+import '../../../offers/presentation/widgets/product_offer_section.dart';
 
 Future<void> showAddProductSheet(
   BuildContext context,
@@ -223,6 +224,10 @@ Future<void> showProductSheet(
                     value: active,
                     onChanged: (v) => setState(() => active = v),
                   ),
+                  if (isEdit) ...[
+                    const SizedBox(height: 24),
+                    ProductOfferSection(product: product),
+                  ],
                   if (selectAttributes.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     ProductVariantsEditor(
