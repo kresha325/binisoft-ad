@@ -637,6 +637,11 @@ function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map())
       const variants = variantsByProduct.get(item.productId) || [];
       const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer, variants);
       if (!inactive && !priceInfo.hasDiscount) return null;
+      let imageUrl = activeProductImageUrls(d)[0] || null;
+      if (!imageUrl && variants.length) {
+        const withImg = variants.find((v) => v.imageUrl);
+        if (withImg) imageUrl = String(withImg.imageUrl);
+      }
       return {
         productId: item.productId,
         productName: i18n.resolveLocalized({
@@ -645,6 +650,7 @@ function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map())
           locale: ctx.locale,
           defaultLocale: ctx.defaultLocale,
         }),
+        imageUrl,
         originalPrice: priceInfo.originalPrice,
         salePrice: priceInfo.salePrice,
         discountPercent: priceInfo.discountPercent,
