@@ -102,6 +102,7 @@ class _JobOpeningsScreenState extends ConsumerState<JobOpeningsScreen> {
               }
 
               return CatalogCardGrid(
+                tallCells: true,
                 emptyMessage: l10n.jobsEmpty,
                 children: [
                   for (final j in filtered)
@@ -128,11 +129,16 @@ class _JobOpeningsScreenState extends ConsumerState<JobOpeningsScreen> {
                           : Icon(Icons.work_outline, color: colors.accent, size: 28),
                       chips: [
                         _JobStatusChip(status: j.lifecycleStatus),
-                        StatusChip(
-                          label: l10n.jobApplicationCount(j.applicationCount),
-                          tone: j.applicationCount > 0
-                              ? StatusChipTone.accent
-                              : StatusChipTone.neutral,
+                        InkWell(
+                          onTap: () =>
+                              showJobApplicationsSheet(context, ref, opening: j),
+                          borderRadius: BorderRadius.circular(20),
+                          child: StatusChip(
+                            label: l10n.jobApplicationCount(j.applicationCount),
+                            tone: j.applicationCount > 0
+                                ? StatusChipTone.accent
+                                : StatusChipTone.neutral,
+                          ),
                         ),
                         if (j.employmentType != null)
                           StatusChip(
@@ -142,7 +148,7 @@ class _JobOpeningsScreenState extends ConsumerState<JobOpeningsScreen> {
                       ],
                       footer: SizedBox(
                         width: double.infinity,
-                        child: OutlinedButton.icon(
+                        child: FilledButton.tonalIcon(
                           onPressed: () =>
                               showJobApplicationsSheet(context, ref, opening: j),
                           icon: const Icon(Icons.people_outline, size: 20),

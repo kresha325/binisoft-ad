@@ -103,6 +103,7 @@ class _ContestsScreenState extends ConsumerState<ContestsScreen> {
               }
 
               return CatalogCardGrid(
+                tallCells: true,
                 emptyMessage: l10n.contestsEmpty,
                 children: [
                   for (final c in filtered)
@@ -133,11 +134,16 @@ class _ContestsScreenState extends ConsumerState<ContestsScreen> {
                             ),
                       chips: [
                         _ContestStatusChip(status: c.lifecycleStatus),
-                        StatusChip(
-                          label: l10n.contestEntryCount(c.entryCount),
-                          tone: c.entryCount > 0
-                              ? StatusChipTone.accent
-                              : StatusChipTone.neutral,
+                        InkWell(
+                          onTap: () =>
+                              showContestEntriesSheet(context, ref, contest: c),
+                          borderRadius: BorderRadius.circular(20),
+                          child: StatusChip(
+                            label: l10n.contestEntryCount(c.entryCount),
+                            tone: c.entryCount > 0
+                                ? StatusChipTone.accent
+                                : StatusChipTone.neutral,
+                          ),
                         ),
                         if (c.prize != null && c.prize!.isNotEmpty)
                           StatusChip(
@@ -147,7 +153,7 @@ class _ContestsScreenState extends ConsumerState<ContestsScreen> {
                       ],
                       footer: SizedBox(
                         width: double.infinity,
-                        child: OutlinedButton.icon(
+                        child: FilledButton.tonalIcon(
                           onPressed: () =>
                               showContestEntriesSheet(context, ref, contest: c),
                           icon: const Icon(Icons.people_outline, size: 20),

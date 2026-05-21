@@ -11,6 +11,8 @@ class CatalogCardGrid extends StatelessWidget {
     this.emptyMessage = 'No items found.',
     this.minHeight = 220,
     this.scrollable = false,
+    /// Taller cells for cards with footer actions (contests, job openings).
+    this.tallCells = false,
   });
 
   final List<Widget> children;
@@ -18,6 +20,7 @@ class CatalogCardGrid extends StatelessWidget {
   final double minHeight;
   /// When true (e.g. superadmin tabs), grid scrolls inside [Expanded].
   final bool scrollable;
+  final bool tallCells;
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +57,20 @@ class CatalogCardGrid extends StatelessWidget {
                     ? 2
                     : 1;
 
-        // Horizontal catalog cards are ~88–96px tall; avoid square cells (was 1.05).
-        final childAspectRatio = switch (crossAxisCount) {
-          4 => 3.5,
-          3 => 3.2,
-          2 => 2.85,
-          _ => 2.4,
-        };
+        // Compact cards ~88–96px; tallCells fits footer buttons (contests, jobs).
+        final childAspectRatio = tallCells
+            ? switch (crossAxisCount) {
+                4 => 1.55,
+                3 => 1.4,
+                2 => 1.25,
+                _ => 1.05,
+              }
+            : switch (crossAxisCount) {
+                4 => 3.5,
+                3 => 3.2,
+                2 => 2.85,
+                _ => 2.4,
+              };
 
         final grid = GridView.count(
           crossAxisCount: crossAxisCount,
@@ -72,7 +82,7 @@ class CatalogCardGrid extends StatelessWidget {
               ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 8),
-          clipBehavior: Clip.hardEdge,
+          clipBehavior: tallCells ? Clip.none : Clip.hardEdge,
           children: children,
         );
 
