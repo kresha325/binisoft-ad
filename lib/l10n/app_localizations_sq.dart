@@ -36,6 +36,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get navContests => 'Konkurset';
 
   @override
+  String get navJobOpenings => 'Konkurse pune';
+
+  @override
   String get navCategories => 'Kategoritë';
 
   @override
@@ -96,7 +99,14 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get pageContestsSubtitle =>
-      'Konkurse me çmim, rregulla dhe periudhë. Pjesëmarrësit regjistrohen përmes dyqanit publik (API).';
+      'Shortërim / dhurata me çmim (jo punësim). Pjesëmarrësit regjistrohen përmes dyqanit publik.';
+
+  @override
+  String get pageJobOpeningsTitle => 'Konkurse pune';
+
+  @override
+  String get pageJobOpeningsSubtitle =>
+      'Pozicione të lira — kandidatët aplikojnë përmes dyqanit publik (emër, telefon, shënim).';
 
   @override
   String get pageCategoriesTitle => 'Kategoritë';
@@ -1475,6 +1485,150 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get contestEntriesEmpty => 'Ende pa pjesëmarrës.';
+
+  @override
+  String get jobAddTitle => 'Shto konkurs pune';
+
+  @override
+  String get jobEditTitle => 'Ndrysho konkursin e punës';
+
+  @override
+  String get jobSave => 'Ruaj konkursin';
+
+  @override
+  String get jobActive => 'Aktiv';
+
+  @override
+  String get jobTitleLabel => 'Titulli i pozicionit';
+
+  @override
+  String get jobTitleHint => 'p.sh. Kamarier / Nën-kuzhinier';
+
+  @override
+  String get jobLocationLabel => 'Vendndodhja';
+
+  @override
+  String get jobLocationHint => 'p.sh. Prishtinë, qendër';
+
+  @override
+  String get jobEmploymentTypeLabel => 'Lloji i punës';
+
+  @override
+  String get jobEmploymentUnset => '— Zgjidh —';
+
+  @override
+  String get jobEmploymentFullTime => 'Me kohë të plotë';
+
+  @override
+  String get jobEmploymentPartTime => 'Me kohë të pjesshme';
+
+  @override
+  String get jobEmploymentContract => 'Kontratë';
+
+  @override
+  String get jobEmploymentInternship => 'Praktikë';
+
+  @override
+  String get jobEmploymentTemporary => 'Përkohshme';
+
+  @override
+  String get jobEmploymentOther => 'Tjetër';
+
+  @override
+  String get jobDescriptionLabel => 'Përshkrimi i punës';
+
+  @override
+  String get jobDescriptionHint => 'Detyrat dhe përfitimet';
+
+  @override
+  String get jobRequirementsLabel => 'Kërkesat';
+
+  @override
+  String get jobRequirementsHint => 'Eksperienca, dokumentet, aftësitë';
+
+  @override
+  String get jobSalaryLabel => 'Paga (opsionale)';
+
+  @override
+  String get jobSalaryHint => 'p.sh. 400–500 € / muaj';
+
+  @override
+  String get jobApplyEmailLabel => 'Email për aplikim';
+
+  @override
+  String get jobApplyEmailHint => 'hr@biznesi.com';
+
+  @override
+  String get jobApplyUrlLabel => 'Link aplikimi';
+
+  @override
+  String get jobApplyUrlHint => 'https://…';
+
+  @override
+  String get jobImageLabel => 'Foto / baner';
+
+  @override
+  String get jobPickImage => 'Zgjidh imazhin';
+
+  @override
+  String get jobSectionDuration => 'Afati i aplikimit';
+
+  @override
+  String jobDurationLabel(int days) {
+    return 'Kohëzgjatja: $days ditë';
+  }
+
+  @override
+  String get jobRenewHint =>
+      'Ruajtja fillon afat të ri nga sot (konkursi ka skaduar).';
+
+  @override
+  String get jobSaved => 'Konkursi i punës u ruajt';
+
+  @override
+  String get jobUpdated => 'Konkursi i punës u përditësua';
+
+  @override
+  String get jobDeleted => 'Konkursi i punës u fshi';
+
+  @override
+  String get jobDeleteTitle => 'Fshi konkursin e punës?';
+
+  @override
+  String jobDeleteMessage(String title) {
+    return 'Fshi \"$title\"? Të gjitha aplikimet do të fshihen.';
+  }
+
+  @override
+  String get jobsEmpty => 'Ende pa konkurse pune.';
+
+  @override
+  String get jobStatusLive => 'Pranon aplikime';
+
+  @override
+  String get jobStatusScheduled => 'E planifikuar';
+
+  @override
+  String get jobStatusExpired => 'Mbyllur';
+
+  @override
+  String get searchJobOpenings => 'Kërko konkurse pune…';
+
+  @override
+  String jobApplicationCount(int n) {
+    return '$n aplikime';
+  }
+
+  @override
+  String get jobViewApplications => 'Aplikimet';
+
+  @override
+  String jobApplicationsTitle(String title) {
+    return 'Aplikimet — $title';
+  }
+
+  @override
+  String get jobApplicationsEmpty => 'Ende pa aplikime.';
 
   @override
   String get apiPublicShopTitle => 'Dyqani online';

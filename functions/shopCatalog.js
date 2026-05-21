@@ -5,6 +5,7 @@ const { displayLocation } = require('./businessAddress');
 const i18n = require('./i18n');
 const pricing = require('./pricing');
 const contestPublic = require('./contestPublic');
+const jobOpeningPublic = require('./jobOpeningPublic');
 
 function publicShopCheckoutFromData(data) {
   const sc =
@@ -215,6 +216,7 @@ async function getMarketplaceSnapshot(req) {
   const categories = [];
   const offers = [];
   const contests = [];
+  const jobOpenings = [];
   const businesses = [];
 
   for (const b of baseBusinesses) {
@@ -222,12 +224,13 @@ async function getMarketplaceSnapshot(req) {
       .collection(`businesses/${b.id}/products`)
       .where('status', '==', 'active');
 
-    const [pSnap, productCountSnap, cSnap, oSnap, cSnapContests] = await Promise.all([
+    const [pSnap, productCountSnap, cSnap, oSnap, cSnapContests, jobsSnap] = await Promise.all([
       productsCol.orderBy('createdAt', 'desc').limit(500).get(),
       productsCol.count().get(),
       db.collection(`businesses/${b.id}/categories`).orderBy('name').get(),
       db.collection(`businesses/${b.id}/offers`).where('active', '==', true).get(),
       db.collection(`businesses/${b.id}/contests`).where('active', '==', true).get(),
+      db.collection(`businesses/${b.id}/jobOpenings`).where('active', '==', true).get(),
     ]);
 
     const activeOfferDocs = oSnap.docs
@@ -281,6 +284,16 @@ async function getMarketplaceSnapshot(req) {
       businessName: b.name,
     }));
 
+    const activeJobDocs = jobsSnap.docs.filter((doc) =>
+      jobOpeningPublic.isJobOpeningActive({ id: doc.id, ...doc.data() }),
+    );
+    const activeJobs = activeJobDocs.map((doc) => ({
+      ...jobOpeningPublic.serializeJobOpening(doc, ctx),
+      businessId: b.id,
+      businessSlug: b.slug,
+      businessName: b.name,
+    }));
+
     businesses.push({
       ...b,
       productCount: productCountSnap.data().count || 0,
@@ -288,6 +301,7 @@ async function getMarketplaceSnapshot(req) {
       offerCount: activeOffers.length,
       offerProductCount,
       contestCount: activeContests.length,
+      jobOpeningCount: activeJobs.length,
     });
 
     for (const doc of pSnap.docs) {
@@ -299,6 +313,7 @@ async function getMarketplaceSnapshot(req) {
     }
     offers.push(...activeOffers);
     contests.push(...activeContests);
+    jobOpenings.push(...activeJobs);
   }
 
   products.sort((a, b) => a.businessName.localeCompare(b.businessName, 'sq'));
@@ -314,6 +329,7 @@ async function getMarketplaceSnapshot(req) {
       0,
     ),
     contestCount: contests.length,
+    jobOpeningCount: jobOpenings.length,
   };
 
   return {
@@ -322,6 +338,7 @@ async function getMarketplaceSnapshot(req) {
     categories,
     offers,
     contests,
+    jobOpenings,
     stats,
   };
 }

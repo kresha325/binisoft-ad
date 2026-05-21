@@ -174,6 +174,8 @@ class SiteConfig extends Equatable {
 
   static const sectionHero = 'hero';
   static const sectionOffers = 'offers';
+  static const sectionContests = 'contests';
+  static const sectionJobOpenings = 'jobOpenings';
   static const sectionProducts = 'products';
   static const sectionServices = 'services';
   static const sectionAbout = 'about';
@@ -201,6 +203,12 @@ class SiteConfig extends Equatable {
             useProfileCover: true,
           ),
           const SiteSectionConfig(id: sectionOffers, enabled: true, title: 'Ofertat'),
+          const SiteSectionConfig(id: sectionContests, enabled: true, title: 'Konkurset'),
+          const SiteSectionConfig(
+            id: sectionJobOpenings,
+            enabled: true,
+            title: 'Konkurse pune',
+          ),
           const SiteSectionConfig(
             id: sectionProducts,
             enabled: true,

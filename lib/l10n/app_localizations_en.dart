@@ -33,7 +33,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navOffers => 'Offers';
 
   @override
-  String get navContests => 'Contests';
+  String get navContests => 'Giveaways';
+
+  @override
+  String get navJobOpenings => 'Job openings';
 
   @override
   String get navCategories => 'Categories';
@@ -92,11 +95,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Promotions with percent or sale price. Active offers apply on the public API and orders.';
 
   @override
-  String get pageContestsTitle => 'Contests';
+  String get pageContestsTitle => 'Giveaways';
 
   @override
   String get pageContestsSubtitle =>
-      'Prize draws with rules and dates. Entries are collected via the public shop API.';
+      'Prize draws and promotions (not hiring). Entries via the public shop.';
+
+  @override
+  String get pageJobOpeningsTitle => 'Job openings';
+
+  @override
+  String get pageJobOpeningsSubtitle =>
+      'Vacancies and recruitment — candidates apply via the public shop (name, phone, note).';
 
   @override
   String get pageCategoriesTitle => 'Categories';
@@ -1471,6 +1481,150 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contestEntriesEmpty => 'No entries yet.';
+
+  @override
+  String get jobAddTitle => 'Add job opening';
+
+  @override
+  String get jobEditTitle => 'Edit job opening';
+
+  @override
+  String get jobSave => 'Save job opening';
+
+  @override
+  String get jobActive => 'Active';
+
+  @override
+  String get jobTitleLabel => 'Job title';
+
+  @override
+  String get jobTitleHint => 'e.g. Waiter / Line cook';
+
+  @override
+  String get jobLocationLabel => 'Location';
+
+  @override
+  String get jobLocationHint => 'e.g. City center';
+
+  @override
+  String get jobEmploymentTypeLabel => 'Employment type';
+
+  @override
+  String get jobEmploymentUnset => '— Select —';
+
+  @override
+  String get jobEmploymentFullTime => 'Full-time';
+
+  @override
+  String get jobEmploymentPartTime => 'Part-time';
+
+  @override
+  String get jobEmploymentContract => 'Contract';
+
+  @override
+  String get jobEmploymentInternship => 'Internship';
+
+  @override
+  String get jobEmploymentTemporary => 'Temporary';
+
+  @override
+  String get jobEmploymentOther => 'Other';
+
+  @override
+  String get jobDescriptionLabel => 'Job description';
+
+  @override
+  String get jobDescriptionHint => 'Role and benefits';
+
+  @override
+  String get jobRequirementsLabel => 'Requirements';
+
+  @override
+  String get jobRequirementsHint => 'Experience, documents, skills';
+
+  @override
+  String get jobSalaryLabel => 'Salary (optional)';
+
+  @override
+  String get jobSalaryHint => 'e.g. €400–500 / month';
+
+  @override
+  String get jobApplyEmailLabel => 'Apply by email';
+
+  @override
+  String get jobApplyEmailHint => 'hr@business.com';
+
+  @override
+  String get jobApplyUrlLabel => 'Apply URL';
+
+  @override
+  String get jobApplyUrlHint => 'https://…';
+
+  @override
+  String get jobImageLabel => 'Photo / banner';
+
+  @override
+  String get jobPickImage => 'Choose image';
+
+  @override
+  String get jobSectionDuration => 'Application period';
+
+  @override
+  String jobDurationLabel(int days) {
+    return 'Duration: $days days';
+  }
+
+  @override
+  String get jobRenewHint =>
+      'Saving starts a new period from today (listing has expired).';
+
+  @override
+  String get jobSaved => 'Job opening saved';
+
+  @override
+  String get jobUpdated => 'Job opening updated';
+
+  @override
+  String get jobDeleted => 'Job opening deleted';
+
+  @override
+  String get jobDeleteTitle => 'Delete job opening?';
+
+  @override
+  String jobDeleteMessage(String title) {
+    return 'Delete \"$title\"? All applications will be removed.';
+  }
+
+  @override
+  String get jobsEmpty => 'No job openings yet.';
+
+  @override
+  String get jobStatusLive => 'Accepting applications';
+
+  @override
+  String get jobStatusScheduled => 'Scheduled';
+
+  @override
+  String get jobStatusExpired => 'Closed';
+
+  @override
+  String get searchJobOpenings => 'Search job openings…';
+
+  @override
+  String jobApplicationCount(int n) {
+    return '$n applications';
+  }
+
+  @override
+  String get jobViewApplications => 'Applications';
+
+  @override
+  String jobApplicationsTitle(String title) {
+    return 'Applications — $title';
+  }
+
+  @override
+  String get jobApplicationsEmpty => 'No applications yet.';
 
   @override
   String get apiPublicShopTitle => 'Online shop (your store)';

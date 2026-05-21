@@ -2,6 +2,7 @@ const ALLOWED_SECTION_IDS = new Set([
   'hero',
   'offers',
   'contests',
+  'jobOpenings',
   'products',
   'services',
   'about',
@@ -15,6 +16,7 @@ const ALLOWED_CTA_TARGETS = new Set([
   'contact',
   'offers',
   'contests',
+  'jobOpenings',
   'whatsapp',
 ]);
 
@@ -80,6 +82,7 @@ function defaultSiteConfig() {
       { id: 'hero', enabled: true, useProfileCover: true },
       { id: 'offers', enabled: true, title: 'Ofertat' },
       { id: 'contests', enabled: true, title: 'Konkurset' },
+      { id: 'jobOpenings', enabled: true, title: 'Konkurse pune' },
       { id: 'products', enabled: true, title: 'Produktet' },
       { id: 'services', enabled: true, title: 'Shërbimet' },
       { id: 'about', enabled: true, title: 'Rreth nesh' },

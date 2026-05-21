@@ -9,6 +9,7 @@ const BUSINESS_SUBCOLLECTIONS = [
   'services',
   'offers',
   'contests',
+  'jobOpenings',
   'appointments',
   'productVariants',
   'attributes',
@@ -115,6 +116,7 @@ function createSuperadminDeleteHandlers({ verifyAuth, sendError }) {
         category: 'categories',
         offer: 'offers',
         contest: 'contests',
+        jobOpening: 'jobOpenings',
       };
       const collection = collectionByKind[kind];
       if (!collection) {

@@ -267,6 +267,17 @@ service cloud.firestore {
         }
       }
 
+      match /jobOpenings/{docId} {
+        allow read: if canRead(businessId);
+        allow create, update: if canWrite(businessId);
+        allow delete: if canWrite(businessId) || isPlatformAdmin();
+
+        match /applications/{applicationId} {
+          allow read: if canRead(businessId);
+          allow create, update, delete: if false;
+        }
+      }
+
       match /productVariants/{docId} {
         allow read: if canRead(businessId);
         allow create, update, delete: if canWrite(businessId);

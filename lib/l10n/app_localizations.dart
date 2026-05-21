@@ -151,8 +151,14 @@ abstract class AppLocalizations {
   /// No description provided for @navContests.
   ///
   /// In en, this message translates to:
-  /// **'Contests'**
+  /// **'Giveaways'**
   String get navContests;
+
+  /// No description provided for @navJobOpenings.
+  ///
+  /// In en, this message translates to:
+  /// **'Job openings'**
+  String get navJobOpenings;
 
   /// No description provided for @navCategories.
   ///
@@ -265,14 +271,26 @@ abstract class AppLocalizations {
   /// No description provided for @pageContestsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Contests'**
+  /// **'Giveaways'**
   String get pageContestsTitle;
 
   /// No description provided for @pageContestsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Prize draws with rules and dates. Entries are collected via the public shop API.'**
+  /// **'Prize draws and promotions (not hiring). Entries via the public shop.'**
   String get pageContestsSubtitle;
+
+  /// No description provided for @pageJobOpeningsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Job openings'**
+  String get pageJobOpeningsTitle;
+
+  /// No description provided for @pageJobOpeningsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vacancies and recruitment — candidates apply via the public shop (name, phone, note).'**
+  String get pageJobOpeningsSubtitle;
 
   /// No description provided for @pageCategoriesTitle.
   ///
@@ -2821,6 +2839,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No entries yet.'**
   String get contestEntriesEmpty;
+
+  /// No description provided for @jobAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add job opening'**
+  String get jobAddTitle;
+
+  /// No description provided for @jobEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit job opening'**
+  String get jobEditTitle;
+
+  /// No description provided for @jobSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save job opening'**
+  String get jobSave;
+
+  /// No description provided for @jobActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get jobActive;
+
+  /// No description provided for @jobTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Job title'**
+  String get jobTitleLabel;
+
+  /// No description provided for @jobTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Waiter / Line cook'**
+  String get jobTitleHint;
+
+  /// No description provided for @jobLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get jobLocationLabel;
+
+  /// No description provided for @jobLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. City center'**
+  String get jobLocationHint;
+
+  /// No description provided for @jobEmploymentTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment type'**
+  String get jobEmploymentTypeLabel;
+
+  /// No description provided for @jobEmploymentUnset.
+  ///
+  /// In en, this message translates to:
+  /// **'— Select —'**
+  String get jobEmploymentUnset;
+
+  /// No description provided for @jobEmploymentFullTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-time'**
+  String get jobEmploymentFullTime;
+
+  /// No description provided for @jobEmploymentPartTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Part-time'**
+  String get jobEmploymentPartTime;
+
+  /// No description provided for @jobEmploymentContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract'**
+  String get jobEmploymentContract;
+
+  /// No description provided for @jobEmploymentInternship.
+  ///
+  /// In en, this message translates to:
+  /// **'Internship'**
+  String get jobEmploymentInternship;
+
+  /// No description provided for @jobEmploymentTemporary.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary'**
+  String get jobEmploymentTemporary;
+
+  /// No description provided for @jobEmploymentOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get jobEmploymentOther;
+
+  /// No description provided for @jobDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Job description'**
+  String get jobDescriptionLabel;
+
+  /// No description provided for @jobDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Role and benefits'**
+  String get jobDescriptionHint;
+
+  /// No description provided for @jobRequirementsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Requirements'**
+  String get jobRequirementsLabel;
+
+  /// No description provided for @jobRequirementsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience, documents, skills'**
+  String get jobRequirementsHint;
+
+  /// No description provided for @jobSalaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary (optional)'**
+  String get jobSalaryLabel;
+
+  /// No description provided for @jobSalaryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. €400–500 / month'**
+  String get jobSalaryHint;
+
+  /// No description provided for @jobApplyEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply by email'**
+  String get jobApplyEmailLabel;
+
+  /// No description provided for @jobApplyEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'hr@business.com'**
+  String get jobApplyEmailHint;
+
+  /// No description provided for @jobApplyUrlLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply URL'**
+  String get jobApplyUrlLabel;
+
+  /// No description provided for @jobApplyUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'https://…'**
+  String get jobApplyUrlHint;
+
+  /// No description provided for @jobImageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo / banner'**
+  String get jobImageLabel;
+
+  /// No description provided for @jobPickImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image'**
+  String get jobPickImage;
+
+  /// No description provided for @jobSectionDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Application period'**
+  String get jobSectionDuration;
+
+  /// No description provided for @jobDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration: {days} days'**
+  String jobDurationLabel(int days);
+
+  /// No description provided for @jobRenewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving starts a new period from today (listing has expired).'**
+  String get jobRenewHint;
+
+  /// No description provided for @jobSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Job opening saved'**
+  String get jobSaved;
+
+  /// No description provided for @jobUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Job opening updated'**
+  String get jobUpdated;
+
+  /// No description provided for @jobDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Job opening deleted'**
+  String get jobDeleted;
+
+  /// No description provided for @jobDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete job opening?'**
+  String get jobDeleteTitle;
+
+  /// No description provided for @jobDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{title}\"? All applications will be removed.'**
+  String jobDeleteMessage(String title);
+
+  /// No description provided for @jobsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No job openings yet.'**
+  String get jobsEmpty;
+
+  /// No description provided for @jobStatusLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepting applications'**
+  String get jobStatusLive;
+
+  /// No description provided for @jobStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get jobStatusScheduled;
+
+  /// No description provided for @jobStatusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get jobStatusExpired;
+
+  /// No description provided for @searchJobOpenings.
+  ///
+  /// In en, this message translates to:
+  /// **'Search job openings…'**
+  String get searchJobOpenings;
+
+  /// No description provided for @jobApplicationCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} applications'**
+  String jobApplicationCount(int n);
+
+  /// No description provided for @jobViewApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get jobViewApplications;
+
+  /// No description provided for @jobApplicationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications — {title}'**
+  String jobApplicationsTitle(String title);
+
+  /// No description provided for @jobApplicationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No applications yet.'**
+  String get jobApplicationsEmpty;
 
   /// No description provided for @apiPublicShopTitle.
   ///

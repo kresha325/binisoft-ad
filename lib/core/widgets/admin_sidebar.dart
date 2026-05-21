@@ -133,6 +133,7 @@ class AdminShellNav {
         AdminNavItem('/services', l10n.navServices, Icons.design_services_outlined),
         AdminNavItem('/offers', l10n.navOffers, Icons.local_offer_outlined),
         AdminNavItem('/contests', l10n.navContests, Icons.emoji_events_outlined),
+        AdminNavItem('/job-openings', l10n.navJobOpenings, Icons.work_outline),
         AdminNavItem('/orders', l10n.navOrders, Icons.shopping_bag_outlined),
         AdminNavItem('/appointments', l10n.navAppointments, Icons.event_outlined),
         AdminNavItem('/reports', l10n.navReports, Icons.analytics_outlined),

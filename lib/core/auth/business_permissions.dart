@@ -59,7 +59,8 @@ class BusinessPermissions {
     if (path == '/categories' ||
         path == '/services' ||
         path == '/offers' ||
-        path == '/contests') {
+        path == '/contests' ||
+        path == '/job-openings') {
       return canWriteCatalog;
     }
     if (path == '/products') {

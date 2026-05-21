@@ -780,6 +780,7 @@ const publicOrders = require('./publicOrders');
 const i18n = require('./i18n');
 const shopCatalog = require('./shopCatalog');
 const contestPublic = require('./contestPublic');
+const jobOpeningPublic = require('./jobOpeningPublic');
 
 async function handlePublicApi(req, res) {
   const ip = rateLimit.clientIp(req);
@@ -839,6 +840,33 @@ async function handlePublicApi(req, res) {
     return;
   }
 
+  const jobApplicationMatch = path.match(
+    /\/api\/(?:public|shop)\/([^/]+)\/jobOpenings\/([^/]+)\/applications\/?$/,
+  );
+  if (jobApplicationMatch && req.method === 'POST') {
+    try {
+      rateLimit.checkRateLimit(`job-application:${ip}`, { max: 20, windowMs: 60_000 });
+      const slug = decodeURIComponent(jobApplicationMatch[1]);
+      const jobOpeningId = decodeURIComponent(jobApplicationMatch[2]);
+      const business = await findBusinessBySlug(slug);
+      const db = getFirestore();
+      const body = typeof req.body === 'object' && req.body ? req.body : {};
+      const result = await jobOpeningPublic.createJobApplication(
+        db,
+        business.id,
+        jobOpeningId,
+        body,
+      );
+      res.status(201).json({
+        meta: i18n.apiMeta(i18n.pickRequestLocale(req, business)),
+        ...result,
+      });
+    } catch (err) {
+      sendError(res, err);
+    }
+    return;
+  }
+
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
     return;
@@ -881,7 +909,7 @@ async function handlePublicApi(req, res) {
   let productId;
   try {
     const match = path.match(
-      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|services|contests|business)(?:\/([^/]+))?$/,
+      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|services|contests|jobOpenings|business)(?:\/([^/]+))?$/,
     );
 
     if (match) {
@@ -977,6 +1005,40 @@ async function handlePublicApi(req, res) {
         business: businessPayload(business, slug, localeCtx),
         contests,
         contestCount: contests.length,
+      });
+      return;
+    }
+
+    if (resource === 'jobOpenings') {
+      const jobsSnap = await db
+        .collection(`businesses/${businessId}/jobOpenings`)
+        .where('active', '==', true)
+        .get();
+
+      const jobOpenings = jobsSnap.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((row) => jobOpeningPublic.isJobOpeningActive(row))
+        .map((doc) => jobOpeningPublic.serializeJobOpening(doc, localeCtx));
+
+      if (productId) {
+        const one = jobOpenings.find((j) => j.id === productId);
+        if (!one) {
+          res.status(404).json({ error: { message: 'Job opening not found' } });
+          return;
+        }
+        res.status(200).json({
+          meta: i18n.apiMeta(localeCtx),
+          business: businessPayload(business, slug, localeCtx),
+          jobOpening: one,
+        });
+        return;
+      }
+
+      res.status(200).json({
+        meta: i18n.apiMeta(localeCtx),
+        business: businessPayload(business, slug, localeCtx),
+        jobOpenings,
+        jobOpeningCount: jobOpenings.length,
       });
       return;
     }

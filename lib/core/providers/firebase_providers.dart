@@ -11,6 +11,7 @@ import '../../features/services/data/repositories/service_repository.dart';
 import '../../features/products/data/repositories/attribute_repository.dart';
 import '../../features/orders/data/repositories/api_key_repository.dart';
 import '../../features/contests/data/repositories/contest_repository.dart';
+import '../../features/job_openings/data/repositories/job_opening_repository.dart';
 import '../../features/offers/data/repositories/offer_repository.dart';
 import '../../features/orders/data/repositories/order_repository.dart';
 import '../../features/products/data/repositories/product_repository.dart';
@@ -53,6 +54,10 @@ final offerRepositoryProvider = Provider<OfferRepository>((ref) {
 
 final contestRepositoryProvider = Provider<ContestRepository>((ref) {
   return ContestRepository(firestore: ref.watch(firestoreProvider));
+});
+
+final jobOpeningRepositoryProvider = Provider<JobOpeningRepository>((ref) {
+  return JobOpeningRepository(firestore: ref.watch(firestoreProvider));
 });
 
 final attributeRepositoryProvider = Provider<AttributeRepository>((ref) {

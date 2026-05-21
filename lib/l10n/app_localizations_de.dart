@@ -36,6 +36,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get navContests => 'Gewinnspiele';
 
   @override
+  String get navJobOpenings => 'Stellenangebote';
+
+  @override
   String get navCategories => 'Kategorien';
 
   @override
@@ -96,7 +99,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pageContestsSubtitle =>
-      'Preise, Regeln und Laufzeit. Teilnahmen über die öffentliche Shop-API.';
+      'Preise und Aktionen (keine Stellen). Teilnahmen über den öffentlichen Shop.';
+
+  @override
+  String get pageJobOpeningsTitle => 'Stellenangebote';
+
+  @override
+  String get pageJobOpeningsSubtitle =>
+      'Offene Stellen — Bewerbungen über den öffentlichen Shop (Name, Telefon, Notiz).';
 
   @override
   String get pageCategoriesTitle => 'Kategorien';
@@ -1472,6 +1482,150 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get contestEntriesEmpty => 'Noch keine Teilnahmen.';
+
+  @override
+  String get jobAddTitle => 'Stelle hinzufügen';
+
+  @override
+  String get jobEditTitle => 'Stelle bearbeiten';
+
+  @override
+  String get jobSave => 'Stelle speichern';
+
+  @override
+  String get jobActive => 'Aktiv';
+
+  @override
+  String get jobTitleLabel => 'Stellenbezeichnung';
+
+  @override
+  String get jobTitleHint => 'z. B. Kellner / Küchenhilfe';
+
+  @override
+  String get jobLocationLabel => 'Standort';
+
+  @override
+  String get jobLocationHint => 'z. B. Innenstadt';
+
+  @override
+  String get jobEmploymentTypeLabel => 'Beschäftigungsart';
+
+  @override
+  String get jobEmploymentUnset => '— Auswählen —';
+
+  @override
+  String get jobEmploymentFullTime => 'Vollzeit';
+
+  @override
+  String get jobEmploymentPartTime => 'Teilzeit';
+
+  @override
+  String get jobEmploymentContract => 'Vertrag';
+
+  @override
+  String get jobEmploymentInternship => 'Praktikum';
+
+  @override
+  String get jobEmploymentTemporary => 'Befristet';
+
+  @override
+  String get jobEmploymentOther => 'Sonstiges';
+
+  @override
+  String get jobDescriptionLabel => 'Stellenbeschreibung';
+
+  @override
+  String get jobDescriptionHint => 'Aufgaben und Vorteile';
+
+  @override
+  String get jobRequirementsLabel => 'Anforderungen';
+
+  @override
+  String get jobRequirementsHint => 'Erfahrung, Unterlagen, Fähigkeiten';
+
+  @override
+  String get jobSalaryLabel => 'Gehalt (optional)';
+
+  @override
+  String get jobSalaryHint => 'z. B. 400–500 € / Monat';
+
+  @override
+  String get jobApplyEmailLabel => 'Bewerbung per E-Mail';
+
+  @override
+  String get jobApplyEmailHint => 'hr@firma.de';
+
+  @override
+  String get jobApplyUrlLabel => 'Bewerbungs-URL';
+
+  @override
+  String get jobApplyUrlHint => 'https://…';
+
+  @override
+  String get jobImageLabel => 'Foto / Banner';
+
+  @override
+  String get jobPickImage => 'Bild wählen';
+
+  @override
+  String get jobSectionDuration => 'Bewerbungsfrist';
+
+  @override
+  String jobDurationLabel(int days) {
+    return 'Dauer: $days Tage';
+  }
+
+  @override
+  String get jobRenewHint =>
+      'Speichern startet eine neue Frist ab heute (abgelaufen).';
+
+  @override
+  String get jobSaved => 'Stelle gespeichert';
+
+  @override
+  String get jobUpdated => 'Stelle aktualisiert';
+
+  @override
+  String get jobDeleted => 'Stelle gelöscht';
+
+  @override
+  String get jobDeleteTitle => 'Stelle löschen?';
+
+  @override
+  String jobDeleteMessage(String title) {
+    return '\"$title\" löschen? Alle Bewerbungen werden entfernt.';
+  }
+
+  @override
+  String get jobsEmpty => 'Noch keine Stellenangebote.';
+
+  @override
+  String get jobStatusLive => 'Bewerbungen offen';
+
+  @override
+  String get jobStatusScheduled => 'Geplant';
+
+  @override
+  String get jobStatusExpired => 'Geschlossen';
+
+  @override
+  String get searchJobOpenings => 'Stellen suchen…';
+
+  @override
+  String jobApplicationCount(int n) {
+    return '$n Bewerbungen';
+  }
+
+  @override
+  String get jobViewApplications => 'Bewerbungen';
+
+  @override
+  String jobApplicationsTitle(String title) {
+    return 'Bewerbungen — $title';
+  }
+
+  @override
+  String get jobApplicationsEmpty => 'Noch keine Bewerbungen.';
 
   @override
   String get apiPublicShopTitle => 'Online-Shop';
