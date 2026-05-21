@@ -568,7 +568,7 @@ function serializeProduct(doc, attributeDefs, ctx, activeOffers = [], variants =
             discountPercent: minVariant.discountPercent,
           };
         })()
-      : pricing.resolveProductPricing(d, doc.id, activeOffers);
+      : pricing.resolveProductPricing(d, doc.id, activeOffers, variantList);
   const totalVariantQty = variantList.reduce((sum, v) => sum + (v.quantity || 0), 0);
   const quantity =
     variantList.length > 0 ? totalVariantQty : d.baseQuantity ?? 0;
@@ -633,7 +633,7 @@ function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map())
       const entry = productsById.get(item.productId);
       if (!entry) return null;
       const { data: d } = entry;
-      const inactive = d.status !== 'active';
+      const inactive = String(d.status || '').toLowerCase() !== 'active';
       const variants = variantsByProduct.get(item.productId) || [];
       const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer, variants);
       if (!inactive && !priceInfo.hasDiscount) return null;

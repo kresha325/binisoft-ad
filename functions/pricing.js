@@ -32,7 +32,14 @@ function isOfferActive(offer, nowMs = Date.now()) {
  * @param {Array<object>} offers - active offers with `id`
  */
 function resolveUnitPricing(basePrice, productId, offers) {
-  const base = basePrice != null ? Number(basePrice) : 0;
+  return resolveProductPricing({ basePrice }, productId, offers, []);
+}
+
+/**
+ * Best active-offer price for a product (catalog + variants use same rules as /offers).
+ */
+function resolveProductPricing(productData, productId, offers, variants = []) {
+  const base = effectiveBasePrice(productData, variants);
   let unitPrice = base;
   let offerId = null;
   let discountPercent = null;
@@ -43,34 +50,17 @@ function resolveUnitPricing(basePrice, productId, offers) {
     if (!productIds.includes(productId)) continue;
 
     const items = offer.items || [];
-    const item = items.find((i) => i.productId === productId);
-    let candidate = base;
-
-    if (item && item.salePriceEur != null && Number.isFinite(Number(item.salePriceEur))) {
-      candidate = roundMoney(Number(item.salePriceEur));
-    } else {
-      const pct =
-        item && item.discountPercent != null
-          ? Number(item.discountPercent)
-          : offer.discountPercent != null
-            ? Number(offer.discountPercent)
-            : null;
-      if (pct != null && Number.isFinite(pct) && pct > 0) {
-        candidate = roundMoney(base * (1 - Math.min(100, Math.max(0, pct)) / 100));
-        discountPercent = pct;
-      }
-    }
-
-    if (candidate < unitPrice) {
-      unitPrice = candidate;
+    const item = items.find((i) => i.productId === productId) || { productId };
+    const priceInfo = resolveOfferItemDisplay(productData, item, offer, variants);
+    if (!priceInfo.hasDiscount) continue;
+    if (priceInfo.salePrice < unitPrice || (base <= 0 && priceInfo.salePrice <= unitPrice)) {
+      unitPrice = priceInfo.salePrice;
       offerId = offer.id;
-      if (base > 0 && unitPrice < base) {
-        discountPercent = discountPercent ?? roundMoney((1 - unitPrice / base) * 100);
-      }
+      discountPercent = priceInfo.discountPercent;
     }
   }
 
-  const onOffer = unitPrice < base && offerId != null;
+  const onOffer = offerId != null && priceInfoHasDiscount(base, unitPrice, discountPercent);
   return {
     unitPrice,
     originalPrice: base,
@@ -80,13 +70,13 @@ function resolveUnitPricing(basePrice, productId, offers) {
   };
 }
 
-function resolveProductPricing(productData, productId, offers) {
-  const base = productData.basePrice != null ? Number(productData.basePrice) : 0;
-  return resolveUnitPricing(base, productId, offers);
+function priceInfoHasDiscount(base, unitPrice, discountPercent) {
+  if (discountPercent != null && discountPercent > 0) return true;
+  return base > 0 && unitPrice < base;
 }
 
 function resolveVariantPricing(variantPrice, productId, offers) {
-  return resolveUnitPricing(variantPrice, productId, offers);
+  return resolveProductPricing({ basePrice: variantPrice }, productId, offers, []);
 }
 
 /**
