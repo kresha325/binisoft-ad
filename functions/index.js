@@ -617,14 +617,25 @@ function serializeProduct(doc, attributeDefs, ctx, activeOffers = [], variants =
   };
 }
 
-function serializeOffer(offer, productsById, ctx) {
-  const items = (offer.items || [])
+function offerLineItems(offer) {
+  if (Array.isArray(offer.items) && offer.items.length > 0) return offer.items;
+  return (offer.productIds || [])
+    .filter(Boolean)
+    .map((productId) => ({
+      productId,
+      discountPercent: offer.discountPercent ?? undefined,
+    }));
+}
+
+function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map()) {
+  const items = offerLineItems(offer)
     .map((item) => {
       const entry = productsById.get(item.productId);
       if (!entry) return null;
       const { data: d } = entry;
       if (d.status !== 'active') return null;
-      const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer);
+      const variants = variantsByProduct.get(item.productId) || [];
+      const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer, variants);
       if (!priceInfo.hasDiscount) return null;
       return {
         productId: item.productId,
@@ -927,11 +938,13 @@ async function handlePublicApi(req, res) {
         }),
       );
 
+      const variantsByProduct = await loadVariantsByProductId(db, businessId);
+
       res.status(200).json({
         meta: i18n.apiMeta(localeCtx),
         business: businessPayload(business, slug, localeCtx),
         offers: activeOffers
-          .map((offer) => serializeOffer(offer, productsById, localeCtx))
+          .map((offer) => serializeOffer(offer, productsById, localeCtx, variantsByProduct))
           .filter((o) => o.items.length > 0),
       });
       return;

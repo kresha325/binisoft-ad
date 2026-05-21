@@ -48,6 +48,28 @@ describe('resolveOfferItemDisplay', () => {
     );
     assert.equal(result.hasDiscount, false);
   });
+
+  it('uses min variant price when product basePrice is missing', () => {
+    const result = pricing.resolveOfferItemDisplay(
+      {},
+      { productId: 'p1', discountPercent: 10 },
+      {},
+      [{ price: 12 }, { price: 8 }],
+    );
+    assert.equal(result.hasDiscount, true);
+    assert.equal(result.originalPrice, 8);
+    assert.equal(result.salePrice, 7.2);
+  });
+
+  it('allows explicit sale price when base price is zero', () => {
+    const result = pricing.resolveOfferItemDisplay(
+      { basePrice: 0 },
+      { productId: 'p1', salePriceEur: 4.5 },
+      {},
+    );
+    assert.equal(result.hasDiscount, true);
+    assert.equal(result.salePrice, 4.5);
+  });
 });
 
 describe('resolveVariantPricing', () => {

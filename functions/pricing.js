@@ -90,10 +90,27 @@ function resolveVariantPricing(variantPrice, productId, offers) {
 }
 
 /**
- * Offer line item pricing for storefront / offers API (always vs catalog base price).
+ * Catalog-style base for offer math: min variant price when variants exist, else basePrice.
  */
-function resolveOfferItemDisplay(productData, item, offer) {
-  const base = productData.basePrice != null ? Number(productData.basePrice) : 0;
+function effectiveBasePrice(productData, variants = []) {
+  if (Array.isArray(variants) && variants.length > 0) {
+    const prices = variants
+      .map((v) => (v.price != null ? Number(v.price) : NaN))
+      .filter((n) => Number.isFinite(n) && n >= 0);
+    if (prices.length) return Math.min(...prices);
+  }
+  return productData.basePrice != null ? Number(productData.basePrice) : 0;
+}
+
+/**
+ * Offer line item pricing for storefront / offers API (matches catalog base logic).
+ * @param {object} productData
+ * @param {object} item
+ * @param {object} offer
+ * @param {Array<{ price?: number }>} [variants]
+ */
+function resolveOfferItemDisplay(productData, item, offer, variants = []) {
+  const base = effectiveBasePrice(productData, variants);
   let salePrice = base;
   let discountPercent = null;
 
@@ -112,15 +129,30 @@ function resolveOfferItemDisplay(productData, item, offer) {
     }
   }
 
-  if (salePrice < base && base > 0) {
+  if (base > 0 && salePrice < base) {
     if (discountPercent == null) {
       discountPercent = roundMoney((1 - salePrice / base) * 100);
     }
+  } else if (
+    item &&
+    item.salePriceEur != null &&
+    Number.isFinite(Number(item.salePriceEur)) &&
+    base <= 0
+  ) {
+    discountPercent = null;
   } else {
     discountPercent = null;
   }
 
-  const hasDiscount = base > 0 && salePrice < base;
+  const hasExplicitSale =
+    item &&
+    item.salePriceEur != null &&
+    Number.isFinite(Number(item.salePriceEur));
+  const hasDiscount =
+    (base > 0 && salePrice < base) ||
+    (hasExplicitSale && base <= 0) ||
+    (discountPercent != null && discountPercent > 0 && (base > 0 || hasExplicitSale));
+
   return {
     originalPrice: base,
     salePrice: hasDiscount ? salePrice : base,
@@ -147,6 +179,7 @@ async function loadActiveOffers(db, businessId) {
 module.exports = {
   roundMoney,
   isOfferActive,
+  effectiveBasePrice,
   resolveUnitPricing,
   resolveProductPricing,
   resolveVariantPricing,
