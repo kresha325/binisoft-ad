@@ -633,10 +633,10 @@ function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map())
       const entry = productsById.get(item.productId);
       if (!entry) return null;
       const { data: d } = entry;
-      if (d.status !== 'active') return null;
+      const inactive = d.status !== 'active';
       const variants = variantsByProduct.get(item.productId) || [];
       const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer, variants);
-      if (!priceInfo.hasDiscount) return null;
+      if (!inactive && !priceInfo.hasDiscount) return null;
       return {
         productId: item.productId,
         productName: i18n.resolveLocalized({
@@ -648,6 +648,7 @@ function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map())
         originalPrice: priceInfo.originalPrice,
         salePrice: priceInfo.salePrice,
         discountPercent: priceInfo.discountPercent,
+        inactive,
       };
     })
     .filter(Boolean);

@@ -70,6 +70,16 @@ describe('resolveOfferItemDisplay', () => {
     assert.equal(result.hasDiscount, true);
     assert.equal(result.salePrice, 4.5);
   });
+
+  it('keeps percent discount when base price is zero', () => {
+    const result = pricing.resolveOfferItemDisplay(
+      { basePrice: 0 },
+      { productId: 'p1', discountPercent: 10 },
+      {},
+    );
+    assert.equal(result.hasDiscount, true);
+    assert.equal(result.discountPercent, 10);
+  });
 });
 
 describe('resolveVariantPricing', () => {

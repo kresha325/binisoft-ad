@@ -129,29 +129,19 @@ function resolveOfferItemDisplay(productData, item, offer, variants = []) {
     }
   }
 
-  if (base > 0 && salePrice < base) {
-    if (discountPercent == null) {
-      discountPercent = roundMoney((1 - salePrice / base) * 100);
-    }
-  } else if (
-    item &&
-    item.salePriceEur != null &&
-    Number.isFinite(Number(item.salePriceEur)) &&
-    base <= 0
-  ) {
-    discountPercent = null;
-  } else {
-    discountPercent = null;
-  }
-
   const hasExplicitSale =
     item &&
     item.salePriceEur != null &&
     Number.isFinite(Number(item.salePriceEur));
+
+  if (base > 0 && salePrice < base && discountPercent == null && !hasExplicitSale) {
+    discountPercent = roundMoney((1 - salePrice / base) * 100);
+  }
+
   const hasDiscount =
+    (hasExplicitSale && (base <= 0 || salePrice < base)) ||
     (base > 0 && salePrice < base) ||
-    (hasExplicitSale && base <= 0) ||
-    (discountPercent != null && discountPercent > 0 && (base > 0 || hasExplicitSale));
+    (discountPercent != null && discountPercent > 0);
 
   return {
     originalPrice: base,
