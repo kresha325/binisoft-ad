@@ -33,6 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navOffers => 'Offers';
 
   @override
+  String get navContests => 'Contests';
+
+  @override
   String get navCategories => 'Categories';
 
   @override
@@ -87,6 +90,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pageOffersSubtitle =>
       'Promotions with percent or sale price. Active offers apply on the public API and orders.';
+
+  @override
+  String get pageContestsTitle => 'Contests';
+
+  @override
+  String get pageContestsSubtitle =>
+      'Prize draws with rules and dates. Entries are collected via the public shop API.';
 
   @override
   String get pageCategoriesTitle => 'Categories';
@@ -1359,6 +1369,108 @@ class AppLocalizationsEn extends AppLocalizations {
   String productAlreadyOnOffer(String title) {
     return 'On offer: «$title»';
   }
+
+  @override
+  String get contestAddTitle => 'Add contest';
+
+  @override
+  String get contestEditTitle => 'Edit contest';
+
+  @override
+  String get contestSave => 'Save contest';
+
+  @override
+  String get contestActive => 'Active';
+
+  @override
+  String get contestTitleLabel => 'Contest title';
+
+  @override
+  String get contestTitleHint => 'e.g. Summer giveaway 2026';
+
+  @override
+  String get contestPrizeLabel => 'Prize';
+
+  @override
+  String get contestPrizeHint => 'e.g. Dinner for 2';
+
+  @override
+  String get contestDescriptionLabel => 'Description / how to enter';
+
+  @override
+  String get contestDescriptionHint => 'Steps for customers to participate';
+
+  @override
+  String get contestRulesLabel => 'Rules';
+
+  @override
+  String get contestRulesHint => 'Full terms and conditions';
+
+  @override
+  String get contestImageLabel => 'Promo image';
+
+  @override
+  String get contestPickImage => 'Choose image';
+
+  @override
+  String get contestSectionDuration => 'Duration & visibility';
+
+  @override
+  String contestDurationLabel(int days) {
+    return 'Duration: $days days';
+  }
+
+  @override
+  String get contestRenewHint =>
+      'Saving starts a new period from today (contest has expired).';
+
+  @override
+  String get contestSaved => 'Contest saved';
+
+  @override
+  String get contestUpdated => 'Contest updated';
+
+  @override
+  String get contestDeleted => 'Contest deleted';
+
+  @override
+  String get contestDeleteTitle => 'Delete contest?';
+
+  @override
+  String contestDeleteMessage(String title) {
+    return 'Delete \"$title\"? All entries will be removed.';
+  }
+
+  @override
+  String get contestsEmpty => 'No contests yet.';
+
+  @override
+  String get contestStatusLive => 'Live';
+
+  @override
+  String get contestStatusScheduled => 'Scheduled';
+
+  @override
+  String get contestStatusExpired => 'Expired';
+
+  @override
+  String get searchContests => 'Search contests…';
+
+  @override
+  String contestEntryCount(int n) {
+    return '$n entries';
+  }
+
+  @override
+  String get contestViewEntries => 'Entries';
+
+  @override
+  String contestEntriesTitle(String title) {
+    return 'Entries — $title';
+  }
+
+  @override
+  String get contestEntriesEmpty => 'No entries yet.';
 
   @override
   String get apiPublicShopTitle => 'Online shop (your store)';

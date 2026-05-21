@@ -18,6 +18,7 @@ import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/products/presentation/screens/custom_fields_screen.dart';
 import '../../features/products/presentation/screens/products_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
+import '../../features/contests/presentation/screens/contests_screen.dart';
 import '../../features/offers/presentation/screens/offers_screen.dart';
 import '../../features/appointments/presentation/screens/appointments_screen.dart';
 import '../../features/orders/presentation/screens/orders_screen.dart';
@@ -207,6 +208,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/categories', builder: (_, __) => const CategoriesScreen()),
           GoRoute(path: '/services', builder: (_, __) => const ServicesScreen()),
           GoRoute(path: '/offers', builder: (_, __) => const OffersScreen()),
+          GoRoute(path: '/contests', builder: (_, __) => const ContestsScreen()),
           GoRoute(path: '/custom-fields', builder: (_, __) => const CustomFieldsScreen()),
           GoRoute(path: '/api-docs', builder: (_, __) => const ApiDocsScreen()),
           GoRoute(path: '/settings', builder: (_, __) => const SettingsScreen()),

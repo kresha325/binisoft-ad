@@ -8,6 +8,7 @@
   "navBusinesses": "Businesses",
   "navProducts": "Products",
   "navOffers": "Offers",
+  "navContests": "Contests",
   "navCategories": "Categories",
   "navServices": "Services",
   "navCustomFields": "Custom Fields",
@@ -26,6 +27,8 @@
   "pageProductsSubtitle": "Manage your catalog entries.",
   "pageOffersTitle": "Offers",
   "pageOffersSubtitle": "Promotions with percent or sale price. Active offers apply on the public API and orders.",
+  "pageContestsTitle": "Contests",
+  "pageContestsSubtitle": "Prize draws with rules and dates. Entries are collected via the public shop API.",
   "pageCategoriesTitle": "Categories",
   "pageCategoriesSubtitle": "Manage your product categories.",
   "pageServicesTitle": "Services",
@@ -476,6 +479,49 @@
   "@productAlreadyOnOffer": {
     "placeholders": { "title": { "type": "String" } }
   },
+  "contestAddTitle": "Add contest",
+  "contestEditTitle": "Edit contest",
+  "contestSave": "Save contest",
+  "contestActive": "Active",
+  "contestTitleLabel": "Contest title",
+  "contestTitleHint": "e.g. Summer giveaway 2026",
+  "contestPrizeLabel": "Prize",
+  "contestPrizeHint": "e.g. Dinner for 2",
+  "contestDescriptionLabel": "Description / how to enter",
+  "contestDescriptionHint": "Steps for customers to participate",
+  "contestRulesLabel": "Rules",
+  "contestRulesHint": "Full terms and conditions",
+  "contestImageLabel": "Promo image",
+  "contestPickImage": "Choose image",
+  "contestSectionDuration": "Duration & visibility",
+  "contestDurationLabel": "Duration: {days} days",
+  "@contestDurationLabel": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "contestRenewHint": "Saving starts a new period from today (contest has expired).",
+  "contestSaved": "Contest saved",
+  "contestUpdated": "Contest updated",
+  "contestDeleted": "Contest deleted",
+  "contestDeleteTitle": "Delete contest?",
+  "contestDeleteMessage": "Delete \"{title}\"? All entries will be removed.",
+  "@contestDeleteMessage": {
+    "placeholders": { "title": { "type": "String" } }
+  },
+  "contestsEmpty": "No contests yet.",
+  "contestStatusLive": "Live",
+  "contestStatusScheduled": "Scheduled",
+  "contestStatusExpired": "Expired",
+  "searchContests": "Search contests…",
+  "contestEntryCount": "{n} entries",
+  "@contestEntryCount": {
+    "placeholders": { "n": { "type": "int" } }
+  },
+  "contestViewEntries": "Entries",
+  "contestEntriesTitle": "Entries — {title}",
+  "@contestEntriesTitle": {
+    "placeholders": { "title": { "type": "String" } }
+  },
+  "contestEntriesEmpty": "No entries yet.",
   "apiPublicShopTitle": "Online shop (your store)",
   "apiPublicShopSubtitle": "Each business gets a public menu at this link. Generate an API key below, then open the shop once with ?key=… so customers can place orders.",
   "apiPublicShopCopy": "Copy shop link",

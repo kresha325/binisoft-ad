@@ -256,6 +256,17 @@ service cloud.firestore {
         allow delete: if canWrite(businessId) || isPlatformAdmin();
       }
 
+      match /contests/{docId} {
+        allow read: if canRead(businessId);
+        allow create, update: if canWrite(businessId);
+        allow delete: if canWrite(businessId) || isPlatformAdmin();
+
+        match /entries/{entryId} {
+          allow read: if canRead(businessId);
+          allow create, update, delete: if false;
+        }
+      }
+
       match /productVariants/{docId} {
         allow read: if canRead(businessId);
         allow create, update, delete: if canWrite(businessId);

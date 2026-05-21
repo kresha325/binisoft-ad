@@ -148,6 +148,12 @@ abstract class AppLocalizations {
   /// **'Offers'**
   String get navOffers;
 
+  /// No description provided for @navContests.
+  ///
+  /// In en, this message translates to:
+  /// **'Contests'**
+  String get navContests;
+
   /// No description provided for @navCategories.
   ///
   /// In en, this message translates to:
@@ -255,6 +261,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Promotions with percent or sale price. Active offers apply on the public API and orders.'**
   String get pageOffersSubtitle;
+
+  /// No description provided for @pageContestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contests'**
+  String get pageContestsTitle;
+
+  /// No description provided for @pageContestsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prize draws with rules and dates. Entries are collected via the public shop API.'**
+  String get pageContestsSubtitle;
 
   /// No description provided for @pageCategoriesTitle.
   ///
@@ -2617,6 +2635,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'On offer: «{title}»'**
   String productAlreadyOnOffer(String title);
+
+  /// No description provided for @contestAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add contest'**
+  String get contestAddTitle;
+
+  /// No description provided for @contestEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit contest'**
+  String get contestEditTitle;
+
+  /// No description provided for @contestSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save contest'**
+  String get contestSave;
+
+  /// No description provided for @contestActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get contestActive;
+
+  /// No description provided for @contestTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest title'**
+  String get contestTitleLabel;
+
+  /// No description provided for @contestTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Summer giveaway 2026'**
+  String get contestTitleHint;
+
+  /// No description provided for @contestPrizeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Prize'**
+  String get contestPrizeLabel;
+
+  /// No description provided for @contestPrizeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Dinner for 2'**
+  String get contestPrizeHint;
+
+  /// No description provided for @contestDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description / how to enter'**
+  String get contestDescriptionLabel;
+
+  /// No description provided for @contestDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps for customers to participate'**
+  String get contestDescriptionHint;
+
+  /// No description provided for @contestRulesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules'**
+  String get contestRulesLabel;
+
+  /// No description provided for @contestRulesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Full terms and conditions'**
+  String get contestRulesHint;
+
+  /// No description provided for @contestImageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Promo image'**
+  String get contestImageLabel;
+
+  /// No description provided for @contestPickImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image'**
+  String get contestPickImage;
+
+  /// No description provided for @contestSectionDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration & visibility'**
+  String get contestSectionDuration;
+
+  /// No description provided for @contestDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration: {days} days'**
+  String contestDurationLabel(int days);
+
+  /// No description provided for @contestRenewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving starts a new period from today (contest has expired).'**
+  String get contestRenewHint;
+
+  /// No description provided for @contestSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest saved'**
+  String get contestSaved;
+
+  /// No description provided for @contestUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest updated'**
+  String get contestUpdated;
+
+  /// No description provided for @contestDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest deleted'**
+  String get contestDeleted;
+
+  /// No description provided for @contestDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete contest?'**
+  String get contestDeleteTitle;
+
+  /// No description provided for @contestDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{title}\"? All entries will be removed.'**
+  String contestDeleteMessage(String title);
+
+  /// No description provided for @contestsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No contests yet.'**
+  String get contestsEmpty;
+
+  /// No description provided for @contestStatusLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get contestStatusLive;
+
+  /// No description provided for @contestStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get contestStatusScheduled;
+
+  /// No description provided for @contestStatusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get contestStatusExpired;
+
+  /// No description provided for @searchContests.
+  ///
+  /// In en, this message translates to:
+  /// **'Search contests…'**
+  String get searchContests;
+
+  /// No description provided for @contestEntryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} entries'**
+  String contestEntryCount(int n);
+
+  /// No description provided for @contestViewEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries'**
+  String get contestViewEntries;
+
+  /// No description provided for @contestEntriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries — {title}'**
+  String contestEntriesTitle(String title);
+
+  /// No description provided for @contestEntriesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet.'**
+  String get contestEntriesEmpty;
 
   /// No description provided for @apiPublicShopTitle.
   ///

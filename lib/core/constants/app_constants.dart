@@ -41,6 +41,7 @@ class FirestoreCollections {
   static const String services = 'services';
   static const String products = 'products';
   static const String offers = 'offers';
+  static const String contests = 'contests';
   static const String productVariants = 'productVariants';
   static const String attributes = 'attributes';
   static const String attributeValues = 'attributeValues';

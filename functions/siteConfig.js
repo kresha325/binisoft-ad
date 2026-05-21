@@ -1,6 +1,7 @@
 const ALLOWED_SECTION_IDS = new Set([
   'hero',
   'offers',
+  'contests',
   'products',
   'services',
   'about',
@@ -8,7 +9,14 @@ const ALLOWED_SECTION_IDS = new Set([
   'contact',
 ]);
 
-const ALLOWED_CTA_TARGETS = new Set(['products', 'services', 'contact', 'offers', 'whatsapp']);
+const ALLOWED_CTA_TARGETS = new Set([
+  'products',
+  'services',
+  'contact',
+  'offers',
+  'contests',
+  'whatsapp',
+]);
 
 const ctaPresets = require('./siteCtaPresets');
 
@@ -71,6 +79,7 @@ function defaultSiteConfig() {
     sections: [
       { id: 'hero', enabled: true, useProfileCover: true },
       { id: 'offers', enabled: true, title: 'Ofertat' },
+      { id: 'contests', enabled: true, title: 'Konkurset' },
       { id: 'products', enabled: true, title: 'Produktet' },
       { id: 'services', enabled: true, title: 'Shërbimet' },
       { id: 'about', enabled: true, title: 'Rreth nesh' },

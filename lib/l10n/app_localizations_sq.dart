@@ -33,6 +33,9 @@ class AppLocalizationsSq extends AppLocalizations {
   String get navOffers => 'Ofertat';
 
   @override
+  String get navContests => 'Konkurset';
+
+  @override
   String get navCategories => 'Kategoritë';
 
   @override
@@ -87,6 +90,13 @@ class AppLocalizationsSq extends AppLocalizations {
   @override
   String get pageOffersSubtitle =>
       'Promocione me % ose çmim shitjeje. Ofertat aktive vlejnë në API dhe porosi.';
+
+  @override
+  String get pageContestsTitle => 'Konkurset';
+
+  @override
+  String get pageContestsSubtitle =>
+      'Konkurse me çmim, rregulla dhe periudhë. Pjesëmarrësit regjistrohen përmes dyqanit publik (API).';
 
   @override
   String get pageCategoriesTitle => 'Kategoritë';
@@ -1363,6 +1373,108 @@ class AppLocalizationsSq extends AppLocalizations {
   String productAlreadyOnOffer(String title) {
     return 'Në ofertë: «$title»';
   }
+
+  @override
+  String get contestAddTitle => 'Shto konkurs';
+
+  @override
+  String get contestEditTitle => 'Ndrysho konkursin';
+
+  @override
+  String get contestSave => 'Ruaj konkursin';
+
+  @override
+  String get contestActive => 'Aktiv';
+
+  @override
+  String get contestTitleLabel => 'Titulli i konkursit';
+
+  @override
+  String get contestTitleHint => 'p.sh. Konkurs veror 2026';
+
+  @override
+  String get contestPrizeLabel => 'Çmimi';
+
+  @override
+  String get contestPrizeHint => 'p.sh. Darkë për 2 persona';
+
+  @override
+  String get contestDescriptionLabel => 'Përshkrimi / si merr pjesë';
+
+  @override
+  String get contestDescriptionHint => 'Hapat e pjesëmarrjes për klientët';
+
+  @override
+  String get contestRulesLabel => 'Rregullat';
+
+  @override
+  String get contestRulesHint => 'Kushtet e plota të konkursit';
+
+  @override
+  String get contestImageLabel => 'Imazhi promocional';
+
+  @override
+  String get contestPickImage => 'Zgjidh imazh';
+
+  @override
+  String get contestSectionDuration => 'Kohëzgjatja & dukshmëria';
+
+  @override
+  String contestDurationLabel(int days) {
+    return 'Kohëzgjatja: $days ditë';
+  }
+
+  @override
+  String get contestRenewHint =>
+      'Ruajtja fillon periudhë të re nga sot (konkursi ka skaduar).';
+
+  @override
+  String get contestSaved => 'Konkursi u ruajt';
+
+  @override
+  String get contestUpdated => 'Konkursi u përditësua';
+
+  @override
+  String get contestDeleted => 'Konkursi u fshi';
+
+  @override
+  String get contestDeleteTitle => 'Fshi konkursin?';
+
+  @override
+  String contestDeleteMessage(String title) {
+    return 'Fshi \"$title\"? Të gjitha pjesëmarrjet do të fshihen.';
+  }
+
+  @override
+  String get contestsEmpty => 'Ende pa konkurse.';
+
+  @override
+  String get contestStatusLive => 'Aktiv';
+
+  @override
+  String get contestStatusScheduled => 'E planifikuar';
+
+  @override
+  String get contestStatusExpired => 'Skaduar';
+
+  @override
+  String get searchContests => 'Kërko konkurse…';
+
+  @override
+  String contestEntryCount(int n) {
+    return '$n pjesëmarrës';
+  }
+
+  @override
+  String get contestViewEntries => 'Pjesëmarrësit';
+
+  @override
+  String contestEntriesTitle(String title) {
+    return 'Pjesëmarrësit — $title';
+  }
+
+  @override
+  String get contestEntriesEmpty => 'Ende pa pjesëmarrës.';
 
   @override
   String get apiPublicShopTitle => 'Dyqani online';

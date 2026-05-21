@@ -22,6 +22,9 @@ class TenantPaths {
   CollectionReference<Map<String, dynamic>> offers(String businessId) =>
       businessSub(businessId, FirestoreCollections.offers);
 
+  CollectionReference<Map<String, dynamic>> contests(String businessId) =>
+      businessSub(businessId, FirestoreCollections.contests);
+
   CollectionReference<Map<String, dynamic>> categories(String businessId) =>
       businessSub(businessId, FirestoreCollections.categories);
 

@@ -58,7 +58,8 @@ class BusinessPermissions {
     if (path == '/custom-fields') return canManageTeam;
     if (path == '/categories' ||
         path == '/services' ||
-        path == '/offers') {
+        path == '/offers' ||
+        path == '/contests') {
       return canWriteCatalog;
     }
     if (path == '/products') {

@@ -4,6 +4,7 @@ const { googleMapsEmbedUrl } = require('./googleMaps');
 const { displayLocation } = require('./businessAddress');
 const i18n = require('./i18n');
 const pricing = require('./pricing');
+const contestPublic = require('./contestPublic');
 
 function publicShopCheckoutFromData(data) {
   const sc =
@@ -213,6 +214,7 @@ async function getMarketplaceSnapshot(req) {
   const products = [];
   const categories = [];
   const offers = [];
+  const contests = [];
   const businesses = [];
 
   for (const b of baseBusinesses) {
@@ -220,11 +222,12 @@ async function getMarketplaceSnapshot(req) {
       .collection(`businesses/${b.id}/products`)
       .where('status', '==', 'active');
 
-    const [pSnap, productCountSnap, cSnap, oSnap] = await Promise.all([
+    const [pSnap, productCountSnap, cSnap, oSnap, cSnapContests] = await Promise.all([
       productsCol.orderBy('createdAt', 'desc').limit(500).get(),
       productsCol.count().get(),
       db.collection(`businesses/${b.id}/categories`).orderBy('name').get(),
       db.collection(`businesses/${b.id}/offers`).where('active', '==', true).get(),
+      db.collection(`businesses/${b.id}/contests`).where('active', '==', true).get(),
     ]);
 
     const activeOfferDocs = oSnap.docs
@@ -268,12 +271,23 @@ async function getMarketplaceSnapshot(req) {
       0,
     );
 
+    const activeContestDocs = cSnapContests.docs.filter((doc) =>
+      contestPublic.isContestActive({ id: doc.id, ...doc.data() }),
+    );
+    const activeContests = activeContestDocs.map((doc) => ({
+      ...contestPublic.serializeContest(doc, ctx),
+      businessId: b.id,
+      businessSlug: b.slug,
+      businessName: b.name,
+    }));
+
     businesses.push({
       ...b,
       productCount: productCountSnap.data().count || 0,
       categoryCount: cSnap.size,
       offerCount: activeOffers.length,
       offerProductCount,
+      contestCount: activeContests.length,
     });
 
     for (const doc of pSnap.docs) {
@@ -284,6 +298,7 @@ async function getMarketplaceSnapshot(req) {
       categories.push(serializeMarketplaceCategory(doc, b, ctx));
     }
     offers.push(...activeOffers);
+    contests.push(...activeContests);
   }
 
   products.sort((a, b) => a.businessName.localeCompare(b.businessName, 'sq'));
@@ -298,6 +313,7 @@ async function getMarketplaceSnapshot(req) {
       (s, b) => s + (b.offerProductCount || 0),
       0,
     ),
+    contestCount: contests.length,
   };
 
   return {
@@ -305,6 +321,7 @@ async function getMarketplaceSnapshot(req) {
     products,
     categories,
     offers,
+    contests,
     stats,
   };
 }

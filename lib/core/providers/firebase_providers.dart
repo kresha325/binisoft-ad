@@ -10,6 +10,7 @@ import '../../features/categories/data/repositories/category_repository.dart';
 import '../../features/services/data/repositories/service_repository.dart';
 import '../../features/products/data/repositories/attribute_repository.dart';
 import '../../features/orders/data/repositories/api_key_repository.dart';
+import '../../features/contests/data/repositories/contest_repository.dart';
 import '../../features/offers/data/repositories/offer_repository.dart';
 import '../../features/orders/data/repositories/order_repository.dart';
 import '../../features/products/data/repositories/product_repository.dart';
@@ -48,6 +49,10 @@ final serviceRepositoryProvider = Provider<ServiceRepository>((ref) {
 
 final offerRepositoryProvider = Provider<OfferRepository>((ref) {
   return OfferRepository(firestore: ref.watch(firestoreProvider));
+});
+
+final contestRepositoryProvider = Provider<ContestRepository>((ref) {
+  return ContestRepository(firestore: ref.watch(firestoreProvider));
 });
 
 final attributeRepositoryProvider = Provider<AttributeRepository>((ref) {

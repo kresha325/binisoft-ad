@@ -779,6 +779,7 @@ async function loadAttributeDefs(businessId, ctx) {
 const publicOrders = require('./publicOrders');
 const i18n = require('./i18n');
 const shopCatalog = require('./shopCatalog');
+const contestPublic = require('./contestPublic');
 
 async function handlePublicApi(req, res) {
   const ip = rateLimit.clientIp(req);
@@ -809,6 +810,33 @@ async function handlePublicApi(req, res) {
       findBusinessBySlug,
       sendError,
     });
+  }
+
+  const contestEntryMatch = path.match(
+    /\/api\/(?:public|shop)\/([^/]+)\/contests\/([^/]+)\/entries\/?$/,
+  );
+  if (contestEntryMatch && req.method === 'POST') {
+    try {
+      rateLimit.checkRateLimit(`contest-entry:${ip}`, { max: 20, windowMs: 60_000 });
+      const slug = decodeURIComponent(contestEntryMatch[1]);
+      const contestId = decodeURIComponent(contestEntryMatch[2]);
+      const business = await findBusinessBySlug(slug);
+      const db = getFirestore();
+      const body = typeof req.body === 'object' && req.body ? req.body : {};
+      const result = await contestPublic.createContestEntry(
+        db,
+        business.id,
+        contestId,
+        body,
+      );
+      res.status(201).json({
+        meta: i18n.apiMeta(i18n.pickRequestLocale(req, business)),
+        ...result,
+      });
+    } catch (err) {
+      sendError(res, err);
+    }
+    return;
   }
 
   if (req.method === 'OPTIONS') {
@@ -853,7 +881,7 @@ async function handlePublicApi(req, res) {
   let productId;
   try {
     const match = path.match(
-      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|services|business)(?:\/([^/]+))?$/,
+      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|services|contests|business)(?:\/([^/]+))?$/,
     );
 
     if (match) {
@@ -915,6 +943,40 @@ async function handlePublicApi(req, res) {
         business: businessPayload(business, slug, localeCtx),
         services,
         serviceCount: services.length,
+      });
+      return;
+    }
+
+    if (resource === 'contests') {
+      const contestsSnap = await db
+        .collection(`businesses/${businessId}/contests`)
+        .where('active', '==', true)
+        .get();
+
+      const contests = contestsSnap.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((row) => contestPublic.isContestActive(row))
+        .map((doc) => contestPublic.serializeContest(doc, localeCtx));
+
+      if (productId) {
+        const one = contests.find((c) => c.id === productId);
+        if (!one) {
+          res.status(404).json({ error: { message: 'Contest not found' } });
+          return;
+        }
+        res.status(200).json({
+          meta: i18n.apiMeta(localeCtx),
+          business: businessPayload(business, slug, localeCtx),
+          contest: one,
+        });
+        return;
+      }
+
+      res.status(200).json({
+        meta: i18n.apiMeta(localeCtx),
+        business: businessPayload(business, slug, localeCtx),
+        contests,
+        contestCount: contests.length,
       });
       return;
     }
