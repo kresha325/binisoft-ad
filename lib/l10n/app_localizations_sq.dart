@@ -99,14 +99,14 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get pageContestsSubtitle =>
-      'Shortërim / dhurata me çmim (jo punësim). Pjesëmarrësit regjistrohen përmes dyqanit publik.';
+      'Shortërim / dhurata me çmim (jo punësim). Pjesëmarrësit regjistrohen nga dyqani — shiko listën me butonin «Pjesëmarrësit» në çdo kartë.';
 
   @override
   String get pageJobOpeningsTitle => 'Konkurse pune';
 
   @override
   String get pageJobOpeningsSubtitle =>
-      'Pozicione të lira — kandidatët aplikojnë përmes dyqanit publik (emër, telefon, shënim).';
+      'Pozicione të lira — aplikimet vijnë nga dyqani. Shiko listën me «Aplikimet» në çdo kartë.';
 
   @override
   String get pageCategoriesTitle => 'Kategoritë';

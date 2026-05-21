@@ -130,7 +130,9 @@ class _JobOpeningsScreenState extends ConsumerState<JobOpeningsScreen> {
                         _JobStatusChip(status: j.lifecycleStatus),
                         StatusChip(
                           label: l10n.jobApplicationCount(j.applicationCount),
-                          tone: StatusChipTone.neutral,
+                          tone: j.applicationCount > 0
+                              ? StatusChipTone.accent
+                              : StatusChipTone.neutral,
                         ),
                         if (j.employmentType != null)
                           StatusChip(
@@ -138,10 +140,20 @@ class _JobOpeningsScreenState extends ConsumerState<JobOpeningsScreen> {
                             tone: StatusChipTone.accent,
                           ),
                       ],
+                      footer: SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () =>
+                              showJobApplicationsSheet(context, ref, opening: j),
+                          icon: const Icon(Icons.people_outline, size: 20),
+                          label: Text(
+                            j.applicationCount > 0
+                                ? '${l10n.jobViewApplications} (${j.applicationCount})'
+                                : l10n.jobViewApplications,
+                          ),
+                        ),
+                      ),
                       trailing: TableRowActions(
-                        onViewEntries: () =>
-                            showJobApplicationsSheet(context, ref, opening: j),
-                        viewEntriesTooltip: l10n.jobViewApplications,
                         onEdit: () => showJobOpeningSheet(context, ref, opening: j),
                         onDelete: () => deleteJobOpening(context, ref, j),
                       ),

@@ -16,6 +16,7 @@ class CatalogEntityCard extends StatelessWidget {
     this.leading,
     this.trailing,
     this.chips = const [],
+    this.footer,
     this.onTap,
     this.dense = false,
   });
@@ -26,6 +27,8 @@ class CatalogEntityCard extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final List<Widget> chips;
+  /// Full-width action below chips (e.g. view contest entries).
+  final Widget? footer;
   final VoidCallback? onTap;
   /// Tighter padding and typography for product/category grids.
   final bool dense;
@@ -106,6 +109,10 @@ class CatalogEntityCard extends StatelessWidget {
           if (chips.isNotEmpty) ...[
             SizedBox(height: dense ? 8 : 12),
             Wrap(spacing: 6, runSpacing: 4, children: chips),
+          ],
+          if (footer != null) ...[
+            SizedBox(height: dense ? 8 : 12),
+            footer!,
           ],
         ],
       ),

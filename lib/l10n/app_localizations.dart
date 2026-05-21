@@ -277,7 +277,7 @@ abstract class AppLocalizations {
   /// No description provided for @pageContestsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Prize draws and promotions (not hiring). Entries via the public shop.'**
+  /// **'Prize draws and promotions (not hiring). Entries come from the shop — open the list with «Entries» on each card.'**
   String get pageContestsSubtitle;
 
   /// No description provided for @pageJobOpeningsTitle.

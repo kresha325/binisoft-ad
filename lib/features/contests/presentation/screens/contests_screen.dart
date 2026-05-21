@@ -135,7 +135,9 @@ class _ContestsScreenState extends ConsumerState<ContestsScreen> {
                         _ContestStatusChip(status: c.lifecycleStatus),
                         StatusChip(
                           label: l10n.contestEntryCount(c.entryCount),
-                          tone: StatusChipTone.neutral,
+                          tone: c.entryCount > 0
+                              ? StatusChipTone.accent
+                              : StatusChipTone.neutral,
                         ),
                         if (c.prize != null && c.prize!.isNotEmpty)
                           StatusChip(
@@ -143,10 +145,20 @@ class _ContestsScreenState extends ConsumerState<ContestsScreen> {
                             tone: StatusChipTone.accent,
                           ),
                       ],
+                      footer: SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () =>
+                              showContestEntriesSheet(context, ref, contest: c),
+                          icon: const Icon(Icons.people_outline, size: 20),
+                          label: Text(
+                            c.entryCount > 0
+                                ? '${l10n.contestViewEntries} (${c.entryCount})'
+                                : l10n.contestViewEntries,
+                          ),
+                        ),
+                      ),
                       trailing: TableRowActions(
-                        onViewEntries: () =>
-                            showContestEntriesSheet(context, ref, contest: c),
-                        viewEntriesTooltip: l10n.contestViewEntries,
                         onEdit: () => showContestSheet(context, ref, contest: c),
                         onDelete: () => deleteContest(context, ref, c),
                       ),

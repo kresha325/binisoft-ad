@@ -99,7 +99,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageContestsSubtitle =>
-      'Prize draws and promotions (not hiring). Entries via the public shop.';
+      'Prize draws and promotions (not hiring). Entries come from the shop — open the list with «Entries» on each card.';
 
   @override
   String get pageJobOpeningsTitle => 'Job openings';

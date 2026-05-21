@@ -99,7 +99,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pageContestsSubtitle =>
-      'Preise und Aktionen (keine Stellen). Teilnahmen über den öffentlichen Shop.';
+      'Preise und Aktionen (keine Stellen). Teilnahmen über den Shop — Liste über «Teilnahmen» auf jeder Karte.';
 
   @override
   String get pageJobOpeningsTitle => 'Stellenangebote';
