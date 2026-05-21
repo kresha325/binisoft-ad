@@ -34,7 +34,12 @@ class ProductOfferSection extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 10),
-        if (existing != null) ...[
+        if (product.isOnOfferHold) ...[
+          Text(
+            'Vetëm në ofertë aktive — në menu shfaqet si Draft derisa oferta skadon.',
+            style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+          ),
+        ] else if (existing != null) ...[
           Text(
             l10n.productAlreadyOnOffer(existing.title),
             style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
@@ -47,7 +52,7 @@ class ProductOfferSection extends ConsumerWidget {
           ),
         ] else
           FilledButton.icon(
-            onPressed: product.status == ProductStatus.active
+            onPressed: product.status == ProductStatus.active && !product.isOnOfferHold
                 ? () => showQuickOfferForProduct(context, ref, product: product)
                 : null,
             icon: const Icon(Icons.local_offer_outlined, size: 20),

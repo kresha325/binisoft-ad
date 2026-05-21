@@ -28,7 +28,11 @@ class Product extends Equatable {
     this.seoTitleI18n = const {},
     this.seoDescriptionI18n = const {},
     this.localizedSlugs = const {},
+    this.hiddenByOfferId,
   });
+
+  /// Set while product is exclusive to a live offer (catalog status → draft).
+  final String? hiddenByOfferId;
 
   final String id;
   final String businessId;
@@ -77,5 +81,8 @@ class Product extends Equatable {
         seoTitleI18n,
         seoDescriptionI18n,
         localizedSlugs,
+        hiddenByOfferId,
       ];
+
+  bool get isOnOfferHold => hiddenByOfferId != null && hiddenByOfferId!.isNotEmpty;
 }

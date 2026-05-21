@@ -212,7 +212,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                                 ),
                               ),
                       ),
-                      chips: [_productStatusChip(p.status)],
+                      chips: [
+                        _productStatusChip(p.status),
+                        if (p.isOnOfferHold)
+                          const StatusChip(label: 'Në ofertë', tone: StatusChipTone.accent),
+                      ],
                       trailing: TableRowActions(
                         onEdit: () => showProductSheet(
                           context,

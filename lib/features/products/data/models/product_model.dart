@@ -58,8 +58,10 @@ class ProductModel {
     this.seoTitleI18n = const {},
     this.seoDescriptionI18n = const {},
     this.localizedSlugs = const {},
+    this.hiddenByOfferId,
   });
 
+  final String? hiddenByOfferId;
   final String id;
   final String businessId;
   final String name;
@@ -118,6 +120,8 @@ class ProductModel {
       descriptionI18n: descriptionI18n,
       seoTitleI18n: seoTitleI18n,
       seoDescriptionI18n: seoDescriptionI18n,
+      localizedSlugs: localizedSlugs,
+      hiddenByOfferId: data['hiddenByOfferId'] as String?,
     );
   }
 
@@ -168,5 +172,6 @@ class ProductModel {
         seoTitleI18n: seoTitleI18n,
         seoDescriptionI18n: seoDescriptionI18n,
         localizedSlugs: localizedSlugs,
+        hiddenByOfferId: hiddenByOfferId,
       );
 }

@@ -633,10 +633,11 @@ function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map())
       const entry = productsById.get(item.productId);
       if (!entry) return null;
       const { data: d } = entry;
-      const inactive = String(d.status || '').toLowerCase() !== 'active';
+      const onOfferHold = !!d.hiddenByOfferId;
+      const inactive = onOfferHold;
       const variants = variantsByProduct.get(item.productId) || [];
       const priceInfo = pricing.resolveOfferItemDisplay(d, item, offer, variants);
-      if (!inactive && !priceInfo.hasDiscount) return null;
+      if (!onOfferHold && !priceInfo.hasDiscount) return null;
       let imageUrl = activeProductImageUrls(d)[0] || null;
       if (!imageUrl && variants.length) {
         const withImg = variants.find((v) => v.imageUrl);
@@ -655,6 +656,7 @@ function serializeOffer(offer, productsById, ctx, variantsByProduct = new Map())
         salePrice: priceInfo.salePrice,
         discountPercent: priceInfo.discountPercent,
         inactive,
+        onOfferHold,
       };
     })
     .filter(Boolean);
@@ -1470,27 +1472,33 @@ exports.deactivateExpiredOffers = offerExpiry.deactivateExpiredOffers;
 const offerLifecycle = require('./offerLifecycle');
 const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 
-/** Restore any legacy draft holds when an offer is removed or no longer live. */
-exports.onOfferWrittenReleaseLegacyHolds = onDocumentWritten(
+/** Hold offer products as draft in catalog; restore when offer ends or is deactivated. */
+exports.onOfferWrittenSyncProductHolds = onDocumentWritten(
   { document: 'businesses/{businessId}/offers/{offerId}', ...firestoreTriggerOptions },
   async (event) => {
+    const db = getFirestore();
     const businessId = event.params.businessId;
     const offerId = event.params.offerId;
     const after = event.data?.after;
     const before = event.data?.before;
 
-    if (after?.exists) {
-      const data = after.data();
-      const stillLive =
-        data.active !== false && pricing.isOfferActive({ id: offerId, ...data });
-      if (stillLive) return;
+    if (!after?.exists) {
+      if (before?.exists) {
+        await offerLifecycle.releaseAllProductsForOffer(db, businessId, offerId);
+      }
+      return;
     }
 
-    if (before?.exists || !after?.exists) {
-      await offerLifecycle.releaseAllProductsForOffer(
-        getFirestore(),
-        businessId,
-        offerId,
+    const result = await offerLifecycle.syncOfferProductHolds(
+      db,
+      businessId,
+      offerId,
+      after.data(),
+      before?.exists ? before.data() : null,
+    );
+    if (result.held || result.released) {
+      console.log(
+        `onOfferWrittenSyncProductHolds ${businessId}/${offerId} held=${result.held} released=${result.released}`,
       );
     }
   },
