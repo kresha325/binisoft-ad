@@ -15,6 +15,7 @@ class ProductOfferDiscountCard extends StatelessWidget {
     required this.draft,
     required this.onSelectedChanged,
     required this.onDraftChanged,
+    this.lockSelection = false,
   });
 
   final Product product;
@@ -22,6 +23,8 @@ class ProductOfferDiscountCard extends StatelessWidget {
   final ProductDiscountDraft? draft;
   final ValueChanged<bool> onSelectedChanged;
   final VoidCallback onDraftChanged;
+  /// Edit mode: only this offer's products, no catalog multi-select.
+  final bool lockSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -37,51 +40,16 @@ class ProductOfferDiscountCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CheckboxListTile(
-              contentPadding: EdgeInsets.zero,
-              value: selected,
-              onChanged: (v) => onSelectedChanged(v == true),
-              title: Row(
-                children: [
-                  if (thumb != null && thumb.isNotEmpty) ...[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        thumb,
-                        width: 44,
-                        height: 44,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _thumbPlaceholder(colors),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                  ] else
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: _thumbPlaceholder(colors),
-                    ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product.name,
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          '€${base.toStringAsFixed(2)}',
-                          style: GoogleFonts.inter(
-                            fontSize: 13,
-                            color: colors.textMuted,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            if (lockSelection)
+              _productHeader(colors, thumb, base)
+            else
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: selected,
+                onChanged: (v) => onSelectedChanged(v == true),
+                title: _productHeader(colors, thumb, base),
               ),
-            ),
-            if (selected && draft != null) ...[
+            if ((lockSelection || selected) && draft != null) ...[
               const SizedBox(height: 8),
               SegmentedButton<OfferDiscountMode>(
                 segments: [
@@ -146,6 +114,48 @@ class ProductOfferDiscountCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _productHeader(AppColorScheme colors, String? thumb, double base) {
+    return Row(
+      children: [
+        if (thumb != null && thumb.isNotEmpty) ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              thumb,
+              width: 44,
+              height: 44,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => _thumbPlaceholder(colors),
+            ),
+          ),
+          const SizedBox(width: 12),
+        ] else
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: _thumbPlaceholder(colors),
+          ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                product.name,
+                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              ),
+              Text(
+                '€${base.toStringAsFixed(2)}',
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: colors.textMuted,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

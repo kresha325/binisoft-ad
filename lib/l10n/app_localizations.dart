@@ -2516,6 +2516,30 @@ abstract class AppLocalizations {
   /// **'Offer saved'**
   String get offerSaved;
 
+  /// No description provided for @offerSavedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} offers saved'**
+  String offerSavedCount(int count);
+
+  /// No description provided for @offerSeparateSaveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each selected product is saved as its own offer with its own title.'**
+  String get offerSeparateSaveHint;
+
+  /// No description provided for @offerEditSplitHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving will split this offer into separate offers — one product each.'**
+  String get offerEditSplitHint;
+
+  /// No description provided for @offerEditProductsMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer\'s products were not found in the catalog (they may have been removed).'**
+  String get offerEditProductsMissing;
+
   /// No description provided for @offerUpdated.
   ///
   /// In en, this message translates to:

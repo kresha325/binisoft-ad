@@ -419,6 +419,15 @@
   "offerSectionDuration": "Laufzeit & Sichtbarkeit",
   "offerRenewHint": "Beim Speichern beginnt eine neue Laufzeit ab heute (Angebot ist abgelaufen).",
   "offerSaved": "Angebot gespeichert",
+  "offerSavedCount": "{count} Angebote gespeichert",
+  "@offerSavedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "offerSeparateSaveHint": "Jedes ausgewählte Produkt wird als eigenes Angebot gespeichert.",
+  "offerEditSplitHint": "Beim Speichern wird dieses Angebot in einzelne Angebote aufgeteilt — je ein Produkt.",
+  "offerEditProductsMissing": "Die Produkte dieses Angebots wurden im Katalog nicht gefunden.",
   "offerUpdated": "Angebot aktualisiert",
   "offerDeleted": "Angebot gelöscht",
   "offerDeleteTitle": "Angebot löschen?",

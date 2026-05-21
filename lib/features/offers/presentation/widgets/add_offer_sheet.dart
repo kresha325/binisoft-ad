@@ -16,6 +16,7 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../products/domain/entities/product.dart';
 import '../../../products/presentation/providers/products_providers.dart';
 import '../../domain/entities/offer.dart';
+import '../providers/offers_providers.dart';
 import 'offer_sheet_helpers.dart';
 import 'product_offer_discount_card.dart';
 
@@ -40,25 +41,15 @@ Future<void> showOfferSheet(
   final l10n = context.l10n;
   final isEdit = offer != null;
 
-  final products = (providers.read(productsListProvider).valueOrNull ?? [])
-      .where((p) => p.status == ProductStatus.active)
-      .toList();
+  final allProducts = providers.read(productsListProvider).valueOrNull ?? [];
 
   final drafts = <String, ProductDiscountDraft>{};
   if (offer != null) {
-    for (final item in offer.items) {
-      final product = products.cast<Product?>().firstWhere(
-            (p) => p?.id == item.productId,
-            orElse: () => null,
-          );
-      if (product == null) continue;
-      drafts[item.productId] = ProductDiscountDraft(
-        product: product,
-        mode: item.mode,
-        percent: item.discountPercent ?? offer.discountPercent ?? 10,
-        salePrice: item.salePriceEur,
-      );
-    }
+    populateDraftsFromOffer(
+      offer: offer,
+      allProducts: allProducts,
+      drafts: drafts,
+    );
   } else if (focusProduct != null) {
     drafts[focusProduct.id] = ProductDiscountDraft.fromProduct(focusProduct);
   }
@@ -73,7 +64,7 @@ Future<void> showOfferSheet(
   var active = offer?.active ?? true;
   var titleManual = isEdit;
 
-  final ok = await showAppSideSheet<bool>(
+  await showAppSideSheet<bool>(
     context: context,
     title: isEdit ? l10n.offerEditTitle : l10n.offerAddTitle,
     saveLabel: isEdit ? l10n.saveChanges : l10n.offerSave,
@@ -84,21 +75,34 @@ Future<void> showOfferSheet(
         if (businessId == null) return const SizedBox.shrink();
 
         void syncTitleFromDrafts(void Function(void Function()) setState) {
-          if (titleManual) return;
+          if (titleManual || isEdit) return;
           final selected =
               drafts.values.map((d) => d.product).toList(growable: false);
           if (selected.isEmpty) return;
           setState(() {
-            titleController.text = offerTitleFromProducts(selected);
+            if (selected.length == 1) {
+              titleController.text = offerTitleFromProducts(selected);
+            } else {
+              titleController.text = '';
+            }
           });
         }
 
+        final savingSeparate = !isEdit && drafts.length > 1;
+
         return StatefulBuilder(
           builder: (context, setState) {
+            final sheetProducts = isEdit
+                ? (drafts.values.map((d) => d.product).toList()
+                  ..sort((a, b) => a.name.compareTo(b.name)))
+                : allProducts
+                    .where((p) => p.status == ProductStatus.active)
+                    .toList();
+
             final q = searchController.text.trim().toLowerCase();
             final filtered = q.isEmpty
-                ? products
-                : products
+                ? sheetProducts
+                : sheetProducts
                     .where(
                       (p) =>
                           p.name.toLowerCase().contains(q) ||
@@ -121,12 +125,25 @@ Future<void> showOfferSheet(
                       ),
                     ),
                   ),
-                AppTextField(
-                  label: l10n.tableName,
-                  controller: titleController,
-                  hint: l10n.offerQuickTitleHint,
-                  onChanged: (_) => titleManual = true,
-                ),
+                if (savingSeparate)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Text(
+                      l10n.offerSeparateSaveHint,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: colors.textMuted,
+                        height: 1.4,
+                      ),
+                    ),
+                  )
+                else
+                  AppTextField(
+                    label: l10n.tableName,
+                    controller: titleController,
+                    hint: l10n.offerQuickTitleHint,
+                    onChanged: (_) => titleManual = true,
+                  ),
                 const SizedBox(height: 16),
                 Text(
                   l10n.offerSectionDuration,
@@ -166,6 +183,17 @@ Future<void> showOfferSheet(
                   value: active,
                   onChanged: (v) => setState(() => active = v),
                 ),
+                if (isEdit && drafts.length > 1) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.offerEditSplitHint,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      color: colors.textMuted,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 20),
                 Text(
                   l10n.offerProductsLabel,
@@ -176,7 +204,12 @@ Future<void> showOfferSheet(
                   ),
                 ),
                 const SizedBox(height: 8),
-                if (products.length > 6)
+                if (isEdit && drafts.isEmpty)
+                  Text(
+                    l10n.offerEditProductsMissing,
+                    style: GoogleFonts.inter(color: colors.textMuted),
+                  ),
+                if (sheetProducts.length > 6)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: TextField(
@@ -189,30 +222,36 @@ Future<void> showOfferSheet(
                       onChanged: (_) => setState(() {}),
                     ),
                   ),
-                if (products.isEmpty)
+                if (!isEdit && sheetProducts.isEmpty)
                   Text(
                     l10n.offerNoProducts,
                     style: GoogleFonts.inter(color: colors.textMuted),
                   )
                 else
                   ...filtered.map((product) {
-                    final selected = drafts.containsKey(product.id);
                     final draft = drafts[product.id];
+                    if (isEdit && draft == null) {
+                      return const SizedBox.shrink();
+                    }
+                    final selected = isEdit || drafts.containsKey(product.id);
                     return ProductOfferDiscountCard(
                       product: product,
                       selected: selected,
                       draft: draft,
-                      onSelectedChanged: (v) {
-                        setState(() {
-                          if (v) {
-                            drafts[product.id] =
-                                ProductDiscountDraft.fromProduct(product);
-                          } else {
-                            drafts.remove(product.id);
-                          }
-                          syncTitleFromDrafts(setState);
-                        });
-                      },
+                      lockSelection: isEdit,
+                      onSelectedChanged: isEdit
+                          ? (_) {}
+                          : (v) {
+                              setState(() {
+                                if (v) {
+                                  drafts[product.id] =
+                                      ProductDiscountDraft.fromProduct(product);
+                                } else {
+                                  drafts.remove(product.id);
+                                }
+                                syncTitleFromDrafts(setState);
+                              });
+                            },
                       onDraftChanged: () => setState(() {}),
                     );
                   }),
@@ -222,29 +261,27 @@ Future<void> showOfferSheet(
         );
       },
     ),
-    onSave: () => _saveOffer(
-      context: context,
-      providers: providers,
-      offer: offer,
-      isEdit: isEdit,
-      titleController: titleController,
-      drafts: drafts,
-      durationDays: durationDays,
-      active: active,
-    ),
+    onSave: () async {
+      final saved = await _saveOffer(
+        context: context,
+        providers: providers,
+        offer: offer,
+        isEdit: isEdit,
+        titleController: titleController,
+        drafts: drafts,
+        durationDays: durationDays,
+        active: active,
+      );
+      return saved > 0;
+    },
   );
 
   titleController.dispose();
   searchController.dispose();
 
-  if (ok == true && context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(isEdit ? l10n.offerUpdated : l10n.offerSaved)),
-    );
-  }
 }
 
-Future<bool> _saveOffer({
+Future<int> _saveOffer({
   required BuildContext context,
   required ProviderContainer providers,
   required Offer? offer,
@@ -265,59 +302,33 @@ Future<bool> _saveOffer({
         ),
       );
     }
-    return false;
-  }
-
-  final title = titleController.text.trim();
-  if (title.isEmpty) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.tableName),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-    return false;
+    return 0;
   }
 
   final businessId = providers.read(currentBusinessIdProvider);
-  if (businessId == null) return false;
+  if (businessId == null) return 0;
 
   final offerRepo = providers.read(offerRepositoryProvider);
-  final internalSlug = normalizeInternalSlug(
-    isEdit ? offer!.slug : slugify(title),
-  );
-  if (internalSlug.isEmpty) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.internalSlugTaken),
-          backgroundColor: Colors.red,
-        ),
-      );
+  final allOffers = providers.read(offersListProvider).valueOrNull ?? [];
+  final editingOfferId = offer?.id;
+
+  for (final draft in drafts.values) {
+    final existing = activeOfferContaining(allOffers, draft.product.id);
+    if (existing != null && existing.id != editingOfferId) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.productAlreadyOnOffer(existing.title)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return 0;
     }
-    return false;
   }
 
-  final slugTaken = await offerRepo.isSlugTaken(
-    businessId: businessId,
-    slug: internalSlug,
-    excludeOfferId: offer?.id,
-  );
-  if (slugTaken) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.internalSlugTaken),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-    return false;
-  }
+  final builtItems = <OfferItem>[];
 
-  final items = <OfferItem>[];
   for (final draft in drafts.values) {
     if (draft.mode == OfferDiscountMode.percent) {
       final pct = draft.percent.clamp(0.0, 100.0);
@@ -330,9 +341,8 @@ Future<bool> _saveOffer({
             ),
           );
         }
-        return false;
+        return 0;
       }
-      items.add(OfferItem(productId: draft.product.id, discountPercent: pct));
     } else {
       final price = draft.salePrice;
       final base = draft.product.basePrice ?? 0;
@@ -345,7 +355,7 @@ Future<bool> _saveOffer({
             ),
           );
         }
-        return false;
+        return 0;
       }
       if (price >= base) {
         if (context.mounted) {
@@ -358,51 +368,163 @@ Future<bool> _saveOffer({
             ),
           );
         }
-        return false;
+        return 0;
       }
-      items.add(OfferItem(productId: draft.product.id, salePriceEur: price));
+    }
+    final item = offerItemFromDraft(draft);
+    if (item == null) return 0;
+    builtItems.add(item);
+  }
+
+  final splitSave = builtItems.length > 1;
+  final days = durationDays.clamp(1, 30);
+
+  if (!splitSave) {
+    final title = titleController.text.trim().isNotEmpty
+        ? titleController.text.trim()
+        : offerTitleFromProducts([drafts.values.first.product]);
+    if (title.isEmpty) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.tableName),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return 0;
+    }
+
+    final internalSlug = normalizeInternalSlug(
+      isEdit ? offer!.slug : slugify(title),
+    );
+    if (internalSlug.isEmpty) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.internalSlugTaken),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return 0;
+    }
+
+    if (await offerRepo.isSlugTaken(
+      businessId: businessId,
+      slug: internalSlug,
+      excludeOfferId: offer?.id,
+    )) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.internalSlugTaken),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return 0;
+    }
+
+    try {
+      if (isEdit && offer != null) {
+        final editing = offer;
+        await offerRepo.update(
+          businessId: businessId,
+          previous: editing,
+          offer: Offer(
+            id: editing.id,
+            businessId: businessId,
+            title: title,
+            slug: editing.slug,
+            titleI18n: editing.titleI18n,
+            description: editing.description,
+            descriptionI18n: editing.descriptionI18n,
+            seoTitle: editing.seoTitle,
+            seoDescription: editing.seoDescription,
+            seoTitleI18n: editing.seoTitleI18n,
+            seoDescriptionI18n: editing.seoDescriptionI18n,
+            localizedSlugs: editing.localizedSlugs,
+            items: builtItems,
+            productIds: builtItems.map((i) => i.productId).toList(),
+            durationDays: days,
+            startsAt: editing.startsAt,
+            endsAt: editing.endsAt,
+            active: active,
+          ),
+        );
+      } else {
+        await offerRepo.create(
+          businessId: businessId,
+          title: title,
+          slug: internalSlug,
+          items: builtItems,
+          durationDays: days,
+          active: active,
+        );
+      }
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(isEdit ? l10n.offerUpdated : l10n.offerSaved),
+          ),
+        );
+      }
+      return 1;
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(authErrorMessage(e)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return 0;
     }
   }
 
   try {
-    final days = durationDays.clamp(1, 30);
     if (isEdit && offer != null) {
-      final editing = offer;
-      await offerRepo.update(
+      await offerRepo.delete(
         businessId: businessId,
-        previous: editing,
-        offer: Offer(
-          id: editing.id,
-          businessId: businessId,
-          title: title,
-          slug: editing.slug,
-          titleI18n: editing.titleI18n,
-          description: editing.description,
-          descriptionI18n: editing.descriptionI18n,
-          seoTitle: editing.seoTitle,
-          seoDescription: editing.seoDescription,
-          seoTitleI18n: editing.seoTitleI18n,
-          seoDescriptionI18n: editing.seoDescriptionI18n,
-          localizedSlugs: editing.localizedSlugs,
-          items: items,
-          productIds: items.map((i) => i.productId).toList(),
-          durationDays: days,
-          startsAt: editing.startsAt,
-          endsAt: editing.endsAt,
-          active: active,
-        ),
+        offerId: offer.id,
       );
-    } else {
+    } else if (isEdit) {
+      return 0;
+    }
+
+    var created = 0;
+    for (final draft in drafts.values) {
+      final item = offerItemFromDraft(draft)!;
+      final product = draft.product;
+      final title = offerTitleFromProducts([product]);
+      final slug = await uniqueOfferSlug(
+        offerRepo: offerRepo,
+        businessId: businessId,
+        baseSlug: offerSlugForProduct(product),
+      );
       await offerRepo.create(
         businessId: businessId,
         title: title,
-        slug: internalSlug,
-        items: items,
+        slug: slug,
+        items: [item],
         durationDays: days,
         active: active,
       );
+      created += 1;
     }
-    return true;
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            created == 1 ? l10n.offerSaved : l10n.offerSavedCount(created),
+          ),
+        ),
+      );
+    }
+    return created;
   } catch (e) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -412,7 +534,7 @@ Future<bool> _saveOffer({
         ),
       );
     }
-    return false;
+    return 0;
   }
 }
 

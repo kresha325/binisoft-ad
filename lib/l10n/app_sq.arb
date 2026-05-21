@@ -419,6 +419,15 @@
   "offerSectionDuration": "Kohëzgjatja & dukshmëria",
   "offerRenewHint": "Ruajtja fillon periudhë të re nga sot (oferta ka skaduar).",
   "offerSaved": "Oferta u ruajt",
+  "offerSavedCount": "{count} oferta u ruajtën",
+  "@offerSavedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "offerSeparateSaveHint": "Çdo produkt i zgjedhur ruhet si ofertë e veçantë me titullin e vet.",
+  "offerEditSplitHint": "Ruajtja ndan këtë ofertë në oferta të veçanta — një produkt për ofertë.",
+  "offerEditProductsMissing": "Produktet e kësaj oferte nuk u gjetën në katalog (mund të jenë fshirë).",
   "offerUpdated": "Oferta u përditësua",
   "offerDeleted": "Oferta u fshi",
   "offerDeleteTitle": "Fshi ofertën?",

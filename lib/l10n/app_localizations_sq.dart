@@ -1298,6 +1298,23 @@ class AppLocalizationsSq extends AppLocalizations {
   String get offerSaved => 'Oferta u ruajt';
 
   @override
+  String offerSavedCount(int count) {
+    return '$count oferta u ruajtën';
+  }
+
+  @override
+  String get offerSeparateSaveHint =>
+      'Çdo produkt i zgjedhur ruhet si ofertë e veçantë me titullin e vet.';
+
+  @override
+  String get offerEditSplitHint =>
+      'Ruajtja ndan këtë ofertë në oferta të veçanta — një produkt për ofertë.';
+
+  @override
+  String get offerEditProductsMissing =>
+      'Produktet e kësaj oferte nuk u gjetën në katalog (mund të jenë fshirë).';
+
+  @override
   String get offerUpdated => 'Oferta u përditësua';
 
   @override

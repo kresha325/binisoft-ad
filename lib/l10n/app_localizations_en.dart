@@ -1294,6 +1294,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offerSaved => 'Offer saved';
 
   @override
+  String offerSavedCount(int count) {
+    return '$count offers saved';
+  }
+
+  @override
+  String get offerSeparateSaveHint =>
+      'Each selected product is saved as its own offer with its own title.';
+
+  @override
+  String get offerEditSplitHint =>
+      'Saving will split this offer into separate offers — one product each.';
+
+  @override
+  String get offerEditProductsMissing =>
+      'This offer\'s products were not found in the catalog (they may have been removed).';
+
+  @override
   String get offerUpdated => 'Offer updated';
 
   @override
