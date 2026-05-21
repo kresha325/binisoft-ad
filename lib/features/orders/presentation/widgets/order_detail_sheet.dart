@@ -4,9 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/layout/app_breakpoints.dart';
 import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/theme/app_color_scheme.dart';
 import '../../../../core/theme/app_design.dart';
+import '../../../../core/widgets/app_adaptive_sheet.dart';
 import 'order_status_chip.dart';
 import '../../domain/entities/order.dart';
 import 'order_customer_info.dart';
@@ -15,10 +17,9 @@ Future<void> showOrderDetailSheet(
   BuildContext context,
   BusinessOrder order,
 ) {
-  return showModalBottomSheet<void>(
+  return showAppAdaptiveSheet<void>(
     context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
+    maxWidth: 520,
     builder: (_) => _OrderDetailSheet(order: order),
   );
 }
@@ -34,34 +35,30 @@ class _OrderDetailSheet extends ConsumerWidget {
     final l10n = context.l10n;
     final date = DateFormat('d MMMM yyyy, HH:mm').format(order.createdAt);
 
-    return DraggableScrollableSheet(
-      initialChildSize: 0.72,
-      minChildSize: 0.45,
-      maxChildSize: 0.92,
-      builder: (context, scrollController) {
-        return Container(
-          decoration: BoxDecoration(
-            color: colors.surface,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(AppDesign.radiusXl),
-            ),
-            border: Border.all(color: colors.cardBorder),
-          ),
-          child: ListView(
-            controller: scrollController,
-            padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: colors.cardBorder,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
+    final isMobile = AppBreakpoints.isMobile(context);
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
+
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (isMobile) adaptiveSheetDragHandle(context) ?? const SizedBox.shrink(),
+        if (!isMobile)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 4, 0, 0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: Icon(Icons.close_rounded, color: colors.textMuted),
+                onPressed: () => Navigator.pop(context),
               ),
-              const SizedBox(height: 16),
+            ),
+          ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(24, isMobile ? 4 : 0, 24, 24 + bottomInset),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
               Row(
                 children: [
                   Expanded(
@@ -147,11 +144,29 @@ class _OrderDetailSheet extends ConsumerWidget {
                   ],
                 ),
               ],
+              if (isMobile) ...[
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(l10n.close),
+                ),
+              ],
             ],
           ),
-        );
-      },
+        ),
+      ],
     );
+
+    if (isMobile) {
+      return Material(
+        color: colors.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDesign.radiusXl)),
+        clipBehavior: Clip.antiAlias,
+        child: SingleChildScrollView(child: content),
+      );
+    }
+
+    return SingleChildScrollView(child: content);
   }
 
   Widget _sectionTitle(BuildContext context, String title) {
