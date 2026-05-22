@@ -1,21 +1,28 @@
 #!/usr/bin/env node
 /**
- * Apply Storage CORS (run after: gcloud auth application-default login)
- * node scripts/apply-storage-cors.mjs
+ * Apply CORS to the Firebase Storage bucket (fallback if Flutter still uses XHR).
+ *
+ * Requires: gcloud auth application-default login  OR  GOOGLE_APPLICATION_CREDENTIALS
+ *
+ *   node scripts/apply-storage-cors.mjs
+ *   node scripts/apply-storage-cors.mjs --bucket jon-sport.firebasestorage.app
  */
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Storage } from '@google-cloud/storage';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const cors = JSON.parse(readFileSync(join(__dirname, '../firebase/storage-cors.json'), 'utf8'));
-const bucketName = 'jon-sport.firebasestorage.app';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const corsPath = path.join(__dirname, 'storage-cors.json');
+const bucketName =
+  process.argv.find((a) => !a.startsWith('-') && a !== process.argv[0] && a !== process.argv[1]) ||
+  process.env.FIREBASE_STORAGE_BUCKET ||
+  'jon-sport.firebasestorage.app';
 
-const storage = new Storage({ projectId: 'jon-sport' });
+const cors = JSON.parse(fs.readFileSync(corsPath, 'utf8'));
+const storage = new Storage();
 const bucket = storage.bucket(bucketName);
 
 await bucket.setCorsConfiguration(cors);
-console.log('CORS applied to gs://' + bucketName);
-const current = await bucket.getCorsConfiguration();
-console.log(JSON.stringify(current, null, 2));
+console.log(`CORS applied to gs://${bucketName}`);
+console.log(JSON.stringify(cors, null, 2));
