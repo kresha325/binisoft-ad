@@ -453,8 +453,6 @@ function serializeEmployeePublic(doc) {
     firstName: String(data.firstName || '').trim(),
     lastName: String(data.lastName || '').trim(),
     photoUrl: data.photoUrl || '',
-    email: data.email || '',
-    phone: data.phone || '',
   };
 }
 
