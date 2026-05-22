@@ -77,6 +77,10 @@ class ShellPageHeader extends ConsumerWidget {
           title: l10n.pageJobOpeningsTitle,
           subtitle: l10n.pageJobOpeningsSubtitle,
         ),
+      '/employees' => ShellPageMeta(
+          title: l10n.pageEmployeesTitle,
+          subtitle: l10n.pageEmployeesSubtitle,
+        ),
       '/custom-fields' => ShellPageMeta(
           title: l10n.pageCustomFieldsTitle,
           subtitle: l10n.pageCustomFieldsSubtitle,

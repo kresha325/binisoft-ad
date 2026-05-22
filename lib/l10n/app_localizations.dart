@@ -4415,6 +4415,256 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join with invite code'**
   String get loginJoinTeam;
+
+  /// No description provided for @navEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get navEmployees;
+
+  /// No description provided for @pageEmployeesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get pageEmployeesTitle;
+
+  /// No description provided for @pageEmployeesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payroll list: name, contact, salary, pay day, and reminder before payday.'**
+  String get pageEmployeesSubtitle;
+
+  /// No description provided for @employeeAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add employee'**
+  String get employeeAddTitle;
+
+  /// No description provided for @employeeEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit employee'**
+  String get employeeEditTitle;
+
+  /// No description provided for @employeeSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save employee'**
+  String get employeeSave;
+
+  /// No description provided for @employeeFirstNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get employeeFirstNameLabel;
+
+  /// No description provided for @employeeLastNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get employeeLastNameLabel;
+
+  /// No description provided for @employeeEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get employeeEmailLabel;
+
+  /// No description provided for @employeeEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get employeeEmailHint;
+
+  /// No description provided for @employeePhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get employeePhoneLabel;
+
+  /// No description provided for @employeePhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get employeePhoneHint;
+
+  /// No description provided for @employeeSalaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary (€)'**
+  String get employeeSalaryLabel;
+
+  /// No description provided for @employeeSalaryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 450'**
+  String get employeeSalaryHint;
+
+  /// No description provided for @employeePhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get employeePhotoLabel;
+
+  /// No description provided for @employeePickPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose photo'**
+  String get employeePickPhoto;
+
+  /// No description provided for @employeePaymentDayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay day: day {day} of each month'**
+  String employeePaymentDayLabel(int day);
+
+  /// No description provided for @employeeReminderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment reminder'**
+  String get employeeReminderLabel;
+
+  /// No description provided for @employeeReminderNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder'**
+  String get employeeReminderNone;
+
+  /// No description provided for @employeeReminder1Day.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day before'**
+  String get employeeReminder1Day;
+
+  /// No description provided for @employeeReminder3Days.
+  ///
+  /// In en, this message translates to:
+  /// **'3 days before'**
+  String get employeeReminder3Days;
+
+  /// No description provided for @employeeReminder7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days before'**
+  String get employeeReminder7Days;
+
+  /// No description provided for @employeeActiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Active in list'**
+  String get employeeActiveLabel;
+
+  /// No description provided for @employeeActiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee stays in the admin payroll list.'**
+  String get employeeActiveHint;
+
+  /// No description provided for @employeeShowOnSiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show on shop page'**
+  String get employeeShowOnSiteLabel;
+
+  /// No description provided for @employeeShowOnSiteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Visitors see them in the Team section (only when active).'**
+  String get employeeShowOnSiteHint;
+
+  /// No description provided for @employeeNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter first and last name.'**
+  String get employeeNameRequired;
+
+  /// No description provided for @employeeSalaryInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary must be a valid number.'**
+  String get employeeSalaryInvalid;
+
+  /// No description provided for @employeeCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee added'**
+  String get employeeCreated;
+
+  /// No description provided for @employeeUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee updated'**
+  String get employeeUpdated;
+
+  /// No description provided for @employeeDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee removed'**
+  String get employeeDeleted;
+
+  /// No description provided for @employeeDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete employee?'**
+  String get employeeDeleteTitle;
+
+  /// No description provided for @employeeDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove \"{name}\" from the list?'**
+  String employeeDeleteMessage(String name);
+
+  /// No description provided for @searchEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Search employees…'**
+  String get searchEmployees;
+
+  /// No description provided for @employeesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No employees yet. Add the first one.'**
+  String get employeesEmpty;
+
+  /// No description provided for @employeeOnSiteBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'On site'**
+  String get employeeOnSiteBadge;
+
+  /// No description provided for @employeeReminderBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d before'**
+  String employeeReminderBadge(int days);
+
+  /// No description provided for @employeePayMeta.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} · day {day}'**
+  String employeePayMeta(String amount, int day);
+
+  /// No description provided for @employeeNextPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Next pay: {date}'**
+  String employeeNextPay(String date);
+
+  /// No description provided for @employeeReminderNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payday reminder'**
+  String get employeeReminderNotificationTitle;
+
+  /// No description provided for @employeeReminderNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} — pay {amount} on {date}.'**
+  String employeeReminderNotificationBody(
+    String name,
+    String amount,
+    String date,
+  );
 }
 
 class _AppLocalizationsDelegate

@@ -242,6 +242,31 @@ class MediaUploadService {
     return uploadPlatformFile(storagePath: path, file: file);
   }
 
+  Future<String> uploadEmployeePhoto({
+    required String businessId,
+    required String employeeId,
+    required PlatformFile file,
+  }) async {
+    if (kIsWeb) {
+      final bytes = await readPlatformFileBytes(file);
+      final compressed = await compressForUpload(bytes, file.name);
+      return _uploadViaHttp(
+        endpoint: 'uploadEmployeePhotoHttp',
+        payload: {
+          'businessId': businessId,
+          'employeeId': employeeId,
+          'fileName': compressed.fileName,
+          'contentType': compressed.contentType,
+          'base64': base64Encode(compressed.bytes),
+        },
+      );
+    }
+
+    final path =
+        '${StoragePaths.businessRoot(businessId)}/employees/$employeeId/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
+    return uploadPlatformFile(storagePath: path, file: file);
+  }
+
   Future<String> uploadBusinessCover({
     required String businessId,
     required PlatformFile file,

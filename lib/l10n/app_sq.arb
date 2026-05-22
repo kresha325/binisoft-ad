@@ -766,5 +766,79 @@
   "joinTeamButton": "Krijo llogari & bashkohu",
   "joinTeamSuccess": "Mirë se erdhe! U lidhe me {store}.",
   "haveAccountLogin": "Ke llogari? Kyçu",
-  "loginJoinTeam": "Bashkohu me kod ftese"
+  "loginJoinTeam": "Bashkohu me kod ftese",
+  "navEmployees": "Punëtorët",
+  "pageEmployeesTitle": "Punëtorët",
+  "pageEmployeesSubtitle": "Lista e pagave: emri, kontakt, paga, ditën e pagesës dhe kujtesë para pagesës.",
+  "employeeAddTitle": "Shto punëtor",
+  "employeeEditTitle": "Ndrysho punëtorin",
+  "employeeSave": "Ruaj punëtorin",
+  "employeeFirstNameLabel": "Emri",
+  "employeeLastNameLabel": "Mbiemri",
+  "employeeEmailLabel": "Email",
+  "employeeEmailHint": "opsionale",
+  "employeePhoneLabel": "Telefoni",
+  "employeePhoneHint": "opsionale",
+  "employeeSalaryLabel": "Paga (€)",
+  "employeeSalaryHint": "p.sh. 450",
+  "employeePhotoLabel": "Foto",
+  "employeePickPhoto": "Zgjidh foto",
+  "employeePaymentDayLabel": "Dita e pagesës: dita {day} e çdo muaji",
+  "@employeePaymentDayLabel": {
+    "placeholders": {
+      "day": {"type": "int"}
+    }
+  },
+  "employeeReminderLabel": "Kujtesë para pagesës",
+  "employeeReminderNone": "Pa kujtesë",
+  "employeeReminder1Day": "1 ditë para",
+  "employeeReminder3Days": "3 ditë para",
+  "employeeReminder7Days": "7 ditë para",
+  "employeeActiveLabel": "Aktiv në listë",
+  "employeeActiveHint": "Punëtori mbetet në panel (paga, kujtesa).",
+  "employeeShowOnSiteLabel": "Shfaq në faqen e dyqanit",
+  "employeeShowOnSiteHint": "Vizitorët e shohin në seksionin Ekipi (vetëm nëse është aktiv).",
+  "employeeNameRequired": "Shkruani emrin dhe mbiemrin.",
+  "employeeSalaryInvalid": "Paga duhet të jetë numër i vlefshëm.",
+  "employeeCreated": "Punëtori u shtua",
+  "employeeUpdated": "Punëtori u përditësua",
+  "employeeDeleted": "Punëtori u fshi",
+  "employeeDeleteTitle": "Fshi punëtorin?",
+  "employeeDeleteMessage": "Fshi \"{name}\" nga lista?",
+  "@employeeDeleteMessage": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "searchEmployees": "Kërko punëtor…",
+  "employeesEmpty": "Ende pa punëtorë. Shto të parin.",
+  "employeeOnSiteBadge": "Në faqe",
+  "employeeReminderBadge": "{days} ditë para",
+  "@employeeReminderBadge": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+  "employeePayMeta": "{amount} · dita {day}",
+  "@employeePayMeta": {
+    "placeholders": {
+      "amount": {"type": "String"},
+      "day": {"type": "int"}
+    }
+  },
+  "employeeNextPay": "Pagesa e ardhshme: {date}",
+  "@employeeNextPay": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "employeeReminderNotificationTitle": "Kujtesë page",
+  "employeeReminderNotificationBody": "{name} — pagesa {amount} më {date}.",
+  "@employeeReminderNotificationBody": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "String"},
+      "date": {"type": "String"}
+    }
+  }
 }

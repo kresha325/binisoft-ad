@@ -50,6 +50,7 @@ class FirestoreCollections {
   static const String apiKeys = 'apiKeys';
   static const String orders = 'orders';
   static const String appointments = 'appointments';
+  static const String employees = 'employees';
   static const String settings = 'settings';
   static const String members = 'members';
   static const String invites = 'invites';

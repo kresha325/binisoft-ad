@@ -2368,4 +2368,145 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loginJoinTeam => 'Mit Einladungscode beitreten';
+
+  @override
+  String get navEmployees => 'Mitarbeiter';
+
+  @override
+  String get pageEmployeesTitle => 'Mitarbeiter';
+
+  @override
+  String get pageEmployeesSubtitle =>
+      'Gehaltsliste: Name, Kontakt, Gehalt, Zahltag und Erinnerung.';
+
+  @override
+  String get employeeAddTitle => 'Mitarbeiter hinzufügen';
+
+  @override
+  String get employeeEditTitle => 'Mitarbeiter bearbeiten';
+
+  @override
+  String get employeeSave => 'Speichern';
+
+  @override
+  String get employeeFirstNameLabel => 'Vorname';
+
+  @override
+  String get employeeLastNameLabel => 'Nachname';
+
+  @override
+  String get employeeEmailLabel => 'E-Mail';
+
+  @override
+  String get employeeEmailHint => 'optional';
+
+  @override
+  String get employeePhoneLabel => 'Telefon';
+
+  @override
+  String get employeePhoneHint => 'optional';
+
+  @override
+  String get employeeSalaryLabel => 'Gehalt (€)';
+
+  @override
+  String get employeeSalaryHint => 'z. B. 450';
+
+  @override
+  String get employeePhotoLabel => 'Foto';
+
+  @override
+  String get employeePickPhoto => 'Foto wählen';
+
+  @override
+  String employeePaymentDayLabel(int day) {
+    return 'Zahltag: Tag $day jedes Monats';
+  }
+
+  @override
+  String get employeeReminderLabel => 'Erinnerung';
+
+  @override
+  String get employeeReminderNone => 'Keine';
+
+  @override
+  String get employeeReminder1Day => '1 Tag vorher';
+
+  @override
+  String get employeeReminder3Days => '3 Tage vorher';
+
+  @override
+  String get employeeReminder7Days => '7 Tage vorher';
+
+  @override
+  String get employeeActiveLabel => 'Aktiv in Liste';
+
+  @override
+  String get employeeActiveHint => 'Bleibt in der Gehaltsliste.';
+
+  @override
+  String get employeeShowOnSiteLabel => 'Auf Shop-Seite zeigen';
+
+  @override
+  String get employeeShowOnSiteHint =>
+      'Besucher sehen das Team (nur wenn aktiv).';
+
+  @override
+  String get employeeNameRequired => 'Vor- und Nachname eingeben.';
+
+  @override
+  String get employeeSalaryInvalid => 'Ungültiges Gehalt.';
+
+  @override
+  String get employeeCreated => 'Mitarbeiter hinzugefügt';
+
+  @override
+  String get employeeUpdated => 'Mitarbeiter aktualisiert';
+
+  @override
+  String get employeeDeleted => 'Mitarbeiter gelöscht';
+
+  @override
+  String get employeeDeleteTitle => 'Mitarbeiter löschen?';
+
+  @override
+  String employeeDeleteMessage(String name) {
+    return '\"$name\" entfernen?';
+  }
+
+  @override
+  String get searchEmployees => 'Mitarbeiter suchen…';
+
+  @override
+  String get employeesEmpty => 'Noch keine Mitarbeiter.';
+
+  @override
+  String get employeeOnSiteBadge => 'Im Shop';
+
+  @override
+  String employeeReminderBadge(int days) {
+    return '$days T. vorher';
+  }
+
+  @override
+  String employeePayMeta(String amount, int day) {
+    return '$amount · Tag $day';
+  }
+
+  @override
+  String employeeNextPay(String date) {
+    return 'Nächste Zahlung: $date';
+  }
+
+  @override
+  String get employeeReminderNotificationTitle => 'Gehaltserinnerung';
+
+  @override
+  String employeeReminderNotificationBody(
+    String name,
+    String amount,
+    String date,
+  ) {
+    return '$name — $amount am $date.';
+  }
 }

@@ -176,6 +176,7 @@ class SiteConfig extends Equatable {
   static const sectionOffers = 'offers';
   static const sectionContests = 'contests';
   static const sectionJobOpenings = 'jobOpenings';
+  static const sectionEmployees = 'employees';
   static const sectionProducts = 'products';
   static const sectionServices = 'services';
   static const sectionAbout = 'about';
@@ -208,6 +209,11 @@ class SiteConfig extends Equatable {
             id: sectionJobOpenings,
             enabled: true,
             title: 'Konkurse pune',
+          ),
+          const SiteSectionConfig(
+            id: sectionEmployees,
+            enabled: true,
+            title: 'Ekipi',
           ),
           const SiteSectionConfig(
             id: sectionProducts,

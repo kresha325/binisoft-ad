@@ -56,6 +56,7 @@ class BusinessPermissions {
     if (path == '/api-docs') return canAccessApiDocs;
     if (path == '/settings') return canAccessSettings;
     if (path == '/custom-fields') return canManageTeam;
+    if (path == '/employees') return canManageTeam;
     if (path == '/categories' ||
         path == '/services' ||
         path == '/offers' ||

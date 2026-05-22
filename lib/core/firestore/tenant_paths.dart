@@ -46,6 +46,9 @@ class TenantPaths {
   CollectionReference<Map<String, dynamic>> appointments(String businessId) =>
       businessSub(businessId, FirestoreCollections.appointments);
 
+  CollectionReference<Map<String, dynamic>> employees(String businessId) =>
+      businessSub(businessId, FirestoreCollections.employees);
+
   CollectionReference<Map<String, dynamic>> apiKeys(String businessId) =>
       businessSub(businessId, FirestoreCollections.apiKeys);
 

@@ -131,6 +131,36 @@ async function handleUploadProductImage(req, res) {
   }
 }
 
+async function handleUploadEmployeePhoto(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: { message: 'Method not allowed' } });
+    return;
+  }
+
+  try {
+    const decoded = await verifyAuth(req);
+    const { businessId, employeeId, fileName, contentType, base64 } = req.body || {};
+
+    if (!businessId || !employeeId || !fileName || !base64) {
+      throw new HttpsError('invalid-argument', 'Missing upload fields');
+    }
+
+    await assertBusinessMember(decoded.uid, businessId);
+
+    const storagePath =
+      `businesses/${businessId}/employees/${employeeId}/${Date.now()}_${fileName}`;
+
+    const result = await uploadToStorage({ storagePath, fileName, contentType, base64 });
+    res.status(200).json(result);
+  } catch (err) {
+    sendError(res, err);
+  }
+}
+
 async function handleUploadBusinessLogo(req, res) {
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -413,6 +443,18 @@ function serializeCategory(doc, ctx) {
       locale: ctx.locale,
       defaultLocale: ctx.defaultLocale,
     }),
+  };
+}
+
+function serializeEmployeePublic(doc) {
+  const data = doc.data();
+  return {
+    id: doc.id,
+    firstName: String(data.firstName || '').trim(),
+    lastName: String(data.lastName || '').trim(),
+    photoUrl: data.photoUrl || '',
+    email: data.email || '',
+    phone: data.phone || '',
   };
 }
 
@@ -909,7 +951,7 @@ async function handlePublicApi(req, res) {
   let productId;
   try {
     const match = path.match(
-      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|services|contests|jobOpenings|business)(?:\/([^/]+))?$/,
+      /\/api\/(?:public|shop)\/([^/]+)\/(products|categories|offers|services|contests|jobOpenings|employees|business)(?:\/([^/]+))?$/,
     );
 
     if (match) {
@@ -1006,6 +1048,42 @@ async function handlePublicApi(req, res) {
         business: businessPayload(business, slug, localeCtx),
         contests,
         contestCount: contests.length,
+      });
+      return;
+    }
+
+    if (resource === 'employees') {
+      const empSnap = await db
+        .collection(`businesses/${businessId}/employees`)
+        .where('active', '==', true)
+        .get();
+      const employees = empSnap.docs
+        .filter((doc) => doc.data().showOnSite === true)
+        .map((doc) => serializeEmployeePublic(doc))
+        .sort((a, b) => {
+          const ln = String(a.lastName).localeCompare(String(b.lastName), 'sq');
+          if (ln !== 0) return ln;
+          return String(a.firstName).localeCompare(String(b.firstName), 'sq');
+        });
+
+      if (productId) {
+        const one = employees.find((e) => e.id === productId);
+        if (!one) {
+          throw new HttpsError('not-found', 'Employee not found');
+        }
+        res.status(200).json({
+          meta: i18n.apiMeta(localeCtx),
+          business: businessPayload(business, slug, localeCtx),
+          employee: one,
+        });
+        return;
+      }
+
+      res.status(200).json({
+        meta: i18n.apiMeta(localeCtx),
+        business: businessPayload(business, slug, localeCtx),
+        employees,
+        employeeCount: employees.length,
       });
       return;
     }
@@ -1114,7 +1192,7 @@ async function handlePublicApi(req, res) {
       return;
     }
 
-    const [productsSnap, categoriesSnap] = await Promise.all([
+    const [productsSnap, categoriesSnap, employeesSnap] = await Promise.all([
       db
         .collection(`businesses/${businessId}/products`)
         .where('status', '==', 'active')
@@ -1122,6 +1200,7 @@ async function handlePublicApi(req, res) {
         .limit(500)
         .get(),
       db.collection(`businesses/${businessId}/categories`).orderBy('name').get(),
+      db.collection(`businesses/${businessId}/employees`).where('active', '==', true).get(),
     ]);
 
     const categories = categoriesSnap.docs.map((doc) =>
@@ -1141,6 +1220,15 @@ async function handlePublicApi(req, res) {
       return p;
     });
 
+    const employees = employeesSnap.docs
+      .filter((doc) => doc.data().showOnSite === true)
+      .map((doc) => serializeEmployeePublic(doc))
+      .sort((a, b) => {
+        const ln = String(a.lastName).localeCompare(String(b.lastName), 'sq');
+        if (ln !== 0) return ln;
+        return String(a.firstName).localeCompare(String(b.firstName), 'sq');
+      });
+
     res.status(200).json({
       meta: i18n.apiMeta(localeCtx),
       business: businessPayload(business, slug, localeCtx),
@@ -1148,6 +1236,8 @@ async function handlePublicApi(req, res) {
       categories,
       products,
       productCount: products.length,
+      employees,
+      employeeCount: employees.length,
     });
   } catch (err) {
     const code = err instanceof HttpsError ? err.code : 'internal';
@@ -1365,6 +1455,7 @@ exports.onBusinessCreatedNotifySuperadmins = onDocumentCreated(
 
 // New HTTP endpoints (CORS + localhost). Old callable names must be deleted in Firebase first.
 exports.uploadProductImageHttp = onRequest(fnOptions, withCors(handleUploadProductImage));
+exports.uploadEmployeePhotoHttp = onRequest(fnOptions, withCors(handleUploadEmployeePhoto));
 exports.uploadBusinessLogoHttp = onRequest(fnOptions, withCors(handleUploadBusinessLogo));
 exports.uploadBusinessCoverHttp = onRequest(fnOptions, withCors(handleUploadBusinessCover));
 exports.uploadSiteAssetHttp = onRequest(fnOptions, withCors(handleUploadSiteAsset));

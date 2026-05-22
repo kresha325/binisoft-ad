@@ -2375,4 +2375,145 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get loginJoinTeam => 'Bashkohu me kod ftese';
+
+  @override
+  String get navEmployees => 'Punëtorët';
+
+  @override
+  String get pageEmployeesTitle => 'Punëtorët';
+
+  @override
+  String get pageEmployeesSubtitle =>
+      'Lista e pagave: emri, kontakt, paga, ditën e pagesës dhe kujtesë para pagesës.';
+
+  @override
+  String get employeeAddTitle => 'Shto punëtor';
+
+  @override
+  String get employeeEditTitle => 'Ndrysho punëtorin';
+
+  @override
+  String get employeeSave => 'Ruaj punëtorin';
+
+  @override
+  String get employeeFirstNameLabel => 'Emri';
+
+  @override
+  String get employeeLastNameLabel => 'Mbiemri';
+
+  @override
+  String get employeeEmailLabel => 'Email';
+
+  @override
+  String get employeeEmailHint => 'opsionale';
+
+  @override
+  String get employeePhoneLabel => 'Telefoni';
+
+  @override
+  String get employeePhoneHint => 'opsionale';
+
+  @override
+  String get employeeSalaryLabel => 'Paga (€)';
+
+  @override
+  String get employeeSalaryHint => 'p.sh. 450';
+
+  @override
+  String get employeePhotoLabel => 'Foto';
+
+  @override
+  String get employeePickPhoto => 'Zgjidh foto';
+
+  @override
+  String employeePaymentDayLabel(int day) {
+    return 'Dita e pagesës: dita $day e çdo muaji';
+  }
+
+  @override
+  String get employeeReminderLabel => 'Kujtesë para pagesës';
+
+  @override
+  String get employeeReminderNone => 'Pa kujtesë';
+
+  @override
+  String get employeeReminder1Day => '1 ditë para';
+
+  @override
+  String get employeeReminder3Days => '3 ditë para';
+
+  @override
+  String get employeeReminder7Days => '7 ditë para';
+
+  @override
+  String get employeeActiveLabel => 'Aktiv në listë';
+
+  @override
+  String get employeeActiveHint => 'Punëtori mbetet në panel (paga, kujtesa).';
+
+  @override
+  String get employeeShowOnSiteLabel => 'Shfaq në faqen e dyqanit';
+
+  @override
+  String get employeeShowOnSiteHint =>
+      'Vizitorët e shohin në seksionin Ekipi (vetëm nëse është aktiv).';
+
+  @override
+  String get employeeNameRequired => 'Shkruani emrin dhe mbiemrin.';
+
+  @override
+  String get employeeSalaryInvalid => 'Paga duhet të jetë numër i vlefshëm.';
+
+  @override
+  String get employeeCreated => 'Punëtori u shtua';
+
+  @override
+  String get employeeUpdated => 'Punëtori u përditësua';
+
+  @override
+  String get employeeDeleted => 'Punëtori u fshi';
+
+  @override
+  String get employeeDeleteTitle => 'Fshi punëtorin?';
+
+  @override
+  String employeeDeleteMessage(String name) {
+    return 'Fshi \"$name\" nga lista?';
+  }
+
+  @override
+  String get searchEmployees => 'Kërko punëtor…';
+
+  @override
+  String get employeesEmpty => 'Ende pa punëtorë. Shto të parin.';
+
+  @override
+  String get employeeOnSiteBadge => 'Në faqe';
+
+  @override
+  String employeeReminderBadge(int days) {
+    return '$days ditë para';
+  }
+
+  @override
+  String employeePayMeta(String amount, int day) {
+    return '$amount · dita $day';
+  }
+
+  @override
+  String employeeNextPay(String date) {
+    return 'Pagesa e ardhshme: $date';
+  }
+
+  @override
+  String get employeeReminderNotificationTitle => 'Kujtesë page';
+
+  @override
+  String employeeReminderNotificationBody(
+    String name,
+    String amount,
+    String date,
+  ) {
+    return '$name — pagesa $amount më $date.';
+  }
 }

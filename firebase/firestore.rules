@@ -321,6 +321,11 @@ service cloud.firestore {
         allow create, update, delete: if canManageOrders(businessId) || canWrite(businessId);
       }
 
+      match /employees/{employeeId} {
+        allow read: if canRead(businessId);
+        allow create, update, delete: if canManageUsers(businessId);
+      }
+
       match /members/{memberId} {
         allow read: if canRead(businessId);
         allow create, update, delete: if canManageUsers(businessId);
