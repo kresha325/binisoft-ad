@@ -50,6 +50,7 @@ jobs:
       - name: Assemble deploy (fast static landing + Flutter app + SPA paths)
         run: |
           cp web/marketing/index.html build/web/index.html
+          cp web/marketing/privacy.html build/web/privacy.html
           cp -r build/web/app/icons build/web/icons
           cp build/web/app/favicon.png build/web/favicon.png 2>/dev/null || true
           cp web/404.html build/web/404.html

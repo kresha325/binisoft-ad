@@ -32,6 +32,10 @@ class AppConstants {
       'https://kresha325.github.io/binisoft-ad/app';
 
   static const String dashboardWebOrigin = 'https://kresha325.github.io';
+
+  /// Play Store / App Store privacy policy (static marketing page).
+  static const String privacyPolicyUrl =
+      'https://kresha325.github.io/binisoft-ad/privacy.html';
 }
 
 class FirestoreCollections {

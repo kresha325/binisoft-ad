@@ -35,7 +35,7 @@ storeFile=/Users/YOU/binisoft-upload-keystore.jks
 
 - App name: **Binisoft Admin**
 - Category: Business
-- Privacy policy URL (required) — use your marketing site or a simple GitHub Pages policy page
+- **Privacy policy URL:** https://kresha325.github.io/binisoft-ad/privacy.html
 - Screenshots: phone 1080×1920 (dashboard, products, orders)
 - Feature graphic: 1024×500
 - Upload `app-release.aab` to **Production** or **Internal testing**
@@ -54,7 +54,11 @@ Landing page **Download** section will open the store listing automatically.
 ## iOS (TestFlight)
 
 ```bash
-flutter build ipa --release
+./tool/build_ios_release.sh
 ```
 
-Upload via Xcode → Organizer or `xcrun altool`. Set `iosAppStoreId` in `app_download_links.dart` when live.
+See **docs/IOS_TESTFLIGHT.md**. Set `iosAppStoreId` in `app_download_links.dart` when live.
+
+## Store copy
+
+Ready-made descriptions: **docs/STORE_LISTINGS.md**

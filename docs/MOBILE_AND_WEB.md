@@ -21,7 +21,19 @@ Kur të kesh emailin e platformës (Binisoft), aktivizohet edhe autosend për nj
 ./tool/build_android_release.sh
 ```
 
-Udhëzues: `docs/PLAY_STORE_RELEASE.md`
+Udhëzues: `docs/PLAY_STORE_RELEASE.md` · Listime: `docs/STORE_LISTINGS.md`
+
+## iOS (TestFlight)
+
+```bash
+./tool/build_ios_release.sh
+```
+
+Udhëzues: `docs/IOS_TESTFLIGHT.md`
+
+## Privatësia (dyqane)
+
+https://kresha325.github.io/binisoft-ad/privacy.html
 
 ## Onboarding dyqani
 
