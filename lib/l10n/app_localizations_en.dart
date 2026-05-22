@@ -2372,6 +2372,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginJoinTeam => 'Join with invite code';
 
   @override
+  String get forgotPasswordLink => 'Forgot password?';
+
+  @override
+  String get forgotPasswordTitle => 'Reset password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your account email. Firebase will send you a link to set a new password.';
+
+  @override
+  String get forgotPasswordEmailLabel => 'Email';
+
+  @override
+  String get forgotPasswordEmailInvalid => 'Enter a valid email';
+
+  @override
+  String get forgotPasswordSubmit => 'Send reset link';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Back to sign in';
+
+  @override
+  String get forgotPasswordSentSubtitle => 'Check your email';
+
+  @override
+  String get forgotPasswordSentBody =>
+      'If an account exists for this address, you will receive a reset link. Check spam too. After resetting, sign in with your new password.';
+
+  @override
+  String get forgotPasswordSentSnackbar =>
+      'Reset link sent — check your email.';
+
+  @override
+  String get accountPasswordTitle => 'Account password';
+
+  @override
+  String get accountPasswordSubtitle => 'Reset your dashboard sign-in password';
+
+  @override
+  String get accountPasswordNote =>
+      'We send a link to your account email (Firebase). Open it to set a new password — no Binisoft platform mailbox required yet.';
+
+  @override
+  String get accountPasswordSendLink => 'Send reset link';
+
+  @override
   String get navEmployees => 'Employees';
 
   @override

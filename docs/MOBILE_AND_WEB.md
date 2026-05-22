@@ -3,8 +3,17 @@
 ## Web (tani)
 
 - **Admin:** https://kresha325.github.io/binisoft-ad/app/#/login  
+- **Harrove fjalëkalimin:** …/app/#/forgot-password (email nga **Firebase Auth**, jo email i platformës ende)  
 - **PWA:** “Add to Home Screen” në telefon (manifest + ikona në `web/`).  
 - **Firestore:** long polling në web për lidhje më të qëndrueshme.
+
+### Rivendos fjalëkalimin (Firebase)
+
+1. Login → **Harrove fjalëkalimin?** ose Cilësimet → **Fjalëkalimi i llogarisë**  
+2. Email vjen nga `noreply@jon-sport.firebaseapp.com` (ose template në Firebase Console)  
+3. Pas linkut, hyr me fjalëkalimin e ri te `#/login`  
+
+Kur të kesh emailin e platformës (Binisoft), aktivizohet edhe autosend për njoftime — fjalëkalimi mbetet përmes Firebase Auth.
 
 ## Mobile admin (tani)
 

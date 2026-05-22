@@ -103,7 +103,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               validator: (v) =>
                   v == null || v.length < 6 ? 'Min 6 characters' : null,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: loading ? null : () => context.go('/forgot-password'),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(context.l10n.forgotPasswordLink),
+              ),
+            ),
+            const SizedBox(height: 16),
             SizedBox(
               height: 48,
               child: ElevatedButton(

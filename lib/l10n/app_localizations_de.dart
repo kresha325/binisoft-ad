@@ -2370,6 +2370,51 @@ class AppLocalizationsDe extends AppLocalizations {
   String get loginJoinTeam => 'Mit Einladungscode beitreten';
 
   @override
+  String get forgotPasswordLink => 'Passwort vergessen?';
+
+  @override
+  String get forgotPasswordTitle => 'Passwort zurücksetzen';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Geben Sie Ihre Konto-E-Mail ein. Firebase sendet einen Link zum neuen Passwort.';
+
+  @override
+  String get forgotPasswordEmailLabel => 'E-Mail';
+
+  @override
+  String get forgotPasswordEmailInvalid => 'Gültige E-Mail eingeben';
+
+  @override
+  String get forgotPasswordSubmit => 'Link senden';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Zur Anmeldung';
+
+  @override
+  String get forgotPasswordSentSubtitle => 'E-Mail prüfen';
+
+  @override
+  String get forgotPasswordSentBody =>
+      'Falls ein Konto existiert, erhalten Sie einen Link. Auch Spam prüfen. Danach mit neuem Passwort anmelden.';
+
+  @override
+  String get forgotPasswordSentSnackbar => 'Link gesendet — E-Mail prüfen.';
+
+  @override
+  String get accountPasswordTitle => 'Kontopasswort';
+
+  @override
+  String get accountPasswordSubtitle => 'Dashboard-Passwort zurücksetzen';
+
+  @override
+  String get accountPasswordNote =>
+      'Link an Ihre Konto-E-Mail (Firebase). Kein Binisoft-Postfach nötig.';
+
+  @override
+  String get accountPasswordSendLink => 'Reset-Link senden';
+
+  @override
   String get navEmployees => 'Mitarbeiter';
 
   @override

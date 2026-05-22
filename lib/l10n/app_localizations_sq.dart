@@ -2377,6 +2377,53 @@ class AppLocalizationsSq extends AppLocalizations {
   String get loginJoinTeam => 'Bashkohu me kod ftese';
 
   @override
+  String get forgotPasswordLink => 'Harrove fjalëkalimin?';
+
+  @override
+  String get forgotPasswordTitle => 'Rivendos fjalëkalimin';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Shkruaj email-in e llogarisë. Do të marrësh një lidhje nga Firebase për të vendosur fjalëkalim të ri.';
+
+  @override
+  String get forgotPasswordEmailLabel => 'Email';
+
+  @override
+  String get forgotPasswordEmailInvalid => 'Shkruaj një email të vlefshëm';
+
+  @override
+  String get forgotPasswordSubmit => 'Dërgo lidhjen';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Kthehu te hyrja';
+
+  @override
+  String get forgotPasswordSentSubtitle => 'Kontrollo email-in';
+
+  @override
+  String get forgotPasswordSentBody =>
+      'Nëse ekziston një llogari me këtë adresë, do të marrësh një email me lidhje për rivendosje. Kontrollo edhe spam-in. Pas ndryshimit, hyr me fjalëkalimin e ri.';
+
+  @override
+  String get forgotPasswordSentSnackbar =>
+      'Lidhja e rivendosjes u dërgua (kontrollo email-in).';
+
+  @override
+  String get accountPasswordTitle => 'Fjalëkalimi i llogarisë';
+
+  @override
+  String get accountPasswordSubtitle =>
+      'Rivendos fjalëkalimin e hyrjes në panel';
+
+  @override
+  String get accountPasswordNote =>
+      'Dërgojmë një lidhje te email-i i llogarisë suaj (Firebase). Hap lidhjen dhe vendos fjalëkalim të ri — nuk nevojitet email i platformës Binisoft ende.';
+
+  @override
+  String get accountPasswordSendLink => 'Dërgo lidhje rivendosjeje';
+
+  @override
   String get navEmployees => 'Punëtorët';
 
   @override

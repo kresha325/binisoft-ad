@@ -23,6 +23,7 @@ import '../../../business/presentation/providers/business_providers.dart';
 import '../../../../core/utils/google_maps_url.dart';
 import '../../../products/presentation/providers/products_providers.dart';
 import '../../../auth/presentation/providers/permissions_providers.dart';
+import '../../../auth/presentation/widgets/account_password_section.dart';
 import '../../../business/presentation/widgets/change_plan_dialog.dart';
 import '../../../team/presentation/widgets/team_section.dart';
 import '../widgets/api_languages_section.dart';
@@ -286,6 +287,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const AppearanceSection(),
+            const SizedBox(height: 16),
+            const AccountPasswordSection(),
             const SizedBox(height: 16),
             const ApiLanguagesSection(),
             const SizedBox(height: 16),

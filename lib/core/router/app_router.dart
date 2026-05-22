@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/providers/firebase_providers.dart';
 import '../../features/api_docs/presentation/screens/api_docs_screen.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
+import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/join_team_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
@@ -67,8 +68,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       final firebaseUser = authRepo.currentFirebaseUser;
       final firebaseSignedIn = firebaseUser != null;
       final location = state.uri.path;
-      final isAuthRoute =
-          location == '/login' || location == '/register' || location == '/join';
+      final isAuthRoute = location == '/login' ||
+          location == '/register' ||
+          location == '/join' ||
+          location == '/forgot-password';
       final isLanding = location == '/';
       final isSuperAdminRoute = location.startsWith('/superadmin');
 
@@ -152,6 +155,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const LandingScreen(),
       ),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
+      GoRoute(
+        path: '/forgot-password',
+        builder: (_, __) => const ForgotPasswordScreen(),
+      ),
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
       GoRoute(path: '/join', builder: (_, __) => const JoinTeamScreen()),
       GoRoute(

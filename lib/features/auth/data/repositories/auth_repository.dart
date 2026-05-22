@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/business_plans.dart';
 import '../../../../core/constants/superadmin_config.dart';
 import '../../../../core/constants/user_roles.dart';
@@ -71,6 +72,29 @@ class AuthRepository {
       throw AuthException(firebaseAuthErrorMessage(e));
     }
     return _loadAppUser();
+  }
+
+  /// Sends Firebase password-reset link (works before platform SMTP is configured).
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    final normalizedEmail = email.trim().toLowerCase();
+    if (normalizedEmail.isEmpty || !normalizedEmail.contains('@')) {
+      throw const AuthException('Format email i pavlefshëm.');
+    }
+    try {
+      await _auth.sendPasswordResetEmail(
+        email: normalizedEmail,
+        actionCodeSettings: ActionCodeSettings(
+          url: '${AppConstants.dashboardWebUrl}/#/login',
+          handleCodeInApp: false,
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        // Avoid email enumeration — same UX as success.
+        return;
+      }
+      throw AuthException(firebaseAuthErrorMessage(e));
+    }
   }
 
   /// Admin account only — business is created after sign-in from the dashboard.

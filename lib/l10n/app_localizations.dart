@@ -4416,6 +4416,90 @@ abstract class AppLocalizations {
   /// **'Join with invite code'**
   String get loginJoinTeam;
 
+  /// No description provided for @forgotPasswordLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPasswordLink;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your account email. Firebase will send you a link to set a new password.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @forgotPasswordEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get forgotPasswordEmailLabel;
+
+  /// No description provided for @forgotPasswordEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get forgotPasswordEmailInvalid;
+
+  /// No description provided for @forgotPasswordSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send reset link'**
+  String get forgotPasswordSubmit;
+
+  /// No description provided for @forgotPasswordBackToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to sign in'**
+  String get forgotPasswordBackToLogin;
+
+  /// No description provided for @forgotPasswordSentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get forgotPasswordSentSubtitle;
+
+  /// No description provided for @forgotPasswordSentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for this address, you will receive a reset link. Check spam too. After resetting, sign in with your new password.'**
+  String get forgotPasswordSentBody;
+
+  /// No description provided for @forgotPasswordSentSnackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset link sent — check your email.'**
+  String get forgotPasswordSentSnackbar;
+
+  /// No description provided for @accountPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account password'**
+  String get accountPasswordTitle;
+
+  /// No description provided for @accountPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your dashboard sign-in password'**
+  String get accountPasswordSubtitle;
+
+  /// No description provided for @accountPasswordNote.
+  ///
+  /// In en, this message translates to:
+  /// **'We send a link to your account email (Firebase). Open it to set a new password — no Binisoft platform mailbox required yet.'**
+  String get accountPasswordNote;
+
+  /// No description provided for @accountPasswordSendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send reset link'**
+  String get accountPasswordSendLink;
+
   /// No description provided for @navEmployees.
   ///
   /// In en, this message translates to:
