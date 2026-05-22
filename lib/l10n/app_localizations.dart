@@ -4665,6 +4665,54 @@ abstract class AppLocalizations {
     String amount,
     String date,
   );
+
+  /// No description provided for @navMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get navMenu;
+
+  /// No description provided for @storeLaunchChecklistTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish your store'**
+  String get storeLaunchChecklistTitle;
+
+  /// No description provided for @storeLaunchChecklistSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete these steps for your public site (web and mobile).'**
+  String get storeLaunchChecklistSubtitle;
+
+  /// No description provided for @storeLaunchTaskSlug.
+  ///
+  /// In en, this message translates to:
+  /// **'Store slug / URL'**
+  String get storeLaunchTaskSlug;
+
+  /// No description provided for @storeLaunchTaskLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Store logo'**
+  String get storeLaunchTaskLogo;
+
+  /// No description provided for @storeLaunchTaskCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 1 active product or service'**
+  String get storeLaunchTaskCatalog;
+
+  /// No description provided for @storeLaunchTaskContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact phone or email'**
+  String get storeLaunchTaskContact;
+
+  /// No description provided for @storeLaunchTaskPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Open your public store page'**
+  String get storeLaunchTaskPreview;
 }
 
 class _AppLocalizationsDelegate

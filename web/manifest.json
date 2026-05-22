@@ -1,8 +1,9 @@
 {
     "name": "Binisoft Admin Dashboard",
     "short_name": "Binisoft Admin",
-    "start_url": ".",
+    "start_url": "./#/login",
     "display": "standalone",
+    "scope": ".",
     "background_color": "#1A2B56",
     "theme_color": "#1A2B56",
     "description": "Binisoft Admin Dashboard — Software and Customer Solutions",

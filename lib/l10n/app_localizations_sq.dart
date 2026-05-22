@@ -2516,4 +2516,29 @@ class AppLocalizationsSq extends AppLocalizations {
   ) {
     return '$name — pagesa $amount më $date.';
   }
+
+  @override
+  String get navMenu => 'Më shumë';
+
+  @override
+  String get storeLaunchChecklistTitle => 'Publikimi i dyqanit';
+
+  @override
+  String get storeLaunchChecklistSubtitle =>
+      'Plotëso hapat për faqen publike (web dhe telefon).';
+
+  @override
+  String get storeLaunchTaskSlug => 'Slug / adresa e dyqanit';
+
+  @override
+  String get storeLaunchTaskLogo => 'Logo e dyqanit';
+
+  @override
+  String get storeLaunchTaskCatalog => 'Të paktën 1 produkt ose shërbim aktiv';
+
+  @override
+  String get storeLaunchTaskContact => 'Telefon ose email kontakti';
+
+  @override
+  String get storeLaunchTaskPreview => 'Hap faqen publike të dyqanit';
 }

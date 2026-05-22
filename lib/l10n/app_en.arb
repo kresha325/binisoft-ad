@@ -945,5 +945,13 @@
   "@employeeNextPay": { "placeholders": { "date": { "type": "String" } } },
   "employeeReminderNotificationTitle": "Payday reminder",
   "employeeReminderNotificationBody": "{name} — pay {amount} on {date}.",
-  "@employeeReminderNotificationBody": { "placeholders": { "name": { "type": "String" }, "amount": { "type": "String" }, "date": { "type": "String" } } }
+  "@employeeReminderNotificationBody": { "placeholders": { "name": { "type": "String" }, "amount": { "type": "String" }, "date": { "type": "String" } } },
+  "navMenu": "More",
+  "storeLaunchChecklistTitle": "Publish your store",
+  "storeLaunchChecklistSubtitle": "Complete these steps for your public site (web and mobile).",
+  "storeLaunchTaskSlug": "Store slug / URL",
+  "storeLaunchTaskLogo": "Store logo",
+  "storeLaunchTaskCatalog": "At least 1 active product or service",
+  "storeLaunchTaskContact": "Contact phone or email",
+  "storeLaunchTaskPreview": "Open your public store page"
 }

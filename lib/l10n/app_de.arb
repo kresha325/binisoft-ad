@@ -802,5 +802,13 @@
   "@employeeNextPay": { "placeholders": { "date": { "type": "String" } } },
   "employeeReminderNotificationTitle": "Gehaltserinnerung",
   "employeeReminderNotificationBody": "{name} — {amount} am {date}.",
-  "@employeeReminderNotificationBody": { "placeholders": { "name": { "type": "String" }, "amount": { "type": "String" }, "date": { "type": "String" } } }
+  "@employeeReminderNotificationBody": { "placeholders": { "name": { "type": "String" }, "amount": { "type": "String" }, "date": { "type": "String" } } },
+  "navMenu": "Mehr",
+  "storeLaunchChecklistTitle": "Shop veröffentlichen",
+  "storeLaunchChecklistSubtitle": "Schritte für die öffentliche Seite (Web und Mobil).",
+  "storeLaunchTaskSlug": "Shop-Slug / URL",
+  "storeLaunchTaskLogo": "Shop-Logo",
+  "storeLaunchTaskCatalog": "Mindestens 1 aktives Produkt oder Service",
+  "storeLaunchTaskContact": "Kontakt-Telefon oder E-Mail",
+  "storeLaunchTaskPreview": "Öffentliche Shop-Seite öffnen"
 }

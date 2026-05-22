@@ -2511,4 +2511,29 @@ class AppLocalizationsEn extends AppLocalizations {
   ) {
     return '$name — pay $amount on $date.';
   }
+
+  @override
+  String get navMenu => 'More';
+
+  @override
+  String get storeLaunchChecklistTitle => 'Publish your store';
+
+  @override
+  String get storeLaunchChecklistSubtitle =>
+      'Complete these steps for your public site (web and mobile).';
+
+  @override
+  String get storeLaunchTaskSlug => 'Store slug / URL';
+
+  @override
+  String get storeLaunchTaskLogo => 'Store logo';
+
+  @override
+  String get storeLaunchTaskCatalog => 'At least 1 active product or service';
+
+  @override
+  String get storeLaunchTaskContact => 'Contact phone or email';
+
+  @override
+  String get storeLaunchTaskPreview => 'Open your public store page';
 }

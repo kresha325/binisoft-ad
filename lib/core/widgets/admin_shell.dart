@@ -16,6 +16,7 @@ import '../layout/app_breakpoints.dart';
 import '../router/post_auth_navigation.dart';
 import '../theme/app_color_scheme.dart';
 import 'admin_content.dart';
+import 'admin_mobile_bottom_nav.dart';
 import 'admin_page_scroll.dart';
 import 'admin_sidebar.dart';
 import 'app_icon_button.dart';
@@ -103,6 +104,13 @@ class AdminShell extends ConsumerWidget {
           ),
         ),
         body: mainContent,
+        bottomNavigationBar: Builder(
+          builder: (ctx) => AdminMobileBottomNav(
+            location: location,
+            onNavigate: (path) => handleNavigate(path),
+            onOpenMenu: () => Scaffold.of(ctx).openDrawer(),
+          ),
+        ),
       );
     }
 

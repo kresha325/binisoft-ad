@@ -2509,4 +2509,30 @@ class AppLocalizationsDe extends AppLocalizations {
   ) {
     return '$name — $amount am $date.';
   }
+
+  @override
+  String get navMenu => 'Mehr';
+
+  @override
+  String get storeLaunchChecklistTitle => 'Shop veröffentlichen';
+
+  @override
+  String get storeLaunchChecklistSubtitle =>
+      'Schritte für die öffentliche Seite (Web und Mobil).';
+
+  @override
+  String get storeLaunchTaskSlug => 'Shop-Slug / URL';
+
+  @override
+  String get storeLaunchTaskLogo => 'Shop-Logo';
+
+  @override
+  String get storeLaunchTaskCatalog =>
+      'Mindestens 1 aktives Produkt oder Service';
+
+  @override
+  String get storeLaunchTaskContact => 'Kontakt-Telefon oder E-Mail';
+
+  @override
+  String get storeLaunchTaskPreview => 'Öffentliche Shop-Seite öffnen';
 }

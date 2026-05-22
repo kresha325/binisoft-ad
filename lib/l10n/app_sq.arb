@@ -840,5 +840,13 @@
       "amount": {"type": "String"},
       "date": {"type": "String"}
     }
-  }
+  },
+  "navMenu": "Më shumë",
+  "storeLaunchChecklistTitle": "Publikimi i dyqanit",
+  "storeLaunchChecklistSubtitle": "Plotëso hapat për faqen publike (web dhe telefon).",
+  "storeLaunchTaskSlug": "Slug / adresa e dyqanit",
+  "storeLaunchTaskLogo": "Logo e dyqanit",
+  "storeLaunchTaskCatalog": "Të paktën 1 produkt ose shërbim aktiv",
+  "storeLaunchTaskContact": "Telefon ose email kontakti",
+  "storeLaunchTaskPreview": "Hap faqen publike të dyqanit"
 }
