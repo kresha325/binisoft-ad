@@ -12,6 +12,7 @@ import '../../features/auth/presentation/screens/join_team_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import 'router_refresh_notifier.dart';
 import '../../features/business/presentation/screens/businesses_screen.dart';
+import '../../features/business/presentation/screens/store_onboarding_screen.dart';
 import '../../features/categories/presentation/screens/categories_screen.dart';
 import '../../features/services/presentation/screens/services_screen.dart';
 import '../../features/dashboard/presentation/screens/business_reports_screen.dart';
@@ -200,6 +201,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: AdminShell(child: child),
         ),
         routes: [
+          GoRoute(path: '/onboarding', builder: (_, __) => const StoreOnboardingScreen()),
           GoRoute(path: '/dashboard', builder: (_, __) => const DashboardScreen()),
           GoRoute(
             path: '/orders',

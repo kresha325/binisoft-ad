@@ -11,6 +11,7 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../auth/presentation/providers/permissions_providers.dart';
 import '../../../business/presentation/widgets/active_store_banner.dart';
 import '../../../business/presentation/widgets/create_business_prompt_card.dart';
+import '../../../business/presentation/widgets/onboarding_continue_banner.dart';
 import '../../../business/presentation/widgets/store_launch_checklist_card.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
 import '../../../orders/presentation/providers/order_providers.dart';
@@ -47,6 +48,7 @@ class DashboardScreen extends ConsumerWidget {
       children: [
         if (!hasBusiness) const CreateBusinessPromptCard(),
         if (hasBusiness) ...[
+          const OnboardingContinueBanner(),
           const StoreLaunchChecklistCard(),
           const ActiveStoreBanner(),
         ],

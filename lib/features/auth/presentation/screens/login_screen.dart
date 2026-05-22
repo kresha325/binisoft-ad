@@ -79,29 +79,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final loading = ref.watch(authControllerProvider).isLoading;
 
+    final l10n = context.l10n;
+
     return AuthCard(
-      title: 'Log in',
-      subtitle: 'Enter your credentials to access your dashboard',
+      title: l10n.authLoginTitle,
+      subtitle: l10n.authLoginSubtitle,
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             AppTextField(
-              label: 'Email',
+              label: l10n.authEmailLabel,
               controller: _email,
-              hint: 'name@example.com',
+              hint: l10n.authEmailHint,
               keyboardType: TextInputType.emailAddress,
               validator: (v) =>
-                  v == null || !v.contains('@') ? 'Enter a valid email' : null,
+                  v == null || !v.contains('@') ? l10n.authEmailInvalid : null,
             ),
             const SizedBox(height: 20),
             AppTextField(
-              label: 'Password',
+              label: l10n.authPasswordLabel,
               controller: _password,
               obscureText: true,
               validator: (v) =>
-                  v == null || v.length < 6 ? 'Min 6 characters' : null,
+                  v == null || v.length < 6 ? l10n.authPasswordMinLength : null,
             ),
             const SizedBox(height: 8),
             Align(
@@ -130,7 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Log in'),
+                    : Text(l10n.authLoginButton),
               ),
             ),
             const SizedBox(height: 24),
@@ -142,9 +144,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     color: context.appColors.textMuted,
                   ),
                   children: [
-                    const TextSpan(text: "Don't have an account? "),
+                    TextSpan(text: l10n.authNoAccountPrompt),
                     TextSpan(
-                      text: 'Register',
+                      text: l10n.authRegisterLink,
                       style: GoogleFonts.inter(
                         color: context.appColors.accent,
                         fontWeight: FontWeight.w600,

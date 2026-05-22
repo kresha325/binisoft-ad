@@ -23,7 +23,7 @@ void navigateAfterAuth(
       user.role == UserRole.manager || user.role == UserRole.employee;
 
   if (user.businessId.isEmpty) {
-    router.go(isStaff ? '/login' : '/businesses');
+    router.go(isStaff ? '/login' : '/onboarding');
   } else {
     router.go('/dashboard');
   }

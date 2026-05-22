@@ -4,11 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'core/bootstrap/crash_reporting.dart';
 import 'core/bootstrap/firebase_options_runtime.dart';
 import 'core/bootstrap/firebase_web_config.dart';
 
 Future<void> bootstrap(Future<void> Function() runApp) async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb) installCrashReporting();
 
   if (kIsWeb) {
     // Firebase is initialized in [WebFirebaseBootstrap] after the first Flutter frame.

@@ -2424,6 +2424,66 @@ class AppLocalizationsSq extends AppLocalizations {
   String get accountPasswordSendLink => 'Dërgo lidhje rivendosjeje';
 
   @override
+  String get authLoginTitle => 'Hyrje';
+
+  @override
+  String get authLoginSubtitle => 'Shkruaj kredencialet për të hyrë në panel';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
+  String get authEmailHint => 'emri@shembull.com';
+
+  @override
+  String get authEmailInvalid => 'Shkruaj një email të vlefshëm';
+
+  @override
+  String get authPasswordLabel => 'Fjalëkalimi';
+
+  @override
+  String get authPasswordMinLength => 'Minimumi 6 karaktere';
+
+  @override
+  String get authLoginButton => 'Hyr';
+
+  @override
+  String get authNoAccountPrompt => 'Nuk ke llogari? ';
+
+  @override
+  String get authRegisterLink => 'Regjistrohu';
+
+  @override
+  String get onboardingTitle => 'Konfigurimi i dyqanit';
+
+  @override
+  String get onboardingHeadline => 'Publikoje dyqanin';
+
+  @override
+  String get onboardingSubtitle =>
+      'Plotëso hapat më poshtë. Nuk nevojitet email i platformës ende.';
+
+  @override
+  String get onboardingGoDashboard => 'Hap panelin';
+
+  @override
+  String get onboardingContinueLater => 'Vazhdo më vonë';
+
+  @override
+  String get onboardingBannerTitle => 'Konfigurimi nuk ka përfunduar';
+
+  @override
+  String onboardingBannerProgress(int done, int total) {
+    return '$done nga $total hapa';
+  }
+
+  @override
+  String get onboardingBannerAction => 'Vazhdo';
+
+  @override
+  String get employeeExportCsv => 'Eksporto CSV';
+
+  @override
   String get navEmployees => 'Punëtorët';
 
   @override

@@ -15,6 +15,18 @@
 
 Kur të kesh emailin e platformës (Binisoft), aktivizohet edhe autosend për njoftime — fjalëkalimi mbetet përmes Firebase Auth.
 
+## Play Store (Android)
+
+```bash
+./tool/build_android_release.sh
+```
+
+Udhëzues: `docs/PLAY_STORE_RELEASE.md`
+
+## Onboarding dyqani
+
+Pas regjistrimit: `/onboarding` — hapat e checklist (slug, logo, katalog, kontakt, preview). Paneli tregon banner “Vazhdo” derisa të përfundojë.
+
 ## Mobile admin (tani)
 
 - **Telefon:** hap URL-n e admin-it në browser → menu poshtë (Paneli, Porositë, Produkte, Cilësimet, Më shumë).  

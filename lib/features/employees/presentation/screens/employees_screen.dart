@@ -13,9 +13,11 @@ import '../../../../core/widgets/shell_add_button.dart';
 import '../../../../core/widgets/status_chip.dart';
 import '../../../../core/widgets/storage_network_image.dart';
 import '../../../../core/widgets/table_row_actions.dart';
+import '../../../business/presentation/providers/business_providers.dart';
 import '../../data/employee_payment_schedule.dart';
 import '../../domain/entities/employee.dart';
 import '../providers/employee_providers.dart';
+import '../utils/employee_csv_export.dart';
 import '../widgets/add_employee_sheet.dart';
 
 class EmployeesScreen extends ConsumerStatefulWidget {
@@ -36,11 +38,30 @@ class _EmployeesScreenState extends ConsumerState<EmployeesScreen> {
     final employees = ref.watch(employeesListProvider);
     final money = NumberFormat.currency(locale: 'sq', symbol: '€');
 
+    final business = ref.watch(currentBusinessProvider).valueOrNull;
+
     return PageHeaderActionScope(
       route: '/employees',
-      action: ShellAddButton(
-        label: l10n.employeeAddTitle,
-        onPressed: () => showAddEmployeeSheet(context, ref),
+      action: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            tooltip: l10n.employeeExportCsv,
+            onPressed: () {
+              final list = ref.read(employeesListProvider).valueOrNull ?? [];
+              shareEmployeesCsv(
+                context: context,
+                employees: list,
+                businessName: business?.name ?? 'business',
+              );
+            },
+            icon: const Icon(Icons.download_outlined),
+          ),
+          ShellAddButton(
+            label: l10n.employeeAddTitle,
+            onPressed: () => showAddEmployeeSheet(context, ref),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

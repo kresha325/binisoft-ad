@@ -4500,6 +4500,120 @@ abstract class AppLocalizations {
   /// **'Send reset link'**
   String get accountPasswordSendLink;
 
+  /// No description provided for @authLoginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get authLoginTitle;
+
+  /// No description provided for @authLoginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your credentials to access your dashboard'**
+  String get authLoginSubtitle;
+
+  /// No description provided for @authEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get authEmailLabel;
+
+  /// No description provided for @authEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'name@example.com'**
+  String get authEmailHint;
+
+  /// No description provided for @authEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get authEmailInvalid;
+
+  /// No description provided for @authPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPasswordLabel;
+
+  /// No description provided for @authPasswordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 6 characters'**
+  String get authPasswordMinLength;
+
+  /// No description provided for @authLoginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get authLoginButton;
+
+  /// No description provided for @authNoAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? '**
+  String get authNoAccountPrompt;
+
+  /// No description provided for @authRegisterLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get authRegisterLink;
+
+  /// No description provided for @onboardingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Store setup'**
+  String get onboardingTitle;
+
+  /// No description provided for @onboardingHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish your store'**
+  String get onboardingHeadline;
+
+  /// No description provided for @onboardingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the steps below. No platform email required yet.'**
+  String get onboardingSubtitle;
+
+  /// No description provided for @onboardingGoDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Open dashboard'**
+  String get onboardingGoDashboard;
+
+  /// No description provided for @onboardingContinueLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue later'**
+  String get onboardingContinueLater;
+
+  /// No description provided for @onboardingBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup not finished'**
+  String get onboardingBannerTitle;
+
+  /// No description provided for @onboardingBannerProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} steps'**
+  String onboardingBannerProgress(int done, int total);
+
+  /// No description provided for @onboardingBannerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingBannerAction;
+
+  /// No description provided for @employeeExportCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Export CSV'**
+  String get employeeExportCsv;
+
   /// No description provided for @navEmployees.
   ///
   /// In en, this message translates to:

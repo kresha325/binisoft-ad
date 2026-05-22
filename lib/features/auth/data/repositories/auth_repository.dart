@@ -6,6 +6,7 @@ import '../../../../core/constants/superadmin_config.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/utils/auth_error_message.dart';
+import '../../../../core/utils/email_validation.dart';
 import '../../../../core/firestore/tenant_paths.dart';
 import '../../../../core/services/subscription_plan_service.dart';
 import '../../../business/data/repositories/business_repository.dart';
@@ -76,13 +77,13 @@ class AuthRepository {
 
   /// Sends Firebase password-reset link (works before platform SMTP is configured).
   Future<void> sendPasswordResetEmail({required String email}) async {
-    final normalizedEmail = email.trim().toLowerCase();
-    if (normalizedEmail.isEmpty || !normalizedEmail.contains('@')) {
+    final normalizedEmail = validateAccountEmail(email);
+    if (normalizedEmail == null) {
       throw const AuthException('Format email i pavlefshëm.');
     }
     try {
       await _auth.sendPasswordResetEmail(
-        email: normalizedEmail,
+        email: normalizedEmail!,
         actionCodeSettings: ActionCodeSettings(
           url: '${AppConstants.dashboardWebUrl}/#/login',
           handleCodeInApp: false,

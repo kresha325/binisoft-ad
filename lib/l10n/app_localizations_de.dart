@@ -2415,6 +2415,66 @@ class AppLocalizationsDe extends AppLocalizations {
   String get accountPasswordSendLink => 'Reset-Link senden';
 
   @override
+  String get authLoginTitle => 'Anmelden';
+
+  @override
+  String get authLoginSubtitle => 'Zugangsdaten für das Dashboard';
+
+  @override
+  String get authEmailLabel => 'E-Mail';
+
+  @override
+  String get authEmailHint => 'name@beispiel.de';
+
+  @override
+  String get authEmailInvalid => 'Gültige E-Mail eingeben';
+
+  @override
+  String get authPasswordLabel => 'Passwort';
+
+  @override
+  String get authPasswordMinLength => 'Mindestens 6 Zeichen';
+
+  @override
+  String get authLoginButton => 'Anmelden';
+
+  @override
+  String get authNoAccountPrompt => 'Noch kein Konto? ';
+
+  @override
+  String get authRegisterLink => 'Registrieren';
+
+  @override
+  String get onboardingTitle => 'Shop-Einrichtung';
+
+  @override
+  String get onboardingHeadline => 'Shop veröffentlichen';
+
+  @override
+  String get onboardingSubtitle =>
+      'Schritte unten abschließen. Keine Plattform-E-Mail nötig.';
+
+  @override
+  String get onboardingGoDashboard => 'Dashboard öffnen';
+
+  @override
+  String get onboardingContinueLater => 'Später fortsetzen';
+
+  @override
+  String get onboardingBannerTitle => 'Einrichtung unvollständig';
+
+  @override
+  String onboardingBannerProgress(int done, int total) {
+    return '$done von $total Schritten';
+  }
+
+  @override
+  String get onboardingBannerAction => 'Weiter';
+
+  @override
+  String get employeeExportCsv => 'CSV exportieren';
+
+  @override
   String get navEmployees => 'Mitarbeiter';
 
   @override
