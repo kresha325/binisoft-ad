@@ -36,7 +36,7 @@ storeFile=/Users/YOU/binisoft-upload-keystore.jks
 - App name: **Binisoft Admin**
 - Category: Business
 - **Privacy policy URL:** https://kresha325.github.io/binisoft-ad/privacy.html
-- Screenshots: phone 1080×1920 (dashboard, products, orders)
+- Screenshots: see **docs/STORE_SCREENSHOTS.md** (phone 1080×1920 — dashboard, products, orders, appointments)
 - Feature graphic: 1024×500
 - Upload `app-release.aab` to **Production** or **Internal testing**
 

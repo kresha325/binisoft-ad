@@ -22,6 +22,7 @@ import '../../domain/appointment_date.dart';
 import '../widgets/appointment_actions_sheet.dart';
 import '../widgets/appointment_calendar_panel.dart';
 import '../widgets/appointment_form_sheet.dart';
+import '../widgets/appointment_mobile_card.dart';
 
 class AppointmentsScreen extends ConsumerStatefulWidget {
   const AppointmentsScreen({super.key});
@@ -187,7 +188,15 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
             ],
           );
 
-          final list = DataTableCard(
+          void openActions(Appointment a) => showAppointmentActionsSheet(
+                context,
+                ref,
+                appointment: a,
+                onSetStatus: (appointment, status) =>
+                    _setStatus(ref, appointment, status),
+              );
+
+          final desktopList = DataTableCard(
             columns: [
               l10n.appointmentTime,
               l10n.appointmentFullName,
@@ -204,6 +213,46 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                 .toList(),
           );
 
+          final mobileList = filtered.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  child: Center(
+                    child: Text(
+                      allItems.isEmpty
+                          ? l10n.appointmentEmpty
+                          : l10n.appointmentEmptyDay,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: colors.textMuted),
+                    ),
+                  ),
+                )
+              : Column(
+                  children: [
+                    for (var i = 0; i < filtered.length; i++) ...[
+                      if (i > 0) const SizedBox(height: 10),
+                      AppointmentMobileCard(
+                        appointment: filtered[i],
+                        onTap: () => openActions(filtered[i]),
+                        onMarkCompleted: filtered[i].countsAsScheduled
+                            ? () => _setStatus(
+                                  ref,
+                                  filtered[i],
+                                  AppointmentStatus.completed,
+                                )
+                            : null,
+                        onMarkCancelled: filtered[i].countsAsScheduled
+                            ? () => _setStatus(
+                                  ref,
+                                  filtered[i],
+                                  AppointmentStatus.cancelled,
+                                )
+                            : null,
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                  ],
+                );
+
           if (isMobile) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -212,7 +261,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                 const SizedBox(height: 16),
                 filters,
                 const SizedBox(height: 12),
-                list,
+                mobileList,
               ],
             );
           }
@@ -228,7 +277,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                   children: [
                     filters,
                     const SizedBox(height: 16),
-                    list,
+                    desktopList,
                   ],
                 ),
               ),

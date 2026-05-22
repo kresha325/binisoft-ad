@@ -45,6 +45,10 @@ Shto produkte, ndiq porositë dhe publiko faqen e dyqanit nga telefoni. Panel i 
 
 ---
 
+## Screenshots
+
+Capture guide and required sizes: **docs/STORE_SCREENSHOTS.md**
+
 ## Internal testing checklist
 
 - [ ] Register / login  
