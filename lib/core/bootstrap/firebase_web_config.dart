@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
-import '../utils/client_platform.dart';
-
 /// Strips Realtime Database URL — we use Firestore only. RTDB calls often cause HTTP 400 on web.
 FirebaseOptions firebaseOptionsWithoutRtdb(FirebaseOptions source) {
   return FirebaseOptions(
@@ -22,11 +20,10 @@ FirebaseOptions firebaseOptionsWithoutRtdb(FirebaseOptions source) {
 
 Future<void> configureFirestoreForWeb() async {
   if (!kIsWeb) return;
-  // Safari/iOS WebKit: WebChannel often hangs without long-polling.
-  final safariWeb = isAppleMobileBrowser;
-  FirebaseFirestore.instance.settings = Settings(
+  // Avoid QUIC/WebChannel resets (ERR_QUIC_PROTOCOL_ERROR / Listen 400) on Chrome,
+  // corporate proxies, and VPNs. Long-polling uses plain HTTP and reconnects cleanly.
+  FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: false,
-    webExperimentalForceLongPolling: safariWeb ? true : null,
-    webExperimentalAutoDetectLongPolling: safariWeb ? null : true,
+    webExperimentalForceLongPolling: true,
   );
 }
