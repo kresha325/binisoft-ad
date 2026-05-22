@@ -446,15 +446,7 @@ function serializeCategory(doc, ctx) {
   };
 }
 
-function serializeEmployeePublic(doc) {
-  const data = doc.data();
-  return {
-    id: doc.id,
-    firstName: String(data.firstName || '').trim(),
-    lastName: String(data.lastName || '').trim(),
-    photoUrl: data.photoUrl || '',
-  };
-}
+const { serializeEmployeePublic, listPublicEmployees } = require('./publicCatalog');
 
 function serializeService(doc, ctx) {
   const d = doc.data();
@@ -1055,14 +1047,7 @@ async function handlePublicApi(req, res) {
         .collection(`businesses/${businessId}/employees`)
         .where('active', '==', true)
         .get();
-      const employees = empSnap.docs
-        .filter((doc) => doc.data().showOnSite === true)
-        .map((doc) => serializeEmployeePublic(doc))
-        .sort((a, b) => {
-          const ln = String(a.lastName).localeCompare(String(b.lastName), 'sq');
-          if (ln !== 0) return ln;
-          return String(a.firstName).localeCompare(String(b.firstName), 'sq');
-        });
+      const employees = listPublicEmployees(empSnap.docs);
 
       if (productId) {
         const one = employees.find((e) => e.id === productId);
@@ -1218,14 +1203,7 @@ async function handlePublicApi(req, res) {
       return p;
     });
 
-    const employees = employeesSnap.docs
-      .filter((doc) => doc.data().showOnSite === true)
-      .map((doc) => serializeEmployeePublic(doc))
-      .sort((a, b) => {
-        const ln = String(a.lastName).localeCompare(String(b.lastName), 'sq');
-        if (ln !== 0) return ln;
-        return String(a.firstName).localeCompare(String(b.firstName), 'sq');
-      });
+    const employees = listPublicEmployees(employeesSnap.docs);
 
     res.status(200).json({
       meta: i18n.apiMeta(localeCtx),

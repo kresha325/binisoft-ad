@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../layout/app_breakpoints.dart';
 import '../theme/app_theme.dart';
 
 class TableRowActions extends StatelessWidget {
@@ -18,6 +19,10 @@ class TableRowActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final touch = AppBreakpoints.isMobile(context)
+        ? const BoxConstraints(minWidth: 44, minHeight: 44)
+        : const BoxConstraints(minWidth: 36, minHeight: 36);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -27,7 +32,7 @@ class TableRowActions extends StatelessWidget {
             icon: const Icon(Icons.people_outline, size: 20),
             color: AppColors.navy,
             padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+            constraints: touch,
             onPressed: onViewEntries,
           ),
         IconButton(
@@ -35,7 +40,7 @@ class TableRowActions extends StatelessWidget {
           icon: const Icon(Icons.edit_outlined, size: 20),
           color: AppColors.navy,
           padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+          constraints: touch,
           onPressed: onEdit,
         ),
         IconButton(
@@ -43,7 +48,7 @@ class TableRowActions extends StatelessWidget {
           icon: const Icon(Icons.delete_outline, size: 20),
           color: const Color(0xFFDC2626),
           padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+          constraints: touch,
           onPressed: onDelete,
         ),
       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../layout/app_breakpoints.dart';
 import '../theme/app_color_scheme.dart';
 
 /// Responsive grid of [CatalogEntityCard] widgets.
@@ -49,6 +50,7 @@ class CatalogCardGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
+        final isMobile = AppBreakpoints.isMobile(context);
         final crossAxisCount = width > 1280
             ? 4
             : width > 960
@@ -63,13 +65,13 @@ class CatalogCardGrid extends StatelessWidget {
                 4 => 1.55,
                 3 => 1.4,
                 2 => 1.25,
-                _ => 1.05,
+                _ => isMobile ? 1.35 : 1.05,
               }
             : switch (crossAxisCount) {
                 4 => 3.5,
                 3 => 3.2,
                 2 => 2.85,
-                _ => 2.4,
+                _ => isMobile ? 2.0 : 2.4,
               };
 
         final grid = GridView.count(

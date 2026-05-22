@@ -17,6 +17,7 @@ import '../../../../core/widgets/page_header_action_scope.dart';
 import '../../../../core/widgets/shell_add_button.dart';
 import '../../../../core/widgets/search_toolbar.dart';
 import '../../../auth/presentation/providers/permissions_providers.dart';
+import '../../../categories/domain/entities/category.dart';
 import '../../../categories/presentation/providers/categories_providers.dart';
 import '../../domain/entities/product.dart';
 import '../providers/products_providers.dart';
@@ -68,6 +69,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final isMobile = AppBreakpoints.isMobile(context);
     final productsAsync = ref.watch(productsListProvider);
     final categoriesAsync = ref.watch(categoriesListProvider);
     final productQuota = ref.watch(productQuotaProvider);
@@ -179,12 +181,23 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
 
               final colors = context.appColors;
 
+              final thumbSize = isMobile ? 56.0 : 44.0;
+
               return CatalogCardGrid(
+                tallCells: isMobile,
                 emptyMessage: l10n.productsEmpty,
                 children: [
                   for (final p in filtered)
                     CatalogEntityCard(
-                      dense: true,
+                      dense: !isMobile,
+                      onTap: canWrite
+                          ? () => showProductSheet(
+                                context,
+                                ref,
+                                categories: categoriesAsync.valueOrNull ?? [],
+                                product: p,
+                              )
+                          : null,
                       title: p.name,
                       subtitle: p.categoryIds.isEmpty
                           ? null
@@ -193,39 +206,52 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                           ? '€${p.basePrice!.toStringAsFixed(2)} · /${p.slug}'
                           : '/${p.slug}',
                       leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(8),
                         child: p.imageUrls.isNotEmpty
                             ? StorageNetworkImage(
                                 url: p.imageUrls.first,
-                                width: 44,
-                                height: 44,
+                                width: thumbSize,
+                                height: thumbSize,
                                 fit: BoxFit.cover,
                               )
                             : Container(
-                                width: 44,
-                                height: 44,
+                                width: thumbSize,
+                                height: thumbSize,
                                 color: colors.surfaceElevated,
                                 child: Icon(
                                   Icons.image_outlined,
-                                  size: 20,
+                                  size: isMobile ? 24 : 20,
                                   color: colors.textMuted,
                                 ),
                               ),
                       ),
                       chips: [
-                        _productStatusChip(p.status),
+                        _productStatusChip(l10n, p.status),
                         if (p.isOnOfferHold)
-                          const StatusChip(label: 'Në ofertë', tone: StatusChipTone.accent),
+                          const StatusChip(
+                            label: 'Në ofertë',
+                            tone: StatusChipTone.accent,
+                          ),
                       ],
-                      trailing: TableRowActions(
-                        onEdit: () => showProductSheet(
-                          context,
-                          ref,
-                          categories: categoriesAsync.valueOrNull ?? [],
-                          product: p,
-                        ),
-                        onDelete: () => deleteProduct(context, ref, p),
-                      ),
+                      trailing: canWrite
+                          ? (isMobile
+                              ? _productMobileMenu(
+                                  context,
+                                  l10n,
+                                  ref,
+                                  p,
+                                  categoriesAsync.valueOrNull ?? [],
+                                )
+                              : TableRowActions(
+                                  onEdit: () => showProductSheet(
+                                    context,
+                                    ref,
+                                    categories: categoriesAsync.valueOrNull ?? [],
+                                    product: p,
+                                  ),
+                                  onDelete: () => deleteProduct(context, ref, p),
+                                ))
+                          : null,
                     ),
                 ],
               );
@@ -233,6 +259,32 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           ),
       ],
       ),
+    );
+  }
+
+  Widget _productMobileMenu(
+    BuildContext context,
+    dynamic l10n,
+    WidgetRef ref,
+    Product p,
+    List<Category> categories,
+  ) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert),
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+      onSelected: (value) {
+        switch (value) {
+          case 'edit':
+            showProductSheet(context, ref, categories: categories, product: p);
+          case 'delete':
+            deleteProduct(context, ref, p);
+        }
+      },
+      itemBuilder: (_) => [
+        PopupMenuItem(value: 'edit', child: Text(l10n.editProduct)),
+        PopupMenuItem(value: 'delete', child: Text(l10n.deleteProductTitle)),
+      ],
     );
   }
 
@@ -246,11 +298,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   }
 }
 
-Widget _productStatusChip(ProductStatus status) {
+Widget _productStatusChip(dynamic l10n, ProductStatus status) {
   final (label, tone) = switch (status) {
-    ProductStatus.active => ('Active', StatusChipTone.success),
-    ProductStatus.draft => ('Draft', StatusChipTone.neutral),
-    ProductStatus.archived => ('Archived', StatusChipTone.warning),
+    ProductStatus.active => (l10n.productStatusActive, StatusChipTone.success),
+    ProductStatus.draft => (l10n.productStatusDraft, StatusChipTone.neutral),
+    ProductStatus.archived => (l10n.productStatusArchived, StatusChipTone.warning),
   };
   return StatusChip(label: label, tone: tone);
 }

@@ -4,7 +4,7 @@ import '../../../products/domain/entities/product.dart';
 import '../../../products/presentation/providers/products_providers.dart';
 import '../../../services/presentation/providers/services_providers.dart';
 import '../../domain/entities/business.dart';
-import '../../domain/entities/site_config.dart';
+import '../../domain/store_launch_readiness_logic.dart';
 import '../providers/business_providers.dart';
 
 enum StoreLaunchTaskId { slug, logo, catalog, contact, preview }
@@ -48,13 +48,16 @@ final storeLaunchReadinessProvider = Provider<StoreLaunchReadiness?>((ref) {
   final services = ref.watch(servicesListProvider).valueOrNull ?? [];
 
   final slug = (business.slug ?? '').trim();
-  final slugOk = slug.isNotEmpty;
-  final logoOk = (business.logoUrl ?? '').trim().isNotEmpty;
+  final slugOk = StoreLaunchReadinessLogic.hasSlug(business);
+  final logoOk = StoreLaunchReadinessLogic.hasLogo(business);
   final activeProducts =
       products.where((p) => p.status == ProductStatus.active).length;
   final activeServices = services.where((s) => s.active).length;
-  final catalogOk = activeProducts > 0 || activeServices > 0;
-  final contactOk = _hasContactInfo(business);
+  final catalogOk = StoreLaunchReadinessLogic.hasCatalog(
+    activeProducts: activeProducts,
+    activeServices: activeServices,
+  );
+  final contactOk = StoreLaunchReadinessLogic.hasContactInfo(business);
 
   final catalogRoute = activeProducts == 0 ? '/products' : '/services';
 
@@ -93,12 +96,3 @@ final storeLaunchReadinessProvider = Provider<StoreLaunchReadiness?>((ref) {
     storeSlug: slugOk ? slug : null,
   );
 });
-
-bool _hasContactInfo(Business business) {
-  if ((business.orderPhone ?? '').trim().isNotEmpty) return true;
-  if ((business.contactEmail ?? '').trim().isNotEmpty) return true;
-  for (final s in business.siteConfig?.sections ?? const []) {
-    if (s.id == SiteConfig.sectionContact && s.enabled) return true;
-  }
-  return false;
-}
