@@ -149,21 +149,6 @@ service cloud.firestore {
       return canManageUsers(businessId);
     }
 
-    function isPlatformNotificationCreate() {
-      return request.resource.data.keys().hasAll(['type', 'title', 'body', 'read', 'createdAt'])
-        && request.resource.data.read == false
-        && request.resource.data.type in [
-          'platform.user.registered',
-          'platform.business.created'
-        ]
-        && request.resource.data.title is string
-        && request.resource.data.title.size() > 0
-        && request.resource.data.title.size() <= 120
-        && request.resource.data.body is string
-        && request.resource.data.body.size() > 0
-        && request.resource.data.body.size() <= 500;
-    }
-
     match /users/{userId} {
       allow read: if isPlatformAdmin() || (isSignedIn() && request.auth.uid == userId);
       allow create: if isSignedIn()
@@ -187,13 +172,13 @@ service cloud.firestore {
         || userOwnProfileUpdate(userId);
       allow delete: if isPlatformAdmin();
 
+      // Platform notifications: Admin SDK / platformNotifyHttp only (no client cross-user create).
       match /notifications/{notificationId} {
         allow read, update, delete: if isSignedIn() && request.auth.uid == userId;
         allow create: if isSignedIn() && (
           request.auth.uid == userId
           || (isPlatformAdmin()
               && request.resource.data.type.matches('platform\\..*'))
-          || isPlatformNotificationCreate()
         );
       }
 
@@ -321,8 +306,9 @@ service cloud.firestore {
         allow create, update, delete: if canManageOrders(businessId) || canWrite(businessId);
       }
 
+      // Payroll PII (salary/email/phone) — owner/admin/manager only, not employee role.
       match /employees/{employeeId} {
-        allow read: if canRead(businessId);
+        allow read: if canWrite(businessId);
         allow create, update, delete: if canManageUsers(businessId);
       }
 

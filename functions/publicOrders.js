@@ -285,10 +285,14 @@ async function createPublicOrder({ business, businessId, body }) {
     business.phone ||
     '';
 
+  // Unguessable token required for customer get/cancel (not returned in list APIs).
+  const customerAccessToken = randomBytes(24).toString('hex');
+
   const orderData = {
     orderNumber,
     status: 'pending',
     createdAt: FieldValue.serverTimestamp(),
+    customerAccessToken,
     customer: {
       name,
       phone: phone || null,
@@ -327,6 +331,7 @@ async function createPublicOrder({ business, businessId, body }) {
   return {
     orderId: orderRef.id,
     orderNumber,
+    customerAccessToken,
     subtotalEur,
     status: 'pending',
     messageText,
@@ -380,7 +385,30 @@ function serializePublicOrder(doc) {
   };
 }
 
-async function loadOrderForCustomer(businessId, orderId, phone) {
+function extractCustomerAccessToken(req) {
+  const q = req.query?.accessToken || req.query?.token;
+  if (typeof q === 'string' && q.trim()) return q.trim();
+  const body = req.body?.accessToken || req.body?.customerAccessToken;
+  if (typeof body === 'string' && body.trim()) return body.trim();
+  const header = req.headers['x-order-token'];
+  if (typeof header === 'string' && header.trim()) return header.trim();
+  return null;
+}
+
+/**
+ * Customer order access: valid shop API key, OR matching phone + customerAccessToken.
+ * Legacy orders without a stored token still accept phone-only (compat).
+ */
+async function authorizeCustomerOrderAccess(req, businessId) {
+  const apiKey = extractApiKey(req);
+  if (apiKey) {
+    await verifyOrderApiKey(businessId, apiKey);
+    return { via: 'apiKey', token: null };
+  }
+  return { via: 'customer', token: extractCustomerAccessToken(req) };
+}
+
+async function loadOrderForCustomer(businessId, orderId, phone, accessToken, opts = {}) {
   const db = getFirestore();
   const ref = db.doc(`businesses/${businessId}/orders/${orderId}`);
   const snap = await ref.get();
@@ -388,6 +416,18 @@ async function loadOrderForCustomer(businessId, orderId, phone) {
     throw new HttpsError('not-found', 'Order not found');
   }
   const data = snap.data();
+  const storedToken = String(data.customerAccessToken || '').trim();
+
+  // New orders: require the access token issued at create time (unless API key).
+  if (!opts.skipTokenCheck && storedToken) {
+    if (!accessToken || accessToken !== storedToken) {
+      throw new HttpsError(
+        'permission-denied',
+        'Missing or invalid order access token',
+      );
+    }
+  }
+
   const storedPhone = String(data.customer?.phone || '').trim();
   const requestPhone = String(phone || '').trim();
   if (!storedPhone && !requestPhone) {
@@ -424,20 +464,24 @@ async function handlePublicGetOrder(req, res, { slug, orderId, findBusinessBySlu
 
   try {
     const ip = rateLimit.clientIp(req);
-    const apiKey = extractApiKey(req);
     const phone = String(req.query.phone || '').trim();
     if (!phone || normalizePhone(phone).length < 8) {
       throw new HttpsError('invalid-argument', 'phone query parameter is required');
     }
 
     const business = await findBusinessBySlug(slug);
-    if (apiKey) {
-      await verifyOrderApiKey(business.id, apiKey);
-    } else {
+    const authz = await authorizeCustomerOrderAccess(req, business.id);
+    if (authz.via === 'customer') {
       rateLimit.checkRateLimit(`public-order-status:${ip}`, { max: 60, windowMs: 60_000 });
     }
 
-    const { snap } = await loadOrderForCustomer(business.id, orderId, phone);
+    const { snap } = await loadOrderForCustomer(
+      business.id,
+      orderId,
+      phone,
+      authz.token,
+      { skipTokenCheck: authz.via === 'apiKey' },
+    );
     res.status(200).json(serializePublicOrder(snap));
   } catch (err) {
     logPublicApiError({
@@ -464,20 +508,24 @@ async function handlePublicCancelOrder(req, res, { slug, orderId, findBusinessBy
 
   try {
     const ip = rateLimit.clientIp(req);
-    const apiKey = extractApiKey(req);
     const phone = String(req.body?.phone || req.query?.phone || '').trim();
     if (!phone || normalizePhone(phone).length < 8) {
       throw new HttpsError('invalid-argument', 'phone is required');
     }
 
     const business = await findBusinessBySlug(slug);
-    if (apiKey) {
-      await verifyOrderApiKey(business.id, apiKey);
-    } else {
+    const authz = await authorizeCustomerOrderAccess(req, business.id);
+    if (authz.via === 'customer') {
       rateLimit.checkRateLimit(`public-order-cancel:${ip}`, { max: 15, windowMs: 60_000 });
     }
 
-    const { ref, data } = await loadOrderForCustomer(business.id, orderId, phone);
+    const { ref, data } = await loadOrderForCustomer(
+      business.id,
+      orderId,
+      phone,
+      authz.token,
+      { skipTokenCheck: authz.via === 'apiKey' },
+    );
 
     if (!isPendingStatus(data.status)) {
       throw new HttpsError('failed-precondition', 'Only pending orders can be cancelled');
@@ -622,6 +670,7 @@ async function handlePublicCheckoutBatch(req, res, { findBusinessBySlug, sendErr
         businessName: business.name || slug,
         orderId: result.orderId,
         orderNumber: result.orderNumber,
+        customerAccessToken: result.customerAccessToken,
         subtotalEur: result.subtotalEur,
         status: result.status,
         messageText: result.messageText,

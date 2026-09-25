@@ -19,6 +19,10 @@ service firebase.storage {
       return userExists() ? userDoc().data.businessId : '';
     }
 
+    function userRole() {
+      return userDoc().data.role;
+    }
+
     function businessDoc(businessId) {
       return firestore.get(/databases/(default)/documents/businesses/$(businessId));
     }
@@ -38,10 +42,64 @@ service firebase.storage {
         || (userExists() && userBusinessId() == businessId);
     }
 
-    // Product images & logos — members only (no contentType check: resumable web uploads)
+    /// Owner / admin / manager may upload; employee role is read-only for media.
+    function canWriteMedia(businessId) {
+      return isBusinessOwner(businessId)
+        || (userExists()
+            && userBusinessId() == businessId
+            && userRole() in ['owner', 'admin', 'manager']);
+    }
+
+    function underSizeLimit() {
+      return request.resource.size < 10 * 1024 * 1024;
+    }
+
+    function isImageOrPdf() {
+      return request.resource.contentType.matches('image/.*')
+        || request.resource.contentType == 'application/pdf';
+    }
+
+    function allowMediaWrite(businessId) {
+      return canWriteMedia(businessId) && underSizeLimit() && isImageOrPdf();
+    }
+
+    // Product images
+    match /businesses/{businessId}/products/{allPaths=**} {
+      allow read: if isMember(businessId);
+      allow write: if allowMediaWrite(businessId);
+    }
+
+    // Branding & site assets
+    match /businesses/{businessId}/logo/{allPaths=**} {
+      allow read: if isMember(businessId);
+      allow write: if allowMediaWrite(businessId);
+    }
+
+    match /businesses/{businessId}/cover/{allPaths=**} {
+      allow read: if isMember(businessId);
+      allow write: if allowMediaWrite(businessId);
+    }
+
+    match /businesses/{businessId}/background/{allPaths=**} {
+      allow read: if isMember(businessId);
+      allow write: if allowMediaWrite(businessId);
+    }
+
+    match /businesses/{businessId}/site/{allPaths=**} {
+      allow read: if isMember(businessId);
+      allow write: if allowMediaWrite(businessId);
+    }
+
+    // Employee photos
+    match /businesses/{businessId}/employees/{allPaths=**} {
+      allow read: if isMember(businessId);
+      allow write: if allowMediaWrite(businessId);
+    }
+
+    // Deny any other path under businesses/
     match /businesses/{businessId}/{allPaths=**} {
       allow read: if isMember(businessId);
-      allow write: if isMember(businessId);
+      allow write: if false;
     }
 
     match /social_posts/{allPaths=**} {

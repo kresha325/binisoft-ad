@@ -11,6 +11,7 @@ const BUSINESS_SUBCOLLECTIONS = [
   'contests',
   'jobOpenings',
   'appointments',
+  'employees',
   'productVariants',
   'attributes',
   'attributeValues',

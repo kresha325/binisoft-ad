@@ -29,7 +29,8 @@ Future<void> showChangePlanDialog(BuildContext context, WidgetRef ref) async {
             padding: const EdgeInsets.only(bottom: 12),
             child: Text(
               'Current catalog: ${productQuota.label}. '
-              'Downgrading requires fewer products than the new limit.',
+              'You can downgrade anytime (catalog must fit the new limit). '
+              'Upgrades require a platform admin until payments are enabled.',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),

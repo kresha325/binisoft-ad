@@ -357,6 +357,13 @@ async function handleUpdateSubscriptionPlan(req, res) {
       throw new HttpsError('not-found', 'User profile not found');
     }
 
+    const currentMax = Number(userSnap.data().maxProducts) || 100;
+    // Until payments are wired, only platform admin may raise entitlements.
+    // Users may keep the same plan or downgrade.
+    if (plan.maxProducts > currentMax) {
+      await assertPlatformAdmin(decoded);
+    }
+
     const businessId = userSnap.data().businessId || '';
     if (businessId) {
       const productsCol = db.collection(`businesses/${businessId}/products`);
