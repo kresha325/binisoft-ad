@@ -52,7 +52,7 @@ class LandingFeatureGrid extends StatelessWidget {
       children: [
         Text(
           'Built for modern commerce teams',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 28,
             fontWeight: FontWeight.w700,
             letterSpacing: -0.5,
@@ -62,7 +62,7 @@ class LandingFeatureGrid extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           'Everything you need to run Binisoft admin on phone, tablet, or desktop.',
-          style: GoogleFonts.inter(fontSize: 16, color: colors.textMuted, height: 1.45),
+          style: GoogleFonts.plusJakartaSans(fontSize: 16, color: colors.textMuted, height: 1.45),
         ),
         const SizedBox(height: 28),
         GridView.builder(
@@ -122,7 +122,7 @@ class _FeatureCard extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             title,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 17,
               fontWeight: FontWeight.w700,
               color: colors.textPrimary,
@@ -131,7 +131,7 @@ class _FeatureCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             body,
-            style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted, height: 1.45),
+            style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted, height: 1.45),
           ),
         ],
       ),

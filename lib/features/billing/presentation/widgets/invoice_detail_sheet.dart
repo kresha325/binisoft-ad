@@ -49,7 +49,7 @@ class _InvoiceDetailSheet extends StatelessWidget {
                 Expanded(
                   child: Text(
                     l10n.invoiceTitle,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: colors.textPrimary,
@@ -71,7 +71,7 @@ class _InvoiceDetailSheet extends StatelessWidget {
               if (isMobile) ...[
                 Text(
                   l10n.invoiceTitle,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: colors.textPrimary,
@@ -81,7 +81,7 @@ class _InvoiceDetailSheet extends StatelessWidget {
               ],
               Text(
                 invoice.invoiceNumber,
-                style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
               ),
             ],
           ),
@@ -113,13 +113,13 @@ class _InvoiceDetailSheet extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 invoice.description,
-                style: GoogleFonts.inter(fontSize: 14, color: colors.textPrimary, height: 1.4),
+                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textPrimary, height: 1.4),
               ),
               if (invoice.lineItems.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 Text(
                   l10n.invoiceDetails,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: colors.textMuted,
@@ -136,7 +136,7 @@ class _InvoiceDetailSheet extends StatelessWidget {
                         Expanded(
                           child: Text(
                             line,
-                            style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                           ),
                         ),
                       ],
@@ -193,12 +193,12 @@ class _Row extends StatelessWidget {
         children: [
           SizedBox(
             width: 88,
-            child: Text(label, style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted)),
+            child: Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted)),
           ),
           Expanded(
             child: Text(
               value,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: bold ? 18 : 14,
                 fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
                 color: colors.textPrimary,

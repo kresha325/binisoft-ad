@@ -64,7 +64,7 @@ class _OrderDetailSheet extends ConsumerWidget {
                   Expanded(
                     child: Text(
                       order.orderNumber,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -75,7 +75,7 @@ class _OrderDetailSheet extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 6),
-              Text(date, style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted)),
+              Text(date, style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted)),
               const SizedBox(height: 20),
               _sectionTitle(context, l10n.orderDetailCustomer),
               const SizedBox(height: 8),
@@ -83,7 +83,7 @@ class _OrderDetailSheet extends ConsumerWidget {
               if (order.customer.notes?.isNotEmpty == true) ...[
                 const SizedBox(height: 6),
                 Text(order.customer.notes!,
-                    style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted)),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted)),
               ],
               const SizedBox(height: 20),
               _sectionTitle(context, l10n.orderDetailProducts),
@@ -97,12 +97,12 @@ class _OrderDetailSheet extends ConsumerWidget {
                       Expanded(
                         child: Text(
                           '${l.quantity}× ${l.productName}',
-                          style: GoogleFonts.inter(fontSize: 14),
+                          style: GoogleFonts.plusJakartaSans(fontSize: 14),
                         ),
                       ),
                       Text(
                         '€${l.lineTotalEur.toStringAsFixed(2)}',
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                        style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -111,11 +111,11 @@ class _OrderDetailSheet extends ConsumerWidget {
               const Divider(height: 28),
               Row(
                 children: [
-                  Text('Total', style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
+                  Text('Total', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700)),
                   const Spacer(),
                   Text(
                     '€${order.subtotalEur.toStringAsFixed(2)}',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: colors.accent,
@@ -172,7 +172,7 @@ class _OrderDetailSheet extends ConsumerWidget {
   Widget _sectionTitle(BuildContext context, String title) {
     return Text(
       title.toUpperCase(),
-      style: GoogleFonts.inter(
+      style: GoogleFonts.plusJakartaSans(
         fontSize: 11,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.6,

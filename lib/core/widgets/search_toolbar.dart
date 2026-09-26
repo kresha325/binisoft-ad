@@ -80,10 +80,10 @@ class _SearchField extends StatelessWidget {
       ),
       child: TextField(
         onChanged: onChanged,
-        style: GoogleFonts.inter(fontSize: 15, color: colors.textPrimary),
+        style: GoogleFonts.plusJakartaSans(fontSize: 15, color: colors.textPrimary),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.inter(color: colors.textMuted, fontSize: 15),
+          hintStyle: GoogleFonts.plusJakartaSans(color: colors.textMuted, fontSize: 15),
           prefixIcon: Icon(Icons.search_rounded, size: 20, color: colors.textMuted),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -121,7 +121,7 @@ class FilterDropdown extends StatelessWidget {
           value: value,
           isExpanded: true,
           icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.textMuted),
-          style: GoogleFonts.inter(fontSize: 15, color: colors.textPrimary),
+          style: GoogleFonts.plusJakartaSans(fontSize: 15, color: colors.textPrimary),
           items: items,
           onChanged: onChanged,
         ),

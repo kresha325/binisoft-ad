@@ -33,7 +33,7 @@ class CreateBusinessPromptCard extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             l10n.createFirstStoreTitle,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 22,
               fontWeight: FontWeight.w700,
               color: colors.textPrimary,
@@ -42,7 +42,7 @@ class CreateBusinessPromptCard extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(
             l10n.createFirstStoreBody,
-            style: GoogleFonts.inter(fontSize: 15, color: colors.textMuted, height: 1.45),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: colors.textMuted, height: 1.45),
           ),
           const SizedBox(height: 20),
           FilledButton.icon(

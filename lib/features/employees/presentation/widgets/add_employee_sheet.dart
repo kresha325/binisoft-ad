@@ -82,7 +82,7 @@ Future<void> showEmployeeSheet(
             const SizedBox(height: 16),
             Text(
               l10n.employeePhotoLabel,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: colors.textMuted,
@@ -117,7 +117,7 @@ Future<void> showEmployeeSheet(
             const SizedBox(height: 16),
             Text(
               l10n.employeePaymentDayLabel(paymentDay),
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
             ),
             Slider(
               value: paymentDay.toDouble(),
@@ -154,7 +154,7 @@ Future<void> showEmployeeSheet(
               padding: const EdgeInsets.only(left: 2, bottom: 8),
               child: Text(
                 l10n.employeeActiveHint,
-                style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
+                style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.35),
               ),
             ),
             Opacity(
@@ -169,7 +169,7 @@ Future<void> showEmployeeSheet(
               padding: const EdgeInsets.only(left: 2),
               child: Text(
                 l10n.employeeShowOnSiteHint,
-                style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
+                style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.35),
               ),
             ),
           ],

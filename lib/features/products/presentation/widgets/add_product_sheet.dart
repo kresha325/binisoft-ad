@@ -121,7 +121,7 @@ Future<void> showProductSheet(
             padding: const EdgeInsets.symmetric(vertical: 24),
             child: Text(
               context.l10n.couldNotLoadCustomFields('$e'),
-              style: GoogleFonts.inter(color: Colors.red, fontSize: 14),
+              style: GoogleFonts.plusJakartaSans(color: Colors.red, fontSize: 14),
             ),
           ),
           data: (allAttributes) {
@@ -149,7 +149,7 @@ Future<void> showProductSheet(
                 children: [
                   Text(
                     context.l10n.coreDetails,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: context.appColors.textMuted,
@@ -243,7 +243,7 @@ Future<void> showProductSheet(
                     const SizedBox(height: 24),
                     Text(
                       context.l10n.customFieldsSection,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                         color: context.appColors.textMuted,

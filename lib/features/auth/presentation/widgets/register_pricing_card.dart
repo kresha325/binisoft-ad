@@ -35,7 +35,7 @@ class RegisterPricingCard extends StatelessWidget {
             ),
             child: Text(
               'RECOMMENDED',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 10,
                 fontWeight: FontWeight.w800,
                 color: accent,
@@ -46,7 +46,7 @@ class RegisterPricingCard extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'Binisoft Admin',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 24,
               fontWeight: FontWeight.w700,
               color: colors.textPrimary,
@@ -56,7 +56,7 @@ class RegisterPricingCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Account and app install are free. Create your business from the dashboard — payment opens when you tap Create.',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               color: colors.textMuted,
               height: 1.45,
@@ -65,7 +65,7 @@ class RegisterPricingCard extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             'Free',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 32,
               fontWeight: FontWeight.w700,
               color: accent,
@@ -75,7 +75,7 @@ class RegisterPricingCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             '${starter.registrationPriceLabel} per store when you create a business',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 15,
               fontWeight: FontWeight.w600,
               color: colors.textMuted,
@@ -84,7 +84,7 @@ class RegisterPricingCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'First month included · ATK invoice with your NIPT',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: colors.success,
@@ -102,7 +102,7 @@ class RegisterPricingCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       f,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 14,
                         color: colors.textPrimary,
                         height: 1.35,

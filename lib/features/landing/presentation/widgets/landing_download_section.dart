@@ -32,7 +32,7 @@ class LandingDownloadSection extends StatelessWidget {
         Text(
           'Download the app',
           textAlign: isMobile ? TextAlign.center : TextAlign.start,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 28,
             fontWeight: FontWeight.w700,
             letterSpacing: -0.5,
@@ -43,7 +43,7 @@ class LandingDownloadSection extends StatelessWidget {
         Text(
           'Install on your device or use the web dashboard. We detect your platform when possible.',
           textAlign: isMobile ? TextAlign.center : TextAlign.start,
-          style: GoogleFonts.inter(fontSize: 16, color: colors.textMuted, height: 1.45),
+          style: GoogleFonts.plusJakartaSans(fontSize: 16, color: colors.textMuted, height: 1.45),
         ),
         const SizedBox(height: 24),
         if (singleRow)
@@ -146,7 +146,7 @@ class _StoreCard extends StatelessWidget {
                     ),
                     child: Text(
                       'RECOMMENDED',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 8,
                         fontWeight: FontWeight.w800,
                         color: colors.accent,
@@ -162,7 +162,7 @@ class _StoreCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: titleSize,
                   fontWeight: FontWeight.w700,
                   color: colors.textPrimary,
@@ -174,13 +174,13 @@ class _StoreCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.inter(fontSize: compact ? 10 : 12, color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(fontSize: compact ? 10 : 12, color: colors.textMuted),
               ),
               if (!hasLink && platform != ClientPlatform.web) ...[
                 const SizedBox(height: 4),
                 Text(
                   'Coming soon',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                     color: colors.textMuted,

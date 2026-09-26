@@ -44,7 +44,7 @@ class _EmptyReports extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               'Nuk ka raporte ende',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,
@@ -54,7 +54,7 @@ class _EmptyReports extends StatelessWidget {
             Text(
               'Raportet gjenerohen automatikisht çdo ditë, javë, muaj dhe vit.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
             ),
           ],
         ),
@@ -111,24 +111,24 @@ class _ReportCard extends ConsumerWidget {
                       children: [
                         Text(
                           report.titleLabel,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
                             color: colors.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(range, style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted)),
+                        Text(range, style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted)),
                         Text(
                           '$generated · ${report.invoiceCount} fatura',
-                          style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
+                          style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted),
                         ),
                       ],
                     ),
                   ),
                   Text(
                     report.formattedTotal,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: colors.accent,
@@ -174,7 +174,7 @@ class _ReportCard extends ConsumerWidget {
       ),
       child: Text(
         '$label €$s',
-        style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w600, color: colors.accent),
+        style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w600, color: colors.accent),
       ),
     );
   }

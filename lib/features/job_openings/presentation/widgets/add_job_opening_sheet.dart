@@ -119,7 +119,7 @@ Future<void> showJobOpeningSheet(
             const SizedBox(height: 16),
             Text(
               l10n.jobImageLabel,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: colors.textMuted,
@@ -153,7 +153,7 @@ Future<void> showJobOpeningSheet(
             const SizedBox(height: 16),
             Text(
               l10n.jobSectionDuration,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: colors.textMuted,
@@ -162,7 +162,7 @@ Future<void> showJobOpeningSheet(
             const SizedBox(height: 8),
             Text(
               l10n.jobDurationLabel(durationDays),
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
             ),
             Slider(
               value: durationDays.toDouble(),
@@ -177,7 +177,7 @@ Future<void> showJobOpeningSheet(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Text(
                   l10n.jobRenewHint,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     color: colors.textMuted,
                     height: 1.35,

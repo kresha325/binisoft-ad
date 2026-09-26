@@ -118,7 +118,7 @@ Future<void> showOfferSheet(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Text(
                       focusProduct.name,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -130,7 +130,7 @@ Future<void> showOfferSheet(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Text(
                       l10n.offerSeparateSaveHint,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
                         color: colors.textMuted,
                         height: 1.4,
@@ -147,7 +147,7 @@ Future<void> showOfferSheet(
                 const SizedBox(height: 16),
                 Text(
                   l10n.offerSectionDuration,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: colors.textMuted,
@@ -156,7 +156,7 @@ Future<void> showOfferSheet(
                 const SizedBox(height: 8),
                 Text(
                   l10n.offerDurationLabel(durationDays),
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                  style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                 ),
                 Slider(
                   value: durationDays.toDouble(),
@@ -171,7 +171,7 @@ Future<void> showOfferSheet(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
                       l10n.offerRenewHint,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 12,
                         color: colors.textMuted,
                         height: 1.35,
@@ -187,7 +187,7 @@ Future<void> showOfferSheet(
                   const SizedBox(height: 12),
                   Text(
                     l10n.offerEditSplitHint,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 13,
                       color: colors.textMuted,
                       height: 1.4,
@@ -197,7 +197,7 @@ Future<void> showOfferSheet(
                 const SizedBox(height: 20),
                 Text(
                   l10n.offerProductsLabel,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: colors.textMuted,
@@ -207,7 +207,7 @@ Future<void> showOfferSheet(
                 if (isEdit && drafts.isEmpty)
                   Text(
                     l10n.offerEditProductsMissing,
-                    style: GoogleFonts.inter(color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(color: colors.textMuted),
                   ),
                 if (sheetProducts.length > 6)
                   Padding(
@@ -225,7 +225,7 @@ Future<void> showOfferSheet(
                 if (!isEdit && sheetProducts.isEmpty)
                   Text(
                     l10n.offerNoProducts,
-                    style: GoogleFonts.inter(color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(color: colors.textMuted),
                   )
                 else
                   ...filtered.map((product) {

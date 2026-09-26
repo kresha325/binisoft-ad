@@ -46,7 +46,7 @@ class StoreOnboardingScreen extends ConsumerWidget {
               children: [
                 Text(
                   l10n.onboardingHeadline,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                     color: colors.textPrimary,
@@ -55,7 +55,7 @@ class StoreOnboardingScreen extends ConsumerWidget {
                 const SizedBox(height: 8),
                 Text(
                   l10n.onboardingSubtitle,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     color: colors.textMuted,
                     height: 1.45,
@@ -146,7 +146,7 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           '${readiness.completedCount} / ${readiness.totalCount}',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             color: colors.accent,
@@ -191,7 +191,7 @@ class _OnboardingStepTile extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       decoration: task.done ? TextDecoration.lineThrough : null,

@@ -154,7 +154,7 @@ class _ProductVariantsEditorState extends State<ProductVariantsEditor> {
       children: [
         Text(
           l10n.variantsSectionTitle,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             color: colors.textMuted,
@@ -163,18 +163,18 @@ class _ProductVariantsEditorState extends State<ProductVariantsEditor> {
         const SizedBox(height: 6),
         Text(
           l10n.variantsSectionSubtitle,
-          style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
+          style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.35),
         ),
         const SizedBox(height: 14),
         if (axes.isEmpty)
           Text(
             l10n.variantsNoAxes,
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.35),
           )
         else ...[
           Text(
             l10n.variantsSelectAxes,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: colors.textPrimary,
@@ -317,7 +317,7 @@ class _VariantRowCardState extends State<_VariantRowCard> {
         children: [
           Text(
             widget.title,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: colors.textPrimary,

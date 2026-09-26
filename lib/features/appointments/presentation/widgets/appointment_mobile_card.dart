@@ -75,7 +75,7 @@ class AppointmentMobileCard extends StatelessWidget {
                       children: [
                         Text(
                           timeFmt.format(a.scheduledAt),
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: colors.textPrimary,
@@ -83,7 +83,7 @@ class AppointmentMobileCard extends StatelessWidget {
                         ),
                         Text(
                           dateFmt.format(a.scheduledAt),
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             fontSize: 12,
                             color: colors.textMuted,
                           ),
@@ -97,7 +97,7 @@ class AppointmentMobileCard extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 a.fullName,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: colors.textPrimary,
@@ -107,14 +107,14 @@ class AppointmentMobileCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   a.serviceType,
-                  style: GoogleFonts.inter(fontSize: 13, color: colors.accent),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.accent),
                 ),
               ],
               if (a.phoneNumber.isNotEmpty) ...[
                 const SizedBox(height: 4),
                 Text(
                   a.phoneNumber,
-                  style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                 ),
               ],
               if (a.description.isNotEmpty) ...[
@@ -123,7 +123,7 @@ class AppointmentMobileCard extends StatelessWidget {
                   a.description,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     color: colors.textMuted,
                     height: 1.35,

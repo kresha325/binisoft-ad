@@ -23,7 +23,7 @@ Future<String?> showExportLanguagePicker(
         builder: (context, setState) => AlertDialog(
           title: Text(
             l10n.exportPickLanguageTitle,
-            style: GoogleFonts.inter(fontWeight: FontWeight.w700),
+            style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -31,7 +31,7 @@ Future<String?> showExportLanguagePicker(
             children: [
               Text(
                 l10n.exportPickLanguageSubtitle,
-                style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted, height: 1.4),
+                style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted, height: 1.4),
               ),
               const SizedBox(height: 16),
               Row(
@@ -99,7 +99,7 @@ class _LangChip extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               fontWeight: FontWeight.w700,
               color: selected ? colors.accent : colors.textPrimary,

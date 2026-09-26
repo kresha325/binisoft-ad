@@ -7,12 +7,12 @@ import 'app_theme.dart';
 
 /// Theme-aware text field / dropdown styling (light + dark).
 abstract final class AppInputStyles {
-  static TextStyle fieldText(BuildContext context) => GoogleFonts.inter(
+  static TextStyle fieldText(BuildContext context) => GoogleFonts.plusJakartaSans(
         fontSize: 15,
         color: context.appColors.textPrimary,
       );
 
-  static TextStyle hintText(BuildContext context) => GoogleFonts.inter(
+  static TextStyle hintText(BuildContext context) => GoogleFonts.plusJakartaSans(
         fontSize: 15,
         color: context.appColors.textMuted,
       );
@@ -48,7 +48,7 @@ abstract final class AppInputStyles {
       fillColor: colors.surfaceElevated,
       hintStyle: hintTextStyle(context),
       labelStyle: labelTextStyle(context),
-      helperStyle: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+      helperStyle: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       border: border,
       enabledBorder: border,

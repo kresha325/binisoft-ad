@@ -43,7 +43,7 @@ class ApiKeysSection extends ConsumerWidget {
               if (keys.isEmpty)
                 Text(
                   'No keys yet. Create one and paste it into your e-commerce site config.',
-                  style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                 )
               else
                 ...keys.map((k) {
@@ -63,12 +63,12 @@ class ApiKeysSection extends ConsumerWidget {
                             children: [
                               Text(
                                 k.name,
-                                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                               ),
                               Text(
                                 '${k.keyPrefix} · $created'
                                 '${k.active ? '' : ' · revoked'}',
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.plusJakartaSans(
                                   fontSize: 12,
                                   color: colors.textMuted,
                                 ),

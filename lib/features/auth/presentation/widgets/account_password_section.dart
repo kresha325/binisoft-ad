@@ -60,7 +60,7 @@ class _AccountPasswordSectionState extends ConsumerState<AccountPasswordSection>
           if (email.isNotEmpty)
             Text(
               email,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,
@@ -69,7 +69,7 @@ class _AccountPasswordSectionState extends ConsumerState<AccountPasswordSection>
           const SizedBox(height: 8),
           Text(
             l10n.accountPasswordNote,
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.4),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.4),
           ),
           const SizedBox(height: 16),
           SizedBox(

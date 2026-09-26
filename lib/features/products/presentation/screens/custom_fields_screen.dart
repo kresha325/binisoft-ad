@@ -34,7 +34,7 @@ class CustomFieldsScreen extends ConsumerWidget {
         const SizedBox(height: 20),
         Text(
           l10n.customFieldsAll,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 15,
             fontWeight: FontWeight.w700,
             color: context.appColors.textPrimary,
@@ -57,7 +57,7 @@ class CustomFieldsScreen extends ConsumerWidget {
               rows: [
                 for (final a in items)
                   DataRow(cells: [
-                    DataCell(Text(a.name, style: GoogleFonts.inter(fontWeight: FontWeight.w500))),
+                    DataCell(Text(a.name, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500))),
                     DataCell(Text(a.key, style: const TextStyle(fontFamily: 'monospace'))),
                     DataCell(Text(a.type.localizedLabel(l10n))),
                     DataCell(Text(a.active ? l10n.statusActive : l10n.statusInactive)),

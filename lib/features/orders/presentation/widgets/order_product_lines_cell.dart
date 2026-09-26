@@ -40,7 +40,7 @@ class OrderProductLinesCell extends StatelessWidget {
             else if (namesOnly)
               Text(
                 lines[i].productName,
-                style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w500),
+                style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w500),
               )
             else
               Row(
@@ -49,7 +49,7 @@ class OrderProductLinesCell extends StatelessWidget {
                   Expanded(
                     child: Text(
                       lines[i].productName,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
@@ -74,7 +74,7 @@ class OrderProductLinesCell extends StatelessWidget {
       ),
       child: Text(
         '×$qty',
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: 12,
           fontWeight: FontWeight.w700,
           color: colors.accent,

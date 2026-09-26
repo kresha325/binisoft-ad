@@ -76,7 +76,7 @@ Future<void> showContestSheet(
             const SizedBox(height: 16),
             Text(
               l10n.contestImageLabel,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: colors.textMuted,
@@ -116,7 +116,7 @@ Future<void> showContestSheet(
             const SizedBox(height: 16),
             Text(
               l10n.contestSectionDuration,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: colors.textMuted,
@@ -125,7 +125,7 @@ Future<void> showContestSheet(
             const SizedBox(height: 8),
             Text(
               l10n.contestDurationLabel(durationDays),
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
             ),
             Slider(
               value: durationDays.toDouble(),
@@ -140,7 +140,7 @@ Future<void> showContestSheet(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Text(
                   l10n.contestRenewHint,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     color: colors.textMuted,
                     height: 1.35,

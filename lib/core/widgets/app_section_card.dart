@@ -55,7 +55,7 @@ class AppSectionCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -66,7 +66,7 @@ class AppSectionCard extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         subtitle!,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 13,
                           color: colors.textMuted,
                           height: 1.45,
@@ -117,7 +117,7 @@ class AppInfoBanner extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 13,
                 color: colors.textPrimary,
                 height: 1.45,

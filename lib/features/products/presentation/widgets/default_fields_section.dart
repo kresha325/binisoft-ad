@@ -76,7 +76,7 @@ class _DefaultFieldsSectionState extends ConsumerState<DefaultFieldsSection> {
         ),
         error: (e, _) => Text(
           'Could not load fields: $e',
-          style: GoogleFonts.inter(fontSize: 13, color: colors.danger),
+          style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.danger),
         ),
         data: (attributes) => Wrap(
           spacing: 8,
@@ -131,7 +131,7 @@ class _DefaultFieldChip extends StatelessWidget {
             const SizedBox(width: 4),
             Text(
               context.l10n.defaultFieldRequired,
-              style: GoogleFonts.inter(fontSize: 11, color: colors.success),
+              style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.success),
             ),
           ],
         ],
@@ -143,7 +143,7 @@ class _DefaultFieldChip extends StatelessWidget {
       side: BorderSide(
         color: selected ? colors.accent.withValues(alpha: 0.35) : colors.cardBorder,
       ),
-      labelStyle: GoogleFonts.inter(
+      labelStyle: GoogleFonts.plusJakartaSans(
         fontSize: 13,
         fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
         color: colors.textPrimary,

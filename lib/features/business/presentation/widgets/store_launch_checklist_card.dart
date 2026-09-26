@@ -42,7 +42,7 @@ class StoreLaunchChecklistCard extends ConsumerWidget {
               Expanded(
                 child: Text(
                   l10n.storeLaunchChecklistTitle,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: colors.textPrimary,
@@ -51,7 +51,7 @@ class StoreLaunchChecklistCard extends ConsumerWidget {
               ),
               Text(
                 '${readiness.completedCount}/${readiness.totalCount}',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: colors.accent,
@@ -62,7 +62,7 @@ class StoreLaunchChecklistCard extends ConsumerWidget {
           const SizedBox(height: 6),
           Text(
             l10n.storeLaunchChecklistSubtitle,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               color: colors.textMuted,
               height: 1.35,
@@ -153,7 +153,7 @@ class _TaskRow extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: colors.textPrimary,

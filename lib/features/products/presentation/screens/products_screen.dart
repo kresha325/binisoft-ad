@@ -105,7 +105,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             padding: const EdgeInsets.only(bottom: 12),
             child: Text(
               productQuota.label,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textMuted,

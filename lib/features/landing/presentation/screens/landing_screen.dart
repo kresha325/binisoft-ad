@@ -208,7 +208,7 @@ class _HeroSection extends StatelessWidget {
           ),
           child: Text(
             'REAL-TIME BUSINESS ADMIN',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 11,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.2,
@@ -219,7 +219,7 @@ class _HeroSection extends StatelessWidget {
         const SizedBox(height: 20),
         Text(
           'Run your catalog.\nShip your API.\nGrow faster.',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: isWide ? 48 : 34,
             fontWeight: FontWeight.w800,
             height: 1.08,
@@ -231,7 +231,7 @@ class _HeroSection extends StatelessWidget {
         Text(
           '${AppBranding.appTitle} — ${AppBranding.splashTagline}. '
           'Products, categories, custom fields, and a public REST API for every business you manage.',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: isWide ? 18 : 16,
             height: 1.5,
             color: colors.textMuted,
@@ -241,7 +241,7 @@ class _HeroSection extends StatelessWidget {
         Text(
           'From ${starter.registrationPriceLabel} · up to 100, 200, or 500 products · '
           'Enterprise — contact support',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: colors.accent,
@@ -261,7 +261,7 @@ class _HeroSection extends StatelessWidget {
                 backgroundColor: colors.accent,
                 foregroundColor: const Color(0xFF0F172A),
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                textStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
+                textStyle: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
             OutlinedButton.icon(
@@ -278,7 +278,7 @@ class _HeroSection extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             'Detected: ${AppDownloadLinks.subtitleFor(suggested)} — we\'ll open the right store.',
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
           ),
         ],
       ],
@@ -349,7 +349,7 @@ class _DashboardMockCard extends StatelessWidget {
               const Spacer(),
               Text(
                 'Dashboard preview',
-                style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted),
               ),
             ],
           ),
@@ -384,7 +384,7 @@ class _DashboardMockCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Catalog health · API live',
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
           ),
         ],
       ),
@@ -416,11 +416,11 @@ class _MiniStat extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted)),
+            Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted)),
             const SizedBox(height: 4),
             Text(
               value,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: colors.textPrimary,
@@ -446,7 +446,7 @@ class _Footer extends StatelessWidget {
         const SizedBox(height: 12),
         Text(
           AppBranding.tagline,
-          style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
         ),
         const SizedBox(height: 24),
         Wrap(
@@ -465,7 +465,7 @@ class _Footer extends StatelessWidget {
         const SizedBox(height: 32),
         Text(
           '© ${DateTime.now().year} Binisoft · ${AppBranding.appTitle}',
-          style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
         ),
         const SizedBox(height: 24),
       ],

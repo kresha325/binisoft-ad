@@ -90,7 +90,7 @@ class SuperAdminSidebar extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 16, 16, 12),
               child: Text(
                 'Platform admin',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: colors.textMuted,
@@ -154,7 +154,7 @@ class SuperAdminSidebar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 12, 8, 6),
       child: Text(
         text.toUpperCase(),
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: 10,
           fontWeight: FontWeight.w700,
           color: context.appColors.textMuted,
@@ -206,7 +206,7 @@ class _NavTile extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       fontWeight: active ? FontWeight.w600 : FontWeight.w500,
                       color: active ? accent : (danger ? colors.danger : colors.textPrimary),

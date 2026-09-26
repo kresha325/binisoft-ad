@@ -36,7 +36,7 @@ class UserRoleBadge extends StatelessWidget {
       ),
       child: Text(
         role.localizedLabel(context.l10n),
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: compact ? 11 : 12,
           fontWeight: FontWeight.w700,
           color: fg,

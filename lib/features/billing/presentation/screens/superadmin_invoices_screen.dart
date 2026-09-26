@@ -44,7 +44,7 @@ class _SuperAdminInvoicesScreenState extends ConsumerState<SuperAdminInvoicesScr
       children: [
         Text(
           'Faturat',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 22,
             fontWeight: FontWeight.w700,
             color: colors.textPrimary,
@@ -53,7 +53,7 @@ class _SuperAdminInvoicesScreenState extends ConsumerState<SuperAdminInvoicesScr
         const SizedBox(height: 6),
         Text(
           'Abonimet dhe pagesat mujore të platformës.',
-          style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
         ),
         const SizedBox(height: 20),
         SuperAdminInvoiceTabs(controller: _tabs),

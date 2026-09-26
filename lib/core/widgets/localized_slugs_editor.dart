@@ -96,7 +96,7 @@ class _LocalizedSlugsEditorState extends State<LocalizedSlugsEditor> {
       childrenPadding: const EdgeInsets.only(bottom: 12),
       title: Text(
         l10n.localizedSlugsSection,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: 13,
           fontWeight: FontWeight.w600,
           color: colors.textPrimary,
@@ -104,7 +104,7 @@ class _LocalizedSlugsEditorState extends State<LocalizedSlugsEditor> {
       ),
       subtitle: Text(
         l10n.localizedSlugsHelper(widget.internalSlug),
-        style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted, height: 1.3),
+        style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted, height: 1.3),
       ),
       children: [
         for (final code in optional) ...[

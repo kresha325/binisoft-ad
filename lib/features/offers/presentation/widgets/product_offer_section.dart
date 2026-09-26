@@ -27,7 +27,7 @@ class ProductOfferSection extends ConsumerWidget {
       children: [
         Text(
           l10n.navOffers,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             color: colors.textMuted,
@@ -37,12 +37,12 @@ class ProductOfferSection extends ConsumerWidget {
         if (product.isOnOfferHold) ...[
           Text(
             'Vetëm në ofertë aktive — në menu shfaqet si Draft derisa oferta skadon.',
-            style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
           ),
         ] else if (existing != null) ...[
           Text(
             l10n.productAlreadyOnOffer(existing.title),
-            style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
           ),
           const SizedBox(height: 8),
           OutlinedButton.icon(

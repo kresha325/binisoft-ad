@@ -27,13 +27,13 @@ class SuperAdminInvoiceTabs extends StatelessWidget {
           Tab(
             child: Text(
               'Abonimet',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 13),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 13),
             ),
           ),
           Tab(
             child: Text(
               'Pagesat mujore',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 13),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 13),
             ),
           ),
         ],

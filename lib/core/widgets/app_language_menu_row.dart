@@ -25,7 +25,7 @@ class AppLanguageMenuRow extends ConsumerWidget {
         children: [
           Text(
             l10n.menuLanguage,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 11,
               fontWeight: FontWeight.w600,
               color: colors.textMuted,
@@ -86,7 +86,7 @@ class _LocaleChip extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 13,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.5,

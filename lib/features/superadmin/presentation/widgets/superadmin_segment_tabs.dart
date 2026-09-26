@@ -78,7 +78,7 @@ class _Segment extends StatelessWidget {
           child: Text(
             label,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 13,
               fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
               color: selected ? colors.accent : colors.textMuted,

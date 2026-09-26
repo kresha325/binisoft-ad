@@ -57,7 +57,7 @@ class RecentOrdersSection extends ConsumerWidget {
                         children: [
                           Text(
                             recent[i].orderNumber,
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.plusJakartaSans(
                               fontWeight: FontWeight.w600,
                               fontSize: 13,
                               color: colors.textPrimary,
@@ -73,7 +73,7 @@ class RecentOrdersSection extends ConsumerWidget {
                           const SizedBox(height: 4),
                           Text(
                             DateFormat('d MMM, HH:mm').format(recent[i].createdAt),
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.plusJakartaSans(
                               fontSize: 11,
                               color: colors.textMuted,
                             ),
@@ -87,7 +87,7 @@ class RecentOrdersSection extends ConsumerWidget {
                       children: [
                         Text(
                           '€${recent[i].subtotalEur.toStringAsFixed(2)}',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             fontWeight: FontWeight.w700,
                             color: colors.accent,
                           ),

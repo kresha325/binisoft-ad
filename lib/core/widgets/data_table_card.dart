@@ -48,7 +48,7 @@ class DataTableCard extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(
                       emptyMessage,
-                      style: GoogleFonts.inter(fontSize: 15, color: colors.textMuted),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 15, color: colors.textMuted),
                     ),
                   ],
                 ),

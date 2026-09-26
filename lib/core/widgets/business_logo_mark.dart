@@ -72,7 +72,7 @@ class BusinessLogoMark extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         initials,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: size * 0.34,
           fontWeight: FontWeight.w800,
           color: Colors.white,

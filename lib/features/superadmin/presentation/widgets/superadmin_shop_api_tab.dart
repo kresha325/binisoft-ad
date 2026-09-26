@@ -38,7 +38,7 @@ class _SuperAdminShopApiTabState extends ConsumerState<SuperAdminShopApiTab> {
           return Center(
             child: Text(
               'No businesses yet.',
-              style: GoogleFonts.inter(color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(color: colors.textMuted),
             ),
           );
         }
@@ -91,7 +91,7 @@ class _SuperAdminShopApiTabState extends ConsumerState<SuperAdminShopApiTab> {
                   if (slug.isEmpty)
                     Text(
                       'Ky biznes nuk ka slug. Vendos slug në admin që dyqani të hapet në /slug.',
-                      style: GoogleFonts.inter(fontSize: 13, color: colors.danger),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.danger),
                     )
                   else ...[
                     _CopyRow(
@@ -131,7 +131,7 @@ class _SuperAdminShopApiTabState extends ConsumerState<SuperAdminShopApiTab> {
                   if (keys.isEmpty) {
                     return Text(
                       'Nuk ka key. Krijo një key më sipër.',
-                      style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                     );
                   }
                   return Column(
@@ -209,7 +209,7 @@ ${AppConstants.publicShopUrl(slug)}
               children: [
                 Text(
                   'Kopjo këtë key tani — nuk shfaqet përsëri.',
-                  style: GoogleFonts.inter(fontSize: 13, color: context.appColors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 13, color: context.appColors.textMuted),
                 ),
                 const SizedBox(height: 12),
                 SelectableText(
@@ -266,7 +266,7 @@ class _CopyRow extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted)),
+              Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted)),
               const SizedBox(height: 4),
               SelectableText(
                 value,
@@ -314,10 +314,10 @@ class _KeyTile extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(record.name, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                Text(record.name, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
                 Text(
                   '${record.keyPrefix} · $created${record.active ? '' : ' · revoked'}',
-                  style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                 ),
               ],
             ),

@@ -164,7 +164,7 @@ class _AttributeFieldBuilderState extends State<AttributeFieldBuilder> {
               children: [
                 for (final o in widget.definition.options)
                   FilterChip(
-                    label: Text(o, style: GoogleFonts.inter(color: colors.textPrimary)),
+                    label: Text(o, style: GoogleFonts.plusJakartaSans(color: colors.textPrimary)),
                     selected: (widget.value as List<String>? ?? []).contains(o),
                     selectedColor: colors.accentSoft,
                     checkmarkColor: colors.accent,

@@ -41,7 +41,7 @@ class ActiveStoreBanner extends ConsumerWidget {
               children: [
                 Text(
                   l10n.activeStoreBanner(business.name),
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: colors.textPrimary,
@@ -51,7 +51,7 @@ class ActiveStoreBanner extends ConsumerWidget {
                   const SizedBox(height: 4),
                   Text(
                     l10n.activeStoreBannerHint,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: colors.textMuted,
                       height: 1.35,

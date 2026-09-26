@@ -123,7 +123,7 @@ class ProductImagesEditorState extends State<ProductImagesEditor> {
         const SizedBox(height: 4),
         Text(
           l10n.productImagesSubtitle(kMaxProductImages),
-          style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
         ),
         const SizedBox(height: 12),
         Wrap(
@@ -280,7 +280,7 @@ class _PendingTile extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(fontSize: 9, color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 9, color: colors.textMuted),
                   ),
                 ),
             ],

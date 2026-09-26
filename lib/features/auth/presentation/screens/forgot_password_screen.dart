@@ -63,7 +63,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 const SizedBox(height: 16),
                 Text(
                   l10n.forgotPasswordSentBody,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     color: colors.textMuted,
                     height: 1.45,

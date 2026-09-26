@@ -37,7 +37,7 @@ class OnboardingContinueBanner extends ConsumerWidget {
               children: [
                 Text(
                   l10n.onboardingBannerTitle,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: colors.textPrimary,
@@ -48,7 +48,7 @@ class OnboardingContinueBanner extends ConsumerWidget {
                     readiness.completedCount,
                     readiness.totalCount,
                   ),
-                  style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                 ),
               ],
             ),

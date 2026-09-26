@@ -177,7 +177,7 @@ class _TeamSectionState extends ConsumerState<TeamSection> {
               if (members.isEmpty) {
                 return Text(
                   l10n.teamEmpty,
-                  style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                 );
               }
               return Column(
@@ -187,9 +187,9 @@ class _TeamSectionState extends ConsumerState<TeamSection> {
                       contentPadding: EdgeInsets.zero,
                       title: Text(
                         m.displayName.isNotEmpty ? m.displayName : m.email,
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                        style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                       ),
-                      subtitle: Text(m.email, style: GoogleFonts.inter(fontSize: 12)),
+                      subtitle: Text(m.email, style: GoogleFonts.plusJakartaSans(fontSize: 12)),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

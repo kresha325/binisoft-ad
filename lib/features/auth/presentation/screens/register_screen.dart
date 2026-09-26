@@ -90,7 +90,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 Text(
                   'Create admin account',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                     color: colors.textPrimary,
@@ -100,7 +100,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 Text(
                   'Free account and app access. Payment is required only when you create a business (ATK invoice).',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
                 ),
                 const SizedBox(height: 28),
                 if (sideBySide)
@@ -121,12 +121,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 Center(
                   child: RichText(
                     text: TextSpan(
-                      style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
                       children: [
                         const TextSpan(text: 'Already have an account? '),
                         TextSpan(
                           text: 'Log in',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             color: colors.accent,
                             fontWeight: FontWeight.w600,
                           ),
@@ -162,7 +162,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           children: [
             Text(
               'Your details',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: colors.textPrimary,
@@ -171,7 +171,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             const SizedBox(height: 6),
             Text(
               'You will create your first business after signing in.',
-              style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
             ),
             const SizedBox(height: 24),
             AppTextField(

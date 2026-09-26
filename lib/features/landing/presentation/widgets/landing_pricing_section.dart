@@ -36,7 +36,7 @@ class LandingPricingSection extends StatelessWidget {
         Text(
           'Pricing',
           textAlign: TextAlign.center,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 28,
             fontWeight: FontWeight.w800,
             letterSpacing: -0.5,
@@ -47,7 +47,7 @@ class LandingPricingSection extends StatelessWidget {
         Text(
           'Pay per catalog size · first month included with registration',
           textAlign: TextAlign.center,
-          style: GoogleFonts.inter(fontSize: 15, color: colors.textMuted, height: 1.45),
+          style: GoogleFonts.plusJakartaSans(fontSize: 15, color: colors.textMuted, height: 1.45),
         ),
         const SizedBox(height: 28),
         GridView.count(
@@ -114,7 +114,7 @@ class _PlanCard extends StatelessWidget {
               ),
               child: Text(
                 'MOST POPULAR',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   color: accent,
@@ -124,7 +124,7 @@ class _PlanCard extends StatelessWidget {
             ),
           Text(
             plan.title,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: colors.textPrimary,
@@ -133,7 +133,7 @@ class _PlanCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             'Up to ${plan.maxProducts} products',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: accent,
@@ -144,12 +144,12 @@ class _PlanCard extends StatelessWidget {
             plan.summary,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.35),
           ),
           const SizedBox(height: 16),
           Text(
             plan.registrationPriceLabel,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 26,
               fontWeight: FontWeight.w800,
               color: colors.textPrimary,
@@ -159,12 +159,12 @@ class _PlanCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             'then ${plan.priceLabel}',
-            style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w600, color: colors.textMuted),
           ),
           const SizedBox(height: 4),
           Text(
             '1st month included',
-            style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w600, color: colors.success),
+            style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w600, color: colors.success),
           ),
           const SizedBox(height: 16),
           FilledButton(
@@ -226,7 +226,7 @@ class _EnterpriseCard extends StatelessWidget {
         children: [
           Text(
             LandingPricing.enterpriseTitle,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.white,
@@ -235,7 +235,7 @@ class _EnterpriseCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             '1,000+ products · multi-team',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: colors.accent,
@@ -244,12 +244,12 @@ class _EnterpriseCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             LandingPricing.enterpriseTagline,
-            style: GoogleFonts.inter(fontSize: 12, color: Colors.white70, height: 1.35),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: Colors.white70, height: 1.35),
           ),
           const SizedBox(height: 16),
           Text(
             'Custom pricing',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 26,
               fontWeight: FontWeight.w800,
               color: Colors.white,
@@ -259,7 +259,7 @@ class _EnterpriseCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             'Tailored to your volume',
-            style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white70),
+            style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white70),
           ),
           const SizedBox(height: 16),
           for (final line in const [
@@ -276,7 +276,7 @@ class _EnterpriseCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       line,
-                      style: GoogleFonts.inter(fontSize: 12, color: Colors.white.withValues(alpha: 0.85)),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 12, color: Colors.white.withValues(alpha: 0.85)),
                     ),
                   ),
                 ],

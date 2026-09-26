@@ -200,7 +200,7 @@ class _LocalizedCatalogContentEditorState
             Expanded(
               child: Text(
                 l10n.localizedContentSection,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: colors.textPrimary,
@@ -226,7 +226,7 @@ class _LocalizedCatalogContentEditorState
         const SizedBox(height: 6),
         Text(
           l10n.localizedContentHelper,
-          style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted, height: 1.3),
+          style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted, height: 1.3),
         ),
         const SizedBox(height: 12),
         Material(

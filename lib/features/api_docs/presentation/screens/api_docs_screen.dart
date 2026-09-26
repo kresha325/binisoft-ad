@@ -386,7 +386,7 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
                       ? Center(
                           child: Text(
                             l10n.apiLivePreviewLoading,
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.plusJakartaSans(
                               color: Colors.white54,
                               fontSize: 13,
                             ),
@@ -397,7 +397,7 @@ class _ApiDocsScreenState extends ConsumerState<ApiDocsScreen> {
                               business == null
                                   ? l10n.apiLivePreviewEmpty
                                   : l10n.apiLivePreviewTap,
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.plusJakartaSans(
                                 color: Colors.white54,
                                 fontSize: 13,
                               ),
@@ -470,7 +470,7 @@ class _EndpointCard extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             endpoint.description,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               color: colors.textMuted,
               height: 1.5,
@@ -513,7 +513,7 @@ class _EndpointCard extends StatelessWidget {
             const SizedBox(height: 14),
             Text(
               'Request body',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: colors.textMuted,

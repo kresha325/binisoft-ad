@@ -42,7 +42,7 @@ class OrderMobileCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       order.orderNumber,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -55,7 +55,7 @@ class OrderMobileCard extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 order.customer.name,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: colors.textPrimary,
@@ -65,7 +65,7 @@ class OrderMobileCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   phone,
-                  style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                 ),
               ],
               const SizedBox(height: 8),
@@ -73,7 +73,7 @@ class OrderMobileCard extends StatelessWidget {
                 order.productsSummary,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 13,
                   color: colors.textMuted,
                   height: 1.35,
@@ -84,7 +84,7 @@ class OrderMobileCard extends StatelessWidget {
                 children: [
                   Text(
                     '€${order.subtotalEur.toStringAsFixed(2)}',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: colors.accent,
@@ -93,7 +93,7 @@ class OrderMobileCard extends StatelessWidget {
                   const Spacer(),
                   Text(
                     date,
-                    style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                   ),
                   const SizedBox(width: 4),
                   Icon(Icons.chevron_right, size: 20, color: colors.textMuted),

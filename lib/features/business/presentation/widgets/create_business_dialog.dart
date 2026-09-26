@@ -62,7 +62,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
         children: [
           Text(
             l10n.createStoreDialogIntro(plan.registrationPriceLabel),
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               color: context.appColors.textMuted,
               height: 1.4,
@@ -71,7 +71,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
           const SizedBox(height: 8),
           Text(
             l10n.createStoreDialogAtkIntro,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               color: context.appColors.textMuted,
               height: 1.4,
@@ -105,7 +105,7 @@ Future<void> showCreateBusinessDialog(BuildContext context, WidgetRef ref) async
           const SizedBox(height: 20),
           Text(
             l10n.createStoreFiscalSectionTitle,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 13,
               fontWeight: FontWeight.w700,
               color: context.appColors.textPrimary,

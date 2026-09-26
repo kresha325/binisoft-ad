@@ -83,16 +83,14 @@ import sys
 from pathlib import Path
 path = Path(sys.argv[1])
 prefix = sys.argv[2].rstrip("/")  # "" or "/binisoft-ad"
-# Relative to deploy root so both Firebase (/) and GH Pages (/binisoft-ad/) work.
-rel_login = "admin/#/login"
-rel_register = "admin/#/register"
-rel_shop = "shop/"
 html = path.read_text(encoding="utf-8")
-html = html.replace("app/#/login", rel_login)
-html = html.replace("app/#/register", rel_register)
-html = html.replace("https://kresha325.github.io/Binisoft-marketplace/", rel_shop)
+# Legacy absolute marketplace URL → local shop path
+html = html.replace("https://kresha325.github.io/Binisoft-marketplace/", "shop/")
+# Legacy app/ paths → admin/
+html = html.replace("app/#/login", "admin/#/login")
+html = html.replace("app/#/register", "admin/#/register")
 path.write_text(html, encoding="utf-8")
-print(f"Patched marketing (prefix={prefix or '/'}) → {rel_login}, {rel_shop}")
+print(f"Patched marketing links (prefix={prefix or '/'})")
 PY
 
 # Legacy /app → /admin (bookmark compatibility)

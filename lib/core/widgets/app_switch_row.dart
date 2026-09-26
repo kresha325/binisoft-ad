@@ -22,7 +22,7 @@ class AppSwitchRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: context.appColors.textPrimary,

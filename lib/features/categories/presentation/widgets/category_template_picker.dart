@@ -39,7 +39,7 @@ class CategoryTemplatePicker extends StatelessWidget {
       children: [
         Text(
           l10n.categoryTemplatesTitle,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: colors.textMuted,

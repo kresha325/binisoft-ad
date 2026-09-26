@@ -35,7 +35,7 @@ class PlanSelector extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           l10n.planChooseSubtitle(BusinessPricing.maxProductsPerBusiness),
-          style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
+          style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.35),
         ),
         const SizedBox(height: 14),
         if (compact)
@@ -68,7 +68,7 @@ class PlanSelector extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             compact ? l10n.planBillingSoon : l10n.planBillingLater,
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.4),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.4),
           ),
         ],
       ],
@@ -122,7 +122,7 @@ class _CompactPlanCard extends StatelessWidget {
                   children: [
                     Text(
                       l10n.planProductsCount(plan.title, plan.maxProducts),
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -131,7 +131,7 @@ class _CompactPlanCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       plan.description,
-                      style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                     ),
                   ],
                 ),
@@ -142,7 +142,7 @@ class _CompactPlanCard extends StatelessWidget {
                 children: [
                   Text(
                     plan.registrationPriceLabel,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                       color: accent,
@@ -150,7 +150,7 @@ class _CompactPlanCard extends StatelessWidget {
                   ),
                   Text(
                     l10n.planPerMonth(plan.priceLabel),
-                    style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted),
                   ),
                 ],
               ),
@@ -183,7 +183,7 @@ class _SelectedPlanDetails extends StatelessWidget {
         children: [
           Text(
             plan.summary,
-            style: GoogleFonts.inter(fontSize: 13, color: colors.textPrimary, height: 1.4),
+            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textPrimary, height: 1.4),
           ),
           const SizedBox(height: 12),
           for (final f in plan.features)
@@ -197,7 +197,7 @@ class _SelectedPlanDetails extends StatelessWidget {
                   Expanded(
                     child: Text(
                       f,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 12,
                         color: colors.textMuted,
                         height: 1.35,
@@ -268,7 +268,7 @@ class _PlanOptionCard extends StatelessWidget {
                           children: [
                             Text(
                               plan.title,
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.plusJakartaSans(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w700,
                                 color: colors.textPrimary,
@@ -277,7 +277,7 @@ class _PlanOptionCard extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               plan.code,
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.plusJakartaSans(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: colors.textMuted,
@@ -288,7 +288,7 @@ class _PlanOptionCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           plan.description,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: accent,
@@ -302,7 +302,7 @@ class _PlanOptionCard extends StatelessWidget {
                     children: [
                       Text(
                         plan.registrationPriceLabel,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: accent,
@@ -310,7 +310,7 @@ class _PlanOptionCard extends StatelessWidget {
                       ),
                       Text(
                         l10n.planPerMonth(plan.priceLabel),
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color: colors.textMuted,
@@ -323,7 +323,7 @@ class _PlanOptionCard extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 plan.summary,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 13,
                   color: colors.textPrimary,
                   height: 1.45,
@@ -345,7 +345,7 @@ class _PlanOptionCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           f,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             fontSize: 12,
                             color: colors.textMuted,
                             height: 1.35,

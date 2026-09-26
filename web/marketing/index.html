@@ -3,228 +3,456 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Binisoft Admin — menaxhoni katalogun, porositë dhe API-n për biznesin tuaj.">
-  <meta name="theme-color" content="#0F1A33">
-  <title>Binisoft Admin — Zgjidhje për biznesin tuaj</title>
+  <meta name="description" content="Binisoft — admin multi-tenant për katalog, porosi, ekip dhe marketplace.">
+  <meta name="theme-color" content="#070B14">
+  <title>Binisoft — Admin & Marketplace</title>
   <link rel="icon" type="image/png" href="icons/Icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <script>
     (function () {
       var h = location.hash;
       if (h && h.length > 1 && h !== '#/') {
-        location.replace('app/' + h + location.search);
+        location.replace('admin/' + h + location.search);
       }
     })();
   </script>
   <style>
     :root {
-      --bg: #060a14;
-      --bg2: #0f172a;
-      --accent: #2ec4c6;
-      --accent-dim: rgba(46, 196, 198, 0.15);
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --card: rgba(15, 23, 42, 0.85);
-      --border: rgba(46, 196, 198, 0.25);
+      --ink: #070b14;
+      --ink-2: #0e1628;
+      --ink-3: #152238;
+      --foam: #f4f7fb;
+      --muted: #9aa8bc;
+      --line: rgba(255,255,255,0.08);
+      --teal: #2ec4c6;
+      --teal-deep: #1aa8aa;
+      --navy: #1a2b56;
+      --glow: rgba(46, 196, 198, 0.22);
+      --max: 1120px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, var(--bg), var(--bg2) 55%, #132238);
-      color: var(--text);
-      line-height: 1.5;
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: var(--ink);
+      color: var(--foam);
+      line-height: 1.55;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-    nav {
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { color: #7ee8ea; }
+
+    /* Atmosphere */
+    .atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 55% at 15% -10%, rgba(46,196,198,0.18), transparent 55%),
+        radial-gradient(ellipse 60% 45% at 90% 10%, rgba(26,43,86,0.55), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 70% 90%, rgba(46,196,198,0.08), transparent 45%),
+        linear-gradient(165deg, var(--ink) 0%, var(--ink-2) 48%, #0a1220 100%);
+    }
+    .atmosphere::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 22px; }
+
+    /* Nav */
+    .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 20px;
+      gap: 16px;
+      padding: 18px 22px;
       position: sticky;
       top: 0;
-      z-index: 10;
-      background: rgba(6, 10, 20, 0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      z-index: 40;
+      background: rgba(7, 11, 20, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      animation: fadeDown 0.7s var(--ease) both;
     }
-    .logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--text); }
-    .logo span { color: var(--accent); }
-    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .brand {
+      font-family: Sora, sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.04em;
+      color: var(--foam);
+    }
+    .brand em {
+      font-style: normal;
+      color: var(--teal);
+    }
+    .nav-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 12px 22px;
-      border-radius: 10px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-family: Sora, sans-serif;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
+      letter-spacing: -0.01em;
       border: none;
       cursor: pointer;
       text-decoration: none !important;
-      transition: transform 0.15s, opacity 0.15s;
+      transition: transform 0.2s var(--ease), box-shadow 0.25s var(--ease), background 0.2s ease;
     }
     .btn:active { transform: scale(0.98); }
-    .btn-primary { background: var(--accent); color: #0f172a; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal), var(--teal-deep));
+      color: #062022 !important;
+      box-shadow: 0 10px 30px var(--glow);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 14px 36px rgba(46,196,198,0.35);
+      transform: translateY(-1px);
+    }
     .btn-ghost {
       background: transparent;
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--foam) !important;
+      border: 1px solid rgba(255,255,255,0.16);
     }
-    .hero { padding: 48px 0 56px; }
-    .badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      background: var(--accent-dim);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: clamp(2rem, 6vw, 3rem);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-    .lead { font-size: 1.05rem; color: var(--muted); max-width: 36rem; margin-bottom: 12px; }
-    .price-hint { font-size: 0.9rem; font-weight: 600; color: var(--accent); margin-bottom: 28px; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
-    section { padding: 48px 0; }
-    h2 { font-size: 1.65rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
-    .section-sub { color: var(--muted); margin-bottom: 28px; max-width: 32rem; }
-    .grid {
+    .btn-ghost:hover { border-color: rgba(46,196,198,0.45); color: var(--teal) !important; }
+
+    /* Hero — one composition */
+    .hero {
+      min-height: min(88vh, 820px);
       display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      align-items: end;
+      padding: 56px 0 72px;
+      position: relative;
+      animation: fadeUp 0.85s var(--ease) 0.08s both;
     }
-    .card {
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 22px;
+    .hero-brand {
+      font-family: Sora, sans-serif;
+      font-size: clamp(3.2rem, 12vw, 6.5rem);
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      line-height: 0.92;
+      margin-bottom: 28px;
+      background: linear-gradient(120deg, #fff 20%, #c8f4f5 55%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    .card h3 { font-size: 1rem; margin-bottom: 8px; }
-    .card p { font-size: 0.9rem; color: var(--muted); }
-    .pricing .card { text-align: center; }
-    .pricing .card strong { display: block; font-size: 1.5rem; color: var(--accent); margin: 8px 0; }
-    .download-box {
-      background: var(--accent-dim);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      text-align: center;
+    .hero h1 {
+      font-family: Sora, sans-serif;
+      font-size: clamp(1.35rem, 3.4vw, 1.85rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      max-width: 18ch;
+      margin-bottom: 16px;
+      color: var(--foam);
     }
-    .download-box p { color: var(--muted); margin: 12px 0 20px; font-size: 0.9rem; }
-    .store-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-    footer {
-      padding: 40px 0 48px;
-      border-top: 1px solid rgba(255,255,255,0.08);
+    .hero .lead {
+      font-size: 1.05rem;
       color: var(--muted);
+      max-width: 34rem;
+      margin-bottom: 28px;
+    }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-orb {
+      position: absolute;
+      right: -8%;
+      top: 8%;
+      width: min(48vw, 420px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(46,196,198,0.35), transparent 62%);
+      filter: blur(2px);
+      animation: drift 9s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    /* Sections — one job each */
+    section { padding: 72px 0; border-top: 1px solid var(--line); }
+    .section-kicker {
+      font-family: Sora, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-family: Sora, sans-serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      margin-bottom: 12px;
+      max-width: 18ch;
+    }
+    .section-sub { color: var(--muted); max-width: 36rem; margin-bottom: 36px; font-size: 1.02rem; }
+
+    .feature-rail {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+    .feature-row {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 18px;
+      align-items: start;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.25s ease;
+    }
+    .feature-row:hover { background: rgba(46,196,198,0.04); }
+    .feature-num {
+      font-family: Sora, sans-serif;
+      font-weight: 700;
       font-size: 0.85rem;
-      text-align: center;
+      color: var(--teal);
+      padding-top: 4px;
     }
-    .note-ios {
-      margin-top: 16px;
-      padding: 12px 16px;
-      background: rgba(46, 196, 198, 0.08);
-      border-radius: 8px;
-      font-size: 0.8rem;
+    .feature-row h3 {
+      font-family: Sora, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .feature-row p { color: var(--muted); font-size: 0.95rem; max-width: 40rem; }
+
+    .plan-strip {
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    @media (min-width: 760px) {
+      .plan-strip { grid-template-columns: repeat(3, 1fr); }
+    }
+    .plan {
+      background: rgba(14, 22, 40, 0.92);
+      padding: 28px 24px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 100%;
+    }
+    .plan.featured {
+      background: linear-gradient(160deg, rgba(46,196,198,0.14), rgba(14,22,40,0.96) 55%);
+    }
+    .plan h3 {
+      font-family: Sora, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
       color: var(--muted);
-      max-width: 28rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
-    @media (min-width: 768px) {
-      .hero { padding-top: 64px; }
+    .plan .qty {
+      font-family: Sora, sans-serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: var(--foam);
+      line-height: 1;
+    }
+    .plan .qty span { font-size: 0.95rem; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+    .plan p { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; flex: 1; }
+    .plan .btn { width: 100%; margin-top: auto; }
+
+    .cta-band {
+      padding: 48px 28px;
+      border-radius: 24px;
+      border: 1px solid rgba(46,196,198,0.28);
+      background:
+        radial-gradient(ellipse 80% 120% at 0% 50%, rgba(46,196,198,0.16), transparent 55%),
+        rgba(14, 22, 40, 0.85);
+      text-align: center;
+      animation: fadeUp 0.9s var(--ease) both;
+    }
+    .cta-band h2 { max-width: none; margin-left: auto; margin-right: auto; }
+    .cta-band .section-sub { margin-left: auto; margin-right: auto; }
+    .cta-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+    footer {
+      padding: 40px 0 56px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    footer .foot-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer .links { display: flex; flex-wrap: wrap; gap: 14px; }
+
+    .note-ios {
+      margin-top: 18px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(46,196,198,0.06);
+      font-size: 0.82rem;
+      color: var(--muted);
+      max-width: 32rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(-18px, 24px) scale(1.06); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <a class="logo" href="./">Binisoft <span>Admin</span></a>
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a class="brand" href="./">Binisoft<em>.</em></a>
     <div class="nav-actions">
-      <a class="btn btn-ghost" href="app/#/login">Hyr</a>
-      <a class="btn btn-primary" href="app/#/register">Fillo falas</a>
+      <a class="btn btn-ghost" href="shop/">Marketplace</a>
+      <a class="btn btn-ghost" href="admin/#/login">Hyr</a>
+      <a class="btn btn-primary" href="admin/#/register">Fillo falas</a>
     </div>
   </nav>
 
-  <main class="wrap">
-    <header class="hero">
-      <span class="badge">ADMIN PËR BIZNES — REAL-TIME</span>
-      <h1>Menaxhoni katalogun.<br>Shpërndani API-n. Rrituni.</h1>
-      <p class="lead">
-        Binisoft Admin Dashboard — produkte, kategori, fusha të personalizuara dhe API publike REST për çdo biznes që menaxhoni.
-      </p>
-      <p class="price-hint">Nga €30 regjistrim · 100–500+ produkte · Enterprise me kontakt</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" id="smart-download" href="app/#/register">Fillo tani</a>
-        <a class="btn btn-ghost" href="app/#/login">Hap panelin web</a>
+  <main>
+    <header class="hero wrap">
+      <div class="hero-orb" aria-hidden="true"></div>
+      <div>
+        <p class="hero-brand">Binisoft</p>
+        <h1>Admin dhe marketplace në një platformë.</h1>
+        <p class="lead">
+          Katalog, porosi, ekip dhe dyqan publik — multi-tenant, real-time, gati për web dhe mobil.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" id="smart-download" href="admin/#/register">Hap llogarinë</a>
+          <a class="btn btn-ghost" href="shop/">Shiko marketplace</a>
+        </div>
+        <p class="note-ios" id="platform-note" hidden></p>
       </div>
-      <p class="note-ios" id="platform-note" hidden></p>
     </header>
 
-    <section>
-      <h2>Çfarë merrni</h2>
-      <p class="section-sub">Gjithçka për ekipin tuaj të tregtisë — telefon, tablet ose desktop.</p>
-      <div class="grid">
-        <article class="card"><h3>Katalog produktesh</h3><p>Produkte, foto, çmime dhe status nga një vend.</p></article>
-        <article class="card"><h3>API publike REST</h3><p>Endpoint-e për slug-un e biznesit — lexim katalogu pa auth.</p></article>
-        <article class="card"><h3>Multi-biznes</h3><p>Ndryshoni biznesin, kataloge të ndara, slug API të pavarur.</p></article>
-        <article class="card"><h3>Fusha të personalizuara</h3><p>Atribute, ngjyra dhe shabllone që shkojnë në API.</p></article>
-        <article class="card"><h3>Porosi & raporte</h3><p>Porositë dhe paneli i biznesit në kohë reale.</p></article>
-        <article class="card"><h3>Njoftime live</h3><p>Plan, biznese të reja dhe përditësime në aplikacion.</p></article>
+    <section class="wrap">
+      <p class="section-kicker">Platforma</p>
+      <h2>Një panel. Çdo dyqan.</h2>
+      <p class="section-sub">Nga produktet te API publike — gjithçka e lidhur me slug-un e biznesit tuaj.</p>
+      <div class="feature-rail">
+        <div class="feature-row">
+          <span class="feature-num">01</span>
+          <div>
+            <h3>Katalog & variante</h3>
+            <p>Produkte, foto, çmime, oferta dhe fusha të personalizuara që shkojnë drejt në API.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <span class="feature-num">02</span>
+          <div>
+            <h3>Porosi & termine</h3>
+            <p>Menaxhim live nga paneli — desktop ose telefon me navigim të shpejtë.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <span class="feature-num">03</span>
+          <div>
+            <h3>Marketplace publik</h3>
+            <p>Dyqani juaj në /shop/{slug} — i njëjti domain me adminin.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <span class="feature-num">04</span>
+          <div>
+            <h3>Ekip & role</h3>
+            <p>Owner, manager, employee — me kontroll të qartë mbi katalogun dhe pagat.</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="pricing">
-      <h2>Planet</h2>
-      <p class="section-sub">€30 regjistrim (përfshin muajin e parë) + €6/muaj për çdo 100 produkte.</p>
-      <div class="grid">
-        <article class="card">
+    <section class="wrap">
+      <p class="section-kicker">Planet</p>
+      <h2>Nisni lehtë. Rrituni me katalogun.</h2>
+      <p class="section-sub">€30 regjistrim (muaji i parë i përfshirë) · pastaj €6 / muaj për çdo 100 produkte.</p>
+      <div class="plan-strip">
+        <article class="plan">
           <h3>Starter</h3>
-          <strong>100</strong>
-          <p>produkte · ideal për dyqane të vogla</p>
-          <a class="btn btn-primary" style="margin-top:16px;width:100%" href="app/#/register">Zgjidh Starter</a>
+          <p class="qty">100 <span>produkte</span></p>
+          <p>Ideal për dyqanet që nisin.</p>
+          <a class="btn btn-ghost" href="admin/#/register">Zgjidh</a>
         </article>
-        <article class="card">
+        <article class="plan featured">
           <h3>Basic</h3>
-          <strong>200</strong>
-          <p>produkte · katalog në rritje</p>
-          <a class="btn btn-ghost" style="margin-top:16px;width:100%" href="app/#/register">Zgjidh Basic</a>
+          <p class="qty">200 <span>produkte</span></p>
+          <p>Katalog në rritje, multi-store.</p>
+          <a class="btn btn-primary" href="admin/#/register">Zgjidh</a>
         </article>
-        <article class="card">
+        <article class="plan">
           <h3>Pro</h3>
-          <strong>500</strong>
-          <p>produkte · për katalog të madh</p>
-          <a class="btn btn-ghost" style="margin-top:16px;width:100%" href="app/#/register">Zgjidh Pro</a>
+          <p class="qty">500 <span>produkte</span></p>
+          <p>Për inventar të madh dhe API të rëndë.</p>
+          <a class="btn btn-ghost" href="admin/#/register">Zgjidh</a>
         </article>
       </div>
     </section>
 
-    <section>
-      <div class="download-box">
-        <h2>Shkarkoni aplikacionin</h2>
-        <p id="download-hint">Zgjedhim automatikisht dyqanin e duhur për pajisjen tuaj.</p>
-        <div class="store-row">
+    <section class="wrap">
+      <div class="cta-band">
+        <p class="section-kicker">Hyrje</p>
+        <h2>Gati në minutë.</h2>
+        <p class="section-sub" id="download-hint">Web tani · Google Play live · App Store së shpejti.</p>
+        <div class="cta-actions store-row">
           <a class="btn btn-primary" id="btn-android" href="https://play.google.com/store/apps/details?id=com.jonsport.business_dashboard">Google Play</a>
-          <a class="btn btn-ghost" id="btn-ios" href="app/#/login">iPhone / iPad</a>
-          <a class="btn btn-ghost" href="app/#/login">Panel web</a>
+          <a class="btn btn-ghost" id="btn-ios" href="admin/#/login">Panel web</a>
+          <a class="btn btn-ghost" href="shop/">Marketplace</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="wrap">
-    <p>© Binisoft · <a href="https://kresha325.github.io/Binisoft-marketplace/">Marketplace</a> · <a href="privacy.html">Privatësia</a></p>
-    <p style="margin-top:8px"><a href="app/#/login">Paneli i administratorit</a> · <a href="app/#/register">Regjistrohu</a></p>
+    <div class="foot-grid">
+      <p>© Binisoft</p>
+      <div class="links">
+        <a href="shop/">Marketplace</a>
+        <a href="admin/#/login">Admin</a>
+        <a href="admin/#/register">Regjistrohu</a>
+        <a href="privacy.html">Privatësia</a>
+      </div>
+    </div>
   </footer>
 
   <script>
@@ -243,12 +471,12 @@
         smart.textContent = 'Shkarko nga Google Play';
         hint.textContent = 'Android: instaloni nga Play Store për shpejtësinë maksimale.';
       } else if (isIOS) {
-        smart.href = 'app/#/login';
+        smart.href = 'admin/#/login';
         smart.textContent = 'Hap panelin (web)';
         btnIos.textContent = 'Hap në Safari';
         note.hidden = false;
-        note.textContent = 'iPhone: faqja e panelit ngarkon ~13 MB herën e parë. Përdorni Wi‑Fi dhe mos e mbyllni Safari. App Store së shpejti.';
-        hint.textContent = 'iPhone: për përdorim të përditshëm rekomandohet aplikacioni (së shpejti në App Store).';
+        note.textContent = 'iPhone: paneli ngarkon herën e parë më ngadalë. Përdorni Wi‑Fi. App Store së shpejti.';
+        hint.textContent = 'iPhone: për përdorim të përditshëm rekomandohet app-i (së shpejti).';
       }
     })();
   </script>

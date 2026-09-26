@@ -35,7 +35,7 @@ Future<void> showJobApplicationsSheet(
             if (items.isEmpty) {
               return Text(
                 l10n.jobApplicationsEmpty,
-                style: GoogleFonts.inter(color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(color: colors.textMuted),
               );
             }
             return ListView.separated(
@@ -48,19 +48,19 @@ Future<void> showJobApplicationsSheet(
                   contentPadding: EdgeInsets.zero,
                   title: Text(
                     a.name,
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(a.phone, style: GoogleFonts.inter(fontSize: 13)),
+                      Text(a.phone, style: GoogleFonts.plusJakartaSans(fontSize: 13)),
                       if (a.email != null && a.email!.isNotEmpty)
-                        Text(a.email!, style: GoogleFonts.inter(fontSize: 13)),
+                        Text(a.email!, style: GoogleFonts.plusJakartaSans(fontSize: 13)),
                       if (a.note != null && a.note!.isNotEmpty)
-                        Text(a.note!, style: GoogleFonts.inter(fontSize: 12)),
+                        Text(a.note!, style: GoogleFonts.plusJakartaSans(fontSize: 12)),
                       Text(
                         DateFormat('d MMM yyyy, HH:mm').format(a.createdAt),
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           color: colors.textMuted,
                         ),

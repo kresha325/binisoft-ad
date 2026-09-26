@@ -74,7 +74,7 @@ class _ImageUrlUploadRowState extends State<ImageUrlUploadRow> {
               ),
               child: Text(
                 displayName != null ? _truncate(displayName) : 'Choose File',
-                style: GoogleFonts.inter(fontSize: 13, color: colors.textPrimary),
+                style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textPrimary),
               ),
             ),
           ],

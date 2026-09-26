@@ -28,7 +28,7 @@ class OrderCustomerInfo extends StatelessWidget {
         if (showName)
           Text(
             customer.name,
-            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500),
           ),
         if (phone.isNotEmpty) ...[
           if (showName) const SizedBox(height: 4),
@@ -47,7 +47,7 @@ class OrderCustomerInfo extends StatelessWidget {
                     Flexible(
                       child: Text(
                         phone,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: colors.accent,
@@ -64,7 +64,7 @@ class OrderCustomerInfo extends StatelessWidget {
         ] else if (showName)
           Text(
             context.l10n.orderNoPhone,
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
           ),
       ],
     );

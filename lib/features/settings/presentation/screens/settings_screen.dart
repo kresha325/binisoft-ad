@@ -367,7 +367,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.settingsCoverNote,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
@@ -401,7 +401,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.settingsLocationMapsNote,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
@@ -416,7 +416,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 28),
                   Text(
                     l10n.settingsShopCheckoutTitle,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: context.appColors.textPrimary,
@@ -425,7 +425,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 6),
                   Text(
                     l10n.settingsShopCheckoutSubtitle,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
@@ -439,7 +439,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.settingsShopCheckoutCartNote,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
@@ -459,7 +459,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.settingsShopCheckoutDeliveryNote,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
@@ -486,7 +486,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.settingsOrderPhoneNote,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
@@ -501,7 +501,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.settingsContactEmailNote,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       color: context.appColors.textMuted,
                     ),
@@ -579,7 +579,7 @@ class _PlanCard extends ConsumerWidget {
         children: [
           Text(
             '${plan.title} · ${plan.pricingHeadline}',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: colors.accent,
@@ -589,12 +589,12 @@ class _PlanCard extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(
             plan.summary,
-            style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted, height: 1.4),
+            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted, height: 1.4),
           ),
           const SizedBox(height: 8),
           Text(
             productQuota.label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: colors.textPrimary,
@@ -612,7 +612,7 @@ class _PlanCard extends ConsumerWidget {
                 ? 'You can add up to ${plan.maxProducts} products on the ${plan.title} plan '
                     '(${plan.pricingHeadline}).'
                 : 'Product limit reached (${productQuota.label}). Upgrade your plan to add more products.',
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.35),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.35),
           ),
         ],
       ),

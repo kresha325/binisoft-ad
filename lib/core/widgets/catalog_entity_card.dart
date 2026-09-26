@@ -66,7 +66,7 @@ class CatalogEntityCard extends StatelessWidget {
                       title,
                       maxLines: dense ? 1 : 2,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: titleSize,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -79,7 +79,7 @@ class CatalogEntityCard extends StatelessWidget {
                         subtitle!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: subtitleSize,
                           color: colors.textMuted,
                           height: 1.2,
@@ -92,7 +92,7 @@ class CatalogEntityCard extends StatelessWidget {
                         meta!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: dense ? 10 : 11,
                           fontWeight: FontWeight.w500,
                           color: colors.textMuted,

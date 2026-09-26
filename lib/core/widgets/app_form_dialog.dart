@@ -97,7 +97,7 @@ class _AppFormDialogBodyState extends State<_AppFormDialogBody> {
                     Expanded(
                       child: Text(
                         widget.title,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: colors.textPrimary,

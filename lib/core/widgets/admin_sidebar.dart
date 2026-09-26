@@ -63,7 +63,7 @@ class AdminSidebar extends ConsumerWidget {
                   business.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     color: colors.textMuted,
                     fontWeight: FontWeight.w500,
@@ -193,7 +193,7 @@ class _NavTile extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       fontWeight: active ? FontWeight.w600 : FontWeight.w500,
                       color: fg,

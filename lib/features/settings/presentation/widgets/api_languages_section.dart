@@ -127,11 +127,11 @@ class _ApiLanguagesSectionState extends ConsumerState<ApiLanguagesSection> {
                   },
                   title: Text(
                     _catalogLabel(context, code),
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                   ),
                   subtitle: Text(
                     'API: ?lang=$code',
-                    style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                   ),
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: EdgeInsets.zero,
@@ -143,7 +143,7 @@ class _ApiLanguagesSectionState extends ConsumerState<ApiLanguagesSection> {
                     : (_enabled.isNotEmpty ? _enabled.first : AppLocales.defaultLocale),
                 decoration: InputDecoration(
                   labelText: l10n.apiLanguagesDefault,
-                  labelStyle: GoogleFonts.inter(color: colors.textMuted),
+                  labelStyle: GoogleFonts.plusJakartaSans(color: colors.textMuted),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 ),
                 items: [
@@ -160,7 +160,7 @@ class _ApiLanguagesSectionState extends ConsumerState<ApiLanguagesSection> {
               const SizedBox(height: 8),
               Text(
                 l10n.apiLanguagesHint,
-                style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted, height: 1.4),
+                style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted, height: 1.4),
               ),
               const SizedBox(height: 20),
               SizedBox(

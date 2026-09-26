@@ -39,7 +39,7 @@ class CatalogCardGrid extends StatelessWidget {
               Text(
                 emptyMessage,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(fontSize: 15, color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(fontSize: 15, color: colors.textMuted),
               ),
             ],
           ),

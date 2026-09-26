@@ -94,7 +94,7 @@ class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor>
       children: [
         Text(
           widget.label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 13,
             fontWeight: FontWeight.w700,
             color: colors.textPrimary,
@@ -103,7 +103,7 @@ class _LocalizedFieldsEditorState extends State<LocalizedFieldsEditor>
         const SizedBox(height: 4),
         Text(
           'Only the default language is required. Other tabs are optional.',
-          style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted, height: 1.3),
+          style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted, height: 1.3),
         ),
         const SizedBox(height: 10),
         Material(

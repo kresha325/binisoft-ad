@@ -13,8 +13,8 @@ abstract final class BillingPdfTheme {
   static pw.Font? _bold;
 
   static Future<pw.ThemeData> themeData() async {
-    _base ??= await PdfGoogleFonts.interRegular();
-    _bold ??= await PdfGoogleFonts.interBold();
+    _base ??= await PdfGoogleFonts.plusJakartaSansRegular();
+    _bold ??= await PdfGoogleFonts.plusJakartaSansBold();
     return pw.ThemeData.withFont(base: _base!, bold: _bold!);
   }
 

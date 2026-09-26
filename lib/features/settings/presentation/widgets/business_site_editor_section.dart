@@ -274,7 +274,7 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(l10n.siteEditorColorsTitle,
-              style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14)),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
           const SizedBox(height: 12),
           _ColorField(label: l10n.siteEditorColorPrimary, controller: _primary),
           const SizedBox(height: 12),
@@ -295,7 +295,7 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
           ),
           const SizedBox(height: 24),
           Text(l10n.siteEditorSectionsTitle,
-              style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14)),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
           const SizedBox(height: 8),
           ..._config.mergeWithDefaults().sections.map((s) {
             final business = ref.watch(currentBusinessProvider).valueOrNull;
@@ -308,7 +308,7 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
           }),
           const SizedBox(height: 24),
           Text(l10n.siteEditorSocialsTitle,
-              style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14)),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
@@ -342,7 +342,7 @@ class _BusinessSiteEditorSectionState extends ConsumerState<BusinessSiteEditorSe
           ],
           const SizedBox(height: 20),
           Text(l10n.siteEditorFooterTitle,
-              style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14)),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(l10n.siteEditorFooterLocation),
@@ -548,10 +548,10 @@ class _SectionTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDesign.radiusMd),
       ),
       child: ExpansionTile(
-        title: Text(title, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+        title: Text(title, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
         subtitle: Text(
           fields.enabled ? l10n.siteSectionEnabled : l10n.siteSectionDisabled,
-          style: GoogleFonts.inter(fontSize: 12, color: context.appColors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 12, color: context.appColors.textMuted),
         ),
         children: [
           SwitchListTile(
@@ -575,7 +575,7 @@ class _SectionTile extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               child: Text(
                 l10n.siteEditorProfileHintHero,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 12,
                   height: 1.45,
                   color: context.appColors.textMuted,
@@ -587,7 +587,7 @@ class _SectionTile extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
                 l10n.siteEditorProfileHintAbout,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 12,
                   height: 1.45,
                   color: context.appColors.textMuted,
@@ -628,7 +628,7 @@ class _SectionTile extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
                 l10n.siteCtaTypeHint,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 12,
                   height: 1.45,
                   color: context.appColors.textMuted,
@@ -767,7 +767,7 @@ class _SectionTile extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 l10n.siteGalleryHint(SiteConfig.maxGalleryItems),
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 12,
                   color: context.appColors.textMuted,
                 ),
@@ -905,7 +905,7 @@ class _GalleryItemEditorState extends State<_GalleryItemEditor> {
             Row(
               children: [
                 Text('${l10n.siteGalleryItem} ${widget.index + 1}',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
                 const Spacer(),
                 IconButton(
                   onPressed: widget.onRemove,

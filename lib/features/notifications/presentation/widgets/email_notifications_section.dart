@@ -118,7 +118,7 @@ class _SwitchRow extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: colors.textPrimary,
@@ -126,7 +126,7 @@ class _SwitchRow extends StatelessWidget {
               ),
               Text(
                 subtitle,
-                style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
               ),
             ],
           ),

@@ -31,14 +31,14 @@ class AppShadows {
 
   static const authCard = [
     BoxShadow(
-      color: Color(0x12000000),
-      blurRadius: 48,
-      offset: Offset(0, 16),
+      color: Color(0x18000000),
+      blurRadius: 56,
+      offset: Offset(0, 22),
     ),
     BoxShadow(
-      color: Color(0x08000000),
-      blurRadius: 12,
-      offset: Offset(0, 4),
+      color: Color(0x0A2EC4C6),
+      blurRadius: 40,
+      offset: Offset(0, 8),
     ),
   ];
 
@@ -52,51 +52,51 @@ class AppShadows {
 }
 
 class AppTextStyles {
-  static TextStyle pageTitle(BuildContext context) => GoogleFonts.inter(
-        fontSize: 30,
+  static TextStyle pageTitle(BuildContext context) => GoogleFonts.plusJakartaSans(
+        fontSize: 28,
         fontWeight: FontWeight.w700,
         color: context.appColors.textPrimary,
-        height: 1.15,
-        letterSpacing: -0.4,
+        height: 1.12,
+        letterSpacing: -0.55,
       );
 
-  static TextStyle pageSubtitle(BuildContext context) => GoogleFonts.inter(
+  static TextStyle pageSubtitle(BuildContext context) => GoogleFonts.plusJakartaSans(
         fontSize: 15,
         fontWeight: FontWeight.w400,
         color: context.appColors.textMuted,
         height: 1.45,
       );
 
-  static TextStyle authTitle(BuildContext context) => GoogleFonts.inter(
-        fontSize: 26,
+  static TextStyle authTitle(BuildContext context) => GoogleFonts.plusJakartaSans(
+        fontSize: 24,
         fontWeight: FontWeight.w700,
         color: context.appColors.textPrimary,
-        letterSpacing: -0.3,
+        letterSpacing: -0.4,
       );
 
-  static TextStyle fieldLabel(BuildContext context) => GoogleFonts.inter(
+  static TextStyle fieldLabel(BuildContext context) => GoogleFonts.plusJakartaSans(
         fontSize: 13,
         fontWeight: FontWeight.w600,
         color: context.appColors.textPrimary,
         letterSpacing: 0.1,
       );
 
-  static TextStyle statValue(BuildContext context) => GoogleFonts.inter(
-        fontSize: 34,
+  static TextStyle statValue(BuildContext context) => GoogleFonts.plusJakartaSans(
+        fontSize: 32,
         fontWeight: FontWeight.w700,
         color: context.appColors.textPrimary,
         height: 1,
-        letterSpacing: -0.5,
+        letterSpacing: -0.7,
       );
 
-  static TextStyle statLabel(BuildContext context) => GoogleFonts.inter(
+  static TextStyle statLabel(BuildContext context) => GoogleFonts.plusJakartaSans(
         fontSize: 13,
         fontWeight: FontWeight.w600,
         color: context.appColors.textMuted,
         letterSpacing: 0.2,
       );
 
-  static TextStyle tableHeader(BuildContext context) => GoogleFonts.inter(
+  static TextStyle tableHeader(BuildContext context) => GoogleFonts.plusJakartaSans(
         fontSize: 11,
         fontWeight: FontWeight.w700,
         color: context.appColors.textMuted,
@@ -111,9 +111,9 @@ class AppTheme {
 
   static ThemeData _build(Brightness brightness, AppColorScheme scheme) {
     final isDark = brightness == Brightness.dark;
-    final base = ThemeData(brightness: brightness).textTheme.apply(
-          fontFamily: 'Inter',
-        );
+    final base = GoogleFonts.plusJakartaSansTextTheme(
+      ThemeData(brightness: brightness).textTheme,
+    );
 
     final colorScheme = ColorScheme(
       brightness: brightness,
@@ -155,7 +155,7 @@ class AppTheme {
         backgroundColor: scheme.surface,
         foregroundColor: scheme.textPrimary,
         surfaceTintColor: Colors.transparent,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: GoogleFonts.plusJakartaSans(
           fontSize: 16,
           fontWeight: FontWeight.w700,
           color: scheme.textPrimary,
@@ -170,13 +170,13 @@ class AppTheme {
           minimumSize: const Size(0, 48),
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
-          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 15),
+          textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 15),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: scheme.accent,
-          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14),
+          textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -206,12 +206,12 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDesign.radiusLg),
           side: BorderSide(color: scheme.cardBorder),
         ),
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: GoogleFonts.plusJakartaSans(
           fontSize: 18,
           fontWeight: FontWeight.w700,
           color: scheme.textPrimary,
         ),
-        contentTextStyle: GoogleFonts.inter(
+        contentTextStyle: GoogleFonts.plusJakartaSans(
           fontSize: 15,
           color: scheme.textMuted,
           height: 1.45,
@@ -220,7 +220,7 @@ class AppTheme {
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: isDark ? scheme.surfaceElevated : scheme.textPrimary,
-        contentTextStyle: GoogleFonts.inter(
+        contentTextStyle: GoogleFonts.plusJakartaSans(
           color: isDark ? scheme.textPrimary : Colors.white,
           fontWeight: FontWeight.w500,
         ),
@@ -236,14 +236,14 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: isDark ? scheme.surfaceElevated : scheme.surfaceElevated.withValues(alpha: 0.85),
-        hintStyle: GoogleFonts.inter(color: scheme.textMuted, fontSize: 15),
-        labelStyle: GoogleFonts.inter(
+        hintStyle: GoogleFonts.plusJakartaSans(color: scheme.textMuted, fontSize: 15),
+        labelStyle: GoogleFonts.plusJakartaSans(
           color: scheme.textPrimary,
           fontSize: 13,
           fontWeight: FontWeight.w600,
         ),
-        helperStyle: GoogleFonts.inter(color: scheme.textMuted, fontSize: 12),
-        errorStyle: GoogleFonts.inter(color: scheme.danger, fontSize: 12),
+        helperStyle: GoogleFonts.plusJakartaSans(color: scheme.textMuted, fontSize: 12),
+        errorStyle: GoogleFonts.plusJakartaSans(color: scheme.danger, fontSize: 12),
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: borderRadius,
@@ -268,7 +268,7 @@ class AppTheme {
         selectionHandleColor: scheme.accent,
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
-        textStyle: GoogleFonts.inter(fontSize: 15, color: scheme.textPrimary),
+        textStyle: GoogleFonts.plusJakartaSans(fontSize: 15, color: scheme.textPrimary),
       ),
       popupMenuTheme: PopupMenuThemeData(
         color: scheme.surface,
@@ -279,15 +279,15 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDesign.radiusLg),
           side: BorderSide(color: scheme.cardBorder),
         ),
-        textStyle: GoogleFonts.inter(fontSize: 14, color: scheme.textPrimary),
+        textStyle: GoogleFonts.plusJakartaSans(fontSize: 14, color: scheme.textPrimary),
       ),
       tabBarTheme: TabBarThemeData(
         labelColor: scheme.accent,
         unselectedLabelColor: scheme.textMuted,
         indicatorColor: scheme.accent,
         indicatorSize: TabBarIndicatorSize.label,
-        labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14),
-        unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 14),
+        labelStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14),
+        unselectedLabelStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 14),
         dividerColor: scheme.cardBorder,
       ),
       dividerTheme: DividerThemeData(color: scheme.cardBorder, thickness: 1),

@@ -115,7 +115,7 @@ class SuperAdminCardsScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(top: 16),
             child: Text(
               'Some data failed to load. Open console and refresh.',
-              style: GoogleFonts.inter(fontSize: 13, color: colors.danger),
+              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.danger),
             ),
           ),
       ],

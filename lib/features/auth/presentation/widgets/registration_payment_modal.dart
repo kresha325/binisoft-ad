@@ -219,7 +219,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                   Expanded(
                     child: Text(
                       l10n.paymentTitle,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -235,7 +235,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
               const SizedBox(height: 8),
               Text(
                 subtitle,
-                style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
               ),
               const SizedBox(height: 16),
               Flexible(
@@ -257,7 +257,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                       const SizedBox(height: 20),
                       Text(
                         l10n.paymentMethod,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: colors.textPrimary,
@@ -297,7 +297,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                         controlAffinity: ListTileControlAffinity.leading,
                         title: Text(
                           l10n.paymentAcceptTerms,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.plusJakartaSans(
                             fontSize: 13,
                             color: colors.textMuted,
                             height: 1.35,
@@ -329,7 +329,7 @@ class _SubscriptionPaymentDialogState extends State<_SubscriptionPaymentDialog> 
                         )
                       : Text(
                           primaryLabel,
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 15),
+                          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 15),
                         ),
                 ),
               ),
@@ -391,7 +391,7 @@ class _OrderSummary extends StatelessWidget {
                               businessName.isNotEmpty
                           ? businessName
                           : '${plan.title} · ${plan.maxProducts} products',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -402,7 +402,7 @@ class _OrderSummary extends StatelessWidget {
                       checkout.kind == PaymentCheckoutKind.newBusiness
                           ? '${plan.title} · up to ${plan.maxProducts} products per business'
                           : plan.description,
-                      style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                     ),
                   ],
                 ),
@@ -457,7 +457,7 @@ class _Line extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: bold ? 15 : 13,
               fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
               color: bold ? colors.textPrimary : colors.textMuted,
@@ -466,7 +466,7 @@ class _Line extends StatelessWidget {
         ),
         Text(
           value,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: bold ? 18 : 14,
             fontWeight: FontWeight.w700,
             color: bold ? colors.accent : colors.textPrimary,
@@ -520,7 +520,7 @@ class _MethodTile extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 label,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontWeight: FontWeight.w600,
                   color: colors.textPrimary,
                 ),
@@ -628,7 +628,7 @@ class _Field extends StatelessWidget {
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             color: colors.textPrimary,
@@ -640,7 +640,7 @@ class _Field extends StatelessWidget {
           enabled: enabled,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
-          style: GoogleFonts.inter(fontSize: 15, color: colors.textPrimary),
+          style: GoogleFonts.plusJakartaSans(fontSize: 15, color: colors.textPrimary),
           decoration: InputDecoration(
             hintText: enabled ? hint : 'Not required in demo mode',
             filled: true,

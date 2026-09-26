@@ -68,7 +68,7 @@ class _EmptyInvoices extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               l10n.noInvoicesYet,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,
@@ -78,7 +78,7 @@ class _EmptyInvoices extends StatelessWidget {
             Text(
               l10n.noInvoicesHint,
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
             ),
           ],
         ),
@@ -105,7 +105,7 @@ class _PeriodHeader extends StatelessWidget {
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 16,
             fontWeight: FontWeight.w700,
             color: colors.textPrimary,
@@ -114,7 +114,7 @@ class _PeriodHeader extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           '($count)',
-          style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
         ),
       ],
     );
@@ -171,7 +171,7 @@ class _InvoiceTile extends ConsumerWidget {
                   children: [
                     Text(
                       invoice.invoiceNumber,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
                         color: colors.textPrimary,
@@ -182,17 +182,17 @@ class _InvoiceTile extends ConsumerWidget {
                       invoice.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                     ),
                     if (showUserEmail) ...[
                       const SizedBox(height: 4),
                       Text(
                         invoice.userEmail,
-                        style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
+                        style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted),
                       ),
                     ],
                     const SizedBox(height: 4),
-                    Text(date, style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted)),
+                    Text(date, style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted)),
                   ],
                 ),
               ),
@@ -201,7 +201,7 @@ class _InvoiceTile extends ConsumerWidget {
                 children: [
                   Text(
                     invoice.formattedAmount,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: colors.accent,

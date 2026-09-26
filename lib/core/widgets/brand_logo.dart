@@ -31,7 +31,7 @@ class BrandLogo extends StatelessWidget {
           Text(
             AppBranding.tagline,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 11,
               fontWeight: FontWeight.w600,
               color: AppColors.textMuted,
@@ -80,7 +80,7 @@ class BrandLogo extends StatelessWidget {
         const SizedBox(width: 10),
         Text(
           'Admin Dashboard',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: compact ? 15 : 18,
             fontWeight: FontWeight.w700,
             color: colors.textPrimary,
@@ -143,7 +143,7 @@ class _FallbackMark extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         'BINISOFT',
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: size * 0.22,
           fontWeight: FontWeight.w800,
           color: Colors.white,

@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen>
                       Text(
                         AppBranding.splashTagline,
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 17,
                           fontWeight: FontWeight.w500,
                           color: Colors.white.withValues(alpha: 0.88),
@@ -132,7 +132,7 @@ class _SplashLogo extends StatelessWidget {
         debugPrint('Splash logo failed to load: $error');
         return Text(
           'BINISOFT',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 28,
             fontWeight: FontWeight.w800,
             color: Colors.white,

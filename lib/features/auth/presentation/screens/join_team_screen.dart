@@ -88,7 +88,7 @@ class _JoinTeamScreenState extends ConsumerState<JoinTeamScreen> {
             Text(
               l10n.joinTeamTitle,
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
                 color: colors.textPrimary,
@@ -98,7 +98,7 @@ class _JoinTeamScreenState extends ConsumerState<JoinTeamScreen> {
             Text(
               l10n.joinTeamSubtitle,
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted, height: 1.4),
+              style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted, height: 1.4),
             ),
             const SizedBox(height: 28),
             AppTextField(

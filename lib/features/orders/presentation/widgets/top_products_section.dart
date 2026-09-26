@@ -34,7 +34,7 @@ class TopProductsSection extends ConsumerWidget {
                   flex: 3,
                   child: Text(
                     l10n.topProductsColumnProduct,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: colors.textMuted,
@@ -47,7 +47,7 @@ class TopProductsSection extends ConsumerWidget {
                   child: Text(
                     l10n.topProductsColumnQty,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: colors.textMuted,
@@ -60,7 +60,7 @@ class TopProductsSection extends ConsumerWidget {
                   child: Text(
                     l10n.topProductsColumnRevenue,
                     textAlign: TextAlign.end,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: colors.textMuted,
@@ -81,7 +81,7 @@ class TopProductsSection extends ConsumerWidget {
                     flex: 3,
                     child: Text(
                       stats[i].productName,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                         color: colors.textPrimary,
@@ -93,7 +93,7 @@ class TopProductsSection extends ConsumerWidget {
                     child: Text(
                       '${stats[i].quantitySold}',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: colors.accent,
@@ -105,7 +105,7 @@ class TopProductsSection extends ConsumerWidget {
                     child: Text(
                       '€${stats[i].revenueEur.toStringAsFixed(2)}',
                       textAlign: TextAlign.end,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                         color: colors.textPrimary,

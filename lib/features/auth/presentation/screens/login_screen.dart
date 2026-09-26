@@ -139,7 +139,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Center(
               child: RichText(
                 text: TextSpan(
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     color: context.appColors.textMuted,
                   ),
@@ -147,7 +147,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     TextSpan(text: l10n.authNoAccountPrompt),
                     TextSpan(
                       text: l10n.authRegisterLink,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         color: context.appColors.accent,
                         fontWeight: FontWeight.w600,
                       ),
@@ -169,7 +169,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Text(
                 _webDevLoginHint(),
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 11,
                   color: context.appColors.textMuted,
                 ),

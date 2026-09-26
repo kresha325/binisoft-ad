@@ -72,7 +72,7 @@ class _AppointmentActionsSheet extends StatelessWidget {
                 children: [
                   Text(
                     appointment.fullName,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
                       color: colors.textPrimary,
@@ -81,7 +81,7 @@ class _AppointmentActionsSheet extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     '${appointment.serviceType} · ${timeFmt.format(appointment.scheduledAt)}',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 13,
                       color: colors.textMuted,
                     ),

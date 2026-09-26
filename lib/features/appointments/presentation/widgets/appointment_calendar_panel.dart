@@ -47,7 +47,7 @@ class AppointmentCalendarPanel extends StatelessWidget {
               Expanded(
                 child: Text(
                   selectedLabel,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: colors.textPrimary,
@@ -74,7 +74,7 @@ class AppointmentCalendarPanel extends StatelessWidget {
                 child: Text(
                   monthLabel,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: colors.textPrimary,
@@ -126,7 +126,7 @@ class _WeekdayHeader extends StatelessWidget {
               child: Text(
                 l,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                   color: colors.textMuted,
@@ -234,7 +234,7 @@ class _DayCell extends StatelessWidget {
             children: [
               Text(
                 '${date.day}',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: fg,

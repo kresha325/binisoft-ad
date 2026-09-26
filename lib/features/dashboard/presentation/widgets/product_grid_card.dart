@@ -66,7 +66,7 @@ class ProductGridCard extends ConsumerWidget {
                   product.name,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: colors.textPrimary,
@@ -80,7 +80,7 @@ class ProductGridCard extends ConsumerWidget {
                       : 'No description',
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: colors.textMuted.withValues(
@@ -100,7 +100,7 @@ class ProductGridCard extends ConsumerWidget {
                         product.basePrice != null
                             ? '\$${product.basePrice!.toStringAsFixed(2)}'
                             : '—',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: colors.accent,
@@ -152,7 +152,7 @@ class _FieldRow extends StatelessWidget {
           width: 72,
           child: Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 10,
               fontWeight: FontWeight.w500,
               color: colors.textMuted,
@@ -165,7 +165,7 @@ class _FieldRow extends StatelessWidget {
             value.isEmpty ? '—' : value,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 10,
               fontWeight: FontWeight.w500,
               color: colors.textPrimary,
@@ -199,7 +199,7 @@ class _StatusDot extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w600, color: color),
+        style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w600, color: color),
       ),
     );
   }

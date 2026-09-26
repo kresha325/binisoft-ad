@@ -103,7 +103,7 @@ class ProductOfferDiscountCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   l10n.offerResultPrice(draft!.resolvedSalePrice()!.toStringAsFixed(2)),
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: colors.accent,
@@ -143,11 +143,11 @@ class ProductOfferDiscountCard extends StatelessWidget {
             children: [
               Text(
                 product.name,
-                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
               ),
               Text(
                 '€${base.toStringAsFixed(2)}',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 13,
                   color: colors.textMuted,
                 ),

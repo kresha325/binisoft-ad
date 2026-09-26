@@ -200,7 +200,7 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
         children: [
           Text(
             l10n.websiteChoosePlan,
-            style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14),
+            style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14),
           ),
           const SizedBox(height: 12),
           _PlanOptionCard(
@@ -236,7 +236,7 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
             const SizedBox(height: 12),
             Text(
               l10n.websiteChoosePlanHint,
-              style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
             ),
           ],
           if (plan == WebsitePlan.simple) ...[
@@ -245,12 +245,12 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
             const SizedBox(height: 20),
             Text(
               l10n.websiteSimpleSetupTitle,
-              style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14),
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14),
             ),
             const SizedBox(height: 8),
             Text(
               l10n.websiteSimpleSetupNote,
-              style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
             ),
             const SizedBox(height: 16),
             _InfoTile(
@@ -285,13 +285,13 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
             ] else
               Text(
                 l10n.websiteSlugRequired,
-                style: GoogleFonts.inter(fontSize: 13, color: colors.danger),
+                style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.danger),
               ),
             if (business?.siteLastDeployAt != null) ...[
               const SizedBox(height: 12),
               Text(
                 '${l10n.websiteLastDeploy}: ${DateFormat('d MMM yyyy, HH:mm').format(business!.siteLastDeployAt!)}',
-                style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
               ),
             ],
             const SizedBox(height: 20),
@@ -304,7 +304,7 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
             const SizedBox(height: 8),
             Text(
               l10n.websiteCustomDomainNote,
-              style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
             ),
             const SizedBox(height: 20),
             SizedBox(
@@ -342,18 +342,18 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
                 children: [
                   Text(
                     l10n.websiteProContactTitle,
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 15),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     l10n.websiteProContactBody,
-                    style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted, height: 1.45),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted, height: 1.45),
                   ),
                   if (business?.professionalWebsiteRequestedAt != null) ...[
                     const SizedBox(height: 12),
                     Text(
                       '${l10n.websiteProRequested}: ${DateFormat('d MMM yyyy').format(business!.professionalWebsiteRequestedAt!)}',
-                      style: GoogleFonts.inter(fontSize: 12, color: colors.accent),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.accent),
                     ),
                   ],
                   const SizedBox(height: 16),
@@ -368,7 +368,7 @@ class _BusinessWebsiteSectionState extends ConsumerState<BusinessWebsiteSection>
                   const SizedBox(height: 8),
                   SelectableText(
                     BillingCompanyInfo.supportEmail,
-                    style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -430,7 +430,7 @@ class _PlanOptionCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
+                      style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 15),
                     ),
                   ),
                   Container(
@@ -441,7 +441,7 @@ class _PlanOptionCard extends StatelessWidget {
                     ),
                     child: Text(
                       badge,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: selected ? Colors.white : colors.textMuted,
@@ -461,7 +461,7 @@ class _PlanOptionCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 description,
-                style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted, height: 1.4),
+                style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted, height: 1.4),
               ),
               const SizedBox(height: 10),
               for (final f in features)
@@ -475,7 +475,7 @@ class _PlanOptionCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           f,
-                          style: GoogleFonts.inter(fontSize: 12, height: 1.35),
+                          style: GoogleFonts.plusJakartaSans(fontSize: 12, height: 1.35),
                         ),
                       ),
                     ],
@@ -501,11 +501,11 @@ class _InfoTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted)),
+        Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted)),
         const SizedBox(height: 4),
         SelectableText(
           value,
-          style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
+          style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -531,7 +531,7 @@ class _DnsBox extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
+          Text(title, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           for (final r in records) ...[
             SelectableText(
@@ -543,7 +543,7 @@ class _DnsBox extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4, bottom: 8),
                 child: Text(
                   r.note!,
-                  style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted),
                 ),
               ),
           ],

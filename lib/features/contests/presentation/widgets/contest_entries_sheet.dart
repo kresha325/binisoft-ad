@@ -35,7 +35,7 @@ Future<void> showContestEntriesSheet(
             if (items.isEmpty) {
               return Text(
                 l10n.contestEntriesEmpty,
-                style: GoogleFonts.inter(color: colors.textMuted),
+                style: GoogleFonts.plusJakartaSans(color: colors.textMuted),
               );
             }
             return ListView.separated(
@@ -48,19 +48,19 @@ Future<void> showContestEntriesSheet(
                   contentPadding: EdgeInsets.zero,
                   title: Text(
                     e.name,
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(e.phone, style: GoogleFonts.inter(fontSize: 13)),
+                      Text(e.phone, style: GoogleFonts.plusJakartaSans(fontSize: 13)),
                       if (e.email != null && e.email!.isNotEmpty)
-                        Text(e.email!, style: GoogleFonts.inter(fontSize: 13)),
+                        Text(e.email!, style: GoogleFonts.plusJakartaSans(fontSize: 13)),
                       if (e.note != null && e.note!.isNotEmpty)
-                        Text(e.note!, style: GoogleFonts.inter(fontSize: 12)),
+                        Text(e.note!, style: GoogleFonts.plusJakartaSans(fontSize: 12)),
                       Text(
                         DateFormat('d MMM yyyy, HH:mm').format(e.createdAt),
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           color: colors.textMuted,
                         ),

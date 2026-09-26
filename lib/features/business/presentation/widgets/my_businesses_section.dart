@@ -64,7 +64,7 @@ class MyBusinessesSection extends ConsumerWidget {
                   children: [
                     Text(
                       l10n.businessesQuotaUsage(quota.owned, quota.max),
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                         color: colors.accent,
@@ -121,7 +121,7 @@ class MyBusinessesSection extends ConsumerWidget {
                 if (businesses.isEmpty)
                   Text(
                     l10n.businessesEmpty,
-                    style: GoogleFonts.inter(fontSize: 13, color: colors.textMuted),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 13, color: colors.textMuted),
                   ),
               ],
             ),
@@ -189,7 +189,7 @@ class _BusinessTile extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: colors.textPrimary,
@@ -206,7 +206,7 @@ class _BusinessTile extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   l10n.businessTileHint,
-                  style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted),
                 ),
               ],
             ),

@@ -208,7 +208,7 @@ class _BackgroundPickerSectionState extends ConsumerState<BackgroundPickerSectio
                     Expanded(
                       child: Text(
                         'Switch to dark mode to preview and change your dashboard wallpaper.',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 13,
                           color: colors.textMuted,
                           height: 1.4,
@@ -263,7 +263,7 @@ class _BackgroundPickerSectionState extends ConsumerState<BackgroundPickerSectio
             const SizedBox(height: 24),
             Text(
               'Background fade',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,
@@ -274,7 +274,7 @@ class _BackgroundPickerSectionState extends ConsumerState<BackgroundPickerSectio
               context.isDarkMode
                   ? 'Lower = more visible wallpaper. Higher = darker overlay for readability.'
                   : 'Lower = more visible wallpaper. Higher = lighter, easier to read.',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 12,
                 color: colors.textMuted,
                 height: 1.35,
@@ -302,7 +302,7 @@ class _BackgroundPickerSectionState extends ConsumerState<BackgroundPickerSectio
                   width: 44,
                   child: Text(
                     '${(_overlayOpacity * 100).round()}%',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: accent,
@@ -316,7 +316,7 @@ class _BackgroundPickerSectionState extends ConsumerState<BackgroundPickerSectio
           const SizedBox(height: 24),
           Text(
             'Custom background',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: colors.textPrimary,
@@ -433,7 +433,7 @@ class _BackgroundTile extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color: text,

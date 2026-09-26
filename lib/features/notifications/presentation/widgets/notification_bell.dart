@@ -81,7 +81,7 @@ class _NotificationSheet extends ConsumerWidget {
               children: [
                 Text(
                   'Notifications',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: colors.textPrimary,
@@ -108,7 +108,7 @@ class _NotificationSheet extends ConsumerWidget {
                 padding: const EdgeInsets.all(24),
                 child: Text(
                   'Could not load notifications: $e',
-                  style: GoogleFonts.inter(color: colors.textMuted),
+                  style: GoogleFonts.plusJakartaSans(color: colors.textMuted),
                 ),
               ),
               data: (items) {
@@ -122,7 +122,7 @@ class _NotificationSheet extends ConsumerWidget {
                         const SizedBox(height: 12),
                         Text(
                           'No notifications yet',
-                          style: GoogleFonts.inter(color: colors.textMuted),
+                          style: GoogleFonts.plusJakartaSans(color: colors.textMuted),
                         ),
                       ],
                     ),
@@ -220,7 +220,7 @@ class _NotificationTile extends ConsumerWidget {
                         Expanded(
                           child: Text(
                             n.title,
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.plusJakartaSans(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: colors.textPrimary,
@@ -241,7 +241,7 @@ class _NotificationTile extends ConsumerWidget {
                     const SizedBox(height: 4),
                     Text(
                       n.body,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
                         color: colors.textMuted,
                         height: 1.35,
@@ -250,7 +250,7 @@ class _NotificationTile extends ConsumerWidget {
                     const SizedBox(height: 6),
                     Text(
                       time,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 11,
                         color: colors.textMuted,
                       ),

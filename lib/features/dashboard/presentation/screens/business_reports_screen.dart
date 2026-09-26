@@ -126,12 +126,12 @@ class BusinessReportsScreen extends ConsumerWidget {
                               Expanded(
                                 child: Text(
                                   productStats[i].productName,
-                                  style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                                  style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                                 ),
                               ),
                               Text(
                                 '×${productStats[i].quantitySold}',
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.w700,
                                   color: colors.accent,
                                 ),
@@ -139,7 +139,7 @@ class BusinessReportsScreen extends ConsumerWidget {
                               const SizedBox(width: 16),
                               Text(
                                 '€${productStats[i].revenueEur.toStringAsFixed(2)}',
-                                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -171,7 +171,7 @@ class BusinessReportsScreen extends ConsumerWidget {
                                         Expanded(
                                           child: Text(
                                             weekOrders[i].orderNumber,
-                                            style: GoogleFonts.inter(
+                                            style: GoogleFonts.plusJakartaSans(
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -187,7 +187,7 @@ class BusinessReportsScreen extends ConsumerWidget {
                                     if (weekOrders[i].customer.hasDisplayPhone)
                                       Text(
                                         weekOrders[i].customer.displayPhone,
-                                        style: GoogleFonts.inter(
+                                        style: GoogleFonts.plusJakartaSans(
                                           fontSize: 12,
                                           color: colors.accent,
                                         ),
@@ -195,7 +195,7 @@ class BusinessReportsScreen extends ConsumerWidget {
                                     Text(
                                       DateFormat('d MMM, HH:mm')
                                           .format(weekOrders[i].createdAt),
-                                      style: GoogleFonts.inter(
+                                      style: GoogleFonts.plusJakartaSans(
                                         fontSize: 11,
                                         color: colors.textMuted,
                                       ),
@@ -206,7 +206,7 @@ class BusinessReportsScreen extends ConsumerWidget {
                               const SizedBox(width: 8),
                               Text(
                                 '€${weekOrders[i].subtotalEur.toStringAsFixed(2)}',
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.w700,
                                   color: weekOrders[i].status.countsTowardRevenue
                                       ? colors.accent
@@ -244,12 +244,12 @@ class BusinessReportsScreen extends ConsumerWidget {
         children: [
           Text(
             label,
-            style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: colors.textPrimary,
@@ -259,7 +259,7 @@ class BusinessReportsScreen extends ConsumerWidget {
             const SizedBox(height: 2),
             Text(
               hint,
-              style: GoogleFonts.inter(fontSize: 10, color: colors.textMuted),
+              style: GoogleFonts.plusJakartaSans(fontSize: 10, color: colors.textMuted),
             ),
           ],
         ],
@@ -280,7 +280,7 @@ class BusinessReportsScreen extends ConsumerWidget {
         children: [
           Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: color,
@@ -289,7 +289,7 @@ class BusinessReportsScreen extends ConsumerWidget {
           const SizedBox(height: 4),
           Text(
             '$count',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 22,
               fontWeight: FontWeight.w700,
               color: colors.textPrimary,

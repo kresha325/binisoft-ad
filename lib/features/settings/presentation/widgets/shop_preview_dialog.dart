@@ -59,7 +59,7 @@ class _ShopPreviewDialog extends StatelessWidget {
                   Expanded(
                     child: Text(
                       l10n.shopPreviewTitle,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
                         color: colors.textPrimary,
@@ -85,7 +85,7 @@ class _ShopPreviewDialog extends StatelessWidget {
                 ),
                 child: Text(
                   l10n.shopPreviewDraftNote,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     height: 1.4,
                     color: colors.textPrimary,
@@ -185,7 +185,7 @@ class _ShopPreviewFrame extends StatelessWidget {
                 if (enabledSections.isNotEmpty) ...[
                   Text(
                     l10n.shopPreviewSections,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.06,
@@ -213,7 +213,7 @@ class _ShopPreviewFrame extends StatelessWidget {
                 if (about.isNotEmpty) ...[
                   Text(
                     'Rreth nesh',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                       color: textColor,
@@ -224,7 +224,7 @@ class _ShopPreviewFrame extends StatelessWidget {
                     about,
                     maxLines: 6,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 13,
                       height: 1.45,
                       color: textColor.withValues(alpha: 0.85),
@@ -237,7 +237,7 @@ class _ShopPreviewFrame extends StatelessWidget {
                     (data.openingHours?.trim().isNotEmpty ?? false)) ...[
                   Text(
                     'Kontakt',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                       color: textColor,
@@ -253,7 +253,7 @@ class _ShopPreviewFrame extends StatelessWidget {
                 if (tagline.isEmpty && about.isEmpty && loc.isEmpty)
                   Text(
                     l10n.shopPreviewEmptyHint,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 13,
                       color: textColor.withValues(alpha: 0.5),
                     ),
@@ -376,7 +376,7 @@ class _HeroPreview extends StatelessWidget {
               if (eyebrow.isNotEmpty)
                 Text(
                   eyebrow,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: onCover ? accent : accent,
@@ -384,7 +384,7 @@ class _HeroPreview extends StatelessWidget {
                 ),
               Text(
                 name,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
                   height: 1.15,
@@ -397,7 +397,7 @@ class _HeroPreview extends StatelessWidget {
                   tagline,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     height: 1.35,
                     color: onCover
@@ -419,7 +419,7 @@ class _HeroPreview extends StatelessWidget {
                     Expanded(
                       child: Text(
                         data.locationLine,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 12,
                           color: onCover ? Colors.white70 : textColor.withValues(alpha: 0.6),
                         ),
@@ -455,7 +455,7 @@ class _LogoFallback extends StatelessWidget {
       ),
       child: Text(
         letter,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontWeight: FontWeight.w800,
           color: Colors.white,
         ),
@@ -482,7 +482,7 @@ class _PreviewRow extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: GoogleFonts.inter(fontSize: 13, height: 1.35),
+              style: GoogleFonts.plusJakartaSans(fontSize: 13, height: 1.35),
             ),
           ),
         ],

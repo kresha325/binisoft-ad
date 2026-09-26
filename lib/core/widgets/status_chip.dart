@@ -45,7 +45,7 @@ class StatusChip extends StatelessWidget {
           ],
           Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: fg,

@@ -23,7 +23,7 @@ Future<bool> showConfirmDeleteDialog(
       ),
       title: Text(
         title,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: 18,
           fontWeight: FontWeight.w700,
           color: colors.textPrimary,
@@ -31,7 +31,7 @@ Future<bool> showConfirmDeleteDialog(
       ),
       content: Text(
         message,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: 15,
           color: colors.textMuted,
           height: 1.45,
@@ -42,7 +42,7 @@ Future<bool> showConfirmDeleteDialog(
           onPressed: () => Navigator.pop(ctx, false),
           child: Text(
             'Cancel',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: colors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, color: colors.textMuted),
           ),
         ),
         ElevatedButton(
@@ -51,7 +51,7 @@ Future<bool> showConfirmDeleteDialog(
             backgroundColor: colors.danger,
             foregroundColor: Colors.white,
           ),
-          child: Text(confirmLabel, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+          child: Text(confirmLabel, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
         ),
       ],
     ),

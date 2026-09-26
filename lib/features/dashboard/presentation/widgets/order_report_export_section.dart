@@ -119,7 +119,7 @@ class _PeriodExportRow extends StatelessWidget {
           Expanded(
             child: Text(
               _title,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,
               ),

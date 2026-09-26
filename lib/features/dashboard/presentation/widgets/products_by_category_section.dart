@@ -40,7 +40,7 @@ class ProductsByCategorySection extends ConsumerWidget {
             padding: EdgeInsets.fromLTRB(pad, pad, pad, 0),
             child: Text(
               l10n.productsByCategoryTitle,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,
@@ -84,7 +84,7 @@ class ProductsByCategorySection extends ConsumerWidget {
         child: Text(
           context.l10n.productsByCategoryEmpty,
           textAlign: TextAlign.center,
-          style: GoogleFonts.inter(fontSize: 15, color: AppColors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 15, color: AppColors.textMuted),
         ),
       ),
     );
@@ -123,7 +123,7 @@ class _CategoryGroups extends StatelessWidget {
           child: Text(
             'Products exist but none are assigned to a category yet.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(fontSize: 15, color: AppColors.textMuted),
+            style: GoogleFonts.plusJakartaSans(fontSize: 15, color: AppColors.textMuted),
           ),
         ),
       );
@@ -176,7 +176,7 @@ class _CategorySection extends StatelessWidget {
               children: [
                 Text(
                   section.title,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: colors.textPrimary,
@@ -185,7 +185,7 @@ class _CategorySection extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   '${section.products.length}',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     color: colors.textMuted,
                   ),

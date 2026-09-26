@@ -52,7 +52,7 @@ class _SuperAdminReportsScreenState extends ConsumerState<SuperAdminReportsScree
       children: [
         Text(
           'Raportet',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.plusJakartaSans(
             fontSize: 22,
             fontWeight: FontWeight.w700,
             color: colors.textPrimary,
@@ -61,7 +61,7 @@ class _SuperAdminReportsScreenState extends ConsumerState<SuperAdminReportsScree
         const SizedBox(height: 6),
         Text(
           'Gjenerohen automatikisht: ditore, javore, mujore dhe vjetore.',
-          style: GoogleFonts.inter(fontSize: 14, color: colors.textMuted),
+          style: GoogleFonts.plusJakartaSans(fontSize: 14, color: colors.textMuted),
         ),
         const SizedBox(height: 20),
         Material(

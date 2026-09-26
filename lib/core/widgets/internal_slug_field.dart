@@ -45,7 +45,7 @@ class InternalSlugField extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             l10n.internalSlugImmutableNote,
-            style: GoogleFonts.inter(fontSize: 11, color: colors.textMuted, height: 1.3),
+            style: GoogleFonts.plusJakartaSans(fontSize: 11, color: colors.textMuted, height: 1.3),
           ),
         ],
       ],

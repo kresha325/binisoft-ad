@@ -102,7 +102,7 @@ class _PlanPricingCard extends StatelessWidget {
               children: [
                 Text(
                   plan.title,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textDark,
@@ -111,7 +111,7 @@ class _PlanPricingCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   plan.code,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textMuted,
@@ -120,7 +120,7 @@ class _PlanPricingCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Text(
                   plan.registrationPriceLabel,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
                     color: AppColors.navy,
@@ -129,7 +129,7 @@ class _PlanPricingCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'then ${plan.priceLabel}',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textMuted,
@@ -138,7 +138,7 @@ class _PlanPricingCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   'First month included in registration',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: AppColors.greenBadge,
@@ -147,7 +147,7 @@ class _PlanPricingCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   plan.summary,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     color: AppColors.textMuted,
                     height: 1.4,
@@ -178,7 +178,7 @@ class _PlanPricingCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             f,
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.plusJakartaSans(
                               fontSize: 11,
                               color: AppColors.textDark,
                               height: 1.3,
@@ -202,7 +202,7 @@ class _PlanPricingCard extends StatelessWidget {
                     ),
                     child: Text(
                       'Get started',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),

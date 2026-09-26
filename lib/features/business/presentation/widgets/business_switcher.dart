@@ -103,7 +103,7 @@ class BusinessSwitcher extends ConsumerWidget {
                   enabled: false,
                   child: Text(
                     l10n.businessesQuotaUsage(quota.owned, quota.max),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: colors.textMuted,
@@ -128,7 +128,7 @@ class BusinessSwitcher extends ConsumerWidget {
                           children: [
                             Text(
                               b.name,
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.plusJakartaSans(
                                 fontWeight:
                                     b.id == activeId ? FontWeight.w600 : FontWeight.w500,
                               ),
@@ -158,7 +158,7 @@ class BusinessSwitcher extends ConsumerWidget {
                       Expanded(
                         child: Text(
                           l10n.switcherMenuCreateStore(businesses.length, user.maxBusinesses),
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
@@ -227,7 +227,7 @@ class _SwitcherButton extends StatelessWidget {
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: compact ? 12 : 13,
                 fontWeight: FontWeight.w600,
                 color: colors.textPrimary,

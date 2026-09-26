@@ -26,7 +26,7 @@ class ShellAddButton extends StatelessWidget {
     final button = ElevatedButton.icon(
       onPressed: onPressed,
       icon: Icon(icon, size: 18),
-      label: Text(label, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+      label: Text(label, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
       style: ElevatedButton.styleFrom(
         backgroundColor: colors.accent,
         foregroundColor: context.isDarkMode ? const Color(0xFF0F172A) : Colors.white,

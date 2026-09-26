@@ -39,7 +39,7 @@ Future<void> showApiIntegrationGuideDialog(
                     Expanded(
                       child: Text(
                         l10n.apiIntegrationInfoTitle,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: colors.textPrimary,

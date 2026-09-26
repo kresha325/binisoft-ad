@@ -602,7 +602,7 @@ class _DataPanel extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
                       color: colors.textPrimary,
@@ -612,7 +612,7 @@ class _DataPanel extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       subtitle!,
-                      style: GoogleFonts.inter(fontSize: 12, color: colors.textMuted),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 12, color: colors.textMuted),
                     ),
                   ],
                 ],
