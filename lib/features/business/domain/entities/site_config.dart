@@ -203,7 +203,18 @@ class SiteConfig extends Equatable {
             enabled: true,
             useProfileCover: true,
           ),
+          const SiteSectionConfig(id: sectionAbout, enabled: true, title: 'Rreth nesh'),
+          const SiteSectionConfig(
+            id: sectionProducts,
+            enabled: true,
+            title: 'Produktet',
+          ),
           const SiteSectionConfig(id: sectionOffers, enabled: true, title: 'Ofertat'),
+          const SiteSectionConfig(
+            id: sectionServices,
+            enabled: true,
+            title: 'Shërbimet',
+          ),
           const SiteSectionConfig(id: sectionContests, enabled: true, title: 'Dhurata'),
           const SiteSectionConfig(
             id: sectionJobOpenings,
@@ -215,17 +226,6 @@ class SiteConfig extends Equatable {
             enabled: true,
             title: 'Ekipi',
           ),
-          const SiteSectionConfig(
-            id: sectionProducts,
-            enabled: true,
-            title: 'Produktet',
-          ),
-          const SiteSectionConfig(
-            id: sectionServices,
-            enabled: true,
-            title: 'Shërbimet',
-          ),
-          const SiteSectionConfig(id: sectionAbout, enabled: true, title: 'Rreth nesh'),
           const SiteSectionConfig(id: sectionGallery, enabled: true, title: 'Galeria'),
           const SiteSectionConfig(
             id: sectionContact,
