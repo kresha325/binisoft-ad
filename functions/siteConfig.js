@@ -3,6 +3,7 @@ const ALLOWED_SECTION_IDS = new Set([
   'offers',
   'contests',
   'jobOpenings',
+  'employees',
   'products',
   'services',
   'about',
@@ -17,6 +18,7 @@ const ALLOWED_CTA_TARGETS = new Set([
   'offers',
   'contests',
   'jobOpenings',
+  'employees',
   'whatsapp',
 ]);
 
@@ -83,6 +85,7 @@ function defaultSiteConfig() {
       { id: 'offers', enabled: true, title: 'Ofertat' },
       { id: 'contests', enabled: true, title: 'Dhurata' },
       { id: 'jobOpenings', enabled: true, title: 'Konkurse pune' },
+      { id: 'employees', enabled: true, title: 'Ekipi' },
       { id: 'products', enabled: true, title: 'Produktet' },
       { id: 'services', enabled: true, title: 'Shërbimet' },
       { id: 'about', enabled: true, title: 'Rreth nesh' },
