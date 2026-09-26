@@ -34,6 +34,14 @@ jobs:
         with:
           repository: kresha325/Binisoft-marketplace
           path: Binisoft-marketplace
+          # Always ship latest marketplace main (Pages does not watch that repo).
+          ref: main
+          fetch-depth: 1
+
+      - name: Marketplace revision
+        run: |
+          echo "Marketplace SHA: $(git -C Binisoft-marketplace rev-parse HEAD)"
+          git -C Binisoft-marketplace log -1 --oneline
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
