@@ -1,5 +1,5 @@
-const DASHBOARD_JOIN_URL = 'https://kresha325.github.io/binisoft-ad/app/#/join';
-const DASHBOARD_URL = 'https://kresha325.github.io/binisoft-ad/app/#/login';
+const DASHBOARD_JOIN_URL = 'https://jon-sport.web.app/admin/#/join';
+const DASHBOARD_URL = 'https://jon-sport.web.app/admin/#/login';
 
 /** Email disabled — use invite codes in the app instead. */
 const EMAIL_DISABLED = true;

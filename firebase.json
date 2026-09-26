@@ -5,7 +5,7 @@
   "hosting": [
     {
       "target": "admin",
-      "public": "build/web",
+      "public": "hosting-unified",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
@@ -13,8 +13,24 @@
           "function": "publicApi"
         },
         {
-          "source": "**",
-          "destination": "/index.html"
+          "source": "/api/shop/**",
+          "function": "shopApi"
+        },
+        {
+          "source": "/admin/**",
+          "destination": "/admin/index.html"
+        },
+        {
+          "source": "/shop/**",
+          "destination": "/shop/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "/admin/**",
+          "headers": [
+            { "key": "Cache-Control", "value": "no-cache" }
+          ]
         }
       ]
     },

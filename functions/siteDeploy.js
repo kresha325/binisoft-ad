@@ -3,7 +3,7 @@ const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 
 const TEMPLATE_ID = 'market-v1';
 const DEFAULT_SHOP_BASE =
-  process.env.PUBLIC_SHOP_BASE || 'https://kresha325.github.io/Binisoft-marketplace';
+  process.env.PUBLIC_SHOP_BASE || 'https://jon-sport.web.app/shop';
 
 function defaultSiteUrl(slug) {
   return `${DEFAULT_SHOP_BASE.replace(/\/$/, '')}/${slug}`;
@@ -17,9 +17,9 @@ function dnsInstructionsForDomain(customDomain, deployUrl) {
       {
         type: 'CNAME',
         name: customDomain.startsWith('www.') ? 'www' : '@',
-        value: 'kresha325.github.io',
+        value: 'jon-sport.web.app',
         note:
-          'Te GoDaddy (DNS Management): shto këtë CNAME. Propagimi 5 min – 48 orë. Pastaj aktivizo SSL te Netlify/Firebase.',
+          'Te DNS: shto CNAME drejt jon-sport.web.app (ose A/AAAA sipas Firebase Hosting). Pastaj shto domain-in te Firebase Console → Hosting.',
       },
     ],
     deployUrl,

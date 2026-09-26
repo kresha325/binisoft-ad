@@ -46,6 +46,7 @@ app.*.map.json
 
 # Firebase / Node
 hosting-shop/
+hosting-unified/
 .firebase/
 functions/node_modules/
 scripts/node_modules/

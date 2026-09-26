@@ -68,7 +68,12 @@ class _WebFirebaseBootstrapState extends State<WebFirebaseBootstrap> {
     if (host == 'localhost' || host == '127.0.0.1') {
       return true;
     }
-    return uri.path.contains('binisoft-ad');
+    final path = uri.path;
+    // Unified Hosting: /admin/… on jon-sport.web.app (or custom domain).
+    if (path.contains('/admin')) return true;
+    // Legacy GitHub Pages project site.
+    if (path.contains('binisoft-ad')) return true;
+    return false;
   }
 
   @override
