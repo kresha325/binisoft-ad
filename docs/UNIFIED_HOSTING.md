@@ -1,32 +1,46 @@
-# Unified platform domain (`/admin` + `/shop`)
+# Unified platform (`/admin` + `/shop`)
 
-Primary site: **https://jon-sport.web.app**
+## Primary — Firebase Hosting
+
+**https://jon-sport.web.app**
 
 | Path | App |
 |------|-----|
-| `/` | Marketing landing |
-| `/admin/` | Flutter admin (`/#/login`, `/#/dashboard`, …) |
-| `/shop/` | Marketplace home |
-| `/shop/{slug}` | Storefront for one business |
-| `/api/public/**` | Same-origin rewrite → `publicApi` |
-| `/privacy.html` | Privacy policy |
-
-## Build & deploy
-
-Requires sibling checkout of `Binisoft-marketplace` (or set `MARKETPLACE_DIR`).
+| `/` | Marketing |
+| `/admin/` | Flutter admin |
+| `/shop/` | Marketplace |
+| `/shop/{slug}` | Storefront |
+| `/api/public/**` | Rewrite → `publicApi` |
 
 ```bash
-chmod +x tool/assemble_unified_hosting.sh
 ./tool/assemble_unified_hosting.sh
 firebase deploy --only hosting:admin --project jon-sport
 ```
 
+## Mirror — GitHub Pages (`binisoft-ad`)
+
+**https://kresha325.github.io/binisoft-ad/**
+
+| Path | App |
+|------|-----|
+| `/binisoft-ad/` | Marketing |
+| `/binisoft-ad/admin/` | Flutter admin |
+| `/binisoft-ad/shop/` | Marketplace |
+| `/binisoft-ad/shop/{slug}` | Storefront |
+| `/binisoft-ad/app/` | Redirect → `/admin/` (legacy) |
+
+API on Pages still uses Cloud Functions (`…/publicApi`) — Hosting rewrites are Firebase-only.
+
+Deploy: push to `main` (workflow **Deploy Web to GitHub Pages**) or Actions → Run workflow.
+
+Local assemble for Pages:
+
+```bash
+SITE_PREFIX=/binisoft-ad OUT=build/web \
+  MARKETPLACE_DIR=../Binisoft-marketplace \
+  ./tool/assemble_unified_hosting.sh
+```
+
 ## Custom domain later
 
-Firebase Console → Hosting → Add custom domain (e.g. `binisoft.com`).
-Paths stay `/admin` and `/shop` on that domain. Then update `AppConstants.platformOrigin`.
-
-## Auth / API keys
-
-Authorized domains must include `jon-sport.web.app` (and your custom domain).
-Browser API key HTTP referrers: `https://jon-sport.web.app/*`
+Add domain on Firebase Hosting (or GH Pages). Paths stay `/admin` and `/shop` (no `/binisoft-ad` prefix on apex domain). Update `AppConstants.platformOrigin`.

@@ -26,8 +26,14 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
+      - name: Checkout admin
         uses: actions/checkout@v4
+
+      - name: Checkout marketplace (sibling)
+        uses: actions/checkout@v4
+        with:
+          repository: kresha325/Binisoft-marketplace
+          path: Binisoft-marketplace
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -35,29 +41,21 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: Binisoft-marketplace/package-lock.json
 
-      - name: Build Flutter admin app (under /app/ — marketing stays static at root)
-        run: flutter build web --release --pwa-strategy=offline-first --no-web-resources-cdn --base-href "/binisoft-ad/app/" --output build/web/app
-
-      - name: Mobile-friendly web bootstrap (canvaskit renderer, load error surfacing)
-        run: dart run tool/patch_web_bootstrap.dart build/web/app/flutter_bootstrap.js
-
-      - name: Sharp favicon (launcher_icons outputs 16px; tabs need 48px+)
-        run: dart run tool/generate_app_icon_square.dart
-
-      - name: Assemble deploy (fast static landing + Flutter app + SPA paths)
+      - name: Assemble /admin + /shop under /binisoft-ad/
+        env:
+          MARKETPLACE_DIR: ${{ github.workspace }}/Binisoft-marketplace
+          OUT: ${{ github.workspace }}/build/web
+          SITE_PREFIX: /binisoft-ad
         run: |
-          cp web/marketing/index.html build/web/index.html
-          cp web/marketing/privacy.html build/web/privacy.html
-          cp -r build/web/app/icons build/web/icons
-          cp build/web/app/favicon.png build/web/favicon.png 2>/dev/null || true
-          cp web/404.html build/web/404.html
-          dart run tool/generate_spa_path_indexes.dart
-
-      - name: Disable Jekyll
-        run: touch build/web/.nojekyll
+          chmod +x tool/assemble_unified_hosting.sh
+          ./tool/assemble_unified_hosting.sh
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
