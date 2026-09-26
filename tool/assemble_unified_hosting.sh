@@ -37,6 +37,11 @@ echo "==> Cleaning $OUT"
 rm -rf "$OUT"
 mkdir -p "$OUT/admin" "$OUT/shop"
 
+# Keep Flutter output outside $OUT so `cp` never copies a directory onto itself
+# (OUT=build/web on GitHub Pages would collide with --output build/web/admin).
+FLUTTER_OUT="$ROOT/build/flutter-admin"
+rm -rf "$FLUTTER_OUT"
+
 echo "==> Building Flutter admin (base-href ${ADMIN_HREF})"
 cd "$ROOT"
 flutter pub get
@@ -45,13 +50,13 @@ flutter build web \
   --pwa-strategy=offline-first \
   --no-web-resources-cdn \
   --base-href "${ADMIN_HREF}" \
-  --output build/web/admin
-dart run tool/patch_web_bootstrap.dart build/web/admin/flutter_bootstrap.js
+  --output "$FLUTTER_OUT"
+dart run tool/patch_web_bootstrap.dart "$FLUTTER_OUT/flutter_bootstrap.js"
 # Optional sharp favicon when tool exists
 if [[ -f "$ROOT/tool/generate_app_icon_square.dart" ]]; then
   dart run tool/generate_app_icon_square.dart 2>/dev/null || true
 fi
-cp -R build/web/admin/. "$OUT/admin/"
+cp -R "$FLUTTER_OUT/." "$OUT/admin/"
 
 echo "==> Building marketplace (BASE_PATH=${SHOP_BASE})"
 cd "$MARKETPLACE_DIR"
