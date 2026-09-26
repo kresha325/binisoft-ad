@@ -33,7 +33,7 @@ API on Pages still uses Cloud Functions (`…/publicApi`) — Hosting rewrites a
 
 Deploy: push to `main` (workflow **Deploy Web to GitHub Pages**) or Actions → Run workflow.
 
-Marketplace lives in a sibling repo (`kresha325/Binisoft-marketplace`). Pages only rebuilds when this admin repo’s CI succeeds (or on manual workflow dispatch) — a push to marketplace alone does **not** update Pages. After marketplace UI changes, bump `tool/marketplace.ref` to that commit SHA and push `main` here so Pages pulls the new shop build.
+Marketplace lives in `kresha325/Binisoft-marketplace`. Pages always checkouts that repo’s `main`, and also rebuilds hourly (`schedule`) plus on `repository_dispatch` (`marketplace-updated`). To force a pin commit locally: `./tool/bump-marketplace-ref.sh --commit && git push`.
 
 Local assemble for Pages:
 

@@ -2,6 +2,11 @@ name: Deploy Web to GitHub Pages
 
 on:
   workflow_dispatch:
+  # Marketplace sibling cannot trigger this repo without a PAT; poll main hourly.
+  schedule:
+    - cron: '12 * * * *'
+  repository_dispatch:
+    types: [marketplace-updated]
   workflow_run:
     workflows: [CI]
     types: [completed]
@@ -21,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     if: >
       github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      github.event_name == 'repository_dispatch' ||
       (github.event.workflow_run.conclusion == 'success')
     environment:
       name: github-pages
@@ -40,8 +47,10 @@ jobs:
 
       - name: Marketplace revision
         run: |
-          echo "Marketplace SHA: $(git -C Binisoft-marketplace rev-parse HEAD)"
+          SHA=$(git -C Binisoft-marketplace rev-parse HEAD)
+          echo "Marketplace SHA: $SHA"
           git -C Binisoft-marketplace log -1 --oneline
+          echo "$SHA" > tool/marketplace.ref
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
